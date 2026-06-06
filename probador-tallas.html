@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probador de Talla Inteligente | D'Zoe Perú</title>
+<meta name="description" content="Descubre la talla perfecta para tu pequeño/a. Ingresa edad, peso y estatura y te recomendamos la talla exacta de nuestra guía oficial D'Zoe Perú.">
+<link rel="canonical" href="https://dzoeperu.aron7usd.workers.dev/probador-tallas.html">
+
+<!-- Schema.org WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Probador de Talla Inteligente D'Zoe Perú",
+  "url": "https://dzoeperu.aron7usd.workers.dev/probador-tallas.html",
+  "description": "Herramienta inteligente para encontrar la talla perfecta de ropa infantil según edad, peso y estatura.",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "publisher": {
+    "@type": "Organization",
+    "name": "D'Zoe Perú",
+    "telephone": "+51956063145",
+    "url": "https://dzoeperu.aron7usd.workers.dev/"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Inicio","item":"https://dzoeperu.aron7usd.workers.dev/"},
+      {"@type":"ListItem","position":2,"name":"Guía de Tallas","item":"https://dzoeperu.aron7usd.workers.dev/Guía de Tallas.html"},
+      {"@type":"ListItem","position":3,"name":"Probador Inteligente","item":"https://dzoeperu.aron7usd.workers.dev/probador-tallas.html"}
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --rose:#e8a4c0;--rose-dark:#d4809f;--rose-light:#f9dde9;--rose-soft:#fef0f5;
+  --mint:#7ecfc8;--mint-light:#c8eeeb;--mint-soft:#e8f9f7;
+  --lavender:#c3aee4;--lav-light:#ede4f9;
+  --peach:#f5b97e;--peach-light:#fde9d1;
+  --sky:#8ec8f0;--sky-light:#d6edfa;
+  --cream:#fee4f5;--text:#4a4460;--text-soft:#8a85a0;
+  --white:#ffffff;--border:#ede8f5;
+  --shadow-sm:0 2px 12px rgba(195,174,228,.12);
+  --shadow-md:0 8px 28px rgba(195,174,228,.2);
+  --shadow-lg:0 16px 40px rgba(195,174,228,.28);
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--rose),var(--lavender));border-radius:10px;}
+.container{width:1200px;max-width:95%;margin:auto;}
+
+/* ── TOPBAR ── */
+.topbar{background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);color:#fff;padding:9px 0;font-size:12.5px;font-weight:600;}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.topbar-right a{color:rgba(255,255,255,.9);font-size:14px;text-decoration:none;transition:.2s;}
+.topbar-right a:hover{color:#fff;transform:scale(1.15);}
+.topbar-right span{font-size:12px;border-left:1px solid rgba(255,255,255,.4);padding-left:12px;}
+
+/* ── HEADER ── */
+.header{background:#fff;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm);border-bottom:1px solid var(--border);}
+.header-inner{height:72px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--shadow-sm);}
+.logo-text h1{font-family:'Baloo 2',cursive;color:var(--rose);font-size:26px;line-height:1;}
+.logo-text span{color:var(--text-soft);letter-spacing:3px;font-size:10px;}
+.header-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text-soft);font-size:13px;font-weight:700;padding:8px 16px;border-radius:30px;border:1.5px solid var(--border);transition:.2s;}
+.header-back:hover{background:var(--rose-soft);border-color:var(--rose);color:var(--rose-dark);}
+
+/* ── BREADCRUMB ── */
+.breadcrumb-bar{background:#fff;border-bottom:1px solid var(--border);padding:10px 0;}
+.breadcrumb{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-soft);font-weight:600;flex-wrap:wrap;}
+.breadcrumb a{color:var(--text-soft);text-decoration:none;transition:.2s;}
+.breadcrumb a:hover{color:var(--rose);}
+.breadcrumb .sep{color:var(--rose-light);font-size:10px;}
+.breadcrumb .current{color:var(--rose-dark);font-weight:800;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#fce8f5 0%,#ede4fa 50%,#e0f6f3 100%);
+  padding:60px 0 50px;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 15% 50%,rgba(232,164,192,.18),transparent 55%),
+             radial-gradient(circle at 85% 30%,rgba(126,207,200,.16),transparent 55%);
+  pointer-events:none;}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;z-index:1;}
+.hero-text{}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;padding:6px 18px;border-radius:40px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;box-shadow:var(--shadow-sm);}
+.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(28px,4vw,50px);font-weight:800;color:var(--text);line-height:1.1;margin-bottom:14px;}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,var(--rose),var(--lavender));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-sub{font-size:15px;color:var(--text-soft);line-height:1.7;max-width:440px;}
+.hero-sub strong{color:var(--rose-dark);}
+.hero-badge-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;}
+.hero-badge{display:flex;align-items:center;gap:7px;background:#fff;border:1.5px solid var(--border);padding:7px 16px;border-radius:40px;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:var(--shadow-sm);}
+.hero-badge i{color:var(--rose);}
+.hero-badge.b-mint i{color:var(--mint);}
+.hero-badge.b-lav i{color:var(--lavender);}
+
+/* ── MAIN TESTER CARD ── */
+.tester-wrap{padding:60px 0 80px;}
+.tester-card{
+  background:#fff;border-radius:32px;
+  box-shadow:var(--shadow-lg);
+  border:1.5px solid var(--border);
+  overflow:hidden;
+  max-width:780px;margin:0 auto;
+}
+.tester-head{
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  padding:28px 36px;display:flex;align-items:center;gap:18px;
+}
+.tester-head-icon{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.tester-head-text h2{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:#fff;line-height:1.1;}
+.tester-head-text p{font-size:13px;color:rgba(255,255,255,.8);margin-top:4px;font-weight:600;}
+
+/* Form */
+.tester-body{padding:36px;}
+.fields-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:28px;}
+.field-group{}
+.field-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:9px;}
+.field-label i{color:var(--rose);font-size:13px;width:16px;text-align:center;}
+.field-input-wrap{position:relative;}
+.field-input{
+  width:100%;padding:13px 44px 13px 16px;
+  border:2px solid var(--border);border-radius:16px;
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;
+  color:var(--text);background:#fff;outline:none;
+  transition:.25s;-moz-appearance:textfield;
+}
+.field-input::-webkit-outer-spin-button,
+.field-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.field-input:focus{border-color:var(--rose);box-shadow:0 0 0 4px rgba(232,164,192,.18);}
+.field-unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:var(--text-soft);}
+
+/* Botón calcular */
+.calc-btn{
+  width:100%;background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+  color:#fff;border:none;padding:16px;border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;
+  cursor:pointer;transition:.25s;letter-spacing:.3px;
+  box-shadow:0 6px 24px rgba(232,164,192,.5);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.calc-btn:hover{background:linear-gradient(135deg,var(--rose-dark),#b8607a);transform:translateY(-2px);box-shadow:0 10px 32px rgba(232,164,192,.6);}
+.calc-btn:active{transform:translateY(0);}
+.calc-btn i{font-size:18px;}
+
+/* ── RESULTADO ── */
+.result-panel{
+  display:none;margin-top:28px;
+  border-radius:24px;overflow:hidden;
+  border:2px solid var(--rose-light);
+  animation:resultIn .5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes resultIn{from{opacity:0;transform:translateY(16px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.result-panel.show{display:block;}
+
+.result-top{
+  background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));
+  padding:28px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.result-icon-circle{
+  width:72px;height:72px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;box-shadow:var(--shadow-md);
+}
+.result-main{flex:1;}
+.result-headline{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;}
+.result-size-cn{font-family:'Baloo 2',cursive;font-size:48px;font-weight:800;color:var(--rose-dark);line-height:1;}
+.result-size-pe{font-size:14px;font-weight:700;color:var(--text-soft);margin-top:2px;}
+.result-size-pe strong{color:var(--lavender);}
+.result-confidence{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:30px;font-size:12px;font-weight:800;
+  margin-top:10px;
+}
+.conf-high{background:linear-gradient(135deg,#d4f5ef,#c8eeeb);color:#2d8a82;border:1.5px solid #7ecfc8;}
+.conf-med{background:linear-gradient(135deg,var(--peach-light),#fbd5b8);color:#b06020;border:1.5px solid var(--peach);}
+
+/* Stats row dentro del resultado */
+.result-stats{display:flex;gap:0;border-top:1px solid var(--rose-light);}
+.result-stat{flex:1;padding:16px 20px;text-align:center;border-right:1px solid var(--rose-light);}
+.result-stat:last-child{border-right:none;}
+.result-stat-val{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--text);}
+.result-stat-lbl{font-size:11px;font-weight:700;color:var(--text-soft);letter-spacing:.04em;margin-top:2px;}
+
+/* Tip row */
+.result-tip{padding:18px 24px;background:linear-gradient(90deg,var(--rose-soft),transparent);display:flex;align-items:flex-start;gap:12px;border-top:1px solid var(--rose-light);}
+.result-tip-icon{font-size:18px;margin-top:1px;flex-shrink:0;}
+.result-tip-text{font-size:13px;color:var(--text);line-height:1.6;font-weight:600;}
+.result-tip-text strong{color:var(--rose-dark);}
+
+/* CTA dentro del resultado */
+.result-cta{display:flex;gap:10px;padding:20px 24px;background:#fff;flex-wrap:wrap;}
+.rcta-btn{flex:1;min-width:140px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:40px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:.2s;cursor:pointer;border:none;}
+.rcta-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;box-shadow:0 4px 14px rgba(232,164,192,.4);}
+.rcta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,164,192,.55);}
+.rcta-wa{background:#e8f5ed;color:#1a7a3a;border:1.5px solid #b5e4c6;}
+.rcta-wa:hover{background:#25D366;color:#fff;border-color:#25D366;transform:translateY(-2px);}
+.rcta-guide{background:var(--lav-light);color:var(--text);border:1.5px solid var(--lavender);}
+.rcta-guide:hover{background:var(--lavender);color:#fff;transform:translateY(-2px);}
+
+/* Error state */
+.error-msg{display:none;background:#fff0f0;border:1.5px solid #f8a0a0;border-radius:16px;padding:14px 18px;color:#c04040;font-size:13px;font-weight:700;margin-top:16px;align-items:center;gap:10px;}
+.error-msg.show{display:flex;}
+
+/* ── TABLA REFERENCIA ── */
+.ref-section{padding:0 0 80px;}
+.ref-title{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.ref-sub{font-size:14px;color:var(--text-soft);margin-bottom:32px;}
+.ref-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.ref-tab{padding:9px 20px;border-radius:30px;border:1.5px solid var(--border);background:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);cursor:pointer;transition:.2s;}
+.ref-tab.active,.ref-tab:hover{background:var(--rose);color:#fff;border-color:var(--rose-dark);}
+.ref-table-wrap{display:none;background:#fff;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-md);border:1.5px solid var(--border);}
+.ref-table-wrap.active{display:block;}
+.ref-table{width:100%;border-collapse:collapse;font-size:14px;}
+.ref-table thead tr{background:linear-gradient(135deg,var(--rose),var(--lavender));}
+.ref-table th{padding:14px 18px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-align:center;}
+.ref-table th:first-child{text-align:left;border-radius:0;}
+.ref-table tbody tr{border-bottom:1px solid var(--border);transition:.15s;}
+.ref-table tbody tr:last-child{border-bottom:none;}
+.ref-table tbody tr:hover{background:var(--rose-soft);}
+.ref-table tbody tr:nth-child(even){background:var(--rose-soft);}
+.ref-table tbody tr:nth-child(even):hover{background:var(--rose-light);}
+.ref-table td{padding:14px 18px;text-align:center;vertical-align:middle;}
+.ref-table td:first-child{text-align:left;}
+.cn-pill{display:inline-block;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;min-width:52px;height:36px;line-height:36px;border-radius:12px;text-align:center;box-shadow:0 3px 10px rgba(232,164,192,.35);}
+.pe-pill{display:inline-block;background:var(--lav-light);color:var(--lavender);border:1.5px solid var(--lavender);font-size:13px;font-weight:800;padding:4px 12px;border-radius:20px;}
+.age-pill{display:inline-block;background:var(--mint-soft);color:#2d8a82;border:1.5px solid var(--mint);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;}
+
+/* ── DARK MODE ── */
+body.dark-mode{--cream:#1a1625;--white:#241e34;--text:#ede8f5;--text-soft:#a89ec0;--border:#3a3050;--rose-soft:#2a1f30;--rose-light:#4a2840;--lav-light:#2a2040;--mint-soft:#1a2830;background:#1a1625;}
+body.dark-mode .header,.body.dark-mode .breadcrumb-bar{background:#241e34;}
+body.dark-mode .tester-card,.body.dark-mode .ref-table-wrap{background:#241e34;border-color:#3a3050;}
+body.dark-mode .field-input{background:#2a2040;color:#ede8f5;border-color:#4a3060;}
+body.dark-mode .result-panel{border-color:#4a3060;}
+body.dark-mode .result-top{background:linear-gradient(135deg,#3a1f30,#2a2040);}
+body.dark-mode .result-stats,.body.dark-mode .result-stat{border-color:#4a3060;}
+body.dark-mode .result-cta{background:#241e34;}
+body.dark-mode .ref-table-wrap{background:#241e34;}
+body.dark-mode .ref-table tbody tr:nth-child(even){background:rgba(232,164,192,.04);}
+body.dark-mode .ref-table tbody tr:hover{background:rgba(232,164,192,.08);}
+body.dark-mode .topbar{background:linear-gradient(90deg,#5a3a7a,#7a3a5a,#2a5a6a);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .fields-grid{grid-template-columns:1fr;}
+  .result-stats{flex-direction:column;}
+  .result-stat{border-right:none;border-bottom:1px solid var(--rose-light);}
+  .result-top{flex-direction:column;align-items:flex-start;gap:14px;}
+  .tester-body{padding:24px 20px;}
+  .tester-head{padding:22px 22px;}
+  .result-cta{flex-direction:column;}
+  .hero{padding:40px 0 36px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div><i class="fas fa-crown" style="margin-right:6px;"></i> <strong>MODA IMPORTADA PREMIUM</strong> &nbsp;|&nbsp; Diseños exclusivos de alta gama</div>
+    <div class="topbar-right">
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+      <span>📞 +51 956 063 145</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container header-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-icon">🌸</div>
+      <div class="logo-text">
+        <h1>D'Zoe</h1>
+        <span>PERÚ</span>
+      </div>
+    </a>
+    <a class="header-back" href="Guía de Tallas.html">
+      <i class="fas fa-arrow-left"></i> Guía de Tallas
+    </a>
+  </div>
+</header>
+
+<!-- BREADCRUMB con Schema.org -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+      <a href="index.html"><i class="fas fa-home" style="margin-right:4px;"></i>Inicio</a>
+      <span class="sep"><i class="fas fa-chevron-right"></i></span>
+      <a href="Guía de Tallas.html">Guía de Tallas</a>
+      <span class="sep"><i class="fas fa-chevron-right"></i></span>
+      <span class="current" aria-current="page">Probador Inteligente</span>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><i class="fas fa-magic"></i> Probador Inteligente</div>
+      <h1 class="hero-title">La talla <em>perfecta</em><br>en segundos 📏</h1>
+      <p class="hero-sub">Ingresa la <strong>edad, peso y estatura</strong> de tu pequeño/a y nuestra guía oficial te recomienda la talla exacta D'Zoe Perú.</p>
+      <div class="hero-badge-row">
+        <div class="hero-badge"><i class="fas fa-ruler-vertical"></i> Basado en la guía oficial</div>
+        <div class="hero-badge b-mint"><i class="fas fa-check-circle"></i> Talla CN y PE</div>
+        <div class="hero-badge b-lav"><i class="fas fa-bolt"></i> Resultado inmediato</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBADOR -->
+<section class="tester-wrap">
+  <div class="container">
+    <div class="tester-card">
+
+      <div class="tester-head">
+        <div class="tester-head-icon">🔍</div>
+        <div class="tester-head-text">
+          <h2>Ingresa los datos de tu pequeño/a</h2>
+          <p>La altura es el factor más importante — úsala sin zapatos</p>
+        </div>
+      </div>
+
+      <div class="tester-body">
+
+        <div class="fields-grid">
+          <!-- Edad -->
+          <div class="field-group">
+            <label class="field-label" for="inputEdad">
+              <i class="fas fa-birthday-cake"></i> Edad
+            </label>
+            <div class="field-input-wrap">
+              <input class="field-input" id="inputEdad" type="number" min="0" max="13" placeholder="Ej: 3" inputmode="numeric">
+              <span class="field-unit">años</span>
+            </div>
+          </div>
+
+          <!-- Peso -->
+          <div class="field-group">
+            <label class="field-label" for="inputPeso">
+              <i class="fas fa-weight"></i> Peso
+            </label>
+            <div class="field-input-wrap">
+              <input class="field-input" id="inputPeso" type="number" min="2" max="60" step="0.1" placeholder="Ej: 15" inputmode="decimal">
+              <span class="field-unit">kg</span>
+            </div>
+          </div>
+
+          <!-- Estatura -->
+          <div class="field-group">
+            <label class="field-label" for="inputAltura">
+              <i class="fas fa-ruler"></i> Estatura
+            </label>
+            <div class="field-input-wrap">
+              <input class="field-input" id="inputAltura" type="number" min="30" max="170" placeholder="Ej: 100" inputmode="numeric">
+              <span class="field-unit">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bebé toggle -->
+        <div style="margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+          <input type="checkbox" id="esBebe" style="width:18px;height:18px;accent-color:var(--rose);cursor:pointer;">
+          <label for="esBebe" style="font-size:13px;font-weight:700;color:var(--text-soft);cursor:pointer;">
+            🍼 Es bebé menor de 1 año (ingresar meses como edad)
+          </label>
+        </div>
+
+        <button class="calc-btn" onclick="calcularTalla()">
+          <i class="fas fa-magic"></i> Encontrar la talla perfecta
+        </button>
+
+        <!-- Error -->
+        <div class="error-msg" id="errorMsg">
+          <i class="fas fa-exclamation-circle" style="font-size:18px;flex-shrink:0;"></i>
+          <span id="errorText">Por favor completa los datos.</span>
+        </div>
+
+        <!-- Resultado -->
+        <div class="result-panel" id="resultPanel">
+
+          <div class="result-top">
+            <div class="result-icon-circle" id="resultIcon">👗</div>
+            <div class="result-main">
+              <div class="result-headline">Te recomendamos</div>
+              <div class="result-size-cn" id="resultCN">—</div>
+              <div class="result-size-pe">Talla Perú: <strong id="resultPE">—</strong> &nbsp;·&nbsp; <span id="resultAge"></span></div>
+              <div class="result-confidence" id="resultConf"></div>
+            </div>
+          </div>
+
+          <div class="result-stats">
+            <div class="result-stat">
+              <div class="result-stat-val" id="statAltura">—</div>
+              <div class="result-stat-lbl">Altura referencial</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-val" id="statPeso">—</div>
+              <div class="result-stat-lbl">Peso referencial</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-val" id="statSection">—</div>
+              <div class="result-stat-lbl">Categoría</div>
+            </div>
+          </div>
+
+          <div class="result-tip">
+            <div class="result-tip-icon">💡</div>
+            <div class="result-tip-text" id="resultTip"></div>
+          </div>
+
+          <div class="result-cta">
+            <a class="rcta-btn rcta-primary" href="index.html#productos">
+              <i class="fas fa-shopping-bag"></i> Ver productos en esta talla
+            </a>
+            <a class="rcta-btn rcta-wa" id="resultWA" href="#" target="_blank" rel="noopener">
+              <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+            </a>
+            <a class="rcta-btn rcta-guide" href="Guía de Tallas.html">
+              <i class="fas fa-table"></i> Ver tabla completa
+            </a>
+          </div>
+
+        </div><!-- /result-panel -->
+
+      </div><!-- /tester-body -->
+    </div><!-- /tester-card -->
+  </div>
+</section>
+
+<!-- TABLA DE REFERENCIA -->
+<section class="ref-section">
+  <div class="container">
+    <h2 class="ref-title">📋 Tabla de referencia completa</h2>
+    <p class="ref-sub">Datos extraídos de la Guía Oficial de Tallas D'Zoe Perú</p>
+
+    <div class="ref-tabs">
+      <button class="ref-tab active" onclick="showRefTab('bebes',this)">🍼 Bebés (0–24 meses)</button>
+      <button class="ref-tab" onclick="showRefTab('pequenos',this)">👟 Niños Pequeños (1–5 años)</button>
+      <button class="ref-tab" onclick="showRefTab('ninos',this)">🎒 Niñas y Niños (6–13 años)</button>
+    </div>
+
+    <!-- Bebés -->
+    <div class="ref-table-wrap active" id="ref-bebes">
+      <table class="ref-table">
+        <thead><tr>
+          <th>Talla CN</th><th>Talla PE</th><th>Edad</th><th>Altura</th><th>Peso</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="cn-pill">59</span></td><td><span class="pe-pill">0-3M</span></td><td><span class="age-pill">0–3 meses</span></td><td>55–60 cm</td><td>3.5–5 kg</td></tr>
+          <tr><td><span class="cn-pill">73</span></td><td><span class="pe-pill">3-6M</span></td><td><span class="age-pill">6–9 meses</span></td><td>66–73 cm</td><td>7–9 kg</td></tr>
+          <tr><td><span class="cn-pill">80</span></td><td><span class="pe-pill">6-12M</span></td><td><span class="age-pill">9–12 meses</span></td><td>73–80 cm</td><td>9–11 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Niños pequeños -->
+    <div class="ref-table-wrap" id="ref-pequenos">
+      <table class="ref-table">
+        <thead><tr>
+          <th>Talla CN</th><th>Talla PE</th><th>Edad</th><th>Altura</th><th>Peso</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="cn-pill">90</span></td><td><span class="pe-pill">1</span></td><td><span class="age-pill">1–2 años</span></td><td>80–90 cm</td><td>11–13 kg</td></tr>
+          <tr><td><span class="cn-pill">100</span></td><td><span class="pe-pill">2</span></td><td><span class="age-pill">2–3 años</span></td><td>90–100 cm</td><td>13–15 kg</td></tr>
+          <tr><td><span class="cn-pill">110</span></td><td><span class="pe-pill">4</span></td><td><span class="age-pill">3–4 años</span></td><td>100–110 cm</td><td>15–18 kg</td></tr>
+          <tr><td><span class="cn-pill">120</span></td><td><span class="pe-pill">6</span></td><td><span class="age-pill">4–5 años</span></td><td>110–120 cm</td><td>18–22 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Niñas y niños -->
+    <div class="ref-table-wrap" id="ref-ninos">
+      <table class="ref-table">
+        <thead><tr>
+          <th>Talla CN</th><th>Talla PE</th><th>Edad</th><th>Altura</th><th>Peso</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="cn-pill">130</span></td><td><span class="pe-pill">8</span></td><td><span class="age-pill">6–7 años</span></td><td>120–130 cm</td><td>22–26 kg</td></tr>
+          <tr><td><span class="cn-pill">140</span></td><td><span class="pe-pill">10</span></td><td><span class="age-pill">8–9 años</span></td><td>130–140 cm</td><td>26–31 kg</td></tr>
+          <tr><td><span class="cn-pill">150</span></td><td><span class="pe-pill">12</span></td><td><span class="age-pill">10–11 años</span></td><td>140–150 cm</td><td>31–36 kg</td></tr>
+          <tr><td><span class="cn-pill">160</span></td><td><span class="pe-pill">14</span></td><td><span class="age-pill">12–13 años</span></td><td>150–160 cm</td><td>36–41 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  BASE DE DATOS — idéntica a Guía de Tallas D'Zoe Perú
+// ═══════════════════════════════════════════════════════
+const TALLAS = [
+  // Bebés
+  { cn:'59',  pe:'0-3M',   ageLabel:'0–3 meses',   altMin:30,  altMax:60,  pesoMin:1,   pesoMax:5,   section:'Bebés',          tip:'Los bebés de 0-3 meses crecen muy rápido. Considera la talla 73 si ya tiene más de 1 mes para mayor duración.' },
+  { cn:'73',  pe:'3-6M',   ageLabel:'6–9 meses',   altMin:60,  altMax:73,  pesoMin:5,   pesoMax:9,   section:'Bebés',          tip:'Elige prendas con cierre en la entrepierna para facilitar el cambio de pañal.' },
+  { cn:'80',  pe:'6-12M',  ageLabel:'9–12 meses',  altMin:73,  altMax:80,  pesoMin:9,   pesoMax:11,  section:'Bebés',          tip:'A esta edad el bebé empieza a gatear. Prioriza prendas con rodillas reforzadas y telas elásticas.' },
+  // Niños pequeños
+  { cn:'90',  pe:'1',      ageLabel:'1–2 años',    altMin:80,  altMax:90,  pesoMin:11,  pesoMax:13,  section:'Niños pequeños', tip:'<strong>Regla de oro:</strong> si tu peque está entre dos tallas, elige siempre la talla superior para mayor comodidad y duración.' },
+  { cn:'100', pe:'2',      ageLabel:'2–3 años',    altMin:90,  altMax:100, pesoMin:13,  pesoMax:15,  section:'Niños pequeños', tip:'<strong>Te recomendamos talla 100.</strong> Es la más usada para niños de 2-3 años. Cintura elástica para más libertad de movimiento.' },
+  { cn:'110', pe:'4',      ageLabel:'3–4 años',    altMin:100, altMax:110, pesoMin:15,  pesoMax:18,  section:'Niños pequeños', tip:'Telas flexibles y cómodos elásticos son ideales para esta edad activa y exploradora.' },
+  { cn:'120', pe:'6',      ageLabel:'4–5 años',    altMin:110, altMax:120, pesoMin:18,  pesoMax:22,  section:'Niños pequeños', tip:'Si el niño/a es alto/a para su edad, prioriza la estatura. La talla 120 da espacio para crecer.' },
+  // Niñas y niños
+  { cn:'130', pe:'8',      ageLabel:'6–7 años',    altMin:120, altMax:130, pesoMin:22,  pesoMax:26,  section:'Niñas y niños',  tip:'A partir de los 6 años considera el complexo del niño/a. Si es de contextura grande, sube una talla.' },
+  { cn:'140', pe:'10',     ageLabel:'8–9 años',    altMin:130, altMax:140, pesoMin:26,  pesoMax:31,  section:'Niñas y niños',  tip:'A los 8-9 años el peso importa más. Si tu peque pesa más de 31 kg con 135 cm, considera talla 150.' },
+  { cn:'150', pe:'12',     ageLabel:'10–11 años',  altMin:140, altMax:150, pesoMin:31,  pesoMax:36,  section:'Niñas y niños',  tip:'Consulta el material de la prenda. Telas con elasticidad permiten mayor ajuste a distintas complexiones.' },
+  { cn:'160', pe:'14',     ageLabel:'12–13 años',  altMin:150, altMax:170, pesoMin:36,  pesoMax:55,  section:'Niñas y niños',  tip:'Para tallas 160+, escríbenos por WhatsApp con medidas exactas (busto, cintura, cadera) para prendas ajustadas.' },
+];
+
+// ═══════════════════════════════════════════════════════
+//  LÓGICA DEL PROBADOR
+// ═══════════════════════════════════════════════════════
+function calcularTalla() {
+  const edadInput  = parseFloat(document.getElementById('inputEdad').value);
+  const pesoInput  = parseFloat(document.getElementById('inputPeso').value);
+  const altInput   = parseFloat(document.getElementById('inputAltura').value);
+  const esBebe     = document.getElementById('esBebe').checked;
+  const errEl      = document.getElementById('errorMsg');
+  const errTxt     = document.getElementById('errorText');
+
+  // Validación
+  errEl.classList.remove('show');
+  if (isNaN(edadInput) || isNaN(pesoInput) || isNaN(altInput)) {
+    errTxt.textContent = 'Por favor completa todos los campos (edad, peso y estatura).';
+    errEl.classList.add('show'); return;
+  }
+  if (altInput < 30 || altInput > 170) {
+    errTxt.textContent = 'La estatura debe estar entre 30 y 170 cm.';
+    errEl.classList.add('show'); return;
+  }
+  if (pesoInput < 1 || pesoInput > 60) {
+    errTxt.textContent = 'El peso debe estar entre 1 y 60 kg.';
+    errEl.classList.add('show'); return;
+  }
+
+  // Algoritmo: la estatura es el factor primario, el peso es secundario
+  // Para cada talla calculamos un score de coincidencia
+  let best = null;
+  let bestScore = -Infinity;
+  let alturaRealCm = altInput;
+
+  // Si marcó bebé y edad está en meses, usarla como referencia adicional
+  // pero la altura sigue siendo primaria
+
+  TALLAS.forEach(t => {
+    let score = 0;
+
+    // Factor 1: Altura (peso 60%)
+    if (alturaRealCm >= t.altMin && alturaRealCm <= t.altMax) {
+      // Centrado en el rango → más puntos
+      const centro = (t.altMin + t.altMax) / 2;
+      const distancia = Math.abs(alturaRealCm - centro);
+      const rango = t.altMax - t.altMin;
+      score += 60 * (1 - distancia / (rango / 2 + 1));
+    } else {
+      // Fuera del rango → penalizar por distancia
+      const gap = alturaRealCm < t.altMin ? t.altMin - alturaRealCm : alturaRealCm - t.altMax;
+      score -= gap * 3;
+    }
+
+    // Factor 2: Peso (peso 30%)
+    if (pesoInput >= t.pesoMin && pesoInput <= t.pesoMax) {
+      score += 30;
+    } else {
+      const gap = pesoInput < t.pesoMin ? t.pesoMin - pesoInput : pesoInput - t.pesoMax;
+      score -= gap * 1.5;
+    }
+
+    // Factor 3: Edad en años (peso 10%)
+    // Si el checkbox bebé está marcado, la edad está en meses → convertir
+    let edadAnios = esBebe ? edadInput / 12 : edadInput;
+    const ageCentro = t.ageLabel.includes('meses') ? 0.5 : (() => {
+      // Extraer promedio de rango etario
+      const m = t.ageLabel.match(/(\d+)[–-](\d+)/);
+      if (m) return (parseFloat(m[1]) + parseFloat(m[2])) / 2;
+      return edadAnios;
+    })();
+    const ageDiff = Math.abs(edadAnios - ageCentro);
+    score += Math.max(0, 10 - ageDiff * 2);
+
+    if (score > bestScore) { bestScore = score; best = t; }
+  });
+
+  if (!best) {
+    errTxt.textContent = 'No pudimos encontrar una talla para esos datos. Consulta por WhatsApp.';
+    errEl.classList.add('show'); return;
+  }
+
+  // Determinar confianza
+  const altEnRango = altInput >= best.altMin && altInput <= best.altMax;
+  const pesoEnRango = pesoInput >= best.pesoMin && pesoInput <= best.pesoMax;
+  const alta = altEnRango && pesoEnRango;
+
+  // Aplicar "regla de oro": si la altura es del límite superior, sugerir talla superior
+  let tallaFinal = best;
+  const altPct = (altInput - best.altMin) / Math.max(1, best.altMax - best.altMin);
+  if (altPct > 0.8) {
+    const idx = TALLAS.indexOf(best);
+    if (idx < TALLAS.length - 1) {
+      tallaFinal = TALLAS[idx + 1];
+    }
+  }
+
+  mostrarResultado(tallaFinal, alta, altInput, pesoInput);
+}
+
+function mostrarResultado(t, alta, alt, peso) {
+  const icons = {'Bebés':'🍼','Niños pequeños':'👟','Niñas y niños':'🎒'};
+
+  document.getElementById('resultIcon').textContent = icons[t.section] || '👗';
+  document.getElementById('resultCN').textContent = `Talla ${t.cn}`;
+  document.getElementById('resultPE').textContent = t.pe;
+  document.getElementById('resultAge').textContent = t.ageLabel;
+  document.getElementById('statAltura').textContent = `${t.altMin}–${t.altMax} cm`;
+  document.getElementById('statPeso').textContent   = `${t.pesoMin}–${t.pesoMax} kg`;
+  document.getElementById('statSection').textContent = t.section;
+  document.getElementById('resultTip').innerHTML = t.tip;
+
+  const conf = document.getElementById('resultConf');
+  if (alta) {
+    conf.className = 'result-confidence conf-high';
+    conf.innerHTML = '<i class="fas fa-check-circle"></i> Coincidencia alta';
+  } else {
+    conf.className = 'result-confidence conf-med';
+    conf.innerHTML = '<i class="fas fa-info-circle"></i> Recomendación aproximada';
+  }
+
+  // WhatsApp con datos prellenados
+  const waMsg = `Hola D'Zoe Perú 🌸 usé el probador de tallas y me recomendó la *Talla ${t.cn}* (PE: ${t.pe}) para un niño/a de ${alt}cm y ${peso}kg. ¿Pueden ayudarme a elegir productos en esta talla? ✨`;
+  document.getElementById('resultWA').href = `https://wa.me/51956063145?text=${encodeURIComponent(waMsg)}`;
+
+  document.getElementById('resultPanel').classList.add('show');
+  document.getElementById('resultPanel').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+// ═══════════════════════════════════════════════════════
+//  TABS DE REFERENCIA
+// ═══════════════════════════════════════════════════════
+function showRefTab(name, btn) {
+  document.querySelectorAll('.ref-table-wrap').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.ref-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(`ref-${name}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Enter en inputs
+document.querySelectorAll('.field-input').forEach(inp => {
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') calcularTalla(); });
+});
+</script>
+
+</body>
+</html>

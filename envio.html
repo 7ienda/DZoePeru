@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Envíos y Entregas | D'Zoe Perú</title>
+<meta name="description" content="Envíos a todo el Perú con Shalom Courier. Rápido, seguro y desde una sola prenda. D'Zoe Perú.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* =============================================
+   D'ZOE PERÚ — ENVÍOS & ENTREGAS
+   Mismo sistema de diseño que index.html
+============================================= */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --rose:        #e8a4c0;
+  --rose-dark:   #d4809f;
+  --rose-light:  #f9dde9;
+  --rose-soft:   #fef0f5;
+  --mint:        #7ecfc8;
+  --mint-light:  #c8eeeb;
+  --mint-soft:   #e8f9f7;
+  --lavender:    #c3aee4;
+  --lav-light:   #ede4f9;
+  --peach:       #f5b97e;
+  --peach-light: #fde9d1;
+  --sky:         #8ec8f0;
+  --sky-light:   #d6edfa;
+  --cream:       #fee4f5;
+  --text:        #4a4460;
+  --text-soft:   #8a85a0;
+  --white:       #ffffff;
+  --border:      #ede8f5;
+  --shadow-sm:   0 2px 12px rgba(195,174,228,0.12);
+  --shadow-md:   0 8px 28px rgba(195,174,228,0.2);
+  --shadow-lg:   0 16px 40px rgba(195,174,228,0.28);
+  --trans:       .4s cubic-bezier(0.22,0.9,0.36,1);
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--rose-soft);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--rose),var(--lavender));border-radius:10px;}
+
+.container{width:1200px;max-width:95%;margin:auto;}
+
+/* =========== DARK MODE =========== */
+body.dark-mode{
+  --cream:    #1e1828;
+  --white:    #27213a;
+  --border:   #3a324f;
+  --text:     #ede8f5;
+  --text-soft:#a09ab8;
+  --rose-soft:#3a2535;
+  --lav-light:#2e2545;
+  --mint-soft:#1e302e;
+  --shadow-sm:0 2px 12px rgba(0,0,0,0.3);
+  --shadow-md:0 8px 28px rgba(0,0,0,0.4);
+  --shadow-lg:0 16px 40px rgba(0,0,0,0.5);
+}
+body.dark-mode .header{background:var(--white);}
+body.dark-mode .topbar{opacity:0.95;}
+body.dark-mode .footer{background:#150f22;}
+body.dark-mode .step-card,
+body.dark-mode .info-card,
+body.dark-mode .faq-item{background:var(--white);}
+body.dark-mode .hero-envio{background:linear-gradient(135deg,#2e1e3a 0%,#1a2535 50%,#1a2e2c 100%);}
+body.dark-mode .shalom-card{background:linear-gradient(135deg,#2b2040,#1e2a3a);}
+body.dark-mode .cta-band{background:linear-gradient(135deg,#2e1e3a,#1a2e2c);}
+
+/* =========== TOP BAR =========== */
+.topbar{
+  background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);
+  color:#fff;padding:9px 0;font-size:12.5px;font-weight:600;letter-spacing:0.3px;
+  overflow:hidden;position:relative;z-index:1001;
+}
+.topbar-container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.topbar-left i{margin-right:6px;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-right a{color:rgba(255,255,255,0.9);font-size:14px;transition:0.2s;text-decoration:none;}
+.topbar-right a:hover{color:#fff;transform:scale(1.15);}
+.topbar-right span{font-size:12px;border-left:1px solid rgba(255,255,255,0.4);padding-left:14px;}
+
+/* =========== HEADER =========== */
+.header{background:var(--white);position:sticky;top:0;z-index:1000;box-shadow:var(--shadow-sm);border-bottom:1px solid var(--border);transition:all var(--trans);}
+.header-wrapper{height:82px;display:flex;align-items:center;justify-content:space-between;}
+.header.scrolled{box-shadow:0 4px 24px rgba(195,174,228,0.2);}
+
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--shadow-sm);}
+.logo-text h1{font-family:'Baloo 2',cursive;color:var(--rose);font-size:30px;line-height:1;}
+.logo-text span{color:var(--text-soft);letter-spacing:3px;font-size:11px;}
+
+.menu{display:flex;gap:30px;}
+.menu a{text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:0.3s;position:relative;padding-bottom:3px;}
+.menu a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--rose);border-radius:2px;transition:0.3s;}
+.menu a:hover,.menu a.active-link{color:var(--rose);}
+.menu a:hover::after,.menu a.active-link::after{width:100%;}
+
+.header-icons{display:flex;align-items:center;gap:12px;}
+.header-icons button{border:none;background:transparent;cursor:pointer;transition:0.3s;display:flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;}
+
+.dark-mode-btn{background:transparent;border:2px solid var(--border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--text-soft);transition:0.3s;flex-shrink:0;}
+.dark-mode-btn:hover{background:var(--lav-light);border-color:var(--lavender);color:var(--text);}
+
+.cart-btn{background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));padding:8px 18px;border-radius:40px;border:2px solid var(--rose-light);transition:0.3s;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.cart-btn i{font-size:18px;color:var(--rose);}
+.cart-label-txt{font-size:9px;font-weight:700;color:var(--text-soft);letter-spacing:0.5px;text-transform:uppercase;display:block;}
+.cart-cta{font-size:13px;font-weight:800;color:var(--text);display:block;}
+.cart-btn:hover{background:linear-gradient(135deg,var(--rose-light),var(--lav-light));border-color:var(--rose);box-shadow:var(--shadow-md);}
+
+.hamburger-btn{display:none;background:transparent;border:2px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;font-size:16px;color:var(--text);transition:0.2s;}
+.hamburger-btn:hover{background:var(--rose-soft);border-color:var(--rose);}
+
+/* =========== BREADCRUMB =========== */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 0;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-soft);font-weight:600;}
+.breadcrumb a{color:var(--text-soft);text-decoration:none;transition:0.2s;}
+.breadcrumb a:hover{color:var(--rose);}
+.breadcrumb i{font-size:10px;color:var(--rose-dark);}
+
+/* =========== HERO ENVÍOS =========== */
+.hero-envio{
+  background:linear-gradient(135deg,#fce8f5 0%,#ede4fa 50%,#e0f6f3 100%);
+  padding:70px 0 60px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-envio::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(232,164,192,0.18) 0%,transparent 50%),
+    radial-gradient(circle at 90% 80%,rgba(126,207,200,0.18) 0%,transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(195,174,228,0.10) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-floating-dots{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.hero-floating-dots span{
+  position:absolute;border-radius:50%;
+  animation:floatDot 6s ease-in-out infinite;
+}
+.hero-floating-dots span:nth-child(1){width:12px;height:12px;background:var(--rose-light);top:15%;left:8%;animation-delay:0s;}
+.hero-floating-dots span:nth-child(2){width:8px;height:8px;background:var(--mint-light);top:70%;left:5%;animation-delay:1.5s;}
+.hero-floating-dots span:nth-child(3){width:16px;height:16px;background:var(--lav-light);top:30%;right:10%;animation-delay:0.8s;}
+.hero-floating-dots span:nth-child(4){width:10px;height:10px;background:var(--peach-light);top:75%;right:8%;animation-delay:2.2s;}
+.hero-floating-dots span:nth-child(5){width:6px;height:6px;background:var(--sky-light);top:50%;left:50%;animation-delay:3s;}
+@keyframes floatDot{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.2);}}
+
+.hero-envio-inner{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:60px;
+}
+.hero-envio-text{flex:1;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  color:white;padding:6px 18px;border-radius:40px;
+  font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:20px;box-shadow:var(--shadow-sm);
+}
+.hero-envio-text h2{
+  font-family:'Baloo 2',cursive;
+  font-size:52px;font-weight:800;line-height:1.1;
+  color:var(--text);margin-bottom:16px;
+}
+.hero-envio-text h2 span{
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-envio-text p{
+  font-size:16px;color:var(--text-soft);line-height:1.7;
+  max-width:480px;margin-bottom:32px;
+}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;}
+.hero-pill{
+  display:flex;align-items:center;gap:7px;
+  background:var(--white);border:1.5px solid var(--border);
+  padding:8px 16px;border-radius:40px;
+  font-size:13px;font-weight:700;color:var(--text);
+  box-shadow:var(--shadow-sm);
+}
+.hero-pill i{color:var(--rose);font-size:14px;}
+.hero-pill.pill-mint i{color:var(--mint);}
+.hero-pill.pill-lav i{color:var(--lavender);}
+
+.hero-cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+  color:white;padding:14px 28px;border-radius:40px;
+  font-size:14px;font-weight:800;text-decoration:none;
+  transition:all 0.3s;box-shadow:0 6px 20px rgba(232,164,192,0.5);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,164,192,0.6);}
+.btn-ghost{
+  color:var(--text-soft);font-size:13px;font-weight:700;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;transition:0.2s;
+}
+.btn-ghost:hover{color:var(--rose);}
+
+.hero-envio-visual{flex-shrink:0;width:340px;}
+.truck-card{
+  background:var(--white);border-radius:28px;padding:36px 28px;
+  box-shadow:var(--shadow-lg);border:2px solid var(--border);
+  text-align:center;position:relative;overflow:hidden;
+}
+.truck-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,164,192,0.05),rgba(195,174,228,0.05));
+  pointer-events:none;
+}
+.truck-emoji-big{font-size:72px;display:block;margin-bottom:10px;animation:truckBounce 2s ease-in-out infinite;}
+@keyframes truckBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.truck-brand{
+  display:inline-block;
+  background:linear-gradient(135deg,#e097b4,#e097b4);
+  color:white;padding:8px 24px;border-radius:40px;
+  font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;
+  margin-bottom:14px;letter-spacing:1px;
+  box-shadow:0 4px 16px rgba(26,58,110,0.25);
+}
+.truck-card p{font-size:13px;color:var(--text-soft);line-height:1.6;margin-bottom:18px;}
+.truck-stats{display:flex;gap:12px;justify-content:center;}
+.tstat{
+  background:var(--rose-soft);border:1.5px solid var(--rose-light);
+  border-radius:14px;padding:10px 14px;text-align:center;flex:1;
+}
+.tstat-num{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);display:block;line-height:1;}
+.tstat-label{font-size:10px;color:var(--text-soft);font-weight:700;letter-spacing:0.5px;}
+.tstat.mint{background:var(--mint-soft);border-color:var(--mint-light);}
+.tstat.mint .tstat-num{color:var(--mint);}
+
+/* =========== SECTION TITLE =========== */
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+.section-title h3{font-family:'Baloo 2',cursive;font-size:34px;color:var(--text);position:relative;}
+.section-title h3::after{content:'';display:block;width:50px;height:3px;background:linear-gradient(90deg,var(--rose),var(--lavender));border-radius:3px;margin-top:2px;}
+.section-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-soft);margin-bottom:8px;display:block;}
+
+/* =========== CÓMO FUNCIONA — PASOS =========== */
+.como-funciona{padding:60px 0;background:var(--white);}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative;}
+.steps-grid::before{
+  content:'';
+  position:absolute;top:40px;left:10%;right:10%;
+  height:2px;
+  background:linear-gradient(90deg,var(--rose-light),var(--lavender),var(--mint-light));
+  border-radius:2px;z-index:0;
+}
+.step-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:20px;padding:28px 20px;text-align:center;
+  box-shadow:var(--shadow-sm);transition:all 0.3s;
+  position:relative;z-index:1;
+}
+.step-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--rose-light);}
+.step-number{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  color:white;font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;box-shadow:0 4px 16px rgba(232,164,192,0.4);
+  position:relative;z-index:2;
+}
+.step-card:nth-child(2) .step-number{background:linear-gradient(135deg,var(--lavender),var(--sky));}
+.step-card:nth-child(3) .step-number{background:linear-gradient(135deg,var(--mint),#4ab8af);}
+.step-card:nth-child(4) .step-number{background:linear-gradient(135deg,var(--peach),#e8965a);}
+.step-icon{font-size:32px;margin-bottom:12px;display:block;}
+.step-card h4{font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.step-card p{font-size:12.5px;color:var(--text-soft);line-height:1.6;}
+
+/* =========== INFO CARDS =========== */
+.info-section{padding:60px 0;}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.info-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:20px;padding:28px 24px;
+  box-shadow:var(--shadow-sm);transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.info-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--rose),var(--lavender));
+  opacity:0;transition:0.3s;
+}
+.info-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--rose-light);}
+.info-card:hover::after{opacity:1;}
+.info-card.mint::after{background:linear-gradient(90deg,var(--mint),var(--sky));}
+.info-card.lav::after{background:linear-gradient(90deg,var(--lavender),var(--rose));}
+.info-card.peach::after{background:linear-gradient(90deg,var(--peach),var(--rose));}
+.info-icon{
+  width:52px;height:52px;border-radius:16px;
+  background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+}
+.info-card.mint .info-icon{background:linear-gradient(135deg,var(--mint-soft),var(--sky-light));}
+.info-card.lav .info-icon{background:linear-gradient(135deg,var(--lav-light),var(--rose-soft));}
+.info-card.peach .info-icon{background:linear-gradient(135deg,var(--peach-light),#fff5e0);}
+.info-card h4{font-family:'Baloo 2',cursive;font-size:19px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.info-card p{font-size:13px;color:var(--text-soft);line-height:1.7;}
+.info-tag{
+  display:inline-block;margin-top:14px;
+  background:var(--rose-soft);color:var(--rose-dark);
+  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:0.5px;
+}
+.info-card.mint .info-tag{background:var(--mint-soft);color:#2a9e97;}
+.info-card.lav .info-tag{background:var(--lav-light);color:#7a55b8;}
+.info-card.peach .info-tag{background:var(--peach-light);color:#c47830;}
+
+/* =========== SHALOM HIGHLIGHT =========== */
+.shalom-section{padding:60px 0;background:var(--white);}
+.shalom-card{
+  background:linear-gradient(135deg,#f0eafc 0%,#e8f6f5 100%);
+  border:2px solid rgba(195,174,228,0.3);
+  border-radius:28px;padding:50px 48px;
+  display:flex;align-items:center;gap:50px;
+  box-shadow:var(--shadow-md);position:relative;overflow:hidden;
+}
+.shalom-card::before{
+  content:'';position:absolute;
+  top:-60px;right:-60px;width:240px;height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(195,174,228,0.15),transparent 70%);
+  pointer-events:none;
+}
+.shalom-card::after{
+  content:'';position:absolute;
+  bottom:-40px;left:-40px;width:160px;height:160px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(126,207,200,0.15),transparent 70%);
+  pointer-events:none;
+}
+.shalom-logo-wrap{flex-shrink:0;text-align:center;position:relative;z-index:2;}
+.shalom-logo-box{
+  width:130px;height:130px;border-radius:28px;
+  background:linear-gradient(135deg,#e097b4,#e097b4);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 28px rgba(26,58,110,0.3);
+  margin-bottom:12px;
+}
+.shalom-logo-box span{
+  font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;
+  color:white;letter-spacing:1px;
+}
+.shalom-logo-sub{font-size:11px;font-weight:800;color:var(--text-soft);letter-spacing:2px;text-transform:uppercase;}
+.shalom-info{flex:1;position:relative;z-index:2;}
+.shalom-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  color:white;padding:5px 14px;border-radius:30px;
+  font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:14px;box-shadow:var(--shadow-sm);
+}
+.shalom-info h3{
+  font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;
+  color:var(--text);margin-bottom:10px;
+}
+.shalom-info p{font-size:14px;color:var(--text-soft);line-height:1.7;margin-bottom:20px;}
+.shalom-perks{display:flex;flex-wrap:wrap;gap:10px;}
+.shalom-perk{
+  display:flex;align-items:center;gap:7px;
+  background:var(--white);border:1.5px solid var(--border);
+  padding:8px 14px;border-radius:30px;
+  font-size:12.5px;font-weight:700;color:var(--text);
+  box-shadow:var(--shadow-sm);
+}
+.shalom-perk i{color:var(--rose);font-size:13px;}
+.shalom-perk.m i{color:var(--mint);}
+.shalom-perk.l i{color:var(--lavender);}
+
+/* =========== BOLSITA / PEDIDO =========== */
+.pedido-section{padding:60px 0;background:#fdf8fc;}
+.pedido-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.pedido-card{
+  border-radius:24px;padding:36px;
+  position:relative;overflow:hidden;
+}
+.pedido-card.wpp{
+  background:linear-gradient(135deg,#e8f9ee,#d4f5df);
+  border:2px solid #a8e6bc;
+}
+.pedido-card.web{
+  background:linear-gradient(135deg,var(--lav-light),var(--rose-soft));
+  border:2px solid var(--rose-light);
+}
+.pedido-card-icon{font-size:48px;margin-bottom:16px;display:block;animation:iconPop 3s ease-in-out infinite;}
+@keyframes iconPop{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.pedido-card h4{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;}
+.pedido-card p{font-size:13.5px;color:var(--text-soft);line-height:1.7;margin-bottom:20px;}
+.pedido-btn-wpp{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#25D366;color:white;
+  padding:12px 24px;border-radius:30px;
+  font-size:13px;font-weight:800;text-decoration:none;
+  transition:all 0.3s;box-shadow:0 4px 16px rgba(37,211,102,0.4);
+}
+.pedido-btn-wpp:hover{background:#1db954;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.5);}
+.pedido-btn-web{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:white;
+  padding:12px 24px;border-radius:30px;
+  font-size:13px;font-weight:800;text-decoration:none;
+  transition:all 0.3s;box-shadow:0 4px 16px rgba(232,164,192,0.5);
+}
+.pedido-btn-web:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,164,192,0.65);}
+
+/* =========== FAQ =========== */
+.faq-section{padding:60px 0;background:var(--white);}
+.faq-list{display:flex;flex-direction:column;gap:12px;max-width:780px;margin:auto;}
+.faq-item{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:border-color 0.2s;
+}
+.faq-item.open{border-color:var(--rose-light);}
+.faq-question{
+  width:100%;background:transparent;border:none;
+  padding:20px 24px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
+  color:var(--text);text-align:left;transition:0.2s;
+}
+.faq-question:hover{color:var(--rose);}
+.faq-question i{color:var(--rose);font-size:12px;transition:transform 0.3s;flex-shrink:0;}
+.faq-item.open .faq-question i{transform:rotate(180deg);}
+.faq-answer{
+  max-height:0;overflow:hidden;transition:max-height 0.35s ease;
+  padding:0 24px;font-size:13.5px;color:var(--text-soft);line-height:1.7;
+}
+.faq-item.open .faq-answer{max-height:200px;padding:0 24px 20px;}
+
+/* =========== CTA BAND =========== */
+.cta-band{
+  background:linear-gradient(135deg,#fce8f5 0%,#ede4fa 50%,#e0f6f3 100%);
+  padding:60px 0;text-align:center;position:relative;overflow:hidden;
+}
+.cta-band::before{
+  content:'🚚';font-size:200px;opacity:0.04;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;line-height:1;
+}
+.cta-band h3{
+  font-family:'Baloo 2',cursive;font-size:40px;font-weight:800;
+  color:var(--text);margin-bottom:12px;
+}
+.cta-band h3 span{
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-band p{font-size:15px;color:var(--text-soft);margin-bottom:28px;}
+.cta-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+/* =========== FOOTER =========== */
+.footer{background:var(--white);padding:50px 0 24px;border-top:2px solid var(--border);}
+.footer-main{display:grid;grid-template-columns:2fr 1fr 1.5fr;gap:40px;margin-bottom:32px;}
+.footer-brand{font-family:'Baloo 2',cursive;font-size:28px;color:var(--rose);margin-bottom:10px;}
+.footer-description{font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:16px;}
+.footer-claims{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text-soft);margin-bottom:16px;cursor:pointer;}
+.footer-claims:hover{color:var(--rose);}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:38px;height:38px;border-radius:50%;background:var(--rose-soft);border:1.5px solid var(--rose-light);display:flex;align-items:center;justify-content:center;color:var(--rose);font-size:15px;text-decoration:none;transition:0.2s;}
+.social-btn:hover{background:var(--rose);color:white;transform:scale(1.1);}
+.footer-menu h4,.footer-contact h4{font-family:'Baloo 2',cursive;font-size:17px;color:var(--text);margin-bottom:14px;}
+.footer-menu ul,.footer-contact ul{list-style:none;}
+.footer-menu ul li{margin-bottom:8px;}
+.footer-menu ul li a{color:var(--text-soft);text-decoration:none;font-size:13px;transition:0.2s;}
+.footer-menu ul li a:hover{color:var(--rose);}
+.footer-contact ul li{font-size:12.5px;color:var(--text-soft);margin-bottom:8px;display:flex;align-items:flex-start;gap:8px;}
+.footer-contact ul li i{color:var(--rose);margin-top:2px;width:14px;flex-shrink:0;}
+.footer-copyright{text-align:center;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text-soft);}
+
+/* =========== SCROLL TO TOP =========== */
+.scroll-top{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  color:white;border:none;cursor:pointer;font-size:16px;
+  box-shadow:var(--shadow-md);
+  opacity:0;transform:translateY(20px);transition:all 0.3s;
+  display:flex;align-items:center;justify-content:center;
+}
+.scroll-top.visible{opacity:1;transform:translateY(0);}
+.scroll-top:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+
+/* =========== NOTIF =========== */
+.notif{
+  position:fixed;bottom:80px;right:24px;z-index:9999;
+  background:var(--text);color:white;
+  padding:12px 20px;border-radius:12px;
+  font-size:13px;font-weight:700;
+  box-shadow:var(--shadow-lg);
+  animation:notifIn 0.3s ease;
+}
+@keyframes notifIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+
+/* =========== RESPONSIVE =========== */
+@media(max-width:1024px){
+  .steps-grid{grid-template-columns:repeat(2,1fr);}
+  .steps-grid::before{display:none;}
+  .info-grid{grid-template-columns:repeat(2,1fr);}
+  .shalom-card{flex-direction:column;text-align:center;padding:36px 24px;}
+  .shalom-perks{justify-content:center;}
+}
+@media(max-width:768px){
+  .menu{display:none;position:absolute;top:82px;left:0;right:0;background:var(--white);flex-direction:column;padding:20px;gap:16px;border-bottom:2px solid var(--border);box-shadow:var(--shadow-md);z-index:999;}
+  .menu.open{display:flex;}
+  .hamburger-btn{display:block;}
+  .hero-envio-inner{flex-direction:column;gap:32px;}
+  .hero-envio-visual{width:100%;max-width:340px;margin:auto;}
+  .hero-envio-text h2{font-size:36px;}
+  .steps-grid{grid-template-columns:1fr;}
+  .info-grid{grid-template-columns:1fr;}
+  .pedido-grid{grid-template-columns:1fr;}
+  .footer-main{grid-template-columns:1fr;}
+  .cta-band h3{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container topbar-container">
+    <div class="topbar-left">
+      <i class="fas fa-truck"></i> Enviamos a todo el Perú con Shalom Courier 🚚
+    </div>
+    <div class="topbar-right">
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      <span>+51 956 063 145</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="main-header">
+  <div class="container header-wrapper">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌸</div>
+      <div class="logo-text">
+        <h1>D'Zoe</h1>
+        <span>PERÚ</span>
+      </div>
+    </a>
+
+    <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+
+    <nav class="menu" id="mainMenu">
+      <a href="index.html">Tienda</a>
+      <a href="#">Colecciones</a>
+      <a href="#">Vestidos</a>
+      <a href="#">Abrigos</a>
+      <a href="#">Baby Shower</a>
+      <a href="envio.html" class="active-link">Envíos</a>
+    </nav>
+
+    <div class="header-icons">
+      <button class="dark-mode-btn" id="darkModeBtn" title="Modo oscuro"><i class="fas fa-moon"></i></button>
+      <a href="https://wa.me/51956063145?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20D'Zoe%20Per%C3%BA%20🌸" target="_blank" class="cart-btn">
+        <i class="fab fa-whatsapp"></i>
+        <div>
+          <span class="cart-label-txt">HACER PEDIDO</span>
+          <span class="cart-cta">WhatsApp →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Envíos y Entregas</span>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero-envio">
+  <div class="hero-floating-dots">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container">
+    <div class="hero-envio-inner">
+      <div class="hero-envio-text">
+        <div class="hero-eyebrow"><i class="fas fa-truck"></i> Envíos a todo el Perú</div>
+        <h2>Tu pedido llega<br><span>a donde estés</span> 🚚</h2>
+        <p>Desde Tumbes hasta Tacna, hacemos envíos a cualquier rincón del Perú. Desde una sola prenda, rápido y seguro con nuestro aliado <strong>Shalom Courier</strong>.</p>
+        <div class="hero-pills">
+          <div class="hero-pill"><i class="fas fa-box-open"></i> Desde 1 prenda</div>
+          <div class="hero-pill pill-mint"><i class="fas fa-map-marked-alt"></i> Todo el Perú</div>
+          <div class="hero-pill pill-lav"><i class="fas fa-shield-alt"></i> Envío seguro</div>
+          <div class="hero-pill"><i class="fab fa-whatsapp" style="color:#25D366"></i> Pedido por WhatsApp</div>
+        </div>
+        <div class="hero-cta-row">
+          <a href="https://wa.me/51956063145?text=Hola!%20Quiero%20hacer%20mi%20pedido%20🌸" target="_blank" class="btn-primary">
+            <i class="fab fa-whatsapp"></i> Hacer mi pedido
+          </a>
+          <a href="#como-funciona" class="btn-ghost">Ver cómo funciona <i class="fas fa-arrow-down"></i></a>
+        </div>
+      </div>
+
+      <div class="hero-envio-visual">
+        <div class="truck-card">
+          <span class="truck-emoji-big">🚚</span>
+          <div class="truck-brand">SHALOM</div>
+          <p>Courier de confianza para llevar los mejores outfits infantiles a tu puerta</p>
+          <div class="truck-stats">
+            <div class="tstat">
+              <span class="tstat-num">24</span>
+              <span class="tstat-label">DEPTS.</span>
+            </div>
+            <div class="tstat">
+              <span class="tstat-num">+195</span>
+              <span class="tstat-label">DISTRITOS</span>
+            </div>
+            <div class="tstat mint">
+              <span class="tstat-num">🌸</span>
+              <span class="tstat-label">SEGURO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="como-funciona" id="como-funciona">
+  <div class="container">
+    <div class="section-title">
+      <div>
+        <span class="section-label">Proceso de envío</span>
+        <h3>¿Cómo funciona? 🌟</h3>
+      </div>
+    </div>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <span class="step-icon">🛍️</span>
+        <h4>Elige tus prendas</h4>
+        <p>Navega nuestra tienda y elige desde una sola prenda. No hay mínimo de compra para hacer tu pedido.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <span class="step-icon">💬</span>
+        <h4>Avísanos por WhatsApp o Web</h4>
+        <p>Puedes abrir tu bolsita de pedido desde WhatsApp (+51 956 063 145) o directamente en nuestra web.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <span class="step-icon">📦</span>
+        <h4>Preparamos tu paquete</h4>
+        <p>Al día siguiente de que nos confirmes el envío, preparamos y despachamos tu pedido con Shalom Courier.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <span class="step-icon">🎉</span>
+        <h4>¡Tu pedido llega!</h4>
+        <p>Recibe en la agencia Shalom más cercana o a domicilio según la cobertura disponible en tu ciudad.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INFO CARDS -->
+<section class="info-section">
+  <div class="container">
+    <div class="section-title">
+      <div>
+        <span class="section-label">Todo lo que necesitas saber</span>
+        <h3>Detalles del envío 📋</h3>
+      </div>
+    </div>
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-icon">📦</div>
+        <h4>Desde una sola prenda</h4>
+        <p>No tienes que esperar a completar un monto mínimo. Si eliges un solo vestidito o un solo abrigo, lo enviamos igual. Porque cada prenda merece llegar a su dueñita.</p>
+        <span class="info-tag">Sin mínimo de compra</span>
+      </div>
+
+      <div class="info-card mint">
+        <div class="info-icon">🗺️</div>
+        <h4>Envíos a todo el Perú</h4>
+        <p>Llegamos a las 24 regiones del Perú gracias a la cobertura de Shalom Courier. Lima, Arequipa, Cusco, Huancayo, Trujillo, Piura y mucho más.</p>
+        <span class="info-tag">24 departamentos</span>
+      </div>
+
+      <div class="info-card lav">
+        <div class="info-icon">⏰</div>
+        <h4>Despacho al día siguiente</h4>
+        <p>Una vez que nos confirmes que podemos enviar, al día siguiente preparamos y entregamos tu paquete a Shalom. Así de rápido y sin demoras.</p>
+        <span class="info-tag">Despacho en 24h</span>
+      </div>
+
+      <div class="info-card peach">
+        <div class="info-icon">💬</div>
+        <h4>Pedido por WhatsApp</h4>
+        <p>Puedes abrir tu bolsita de pedido directamente desde nuestro WhatsApp. Solo escríbenos, dinos qué quieres y te indicamos el costo de envío a tu zona.</p>
+        <span class="info-tag">Súper fácil</span>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🌐</div>
+        <h4>Pedido desde la Web</h4>
+        <p>También puedes armar tu carrito desde nuestra tienda en línea, finalizar la compra y en automático te generamos el resumen para coordinar el envío.</p>
+        <span class="info-tag">Tienda online 24/7</span>
+      </div>
+
+      <div class="info-card mint">
+        <div class="info-icon">🛡️</div>
+        <h4>Envío seguro y rastreable</h4>
+        <p>Con Shalom recibirás un código de seguimiento para saber exactamente dónde está tu pedido en todo momento hasta que llegue a tus manos.</p>
+        <span class="info-tag">Tracking incluido</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SHALOM HIGHLIGHT -->
+<section class="shalom-section">
+  <div class="container">
+    <div class="shalom-card">
+      <div class="shalom-logo-wrap">
+        <div class="shalom-logo-box">
+          <span>SHALOM</span>
+        </div>
+        <div class="shalom-logo-sub">Nuestro Courier</div>
+      </div>
+      <div class="shalom-info">
+        <div class="shalom-badge"><i class="fas fa-star"></i> Aliado de confianza</div>
+        <h3>Enviamos con Shalom Courier</h3>
+        <p>Shalom es una de las empresas de transporte de encomiendas más grandes del Perú, con cobertura nacional y sistema de rastreo en tiempo real. Elegimos Shalom porque queremos que la ropita de tus pequeños llegue en perfectas condiciones y a tiempo.</p>
+        <div class="shalom-perks">
+          <div class="shalom-perk"><i class="fas fa-map-marker-alt"></i> Cobertura nacional</div>
+          <div class="shalom-perk m"><i class="fas fa-search-location"></i> Tracking en tiempo real</div>
+          <div class="shalom-perk l"><i class="fas fa-box"></i> Empaque seguro</div>
+          <div class="shalom-perk"><i class="fas fa-clock"></i> Entrega rápida</div>
+          <div class="shalom-perk m"><i class="fas fa-shield-alt"></i> Respaldo garantizado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO PEDIR -->
+<section class="info-section" style="background:#fdf8fc;padding:60px 0;">
+  <div class="container">
+    <div class="section-title">
+      <div>
+        <span class="section-label">Dos canales de pedido</span>
+        <h3>Abre tu bolsita 🛍️</h3>
+      </div>
+    </div>
+    <div class="pedido-grid">
+
+      <div class="pedido-card wpp">
+        <span class="pedido-card-icon">💬</span>
+        <h4>Pedido por WhatsApp</h4>
+        <p>La forma más rápida y directa. Escríbenos, dinos qué prendas quieres, tu ciudad y te cotizamos el envío al instante. Puedes ver fotos, consultar tallas y armar tu pedido en una sola conversación.</p>
+        <a href="https://wa.me/51956063145?text=Hola!%20Quiero%20abrir%20mi%20bolsita%20de%20pedido%20en%20D'Zoe%20Per%C3%BA%20🛍️" target="_blank" rel="noopener" class="pedido-btn-wpp">
+          <i class="fab fa-whatsapp"></i> Abrir bolsita por WhatsApp
+        </a>
+      </div>
+
+      <div class="pedido-card web">
+        <span class="pedido-card-icon">🌸</span>
+        <h4>Pedido desde la Web</h4>
+        <p>Navega nuestra tienda, agrega las prendas que más te gusten al carrito y finaliza tu compra en línea. Al terminar, nos llega tu pedido y coordinamos el envío a tu dirección.</p>
+        <a href="index.html#productos" class="pedido-btn-web">
+          <i class="fas fa-shopping-bag"></i> Ir a la tienda online
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-title" style="justify-content:center;text-align:center;flex-direction:column;gap:4px;margin-bottom:36px;">
+      <span class="section-label" style="display:block;text-align:center;">Preguntas frecuentes</span>
+      <h3 style="margin:auto;">¿Tienes dudas? 💕</h3>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Pueden enviar solo una prenda?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          ¡Claro que sí! No tienes que comprar una cantidad mínima. Si quieres solo un vestidito o una sola polera, lo enviamos sin problema. El costo de envío varía según tu ciudad.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Cuándo despachan mi pedido?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          Despachamos al día siguiente de que nos confirmes que podemos enviar. Por ejemplo, si nos dices el lunes que ya podemos enviar, el martes ya está en camino con Shalom.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿A qué ciudades del Perú envían?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          Enviamos a todo el Perú gracias a la cobertura de Shalom Courier: Lima, Arequipa, Cusco, Trujillo, Piura, Huancayo, Ica, Tacna, Cajamarca, Puno, Chiclayo, Ayacucho y muchas ciudades más. Consúltanos por tu ciudad exacta.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Cómo puedo saber el costo de envío?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          El costo depende de tu ciudad y el peso del paquete. Escríbenos por WhatsApp indicando tu ciudad y lo que quieres pedir, y te cotizamos al instante sin compromiso.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Puedo rastrear mi paquete?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          Sí. Una vez despachado, te enviamos el código de seguimiento de Shalom para que puedas monitorear el estado de tu entrega en tiempo real desde la web de Shalom.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Puedo hacer pedido desde WhatsApp aunque sea lejos de Lima?
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          Por supuesto. Atendemos clientes de todo el Perú por WhatsApp. No importa si estás en Iquitos, Puno o Tumbes — te ayudamos, coordinamos el envío y llegamos hasta ti. 🌸
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <h3>¿Lista para hacer<br><span>tu pedido?</span> 🌸</h3>
+    <p>Escríbenos ahora y recibe la ropita más bonita del Perú en tu puerta</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/51956063145?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20D'Zoe%20Per%C3%BA%20🌸" target="_blank" rel="noopener" class="btn-primary" style="background:linear-gradient(135deg,#25D366,#1db954);box-shadow:0 6px 20px rgba(37,211,102,0.45);">
+        <i class="fab fa-whatsapp"></i> Escribir por WhatsApp
+      </a>
+      <a href="index.html#productos" class="btn-primary">
+        <i class="fas fa-shopping-bag"></i> Ver tienda online
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-info">
+        <h2 class="footer-brand">D'Zoe Perú 🌸</h2>
+        <p class="footer-description">
+          Somos una empresa peruana con más de 5 años de experiencia, ofrecemos productos para todas las edades desde Recién Nacido hasta los 14 años. Trabajamos continuamente para brindarte lo mejor.
+        </p>
+        <div class="footer-claims">
+          <i class="fas fa-book-open"></i>
+          <span>LIBRO DE RECLAMACIONES</span>
+        </div>
+        <div class="footer-social">
+          <a class="social-btn" href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+          <a class="social-btn" href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-menu">
+        <h4>Menú</h4>
+        <ul>
+          <li><a href="#">Cambios y Devoluciones</a></li>
+          <li><a href="#">Políticas Comerciales</a></li>
+          <li><a href="envio.html">Política de Envíos</a></li>
+          <li><a href="#">Políticas de Privacidad</a></li>
+          <li><a href="#">Ofertas</a></li>
+          <li><a href="#">Nuestras Tiendas</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contáctenos</h4>
+        <ul>
+          <li><i class="fab fa-whatsapp"></i> WhatsApp: +51 956 063 145</li>
+          <li><i class="fas fa-envelope"></i> ventas@dzoeperu.com</li>
+          <li><i class="fas fa-map-marker-alt"></i> Av. Isabel la Católica N°1610 - La Victoria, Lima</li>
+          <li><i class="fas fa-store"></i> Pasaje Gamarra N°173 - La Victoria, Lima</li>
+          <li><i class="fas fa-building"></i> Av. Conquistadores 710 - San Isidro, Lima</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <p>© 2026 D'Zoe Perú — Todos los derechos reservados &nbsp;|&nbsp; Moda Infantil Importada de Calidad</p>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTopBtn"><i class="fas fa-chevron-up"></i></button>
+
+<script>
+/* ======= DARK MODE ======= */
+const darkBtn = document.getElementById('darkModeBtn');
+if(localStorage.getItem('dzoeDark')==='1'){
+  document.body.classList.add('dark-mode');
+  darkBtn.querySelector('i').className='fas fa-sun';
+}
+darkBtn?.addEventListener('click',()=>{
+  document.body.classList.toggle('dark-mode');
+  const on=document.body.classList.contains('dark-mode');
+  localStorage.setItem('dzoeDark',on?'1':'0');
+  darkBtn.querySelector('i').className=on?'fas fa-sun':'fas fa-moon';
+});
+
+/* ======= HAMBURGER ======= */
+const hamburgerBtn=document.getElementById('hamburgerBtn');
+const mainMenu=document.getElementById('mainMenu');
+hamburgerBtn?.addEventListener('click',()=>{
+  mainMenu.classList.toggle('open');
+  hamburgerBtn.querySelector('i').className=mainMenu.classList.contains('open')?'fas fa-times':'fas fa-bars';
+});
+
+/* ======= SCROLL TOP ======= */
+const scrollTopBtn=document.getElementById('scrollTopBtn');
+window.addEventListener('scroll',()=>{
+  scrollTopBtn?.classList.toggle('visible',window.scrollY>300);
+  document.getElementById('main-header')?.classList.toggle('scrolled',window.scrollY>10);
+});
+scrollTopBtn?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ======= FAQ ======= */
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+/* ======= SCROLL REVEAL ======= */
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.step-card,.info-card,.pedido-card,.shalom-card').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(30px)';
+  el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

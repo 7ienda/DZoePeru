@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | D'Zoe Perú - Finalizar compra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* =============================================
+   D'ZOE CHECKOUT — PASTEL EDITION (matches index)
+============================================= */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root {
+  --rose:        #e8a4c0;
+  --rose-dark:   #d4809f;
+  --rose-light:  #f9dde9;
+  --rose-soft:   #fef0f5;
+  --mint:        #7ecfc8;
+  --mint-light:  #c8eeeb;
+  --mint-soft:   #e8f9f7;
+  --lavender:    #c3aee4;
+  --lav-light:   #ede4f9;
+  --peach:       #f5b97e;
+  --peach-light: #fde9d1;
+  --sky:         #8ec8f0;
+  --sky-light:   #d6edfa;
+  --cream:       #fee4f5;
+  --text:        #4a4460;
+  --text-soft:   #8a85a0;
+  --white:       #ffffff;
+  --border:      #ede8f5;
+  --green:       #5bbd8a;
+  --green-bg:    #e8f7f0;
+  --amber:       #f5b97e;
+  --amber-bg:    #fde9d1;
+  --shadow-sm:   0 2px 12px rgba(195,174,228,0.12);
+  --shadow-md:   0 8px 28px rgba(195,174,228,0.2);
+  --shadow-lg:   0 16px 40px rgba(195,174,228,0.28);
+  --radius:      20px;
+  --radius-sm:   14px;
+  --trans:       .4s cubic-bezier(0.22,0.9,0.36,1);
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-200px;right:-200px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(195,174,228,0.18) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-150px;left:-150px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(126,207,200,0.15) 0%,transparent 70%);pointer-events:none;z-index:0;}
+img{display:block;max-width:100%;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--rose-soft);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--rose),var(--lavender));border-radius:10px;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);color:#fff;padding:9px 5%;font-size:12.5px;font-weight:600;letter-spacing:0.3px;display:flex;justify-content:center;align-items:center;gap:8px;position:relative;z-index:101;}
+.topbar i{margin-right:4px;}
+
+/* HEADER */
+.checkout-header{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:80px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--shadow-sm);}
+.logo-text h1{font-family:'Baloo 2',cursive;color:var(--rose);font-size:28px;line-height:1;}
+.logo-text span{color:var(--text-soft);letter-spacing:3px;font-size:10px;display:block;}
+.back-link{font-size:13px;font-weight:600;color:var(--text-soft);text-decoration:none;display:flex;align-items:center;gap:7px;padding:8px 16px;border:2px solid var(--border);border-radius:30px;transition:all var(--trans);}
+.back-link:hover{color:var(--rose);border-color:var(--rose-light);background:var(--rose-soft);}
+
+/* STEPS BAR */
+.steps-bar{background:var(--white);border-bottom:1px solid var(--border);display:flex;justify-content:center;padding:0;position:relative;z-index:99;}
+.step{padding:16px 40px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--text-soft);border-bottom:3px solid transparent;transition:all var(--trans);letter-spacing:0.02em;}
+.step.active{color:var(--rose-dark);border-bottom-color:var(--rose);}
+.step.done{color:var(--green);border-bottom-color:var(--green);}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;transition:all var(--trans);}
+.step.active .step-num{background:linear-gradient(135deg,var(--rose),var(--lavender));color:var(--white);box-shadow:0 4px 12px rgba(232,164,192,0.4);}
+.step.done .step-num{background:var(--green);color:var(--white);}
+
+/* LAYOUT */
+.checkout-layout{display:grid;grid-template-columns:1fr 400px;gap:32px;max-width:1280px;margin:40px auto;padding:0 24px 80px;position:relative;z-index:1;}
+
+/* PANEL */
+.panel{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px;border:1px solid var(--border);transition:box-shadow var(--trans);}
+.panel:hover{box-shadow:var(--shadow-md);}
+.panel-head{padding:24px 28px 0;display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.panel-head h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:700;color:var(--text);}
+.panel-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--rose-dark);box-shadow:var(--shadow-sm);flex-shrink:0;}
+.panel-body{padding:0 28px 28px;}
+
+/* FORMS */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:7px;position:relative;}
+label{font-size:11px;font-weight:700;color:var(--text-soft);letter-spacing:0.06em;text-transform:uppercase;}
+input,select,textarea{padding:13px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);background:#fdfaff;outline:none;transition:all var(--trans);width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--rose);background:var(--white);box-shadow:0 0 0 4px rgba(232,164,192,0.15);}
+input.error{border-color:#e8697f;background:#fff5f6;}
+.field-error{font-size:11px;color:#e8697f;font-weight:600;margin-top:2px;}
+textarea{resize:vertical;min-height:80px;}
+
+/* DROPDOWN */
+.searchable-dropdown{position:relative;}
+.dropdown-search-input{cursor:text;padding-right:42px;}
+.dropdown-icon-arrow{position:absolute;right:16px;top:42px;font-size:12px;color:var(--text-soft);pointer-events:none;transition:transform var(--trans);}
+.searchable-dropdown.open .dropdown-icon-arrow{transform:rotate(180deg);}
+.dropdown-results-list{position:absolute;top:100%;left:0;right:0;background:var(--white);border:2px solid var(--rose);border-top:none;border-radius:0 0 16px 16px;max-height:260px;overflow-y:auto;z-index:999;box-shadow:var(--shadow-md);display:none;margin-top:-4px;}
+.searchable-dropdown.open .dropdown-results-list{display:block;}
+.dropdown-item{padding:11px 16px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);transition:background var(--trans);}
+.dropdown-item:hover{background:var(--rose-soft);color:var(--rose-dark);}
+.dropdown-item.no-results{color:var(--text-soft);font-style:italic;text-align:center;}
+
+/* SHALOM BANNER */
+.shalom-banner{background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));border:2px solid var(--rose-light);border-radius:16px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px;}
+.shalom-icon{font-size:28px;flex-shrink:0;}
+.shalom-info h4{font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;color:var(--rose-dark);margin-bottom:4px;}
+.shalom-info p{font-size:12.5px;color:var(--text-soft);line-height:1.6;}
+.shipping-notice{background:var(--peach-light);border:2px solid rgba(245,185,126,0.35);border-radius:var(--radius-sm);padding:14px 18px;margin-top:20px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:#b87340;}
+
+/* PAYMENT METHODS */
+.methods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.method-btn{border:2px solid var(--border);border-radius:16px;padding:16px 10px;cursor:pointer;background:#fdfaff;transition:all var(--trans);text-align:center;position:relative;}
+.method-btn:hover{border-color:var(--rose-light);background:var(--rose-soft);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.method-btn.selected{border-color:var(--rose);background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));box-shadow:var(--shadow-sm);}
+.method-btn.selected::after{content:'✓';position:absolute;top:8px;right:9px;background:linear-gradient(135deg,var(--rose),var(--lavender));color:var(--white);width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:800;line-height:18px;text-align:center;pointer-events:none;}
+.method-icon{font-size:26px;display:block;margin-bottom:7px;}
+.method-name{font-size:12px;font-weight:800;color:var(--text);}
+.method-sub{font-size:10px;color:var(--text-soft);margin-top:2px;}
+
+/* PAYMENT DETAILS */
+.pay-detail{display:none;background:linear-gradient(135deg,var(--rose-soft),#fdfaff);border:2px solid var(--rose-light);border-radius:16px;padding:24px;margin-bottom:20px;animation:fadeIn .35s ease;}
+.pay-detail.visible{display:block!important;}
+.pay-detail h4{font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;color:var(--rose-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.qr-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.qr-img{width:120px;height:120px;border-radius:16px;background:var(--white);box-shadow:var(--shadow-md);overflow:hidden;border:2px solid var(--rose-light);flex-shrink:0;}
+.qr-img img{width:100%;height:100%;object-fit:contain;padding:10px;}
+.qr-number{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);letter-spacing:0.06em;margin-bottom:6px;}
+.qr-name{font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:4px;}
+.qr-info p{font-size:13px;color:var(--text-soft);margin-bottom:8px;}
+.copy-btn{background:none;border:2px solid var(--rose-light);border-radius:30px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--rose-dark);cursor:pointer;margin-left:8px;transition:all var(--trans);font-family:'Nunito',sans-serif;}
+.copy-btn:hover{background:linear-gradient(135deg,var(--rose),var(--lavender));color:var(--white);border-color:var(--rose);}
+.upload-area{border:2px dashed var(--rose-light);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all var(--trans);margin-top:16px;position:relative;background:rgba(255,255,255,0.6);}
+.upload-area:hover{border-color:var(--rose);background:var(--rose-soft);transform:scale(1.01);}
+.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-icon{font-size:28px;display:block;margin-bottom:8px;color:var(--rose);}
+.upload-text{font-size:12px;font-weight:600;color:var(--text-soft);}
+.upload-preview{margin-top:12px;display:none;}
+.upload-preview img{max-height:80px;border-radius:10px;margin:0 auto;}
+.bank-table{width:100%;border-collapse:collapse;}
+.bank-table tr{border-bottom:1px solid var(--border);}
+.bank-table tr:last-child{border-bottom:none;}
+.bank-table td{padding:10px 0;font-size:14px;}
+.bank-table td:first-child{color:var(--text-soft);width:90px;font-weight:600;}
+.bank-table td:last-child{font-weight:700;}
+
+/* SUMMARY SIDEBAR */
+.sticky-summary{position:sticky;top:100px;}
+.summary-items{margin-bottom:20px;max-height:380px;overflow-y:auto;}
+.sum-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
+.sum-item:last-child{border-bottom:none;}
+.sum-img{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));overflow:hidden;flex-shrink:0;border:2px solid var(--border);}
+.sum-img img{width:100%;height:100%;object-fit:cover;}
+.sum-name{font-size:13px;font-weight:700;color:var(--text);flex:1;line-height:1.4;}
+.sum-qty{font-size:11px;color:var(--text-soft);background:var(--lav-light);padding:2px 9px;border-radius:20px;margin-top:4px;display:inline-block;font-weight:600;}
+.sum-price{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--rose-dark);white-space:nowrap;}
+.summary-lines{border-top:2px solid var(--border);padding-top:16px;}
+.sum-line{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:10px;}
+.sum-total{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:2px solid var(--border);margin-top:4px;}
+.sum-total-label{font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;}
+.sum-total-val{font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;color:var(--rose-dark);}
+
+/* CONFIRM BUTTON */
+.confirm-btn{width:100%;margin-top:20px;padding:17px;background:linear-gradient(135deg,var(--rose),var(--lavender));color:var(--white);border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;cursor:pointer;transition:all var(--trans);display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:0.02em;box-shadow:0 8px 24px rgba(232,164,192,0.35);}
+.confirm-btn:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(232,164,192,0.45);filter:brightness(1.05);}
+.confirm-btn:disabled{opacity:0.65;cursor:not-allowed;transform:none;}
+.secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-soft);margin-top:14px;text-align:center;}
+.secure-note i{color:var(--green);}
+
+/* TRUST BADGES */
+.trust-badges{display:flex;gap:10px;margin-top:18px;justify-content:center;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text-soft);background:var(--border);padding:5px 10px;border-radius:20px;}
+.trust-badge i{color:var(--mint);}
+
+/* EMPTY CART */
+.empty-checkout{grid-column:1/-1;text-align:center;padding:80px 20px;}
+.empty-checkout span{font-size:64px;display:block;margin-bottom:20px;}
+.empty-checkout h2{font-family:'Baloo 2',cursive;font-size:30px;color:var(--text);margin-bottom:10px;}
+.empty-checkout p{color:var(--text-soft);font-size:15px;margin-bottom:28px;}
+
+/* SUCCESS SCREEN */
+.success-screen{display:none;max-width:560px;margin:60px auto;text-align:center;padding:60px 40px;background:var(--white);border-radius:28px;box-shadow:var(--shadow-lg);border:2px solid var(--border);position:relative;z-index:1;}
+.success-screen.visible{display:block;}
+.success-icon{font-size:72px;margin-bottom:20px;display:block;}
+.success-screen h2{font-family:'Baloo 2',cursive;font-size:34px;font-weight:800;margin-bottom:14px;color:var(--text);}
+.success-screen p{color:var(--text-soft);font-size:15px;line-height:1.75;margin-bottom:30px;font-weight:500;}
+.success-screen a{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border-radius:50px;background:linear-gradient(135deg,#4caf80,#38c977);color:var(--white);text-decoration:none;font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;transition:all var(--trans);box-shadow:0 8px 24px rgba(91,189,138,0.35);}
+.success-screen a:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(91,189,138,0.45);}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--text),#6a6080);color:white;padding:14px 28px;border-radius:50px;font-size:13.5px;font-weight:700;z-index:9999;box-shadow:var(--shadow-lg);animation:fadeUp .3s ease;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
+/* RESPONSIVE */
+@media(max-width:960px){.checkout-layout{grid-template-columns:1fr;}.sticky-summary{position:static;}.steps-bar .step span{display:none;}.methods-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}.qr-wrap{flex-direction:column;text-align:center;}.step{padding:12px 16px;}.checkout-header{padding:0 4%;height:68px;}.checkout-layout{padding:0 14px 60px;margin-top:24px;}.panel-head{padding:20px 20px 0;}.panel-body{padding:0 20px 20px;}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <i class="fas fa-truck"></i> Envíos a todo el Perú con Shalom Express
+  &nbsp;|&nbsp;
+  <i class="fab fa-whatsapp"></i> Atención por WhatsApp
+</div>
+
+<!-- HEADER -->
+<header class="checkout-header">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🌸</div>
+    <div class="logo-text">
+      <h1>D'Zoe Perú</h1>
+      <span>ROPA INFANTIL</span>
+    </div>
+  </a>
+  <a href="index.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Seguir comprando
+  </a>
+</header>
+
+<!-- STEPS BAR -->
+<div class="steps-bar">
+  <div class="step active" id="step1"><div class="step-num">1</div><span>Datos</span></div>
+  <div class="step" id="step2"><div class="step-num">2</div><span>Pago</span></div>
+  <div class="step" id="step3"><div class="step-num">3</div><span>Confirmar</span></div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="success-screen">
+  <span class="success-icon">🎉</span>
+  <h2>¡Pedido enviado!</h2>
+  <p>Gracias por tu compra. Te contactaremos por WhatsApp para confirmar tu pedido y coordinar la entrega. 💖</p>
+  <a href="#" id="whatsapp-link" target="_blank"><i class="fab fa-whatsapp"></i> Confirmar por WhatsApp</a>
+</div>
+
+<!-- CHECKOUT LAYOUT -->
+<div class="checkout-layout" id="checkout-layout">
+
+  <!-- LEFT COLUMN -->
+  <div>
+
+    <!-- PANEL: CONTACTO -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-icon"><i class="fas fa-user"></i></div>
+        <h2>Información de contacto</h2>
+      </div>
+      <div class="panel-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" id="f-name" placeholder="Tu nombre">
+            <div class="field-error" id="err-name"></div>
+          </div>
+          <div class="form-group">
+            <label>Apellido *</label>
+            <input type="text" id="f-lastname" placeholder="Tu apellido">
+            <div class="field-error" id="err-lastname"></div>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group">
+            <label>DNI * (8 dígitos)</label>
+            <input type="text" id="f-id" maxlength="8" placeholder="Número de documento">
+            <div class="field-error" id="err-id"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono * (9 dígitos)</label>
+            <input type="tel" id="f-phone" maxlength="9" placeholder="9XXXXXXXX">
+            <div class="field-error" id="err-phone"></div>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp (opcional)</label>
+            <input type="tel" id="f-whatsapp" placeholder="Si es diferente">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: ENVÍO -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-icon"><i class="fas fa-truck"></i></div>
+        <h2>Dirección de envío</h2>
+      </div>
+      <div class="panel-body">
+        <div class="shalom-banner">
+          <div class="shalom-icon">📦</div>
+          <div class="shalom-info">
+            <h4>Enviamos con Shalom Express 💖</h4>
+            <p>Envíos rápidos y seguros a todo el Perú. Selecciona tu agencia de destino.</p>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group searchable-dropdown" id="dropdown-wrapper">
+            <label>Agencia Shalom / Destino *</label>
+            <span class="dropdown-icon-arrow"><i class="fas fa-chevron-down"></i></span>
+            <input type="text" id="destino-search" autocomplete="off" class="dropdown-search-input" placeholder="🔍 Escribe para buscar tu agencia...">
+            <input type="hidden" id="shalom-destino-value">
+            <div class="dropdown-results-list" id="dropdown-results"></div>
+            <div class="field-error" id="err-destino"></div>
+          </div>
+        </div>
+        <div class="shipping-notice">
+          <i class="fas fa-info-circle" style="font-size:20px;"></i>
+          <span><strong>Importante:</strong> El costo de envío no está incluido. Se calculará y coordinará por WhatsApp según tu ubicación.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: PAGO -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-icon"><i class="fas fa-credit-card"></i></div>
+        <h2>Método de pago</h2>
+      </div>
+      <div class="panel-body">
+        <div class="methods-grid">
+          <div class="method-btn selected" onclick="selectMethod('yape')" id="m-yape">
+            <span class="method-icon">💜</span>
+            <div class="method-name">Yape</div>
+            <div class="method-sub">Pago instantáneo</div>
+          </div>
+          <div class="method-btn" onclick="selectMethod('plin')" id="m-plin">
+            <span class="method-icon">💙</span>
+            <div class="method-name">Plin</div>
+            <div class="method-sub">Pago instantáneo</div>
+          </div>
+          <div class="method-btn" onclick="selectMethod('sip')" id="m-sip">
+            <span class="method-icon">💚</span>
+            <div class="method-name">Sip</div>
+            <div class="method-sub">Pago con QR</div>
+          </div>
+          <div class="method-btn" onclick="selectMethod('bank')" id="m-bank">
+            <span class="method-icon">🏦</span>
+            <div class="method-name">Interbank</div>
+            <div class="method-sub">Transferencia</div>
+          </div>
+        </div>
+
+        <!-- YAPE DETAIL -->
+        <div class="pay-detail visible" id="detail-yape">
+          <h4><i class="fas fa-qrcode"></i> Pagar con Yape</h4>
+          <div class="qr-wrap">
+            <div class="qr-img"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=956063145&color=6B21A8" alt="QR Yape"></div>
+            <div class="qr-info">
+              <p>Escanea el QR o transfiere al número:</p>
+              <div class="qr-number">956 063 145 <button class="copy-btn" onclick="copyText('956063145')">Copiar</button></div>
+              <div class="qr-name">D'Zoe Perú - Aron P.</div>
+            </div>
+          </div>
+          <div class="upload-area" onclick="document.getElementById('yape-file').click()">
+            <input type="file" id="yape-file" accept="image/*" style="display:none;" onchange="previewUpload(this,'yape-preview')">
+            <span class="upload-icon"><i class="fas fa-camera"></i></span>
+            <div class="upload-text">Toca para subir tu captura de pago</div>
+            <div class="upload-preview" id="yape-preview"><img></div>
+          </div>
+        </div>
+
+        <!-- PLIN DETAIL -->
+        <div class="pay-detail" id="detail-plin">
+          <h4><i class="fas fa-qrcode"></i> Pagar con Plin</h4>
+          <div class="qr-wrap">
+            <div class="qr-img"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=956063145&color=1A56DB" alt="QR Plin"></div>
+            <div class="qr-info">
+              <p>Escanea el QR o transfiere al número:</p>
+              <div class="qr-number">956 063 145 <button class="copy-btn" onclick="copyText('956063145')">Copiar</button></div>
+              <div class="qr-name">D'Zoe Perú - Aron P.</div>
+            </div>
+          </div>
+          <div class="upload-area" onclick="document.getElementById('plin-file').click()">
+            <input type="file" id="plin-file" accept="image/*" style="display:none;" onchange="previewUpload(this,'plin-preview')">
+            <span class="upload-icon"><i class="fas fa-camera"></i></span>
+            <div class="upload-text">Toca para subir tu captura de pago</div>
+            <div class="upload-preview" id="plin-preview"><img></div>
+          </div>
+        </div>
+
+        <!-- SIP DETAIL -->
+        <div class="pay-detail" id="detail-sip">
+          <h4><i class="fas fa-qrcode"></i> Pagar con Sip</h4>
+          <div class="qr-wrap">
+            <div class="qr-img"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIP-DZOE&color=0284C7" alt="QR Sip"></div>
+            <div class="qr-info">
+              <p>Escanea el QR o transfiere al número:</p>
+              <div class="qr-number">956 063 145 <button class="copy-btn" onclick="copyText('956063145')">Copiar</button></div>
+              <div class="qr-name">D'Zoe Perú - Aron P.</div>
+            </div>
+          </div>
+          <div class="upload-area" onclick="document.getElementById('sip-file').click()">
+            <input type="file" id="sip-file" accept="image/*" style="display:none;" onchange="previewUpload(this,'sip-preview')">
+            <span class="upload-icon"><i class="fas fa-camera"></i></span>
+            <div class="upload-text">Toca para subir tu captura de pago</div>
+            <div class="upload-preview" id="sip-preview"><img></div>
+          </div>
+        </div>
+
+        <!-- BANK DETAIL -->
+        <div class="pay-detail" id="detail-bank">
+          <h4><i class="fas fa-building"></i> Transferencia Interbank</h4>
+          <table class="bank-table">
+            <tr><td>Banco</td><td>Interbank <button class="copy-btn" onclick="copyText('Interbank')">Copiar</button></td></tr>
+            <tr><td>Titular</td><td>Aron Pariona Ruiz <button class="copy-btn" onclick="copyText('D\'Zoe Perú')">Copiar</button></td></tr>
+            <tr><td>Cuenta</td><td>898-3000000000 <button class="copy-btn" onclick="copyText('8983000000000')">Copiar</button></td></tr>
+            <tr><td>CCI</td><td>003-898-000000000000-00 <button class="copy-btn" onclick="copyText('00389800000000000000')">Copiar</button></td></tr>
+          </table>
+          <div class="upload-area" onclick="document.getElementById('bank-file').click()">
+            <input type="file" id="bank-file" accept="image/*" style="display:none;" onchange="previewUpload(this,'bank-preview')">
+            <span class="upload-icon"><i class="fas fa-camera"></i></span>
+            <div class="upload-text">Sube el comprobante de transferencia</div>
+            <div class="upload-preview" id="bank-preview"><img></div>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-group">
+            <label>Nota para el pedido (opcional)</label>
+            <textarea id="f-note" rows="2" placeholder="Talla, color preferido, dedicatoria, etc."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end left col -->
+
+  <!-- RIGHT COLUMN: SUMMARY -->
+  <div class="sticky-summary">
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-icon"><i class="fas fa-shopping-cart"></i></div>
+        <h2>Resumen del pedido</h2>
+      </div>
+      <div class="panel-body">
+        <div class="summary-items" id="summary-items"></div>
+        <div class="summary-lines">
+          <div class="sum-line"><span>Subtotal</span><strong>S/ <span id="subtotal-val">0.00</span></strong></div>
+          <div class="sum-line"><span>Envío (Shalom)</span><strong style="color:var(--amber);">No incluido</strong></div>
+          <div class="sum-total">
+            <span class="sum-total-label">Total</span>
+            <span class="sum-total-val">S/ <span id="total-val">0.00</span></span>
+          </div>
+        </div>
+        <button class="confirm-btn" id="confirm-btn" onclick="confirmOrder()">
+          <i class="fas fa-check-circle"></i> Confirmar pedido
+        </button>
+        <div class="secure-note"><i class="fas fa-lock"></i> Pago seguro y protegido</div>
+        <div class="trust-badges">
+          <div class="trust-badge"><i class="fas fa-shield-alt"></i> Compra segura</div>
+          <div class="trust-badge"><i class="fas fa-truck"></i> Envío nacional</div>
+          <div class="trust-badge"><i class="fab fa-whatsapp"></i> Soporte 24/7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end checkout-layout -->
+
+<script>
+// ============================================
+// SUPABASE CONFIGURACIÓN
+// ============================================
+const supabaseUrl = window.SUPABASE_CONFIG?.URL;
+const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ ERROR: No se encontró config.js');
+  showToast('⚠️ Error de configuración. Contacta al administrador.');
+}
+
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+console.log('✅ Checkout conectado a Supabase');
+
+// ============================================
+// LISTA DE AGENCIAS SHALOM
+// ============================================
+const agenciasShalom = [
+  "MOQUEGUA / ILO / ILO / ILO CO PAMPA INALAMBRICA - AEREO",
+  "CAJAMARCA / HUALGAYOC / BAMBAMARCA / BAMBAMARCA",
+  "CAJAMARCA / HUALGAYOC / BAMBAMARCA / BAMBAMARCA - AEREO",
+  "AREQUIPA / AREQUIPA / AREQUIPA / AV PARRA 379 CO",
+  "AREQUIPA / AREQUIPA / AREQUIPA / AV PARRA 379 CO - AEREO",
+  "PASCO / PASCO / CHAUPIMARCA / CERRO DE PASCO",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / CAJAMARCA CO",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / CAJAMARCA CO - AEREO",
+  "SAN MARTIN / MOYOBAMBA / MOYOBAMBA / OVALO ORQUIDEAS CO",
+  "SAN MARTIN / MOYOBAMBA / MOYOBAMBA / OVALO ORQUIDEAS CO - AEREO",
+  "APURIMAC / ABANCAY / ABANCAY / ABANCAY",
+  "APURIMAC / ABANCAY / ABANCAY / ABANCAY - AEREO",
+  "ANCASH / SANTA / CHIMBOTE / AV ENRIQUE MEIGGS",
+  "CUSCO / CUSCO / WANCHAQ / CUSCO PARQUE INDUSTRIAL",
+  "CUSCO / CUSCO / WANCHAQ / CUSCO PARQUE INDUSTRIAL - AEREO",
+  "LIMA / HUAURA / HUACHO / SALAVERRY HUACHO CO",
+  "MOQUEGUA / ILO / ILO / ILO CO PAMPA INALAMBRICA",
+  "AYACUCHO / HUAMANGA / AYACUCHO / AYACUCHO CO",
+  "AYACUCHO / HUAMANGA / AYACUCHO / AYACUCHO CO - AEREO",
+  "LIMA / CAÑETE / SAN VICENTE DE CANET / CAÑETE SAN VICENTE",
+  "ICA / CHINCHA / CHINCHA ALTA / PROLONG LUIS MASSARO",
+  "JUNIN / HUANCAYO / EL TAMBO / AV MARISCAL CASTILLA CO PARQUE INDUSTRIAL",
+  "LAMBAYEQUE / CHICLAYO / LA VICTORIA / AV VICTOR R. HAYA CO",
+  "LAMBAYEQUE / CHICLAYO / LA VICTORIA / AV VICTOR R. HAYA CO - AEREO",
+  "HUANUCO / HUANUCO / HUANUCO / JR AGUILAR",
+  "PUNO / SAN ROMAN / JULIACA / JR. MAMA OCLLO",
+  "PUNO / SAN ROMAN / JULIACA / JR. MAMA OCLLO - AEREO",
+  "PUNO / PUNO / PUNO / AV COSTANERA",
+  "PUNO / PUNO / PUNO / AV COSTANERA - AEREO",
+  "CUSCO / CANCHIS / SICUANI / SICUANI CO OVALO SAN ANDRES",
+  "CUSCO / CANCHIS / SICUANI / SICUANI CO OVALO SAN ANDRES - AEREO",
+  "TACNA / TACNA / TACNA / TACNA CO AV. JORGE BASADRE",
+  "TACNA / TACNA / TACNA / TACNA CO AV. JORGE BASADRE - AEREO",
+  "PIURA / TALARA / PARINAS / TALARA  CO ASOC CALIFORNIA",
+  "PIURA / TALARA / PARINAS / TALARA  CO ASOC CALIFORNIA - AEREO",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / CALLE LIVERPOOL",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / CALLE LIVERPOOL - AEREO",
+  "TUMBES / TUMBES / TUMBES / TUMBES - AV ARICA",
+  "TUMBES / TUMBES / TUMBES / TUMBES - AV ARICA - AEREO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / SAN ANTONIO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / SAN ANTONIO - AEREO",
+  "LIMA / LIMA / LA VICTORIA / JR. RAYMONDI",
+  "LIMA / LIMA / VILLA MARIA DEL TRIUNFO / LAS CONCHITAS",
+  "AMAZONAS / UTCUBAMBA / BAGUA GRANDE / BAGUA GRANDE",
+  "AMAZONAS / UTCUBAMBA / BAGUA GRANDE / BAGUA GRANDE - AEREO",
+  "AMAZONAS / BONGARA / JAZAN / PEDRO RUIZ",
+  "AMAZONAS / BONGARA / JAZAN / PEDRO RUIZ - AEREO",
+  "CAJAMARCA / CHOTA / CHOTA / CHOTA",
+  "CAJAMARCA / CHOTA / CHOTA / CHOTA - AEREO",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS JR FRANCISCO BOLOGNESI",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS JR FRANCISCO BOLOGNESI - AEREO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA CALLERIA / CALLERIA JR JOSE GALVEZ",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA CALLERIA / CALLERIA JR JOSE GALVEZ - AEREO",
+  "HUANUCO / LEONCIO PRADO / RUPA RUPA / TINGO MARIA CO BUENOS AIRES",
+  "HUANUCO / LEONCIO PRADO / RUPA RUPA / TINGO MARIA CO BUENOS AIRES - AEREO",
+  "ICA / PISCO / PISCO / AV ABRAHAM VALDELOMAR CO",
+  "LIMA / LIMA / ATE-VITARTE / HUAYCAN ENTRADA",
+  "CALLAO / CALLAO / CALLAO / CALLAO FAUCETT",
+  "LIMA / LIMA / PACHACAMAC / LA CURVA DE MANCHAY",
+  "LIMA / LIMA / LA MOLINA / AV  LA FONTANA",
+  "LIMA / LIMA / VILLA EL SALVADOR / AV. CESAR VALLEJO",
+  "CALLAO / CALLAO / VENTANILLA / PARAD.  LOS LICENCIADOS",
+  "LIMA / LIMA / SURQUILLO / REP. DE PANAMA",
+  "LA LIBERTAD / SANCHEZ CARRION / HUAMACHUCO / HUAMACHUCO",
+  "LA LIBERTAD / SANCHEZ CARRION / HUAMACHUCO / HUAMACHUCO - AEREO",
+  "LIMA / LIMA / BRENA / AV VENEZUELA",
+  "LIMA / HUARAL / HUARAL / HUARAL",
+  "ANCASH / HUARAZ / HUARAZ / HUARAZ",
+  "CAJAMARCA / CUTERVO / CUTERVO / CUTERVO",
+  "CAJAMARCA / CUTERVO / CUTERVO / CUTERVO - AEREO",
+  "ICA / NAZCA / NAZCA / AV CIRCUNVALACION NAZCA",
+  "ICA / NAZCA / MARCONA / SAN JUAN DE MARCONA",
+  "PASCO / PASCO / HUAYLLAY / HUAYLLAY",
+  "PIURA / TALARA / EL ALTO / EL ALTO",
+  "PIURA / TALARA / EL ALTO / EL ALTO - AEREO",
+  "TUMBES / ZARUMILLA / AGUAS VERDES / AGUAS VERDES",
+  "TUMBES / ZARUMILLA / AGUAS VERDES / AGUAS VERDES - AEREO",
+  "PIURA / TALARA / LOS ORGANOS / LOS ORGANOS",
+  "PIURA / TALARA / LOS ORGANOS / LOS ORGANOS - AEREO",
+  "TUMBES / CONTRALMIRANTE VILLA / ZORRITOS / ZORRITOS",
+  "TUMBES / CONTRALMIRANTE VILLA / ZORRITOS / ZORRITOS - AEREO",
+  "HUANUCO / AMBO / AMBO / AMBO",
+  "LAMBAYEQUE / FERRENAFE / FERRENAFE / FERREÑAFE",
+  "LAMBAYEQUE / FERRENAFE / FERRENAFE / FERREÑAFE - AEREO",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / CIUDAD MUNICIPAL",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / CIUDAD MUNICIPAL - AEREO",
+  "LIMA / BARRANCA / PARAMONGA / PARAMONGA",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / CRUZ DE MOTUPE",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AV PUMACAHUA",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AV PUMACAHUA - AEREO",
+  "LIMA / LIMA / SANTIAGO DE SURCO / HIGUERETA",
+  "PIURA / TALARA / MANCORA / MÁNCORA",
+  "PIURA / TALARA / MANCORA / MÁNCORA - AEREO",
+  "LIMA / CAÑETE / MALA / MALA",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / MIRAFLORES CHICLAYO",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / MIRAFLORES CHICLAYO - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / SJL- LAS FLORES",
+  "LAMBAYEQUE / LAMBAYEQUE / MOTUPE / MOTUPE",
+  "LAMBAYEQUE / LAMBAYEQUE / MOTUPE / MOTUPE - AEREO",
+  "LIMA / HUARAL / CHANCAY / CHANCAY",
+  "JUNIN / SATIPO / SATIPO / SATIPO",
+  "JUNIN / CHANCHAMAYO / SAN RAMON / SAN RAMÓN",
+  "JUNIN / CHANCHAMAYO / BAJO PICHANAQUI / PICHANAKI",
+  "JUNIN / TARMA / TARMA / TARMA",
+  "LIMA / LIMA / LURIGANCHO / CHOSICA",
+  "LIMA / LIMA / CHORRILLOS / CHORRILLOS LOS FAISANES",
+  "LIMA / LIMA / LOS OLIVOS / PRO",
+  "LIMA / LIMA / RIMAC / RIMAC AV. AMANCAES",
+  "ANCASH / SANTA / NUEVO CHIMBOTE / OVALO DE LA FAMILIA",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / MARISCAL NIETO",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / MARISCAL NIETO - AEREO",
+  "LIMA / LIMA / VILLA MARIA DEL TRIUNFO / PESQUERO",
+  "LIMA / LIMA / MAGDALENA DEL MAR / MAGDALENA DEL MAR",
+  "LAMBAYEQUE / CHICLAYO / JOSE LEONARDO ORTIZ  / CALLE TAHUANTINSUYO",
+  "LAMBAYEQUE / CHICLAYO / JOSE LEONARDO ORTIZ  / CALLE TAHUANTINSUYO - AEREO",
+  "ANCASH / CASMA / CASMA / CASMA",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / SMP-AV. PROCERES",
+  "LAMBAYEQUE / CHICLAYO / TUMAN / TUMAN",
+  "LAMBAYEQUE / CHICLAYO / TUMAN / TUMAN - AEREO",
+  "LIMA / LIMA / PUENTE PIEDRA / ZAPALLAL",
+  "PIURA / PIURA / PIURA / AV. LUIS EGUIGUREN",
+  "PIURA / PIURA / PIURA / AV. LUIS EGUIGUREN - AEREO",
+  "LIMA / LIMA / ATE-VITARTE / PUENTE SANTA ANITA",
+  "CUSCO / CUSCO / SAN JERONIMO / SAN JERONIMO",
+  "CUSCO / CUSCO / SAN JERONIMO / SAN JERONIMO - AEREO",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / AV HERMANOS ANGULO",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / AV HERMANOS ANGULO - AEREO",
+  "CUSCO / CUSCO / SANTIAGO / AV ANTONIO LORENA",
+  "CUSCO / CUSCO / SANTIAGO / AV ANTONIO LORENA - AEREO",
+  "JUNIN / HUANCAYO / TAMBO / PIOPATA",
+  "JUNIN / HUANCAYO / CHILCA / CHILCA HUANCAYO",
+  "LIMA / LIMA / VILLA MARIA DEL TRIUNFO / AV. LIMA - VMT",
+  "LIMA / LIMA / ATE-VITARTE / LOS SAUCES",
+  "PIURA / PIURA / CASTILLA /  AV TACNA",
+  "PIURA / PIURA / CASTILLA /  AV TACNA - AEREO",
+  "LIMA / LIMA / CERCADO LIMA / MALVINAS - JR. RICARDO TRENEMAN",
+  "PIURA / PIURA / 26 DE OCTUBRE / PARQUE INDUSTRIAL CO PIURA FUTURA",
+  "PIURA / PIURA / 26 DE OCTUBRE / PARQUE INDUSTRIAL CO PIURA FUTURA - AEREO",
+  "CUSCO / ANTA / ANTA / ANTA IZCUCHACA",
+  "CUSCO / ANTA / ANTA / ANTA IZCUCHACA - AEREO",
+  "SAN MARTIN / MARISCAL CACERES / JUANJUI / JUANJUÍ FERNANDO BELAUNDE TERRY CO",
+  "SAN MARTIN / MARISCAL CACERES / JUANJUI / JUANJUÍ FERNANDO BELAUNDE TERRY CO - AEREO",
+  "LIMA / LIMA / LA VICTORIA / AV. CANADA",
+  "LORETO / ALTO AMAZONAS / YURIMAGUAS / YURIMAGUAS",
+  "LORETO / ALTO AMAZONAS / YURIMAGUAS / YURIMAGUAS - AEREO",
+  "CUSCO / URUBAMBA / CHINCHERO / CHINCHERO",
+  "CUSCO / URUBAMBA / CHINCHERO / CHINCHERO - AEREO",
+  "CUSCO / LA CONVENCION / SANTA ANA / QUILLABAMBA",
+  "CUSCO / LA CONVENCION / SANTA ANA / QUILLABAMBA - AEREO",
+  "LIMA / LIMA / SAN BORJA / AVIACION 2819",
+  "JUNIN / YAULI / LA OROYA / LA OROYA",
+  "PIURA / PIURA / CASTILLA / TACALA",
+  "PIURA / PIURA / CASTILLA / TACALA - AEREO",
+  "LIMA / LIMA / SAN JUAN DE MIRAFLORES / MARIA AUXILIADORA",
+  "LIMA / LIMA / LOS OLIVOS / AV HUANDOY CON MARAÑON",
+  "LIMA / LIMA / INDEPENDENCIA / PLAZA NORTE ENTREGAS",
+  "HUANCAVELICA / HUANCAVELICA / HUANCAVELICA / HUANCAVELICA",
+  "CUSCO / CUSCO / WANCHAQ / AV PACHACUTEC",
+  "CUSCO / CUSCO / WANCHAQ / AV PACHACUTEC  - AEREO",
+  "TACNA / TACNA / CORONEL GREGORIO ALBARRACIN LANCHIPA / VILLA SAN FRANCISCO",
+  "TACNA / TACNA / CORONEL GREGORIO ALBARRACIN LANCHIPA / VILLA SAN FRANCISCO - AEREO",
+  "PASCO / OXAPAMPA / VILLA RICA / VILLA RICA",
+  "AREQUIPA / ISLAY / MOLLENDO / MOLLENDO CO",
+  "AREQUIPA / ISLAY / MOLLENDO / MOLLENDO CO - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / TUCUME / TUCUME",
+  "LAMBAYEQUE / LAMBAYEQUE / TUCUME / TUCUME - AEREO",
+  "TACNA / TACNA / TACNA / AV  VIGIL",
+  "TACNA / TACNA / TACNA / AV  VIGIL - AEREO",
+  "AREQUIPA / CAMANA / CAMANA / CAMANA",
+  "AREQUIPA / CAMANA / CAMANA / CAMANA - AEREO",
+  "AREQUIPA / CAYLLOMA / MAJES / CALLE YARABAMBA",
+  "AREQUIPA / CAYLLOMA / MAJES / CALLE YARABAMBA - AEREO",
+  "JUNIN / HUANCAYO / SAN AGUSTIN / SAN AGUSTIN DE CAJAS",
+  "LIMA / LIMA / CARABAYLLO / AV  TUPAC AMARU KM. 19",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / ALTO TRUJILLO",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / ALTO TRUJILLO - AEREO",
+  "PIURA / SULLANA / SULLANA / SULLANA CO ZONA INDUSTRIAL",
+  "PIURA / SULLANA / SULLANA / SULLANA CO ZONA INDUSTRIAL - AEREO",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. CARLOS IZAGUIRRE CUADRA 23",
+  "MOQUEGUA / ILO / ILO / ILO PUERTO",
+  "MOQUEGUA / ILO / ILO / ILO PUERTO - AEREO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / PUCALLPA CO FEDERICO BASADRE",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / PUCALLPA CO FEDERICO BASADRE - AEREO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / YARINACOCHA CENTRO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / YARINACOCHA CENTRO - AEREO",
+  "CAJAMARCA / CELENDIN / CELENDIN / CELENDIN",
+  "CAJAMARCA / CELENDIN / CELENDIN / CELENDIN - AEREO",
+  "SAN MARTIN / SAN MARTIN / LA BANDA DE SHILCAYO / TARAPOTO LA BANDA DE SHILCAYO",
+  "SAN MARTIN / SAN MARTIN / LA BANDA DE SHILCAYO / TARAPOTO LA BANDA DE SHILCAYO - AEREO",
+  "SAN MARTIN / SAN MARTIN / MORALES / TARAPOTO JR. SARGENTO LOREZ",
+  "SAN MARTIN / SAN MARTIN / MORALES / TARAPOTO JR. SARGENTO LOREZ - AEREO",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR LEONCIO PRADO",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR LEONCIO PRADO - AEREO",
+  "LIMA / LIMA / CHORRILLOS / LAS DELICIAS DE VILLA",
+  "ANCASH / CARHUAZ / CARHUAZ / CARHUAZ",
+  "HUANUCO / LEONCIO PRADO / RUPA RUPA / TINGO MARÍA - LEONCIO PRADO",
+  "HUANUCO / LEONCIO PRADO / RUPA RUPA / TINGO MARÍA - LEONCIO PRADO - AEREO",
+  "AMAZONAS / CHACHAPOYAS / CHACHAPOYAS / CHACHAPOYAS JR GRAU",
+  "AMAZONAS / CHACHAPOYAS / CHACHAPOYAS / CHACHAPOYAS JR GRAU - AEREO",
+  "SAN MARTIN / PICOTA / PICOTA / PICOTA",
+  "SAN MARTIN / PICOTA / PICOTA / PICOTA - AEREO",
+  "ANCASH / YUNGAY / YUNGAY / YUNGAY",
+  "PUNO / EL COLLAO / ILAVE / ILAVE",
+  "PUNO / EL COLLAO / ILAVE / ILAVE - AEREO",
+  "LIMA / LIMA / SANTA ROSA / SANTA ROSA",
+  "CAJAMARCA / SAN MARCOS / PEDRO GALVEZ / SAN MARCOS",
+  "CAJAMARCA / SAN MARCOS / PEDRO GALVEZ / SAN MARCOS - AEREO",
+  "CALLAO / CALLAO / BELLAVISTA / BELLAVISTA CALLAO",
+  "LIMA / LIMA / JESUS MARIA / JESUS MARIA",
+  "TUMBES / TUMBES / TUMBES / TUMBES PUYANGO",
+  "TUMBES / TUMBES / TUMBES / TUMBES PUYANGO - AEREO",
+  "LIMA / LIMA / ATE-VITARTE / SANTA CLARA",
+  "LIMA / LIMA / VILLA EL SALVADOR / ÓVALO MARIÁTEGUI",
+  "LIMA / LIMA / VILLA EL SALVADOR / 01 DE MAYO",
+  "LIMA / LIMA / SAN JUAN DE MIRAFLORES / AV. CANEVARO",
+  "LIMA / LIMA / VILLA MARIA DEL TRIUNFO / AV. VILLA MARIA",
+  "LIMA / LIMA / SAN JUAN DE MIRAFLORES / AV MIGUEL GRAU  PAMPLONA ALTA",
+  "LIMA / LIMA / SANTIAGO DE SURCO / SURCO MATEO PUMACAHUA",
+  "LIMA / LIMA / CARABAYLLO / AV. TUPAC AMARU KM. 23.5",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / GERMÁN AGUIRRE",
+  "AREQUIPA / AREQUIPA / UCHUMAYO / UCHUMAYO",
+  "AREQUIPA / AREQUIPA / UCHUMAYO / UCHUMAYO - AEREO",
+  "LIMA / HUAURA / HUAURA / HUAURA",
+  "UCAYALI / PADRE ABAD / AGUAYTIA / AGUAYTÍA",
+  "UCAYALI / PADRE ABAD / AGUAYTIA / AGUAYTÍA - AEREO",
+  "PUNO / SAN ROMAN / JULIACA / LAS MERCEDES",
+  "PUNO / SAN ROMAN / JULIACA / LAS MERCEDES - AEREO",
+  "TUMBES / TUMBES / TUMBES / TUMBES CO - PANAMERICANA NORTE KM 2360",
+  "TUMBES / TUMBES / TUMBES / TUMBES CO - PANAMERICANA NORTE KM 2360 - AEREO",
+  "JUNIN / HUANCAYO / HUANCAYO / TERMINAL LOS ANDES",
+  "ICA / ICA / SANTIAGO / ICA SANTIAGO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / CANTO GRANDE",
+  "HUANUCO / LEONCIO PRADO / JOSE CRESPO Y CASTIL / AUCAYACU",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / ATAHUALPA",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / ATAHUALPA - AEREO",
+  "LA LIBERTAD / PACASMAYO / GUADALUPE / CIUDAD DE DIOS",
+  "LA LIBERTAD / PACASMAYO / GUADALUPE / CIUDAD DE DIOS - AEREO",
+  "LIMA / LIMA / LA MOLINA / LOS FRESNOS",
+  "SAN MARTIN / TOCACHE / TOCACHE / AV FERNANDO BELAUNDE",
+  "SAN MARTIN / TOCACHE / TOCACHE / AV FERNANDO BELAUNDE - AEREO",
+  "LIMA / LIMA / SURQUILLO / AV. PRINCIPAL",
+  "AYACUCHO / HUAMANGA / JESUS NAZARENO / JESUS NAZARENO",
+  "AYACUCHO / HUAMANGA / JESUS NAZARENO / JESUS NAZARENO - AEREO",
+  "LIMA / HUAURA / HUACHO / HUACHO AV  INDACOCHEA",
+  "CUSCO / CALCA / CALCA / CUSCO CALCA",
+  "CUSCO / CALCA / CALCA / CUSCO CALCA - AEREO",
+  "CALLAO / CALLAO / CALLAO / AV  QUILCA",
+  "LIMA / LIMA / CERCADO LIMA / LIMA AV TINGO MARÍA",
+  "LIMA / LIMA / CHORRILLOS / MEGAPLAZA CHORRILLOS",
+  "LIMA / LIMA / RIMAC / RIMAC GUARDIA REPUBLICANA CDRA. 9",
+  "ICA / CHINCHA / PUEBLO NUEVO / CHINCHA PUEBLO NUEVO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / CAMPOY",
+  "LIMA / LIMA / SANTA ANITA / AV. HUAROCHIRÍ",
+  "JUNIN / SATIPO / MAZAMARI / MAZAMARI",
+  "PUNO / MELGAR / AYAVIRI / AYAVIRI",
+  "PUNO / MELGAR / AYAVIRI / AYAVIRI - AEREO",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. DOMINICOS CDRA 14",
+  "LIMA / LIMA / SAN BORJA / AV. ANGAMOS",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS CO JR. PABLO ROSSELL",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS CO JR. PABLO ROSSELL - AEREO",
+  "JUNIN / SATIPO / PANGOA / PANGOA",
+  "AMAZONAS / LUYA / LUYA / LUYA",
+  "AMAZONAS / LUYA / LUYA / LUYA - AEREO",
+  "LIMA / LIMA / LURIGANCHO / SANTA MARÍA DE HUACHIPA",
+  "HUANUCO / HUANUCO / AMARILIS / AMARILIS CO",
+  "ICA / PISCO / PISCO / LA VILLA  CRUCE PISCO",
+  "ANCASH / SANTA / CHIMBOTE / AV. LOS PESCADORES CO",
+  "LIMA / LIMA / ATE-VITARTE / AV EL SOL",
+  "LAMBAYEQUE / CHICLAYO / PIMENTEL / PIMENTEL",
+  "LAMBAYEQUE / CHICLAYO / PIMENTEL / PIMENTEL - AEREO",
+  "AREQUIPA / AREQUIPA / LA JOYA / EL CRUCE LA JOYA",
+  "AREQUIPA / AREQUIPA / LA JOYA / EL CRUCE LA JOYA - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / MORROPE / MORROPE",
+  "LAMBAYEQUE / LAMBAYEQUE / MORROPE / MORROPE - AEREO",
+  "ICA / PISCO / SAN CLEMENTE / SAN CLEMENTE",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / AV PARTICIPACION PARCELA",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / AV PARTICIPACION PARCELA - AEREO",
+  "CALLAO / CALLAO / LA PERLA / OVALO LA PERLA",
+  "LIMA / LIMA / JESUS MARIA / REAL PLAZA SALAVERRY",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR. TAHUANTINSUYO",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR. TAHUANTINSUYO - AEREO",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ZAMACOLA",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ZAMACOLA - AEREO",
+  "AREQUIPA / AREQUIPA / CAYMA / AV CHARCANI",
+  "AREQUIPA / AREQUIPA / CAYMA / AV CHARCANI - AEREO",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AV LOS INCAS",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AV LOS INCAS - AEREO",
+  "PUNO / AZANGARO / AZANGARO / AZANGARO",
+  "PUNO / AZANGARO / AZANGARO / AZANGARO - AEREO",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR. RAMÓN CASTILLA",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / JR. RAMÓN CASTILLA - AEREO",
+  "CUSCO / CANCHIS / COMBAPATA / COMBAPATA",
+  "CUSCO / CANCHIS / COMBAPATA / COMBAPATA - AEREO",
+  "LA LIBERTAD / VIRU / VIRU / VIRU CENTRO",
+  "LA LIBERTAD / VIRU / VIRU / VIRU CENTRO - AEREO",
+  "PUNO / SAN ROMAN / JULIACA / AV. LAMPA",
+  "PUNO / SAN ROMAN / JULIACA / AV. LAMPA - AEREO",
+  "PIURA / PIURA / 26 DE OCTUBRE / AV. GULLMAN",
+  "PIURA / PIURA / 26 DE OCTUBRE / AV. GULLMAN - AEREO",
+  "MOQUEGUA / ILO / PACOCHA / ILO PACOCHA",
+  "MOQUEGUA / ILO / PACOCHA / ILO PACOCHA - AEREO",
+  "CUSCO / CUSCO / SAN SEBASTIAN / VIA EXPRESA SUR",
+  "CUSCO / CUSCO / SAN SEBASTIAN / VIA EXPRESA SUR - AEREO",
+  "LIMA / HUAURA / SAYAN / SAYAN",
+  "CUSCO / QUISPICANCHI / URCOS / URCOS",
+  "CUSCO / QUISPICANCHI / URCOS / URCOS - AEREO",
+  "CUSCO / CALCA / PISAC / PISAC",
+  "CUSCO / CALCA / PISAC / PISAC - AEREO",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / CALLE SANTA CRUZ - AMERICA SUR",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / CALLE SANTA CRUZ - AMERICA SUR - AEREO",
+  "LA LIBERTAD / PACASMAYO / PACASMAYO / PACASMAYO CENTRO",
+  "LA LIBERTAD / PACASMAYO / PACASMAYO / PACASMAYO CENTRO - AEREO",
+  "LIMA / LIMA / LA MOLINA / AV. LA MOLINA CDRA. 35",
+  "TACNA / TACNA / TACNA / AV. ARIAS ARAGUEZ",
+  "TACNA / TACNA / TACNA / AV. ARIAS ARAGUEZ - AEREO",
+  "PUNO / SAN ROMAN / JULIACA / AV. MODESTO BORDA",
+  "PUNO / SAN ROMAN / JULIACA / AV. MODESTO BORDA - AEREO",
+  "LIMA / LIMA / CARABAYLLO / EL PROGRESO KM 22",
+  "CUSCO / CUSCO / CUSCO / TICA TICA",
+  "CUSCO / CUSCO / CUSCO / TICA TICA - AEREO",
+  "TACNA / TACNA / CORONEL GREGORIO ALBARRACIN LANCHIPA / AV. MUNICIPAL",
+  "TACNA / TACNA / CORONEL GREGORIO ALBARRACIN LANCHIPA / AV. MUNICIPAL - AEREO",
+  "PIURA / PIURA / 26 DE OCTUBRE / AAHH SANTA ROSA PIURA",
+  "PIURA / PIURA / 26 DE OCTUBRE / AAHH SANTA ROSA PIURA - AEREO",
+  "LA LIBERTAD / PACASMAYO / SAN PEDRO DE LLOC / SAN PEDRO DE LLOC",
+  "LA LIBERTAD / PACASMAYO / SAN PEDRO DE LLOC / SAN PEDRO DE LLOC - AEREO",
+  "LIMA / LIMA / LA MOLINA / AV  FLORA TRISTAN",
+  "PUNO / PUNO / PUNO / SALCEDO",
+  "PUNO / PUNO / PUNO / SALCEDO - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / JAYANCA / JAYANCA",
+  "LAMBAYEQUE / LAMBAYEQUE / JAYANCA / JAYANCA - AEREO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / QUEBRADA LAS LECHUZAS CO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / QUEBRADA LAS LECHUZAS CO - AEREO",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / AV. LAS MAGNOLIAS",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / AV. LAS MAGNOLIAS - AEREO",
+  "LA LIBERTAD / TRUJILLO / HUANCHACO / OVALO HUANCHACO CO",
+  "LA LIBERTAD / TRUJILLO / HUANCHACO / OVALO HUANCHACO CO - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV. CENTRAL",
+  "SAN MARTIN / TOCACHE / TOCACHE / JR  FREDY ALIAGA CO",
+  "SAN MARTIN / TOCACHE / TOCACHE / JR  FREDY ALIAGA CO - AEREO",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AUTOPISTA LA JOYA",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / AUTOPISTA LA JOYA - AEREO",
+  "AREQUIPA / AREQUIPA / YURA / YURA",
+  "AREQUIPA / AREQUIPA / YURA / YURA - AEREO",
+  "SAN MARTIN / TOCACHE / UCHIZA / UCHIZA",
+  "SAN MARTIN / TOCACHE / UCHIZA / UCHIZA - AEREO",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / JR. CAHUIDE",
+  "LA LIBERTAD / TRUJILLO / EL PORVENIR / JR. CAHUIDE - AEREO",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ASOC. NUEVO HORIZONTE - AV. 54",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ASOC. NUEVO HORIZONTE - AV. 54 - AEREO",
+  "LIMA / LIMA / PUENTE PIEDRA / OVALO PUENTE PIEDRA",
+  "LIMA / LIMA / LOS OLIVOS / AV HUANDOY CON AV CENTRAL",
+  "LIMA / LIMA / SANTIAGO DE SURCO / AV TOMAS MARSANO - LA BOLICHERA",
+  "LIMA / LIMA / LINCE / JR CASANOVA CON PETIT THOUARS",
+  "AREQUIPA / CARAVELI / CHALA / CHALA",
+  "AREQUIPA / CARAVELI / CHALA / CHALA  - AEREO",
+  "CALLAO / CALLAO / CALLAO / AV BERTELLO CALLAO",
+  "LIMA / CAÑETE / NUEVO IMPERIAL / NUEVO IMPERIAL CO",
+  "LIMA / LIMA / SAN JUAN DE MIRAFLORES / AV  SAN JUAN PAMPLONA ALTA",
+  "CAJAMARCA / SAN MIGUEL / SAN MIGUEL / SAN MIGUEL CAJAMARCA",
+  "CAJAMARCA / SAN MIGUEL / SAN MIGUEL / SAN MIGUEL CAJAMARCA - AEREO",
+  "CAJAMARCA / SAN PABLO / SAN PABLO / SAN PABLO  CAJAMARCA",
+  "CAJAMARCA / SAN PABLO / SAN PABLO / SAN PABLO  CAJAMARCA  - AEREO",
+  "PUNO / PUNO / PUNO / ALTO PUNO",
+  "PUNO / PUNO / PUNO / ALTO PUNO  - AEREO",
+  "PIURA / TALARA / PARINAS / TALARA ALTA 9 DE OCTUBRE",
+  "PIURA / TALARA / PARINAS / TALARA ALTA 9 DE OCTUBRE - AEREO",
+  "CALLAO / CALLAO / CALLAO / AV SAENZ PEÑA",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / AV LAS AMERICAS",
+  "LAMBAYEQUE / CHICLAYO / CHICLAYO / AV LAS AMERICAS - AEREO",
+  "ICA / CHINCHA / CHINCHA ALTA / CALLE LOS ANGELES",
+  "PUNO / SAN ROMAN / JULIACA / AV  INDEPENDENCIA",
+  "PUNO / SAN ROMAN / JULIACA / AV  INDEPENDENCIA - AEREO",
+  "PIURA / TALARA / PARINAS / TALARA BAJA PARQUE 22",
+  "PIURA / TALARA / PARINAS / TALARA BAJA PARQUE 22 - AEREO",
+  "CUSCO / CANCHIS / SICUANI / SICUANI AV MANUEL CALLO",
+  "CUSCO / CANCHIS / SICUANI / SICUANI AV MANUEL CALLO  - AEREO",
+  "ICA / ICA / SUBTANJALLA / ICA SUBTANJALLA CO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA CALLERIA / CALLERIA AV SAENZ PEÑA",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA CALLERIA / CALLERIA AV SAENZ PEÑA - AEREO",
+  "PIURA / PIURA / PIURA / AV RAUL MATA LA CRUZ- DOS GRIFOS",
+  "PIURA / PIURA / PIURA / AV RAUL MATA LA CRUZ- DOS GRIFOS - AEREO",
+  "SAN MARTIN / MOYOBAMBA / SORITOR / SORITOR",
+  "SAN MARTIN / MOYOBAMBA / SORITOR / SORITOR - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE CENTRO",
+  "LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE CENTRO  - AEREO",
+  "PUNO / SAN ROMAN / JULIACA / JR AGUSTIN GAMARRA",
+  "PUNO / SAN ROMAN / JULIACA / JR AGUSTIN GAMARRA - AEREO",
+  "LIMA / LIMA / VILLA MARIA DEL TRIUNFO / NUEVA ESPERANZA VMT",
+  "LIMA / LIMA / COMAS / AV TUPAC AMARU CDRA. 57",
+  "LA LIBERTAD / ASCOPE / CASA GRANDE / CASA GRANDE",
+  "LA LIBERTAD / ASCOPE / CASA GRANDE / CASA GRANDE  - AEREO",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / OVALO PAPAL",
+  "JUNIN / HUANCAYO / EL TAMBO / CIUDAD UNIVERSITARIA",
+  "LIMA / LIMA / PUENTE PIEDRA / AV BUENOS AIRES",
+  "CALLAO / CALLAO / MI PERU / MI PERU",
+  "MADRE DE DIOS / TAMBOPATA / LAS PIEDRAS / EL TRIUNFO",
+  "MADRE DE DIOS / TAMBOPATA / LAS PIEDRAS / EL TRIUNFO - AEREO",
+  "TACNA / TACNA / TACNA / AV EJERCITO",
+  "TACNA / TACNA / TACNA / AV EJERCITO - AEREO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / CHEN CHEN",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / CHEN CHEN  - AEREO",
+  "TACNA / TACNA / TACNA / POCOLLAY",
+  "TACNA / TACNA / TACNA / POCOLLAY  - AEREO",
+  "SAN MARTIN / MARISCAL CACERES / JUANJUI / JUANJUI  CENTRO",
+  "SAN MARTIN / MARISCAL CACERES / JUANJUI / JUANJUI  CENTRO - AEREO",
+  "LAMBAYEQUE / CHICLAYO / CHONGOYAPE / CHONGOYAPE",
+  "LAMBAYEQUE / CHICLAYO / CHONGOYAPE / CHONGOYAPE  - AEREO",
+  "AREQUIPA / ISLAY / ISLAY / MATARANI",
+  "AREQUIPA / ISLAY / ISLAY / MATARANI  - AEREO",
+  "LAMBAYEQUE / CHICLAYO / POMALCA / POMALCA",
+  "LAMBAYEQUE / CHICLAYO / POMALCA / POMALCA - AEREO",
+  "CUSCO / CUSCO / SANTIAGO / HUANCARO",
+  "CUSCO / CUSCO / SANTIAGO / HUANCARO  - AEREO",
+  "LIMA / LIMA / SANTA ANITA / JR CESAR VALLEJO",
+  "AREQUIPA / ISLAY / COCACHACRA / COCACHACRA",
+  "AREQUIPA / ISLAY / COCACHACRA / COCACHACRA  - AEREO",
+  "PUNO / SAN ROMAN / JULIACA / AV HEROES DEL PACIFICO CO",
+  "PUNO / SAN ROMAN / JULIACA / AV HEROES DEL PACIFICO CO - AEREO",
+  "LIMA / LIMA / MIRAFLORES / LARCOMAR",
+  "ICA / NAZCA / VISTA ALEGRE / VISTA ALEGRE CO",
+  "LIMA / CAÑETE / CHILCA / ANT PANAM SUR CDRA 11",
+  "TACNA / TACNA / CORONEL GREGORIO ALBARRACIN LANCHIPA / VIÑANIS",
+  "AREQUIPA / AREQUIPA / AREQUIPA / MALL LAMBRAMANI",
+  "AREQUIPA / AREQUIPA / AREQUIPA / MALL LAMBRAMANI - AEREO",
+  "PUNO / PUNO / PUNO / AV  4 DE NOVIEMBRE CO",
+  "PUNO / PUNO / PUNO / AV  4 DE NOVIEMBRE CO - AEREO",
+  "CUSCO / QUISPICANCHI / OCONGATE / OCONGATE",
+  "CUSCO / QUISPICANCHI / OCONGATE / OCONGATE  - AEREO",
+  "LIMA / LIMA / LA VICTORIA / AV MEXICO CO",
+  "ICA / ICA / ICA / ICA SAN JOAQUIN",
+  "APURIMAC / ANDAHUAYLAS / ANDAHUAYLAS / ANDAHUAYLAS",
+  "APURIMAC / ANDAHUAYLAS / ANDAHUAYLAS / ANDAHUAYLAS - AEREO",
+  "JUNIN / CONCEPCION / CONCEPCION / CONCEPCION",
+  "CUSCO / ESPINAR / YAURI ( ESPINAR ) / ESPINAR",
+  "CUSCO / ESPINAR / YAURI ( ESPINAR ) / ESPINAR - AEREO",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV BERTELLO SMP",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ASOC LAS FLORES -  AV 54",
+  "AREQUIPA / AREQUIPA / CERRO COLORADO / ASOC LAS FLORES -  AV 54 - AEREO",
+  "AYACUCHO / HUANTA / HUANTA / HUANTA",
+  "AYACUCHO / HUANTA / HUANTA / HUANTA - AEREO",
+  "AREQUIPA / AREQUIPA / CAYMA / PLAZA LA TOMILLA",
+  "AREQUIPA / AREQUIPA / CAYMA / PLAZA LA TOMILLA - AEREO",
+  "AREQUIPA / AREQUIPA / MARIANO MELGAR / MARIANO MELGAR",
+  "AREQUIPA / AREQUIPA / MARIANO MELGAR / MARIANO MELGAR - AEREO",
+  "AREQUIPA / AREQUIPA / SOCABAYA / AV SOCABAYA - LOS TORITOS",
+  "AREQUIPA / AREQUIPA / SOCABAYA / AV SOCABAYA - LOS TORITOS - AEREO",
+  "AREQUIPA / AREQUIPA / MIRAFLORES / MIRAFLORES AREQUIPA",
+  "AREQUIPA / AREQUIPA / MIRAFLORES / MIRAFLORES AREQUIPA - AEREO",
+  "AREQUIPA / AREQUIPA / PAUCARPATA / URB MANUEL PRADO",
+  "AREQUIPA / AREQUIPA / PAUCARPATA / URB MANUEL PRADO - AEREO",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / TAMBOPATA AV LA JOYA CO",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / TAMBOPATA AV LA JOYA CO - AEREO",
+  "AREQUIPA / ISLAY / MOLLENDO / CERCADO MOLLENDO",
+  "AREQUIPA / ISLAY / MOLLENDO / CERCADO MOLLENDO - AEREO",
+  "ANCASH / HUAYLAS / CARAZ / CARAZ",
+  "CUSCO / CUSCO / WANCHAQ / VELASCO ASTETE",
+  "CUSCO / CUSCO / WANCHAQ / VELASCO ASTETE - AEREO",
+  "JUNIN / CHANCHAMAYO / PERENE / PERENE",
+  "PUNO / CHUCUITO / DESAGUADERO / DESAGUADERO",
+  "PUNO / CHUCUITO / DESAGUADERO / DESAGUADERO - AEREO",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / CALLE LIMA",
+  "MOQUEGUA / MARISCAL NIETO / MOQUEGUA / CALLE LIMA - AEREO",
+  "CAJAMARCA / CAJABAMBA / CAJABAMBA / CAJABAMBA",
+  "CAJAMARCA / CAJABAMBA / CAJABAMBA / CAJABAMBA - AEREO",
+  "LIMA / LIMA / ATE-VITARTE / AV  ESPERANZA",
+  "PUNO / SAN ROMAN / JULIACA / AV. HUANCANE CDRA. 9",
+  "PUNO / SAN ROMAN / JULIACA / AV. HUANCANE CDRA. 9 - AEREO",
+  "SAN MARTIN / RIOJA / PARDO MIGUEL / PARDO MIGUEL NARANJOS",
+  "SAN MARTIN / RIOJA / PARDO MIGUEL / PARDO MIGUEL NARANJOS - AEREO",
+  "PIURA / HUANCABAMBA / HUANCABAMBA / HUANCABAMBA",
+  "PIURA / HUANCABAMBA / HUANCABAMBA / HUANCABAMBA - AEREO",
+  "TACNA / TACNA / CIUDAD NUEVA / TACNA CIUDAD NUEVA",
+  "TACNA / TACNA / CIUDAD NUEVA / TACNA CIUDAD NUEVA - AEREO",
+  "AREQUIPA / AREQUIPA / ALTO SELVA ALEGRE / AV LIMA",
+  "AREQUIPA / AREQUIPA / ALTO SELVA ALEGRE / AV LIMA - AEREO",
+  "CALLAO / CALLAO / VENTANILLA / PACHACUTEC PDRO CHINITAS",
+  "AREQUIPA / AREQUIPA / ALTO SELVA ALEGRE / AV AUGUSTO SALAZAR BONDY",
+  "AREQUIPA / AREQUIPA / ALTO SELVA ALEGRE / AV AUGUSTO SALAZAR BONDY - AEREO",
+  "CUSCO / CUSCO / SAN SEBASTIAN / CACHIMAYO - SAN SEBASTIAN",
+  "CUSCO / CUSCO / SAN SEBASTIAN / CACHIMAYO - SAN SEBASTIAN - AEREO",
+  "CUSCO / CUSCO / SANTIAGO / URB. BANCOPATA AV. INDUSTRIAL",
+  "CUSCO / CUSCO / SANTIAGO / URB. BANCOPATA AV. INDUSTRIAL - AEREO",
+  "TUMBES / TUMBES / LA CRUZ / LA CRUZ  TUMBES",
+  "TUMBES / TUMBES / LA CRUZ / LA CRUZ  TUMBES - AEREO",
+  "AREQUIPA / AREQUIPA / JACOBO HUNTER / JACOBO HUNTER",
+  "AREQUIPA / AREQUIPA / JACOBO HUNTER / JACOBO HUNTER - AEREO",
+  "ICA / ICA / PARCONA / PARCONA",
+  "AREQUIPA / AREQUIPA / PAUCARPATA / AV JESUS",
+  "AREQUIPA / AREQUIPA / PAUCARPATA / AV JESUS  - AEREO",
+  "AREQUIPA / AREQUIPA / SOCABAYA / AV. HORACIO ZEVALLOS",
+  "AREQUIPA / AREQUIPA / SOCABAYA / AV. HORACIO ZEVALLOS - AEREO",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / TAMBOPATA AV CIRCUNVALACION",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / TAMBOPATA AV CIRCUNVALACION - AEREO",
+  "AREQUIPA / CASTILLA / APLAO / APLAO",
+  "AREQUIPA / CASTILLA / APLAO / APLAO  - AEREO",
+  "CUSCO / CUSCO / SAN SEBASTIAN / CUSCO CO VIA EVITAMIENTO",
+  "CUSCO / CUSCO / SAN SEBASTIAN / CUSCO CO VIA EVITAMIENTO  - AEREO",
+  "AREQUIPA / CAYLLOMA / MAJES / AV COLONIZADORES  CO",
+  "AREQUIPA / CAYLLOMA / MAJES / AV COLONIZADORES  CO - AEREO",
+  "LIMA / LIMA / ANCON / ANCON",
+  "LIMA / LIMA / COMAS / AÑO NUEVO",
+  "LIMA / LIMA / ATE-VITARTE / HUAYCAN AV HORACIO ZEVALLOS",
+  "CALLAO / CALLAO / VENTANILLA / PACHACUTEC PDRO VC",
+  "LIMA / LIMA / LA MOLINA / AV ALAMEDA DEL CORREGIDOR",
+  "LIMA / LIMA / LOS OLIVOS / AV. ANGELICA GAMARRA",
+  "LAMBAYEQUE / CHICLAYO / JOSE LEONARDO ORTIZ  / AV  BALTA CDRA. 36",
+  "LAMBAYEQUE / CHICLAYO / JOSE LEONARDO ORTIZ  / AV  BALTA CDRA. 36 - AEREO",
+  "LIMA / LIMA / PUEBLO LIBRE / AV  BOLIVAR",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. CANTA CALLAO CON IZAGUIRRE",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. CANTA CALLAO  CON ALISOS",
+  "LIMA / LIMA / LOS OLIVOS / AV. CARLOS IZAGUIRRE CDRA. 14",
+  "JUNIN / HUANCAYO / EL TAMBO / AV CIRCUNVALACIÓN CRUCE CON MARIATEGUI",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV CIRCUNVALACION SJL",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV. DEL MERCADO",
+  "LIMA / LIMA / LOS OLIVOS / AV. DOS DE OCTUBRE",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. GERARDO UNGER CDRA 64",
+  "PIURA / PIURA / PIURA / AV. GRAU",
+  "PIURA / PIURA / PIURA / AV. GRAU - AEREO",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / AV HNOS UCEDA - AMERICA NORTE",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / AV HNOS UCEDA - AMERICA NORTE - AEREO",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / AV JOSE A. QUIÑONES",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / AV JOSE A. QUIÑONES - AEREO",
+  "ANCASH / SANTA / CHIMBOTE / AV  JOSE GALVEZ",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV JOSE GRANDA CDRA 38",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV JOSE GRANDA CDRA. 25",
+  "LIMA / LIMA / LINCE / AV JOSE LEAL CDRA 6",
+  "LIMA / LIMA / CARABAYLLO / AV JOSE SACO ROJAS",
+  "LIMA / LIMA / LOS OLIVOS / AV. LAS PALMERAS",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. LIMA CDRA 38",
+  "LIMA / LIMA / LOS OLIVOS / AV. LOS PLATINOS",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV MALECON  CHECA CDRA. 1",
+  "LIMA / LIMA / PACHACAMAC / AV MANUEL VALLE",
+  "LIMA / LIMA / ATE-VITARTE / AV  MARCO PUENTE",
+  "LIMA / LIMA / CERCADO LIMA / AV  NICOLAS DUEÑAS CDRA. 5",
+  "ANCASH / SANTA / NUEVO CHIMBOTE / AV. PACÍFICO BELEN",
+  "LIMA / LIMA / VILLA EL SALVADOR / AV. PASTOR SEVILLA",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. PERU 15",
+  "LIMA / LIMA / PUENTE PIEDRA / AV. SAN LORENZO",
+  "LIMA / LIMA / SANTA ANITA / AV  SANTA ROSA - STA ANITA",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV. SANTA ROSA CRUCE AV. EL SOL",
+  "LA LIBERTAD / TRUJILLO / LA ESPERANZA / AV TAHUANTINSUYO",
+  "LA LIBERTAD / TRUJILLO / LA ESPERANZA / AV TAHUANTINSUYO - AEREO",
+  "LIMA / LIMA / COMAS / URB. REPARTICIÓN",
+  "LIMA / LIMA / COMAS / AV. UNIV. PARQUE SINCHI ROCA",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / AV. UNIVERSITARIA CDRA. 16",
+  "PIURA / AYABACA / AYABACA / AYABACA",
+  "PIURA / AYABACA / AYABACA / AYABACA - AEREO",
+  "AYACUCHO / HUAMANGA / CARMEN ALTO / CARMEN ALTO",
+  "AYACUCHO / HUAMANGA / CARMEN ALTO / CARMEN ALTO  - AEREO",
+  "AMAZONAS / BAGUA / BAGUA / BAGUA CAPITAL",
+  "AMAZONAS / BAGUA / BAGUA / BAGUA CAPITAL - AEREO",
+  "CAJAMARCA / CAJAMARCA / LOS BANOS DEL INCA / BAÑOS DEL INCA",
+  "CAJAMARCA / CAJAMARCA / LOS BANOS DEL INCA / BAÑOS DEL INCA - AEREO",
+  "LIMA / BARRANCA / BARRANCA / BARRANCA",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / BARRIO SAN JOSE",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / BARRIO SAN JOSE - AEREO",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / BARRIO SAN MARTÍN",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / BARRIO SAN MARTÍN - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / BAYOVAR",
+  "PIURA / SULLANA / BELLAVISTA / BELLAVISTA SULLANA",
+  "PIURA / SULLANA / BELLAVISTA / BELLAVISTA SULLANA - AEREO",
+  "LIMA / LIMA / INDEPENDENCIA / CALLE A  CON AV INDUSTRIAL",
+  "PIURA / PIURA / 26 DE OCTUBRE / CALLE EMAÚS",
+  "PIURA / PIURA / 26 DE OCTUBRE / CALLE EMAÚS - AEREO",
+  "LIMA / CAÑETE / IMPERIAL / CAÑETE IMPERIAL",
+  "LIMA / LIMA / CARABAYLLO / CARABAYLLO ESTABLO",
+  "PIURA / PIURA / CATACAOS / CATACAOS",
+  "PIURA / PIURA / CATACAOS / CATACAOS - AEREO",
+  "AMAZONAS / CHACHAPOYAS / CHACHAPOYAS / CHACHAPOYAS CO DOS DE MAYO",
+  "AMAZONAS / CHACHAPOYAS / CHACHAPOYAS / CHACHAPOYAS CO DOS DE MAYO - AEREO",
+  "APURIMAC / COTABAMBAS / CHALLHUAHUACHO / CHALLHUAHUACHO",
+  "APURIMAC / COTABAMBAS / CHALLHUAHUACHO / CHALLHUAHUACHO - AEREO",
+  "LA LIBERTAD / VIRU / CHAO / CHAO",
+  "LA LIBERTAD / VIRU / CHAO / CHAO - AEREO",
+  "LA LIBERTAD / CHEPEN / CHEPEN / CHEPEN",
+  "LA LIBERTAD / CHEPEN / CHEPEN / CHEPEN - AEREO",
+  "LIMA / LIMA / CHORRILLOS / CHORRILLOS CO",
+  "PIURA / MORROPON / CHULUCANAS / CHULUCANAS",
+  "PIURA / MORROPON / CHULUCANAS / CHULUCANAS - AEREO",
+  "JUNIN / CHUPACA / CHUPACA / CHUPACA",
+  "LIMA / LIMA / CIENEGUILLA / CIENEGUILLA KM. 14.5",
+  "LIMA / LIMA / COMAS / AV UNIV.  RETABLO",
+  "TUMBES / TUMBES / CORRALES / CORRALES",
+  "TUMBES / TUMBES / CORRALES / CORRALES - AEREO",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / CTRA IQUITOS NAUTA",
+  "LORETO / MAYNAS / IQUITOS SAN JUAN BAUTISTA / CTRA IQUITOS NAUTA - AEREO",
+  "CUSCO / URUBAMBA / URUBAMBA / CUSCO URUBAMBA",
+  "CUSCO / URUBAMBA / URUBAMBA / CUSCO URUBAMBA - AEREO",
+  "LIMA / LIMA / EL AGUSTINO / PUENTE NUEVO",
+  "LA LIBERTAD / TRUJILLO / HUANCHACO / EL MILAGRO",
+  "LIMA / LIMA / SAN MARTIN DE PORRES / FIORI",
+  "ANCASH / SANTA / NUEVO CHIMBOTE / GARATEA",
+  "LA LIBERTAD / PACASMAYO / GUADALUPE / GUADALUPE LA LIBERTAD",
+  "LA LIBERTAD / PACASMAYO / GUADALUPE / GUADALUPE LA LIBERTAD - AEREO",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / CAJAMARCA HORACIO ZEVALLOS",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / CAJAMARCA HORACIO ZEVALLOS - AEREO",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / HUAMBOCANCHA BAJA",
+  "CAJAMARCA / CAJAMARCA / CAJAMARCA / HUAMBOCANCHA BAJA - AEREO",
+  "JUNIN / HUANCAYO / HUANCAYO / HUANCAYO JR. ICA",
+  "CAJAMARCA / CAJAMARCA / JESUS / HUARACLLA",
+  "CAJAMARCA / CAJAMARCA / JESUS / HUARACLLA - AEREO",
+  "ANCASH / HUARMEY / HUARMEY / HUARMEY",
+  "LIMA / LIMA / ATE-VITARTE / HUAYCAN  EL DESCANSO",
+  "LIMA / LIMA / ATE-VITARTE / HUAYCAN AV JOSE C MARIATEGUI",
+  "MADRE DE DIOS / TAHUAMANU / IBERIA / IBERIA",
+  "MADRE DE DIOS / TAHUAMANU / IBERIA / IBERIA - AEREO",
+  "ICA / ICA / ICA / ICA AV. JJ ELIAS",
+  "ICA / ICA / ICA / ICA URB. MANZANILLA",
+  "PIURA / SULLANA / IGNACIO ESCUDERO / IGNACIO ESCUDERO",
+  "PIURA / SULLANA / IGNACIO ESCUDERO / IGNACIO ESCUDERO - AEREO",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS  AV TUPAC AMARU",
+  "LORETO / MAYNAS / IQUITOS / IQUITOS  AV TUPAC AMARU  - AEREO",
+  "CAJAMARCA / JAEN / JAEN / JAEN",
+  "JUNIN / JAUJA / JAUJA / JAUJA",
+  "LIMA / HUAROCHIRI / SAN ANTONIO / JICAMARCA",
+  "LIMA / LIMA / EL AGUSTINO / JIRON ANCASH",
+  "LIMA / LIMA / BRENA / JR. HUARAZ -  BREÑA",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / AV 15 DE AGOSTO",
+  "MADRE DE DIOS / TAMBOPATA / TAMBOPATA / AV 15 DE AGOSTO - AEREO",
+  "LIMA / LIMA / INDEPENDENCIA / LA CINCUENTA",
+  "JUNIN / CHANCHAMAYO / LA MERCED / LA MERCED",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / TRUJILLO LA PERLA",
+  "LA LIBERTAD / TRUJILLO / TRUJILLO / TRUJILLO LA PERLA - AEREO",
+  "ICA / ICA / LA TINGUINA / LA TINGUIÑA",
+  "PIURA / PIURA / LA UNION / LA UNION",
+  "PIURA / PIURA / LA UNION / LA UNION - AEREO",
+  "SAN MARTIN / LAMAS / LAMAS / LAMAS",
+  "SAN MARTIN / LAMAS / LAMAS / LAMAS - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE PANAMERICANA",
+  "LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE / LAMBAYEQUE PANAMERICANA - AEREO",
+  "PIURA / PIURA / LAS LOMAS / LAS LOMAS",
+  "PIURA / PIURA / LAS LOMAS / LAS LOMAS - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / LOS PINOS",
+  "LIMA / LIMA / LURIN / NUEVO LURIN",
+  "LIMA / LIMA / CERCADO LIMA / MALVINAS - JR. GARCIA VILLÓN",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA MANANTAY / MANANTAY  AV AGUAYTIA",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA MANANTAY / MANANTAY  AV AGUAYTIA - AEREO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA MANANTAY / MANANTAY AV TUPAC AMARU",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA MANANTAY / MANANTAY AV TUPAC AMARU - AEREO",
+  "LIMA / LIMA / PACHACAMAC / MANCHAY TRES MARIAS",
+  "MADRE DE DIOS / TAMBOPATA / INAMBARI / MAZUKO",
+  "MADRE DE DIOS / TAMBOPATA / INAMBARI / MAZUKO - AEREO",
+  "LIMA / LIMA / INDEPENDENCIA / MEGAPLAZA INDEPENDENCIA",
+  "LA LIBERTAD / TRUJILLO / MOCHE / MOCHE",
+  "LA LIBERTAD / TRUJILLO / MOCHE / MOCHE - AEREO",
+  "LAMBAYEQUE / CHICLAYO / MONSEFU / MONSEFU",
+  "LAMBAYEQUE / CHICLAYO / MONSEFU / MONSEFU - AEREO",
+  "PIURA / MORROPON / MORROPON / MORROPON",
+  "PIURA / MORROPON / MORROPON / MORROPON - AEREO",
+  "SAN MARTIN / MOYOBAMBA / MOYOBAMBA / MOYOBAMBA  CENTRO",
+  "SAN MARTIN / MOYOBAMBA / MOYOBAMBA / MOYOBAMBA  CENTRO - AEREO",
+  "SAN MARTIN / RIOJA / NUEVA CAJAMARCA / NUEVA CAJAMARCA",
+  "SAN MARTIN / RIOJA / NUEVA CAJAMARCA / NUEVA CAJAMARCA - AEREO",
+  "LAMBAYEQUE / LAMBAYEQUE / OLMOS / OLMOS",
+  "LAMBAYEQUE / LAMBAYEQUE / OLMOS / OLMOS - AEREO",
+  "CUSCO / QUISPICANCHI / OROPESA / OROPESA",
+  "CUSCO / QUISPICANCHI / OROPESA / OROPESA - AEREO",
+  "LA LIBERTAD / OTUZCO / OTUZCO / OTUZCO",
+  "LA LIBERTAD / OTUZCO / OTUZCO / OTUZCO - AEREO",
+  "PASCO / OXAPAMPA / OXAPAMPA / OXAPAMPA",
+  "LA LIBERTAD / CHEPEN / PACANGA / PACANGUILLA",
+  "LA LIBERTAD / CHEPEN / PACANGA / PACANGUILLA - AEREO",
+  "LA LIBERTAD / PACASMAYO / PACASMAYO / PACASMAYO LAS PALMERAS",
+  "LA LIBERTAD / PACASMAYO / PACASMAYO / PACASMAYO LAS PALMERAS - AEREO",
+  "CALLAO / CALLAO / VENTANILLA / PACHACUTEC  AV 150",
+  "LA LIBERTAD / ASCOPE / PAIJAN / PAIJAN",
+  "LA LIBERTAD / ASCOPE / PAIJAN / PAIJAN - AEREO",
+  "PIURA / AYABACA / PAIMAS / PAIMAS",
+  "PIURA / AYABACA / PAIMAS / PAIMAS - AEREO",
+  "PIURA / PAITA / PAITA / PAITA",
+  "PIURA / PAITA / PAITA / PAITA - AEREO",
+  "TUMBES / TUMBES / TUMBES / PAMPA GRANDE TUMBES",
+  "TUMBES / TUMBES / TUMBES / PAMPA GRANDE TUMBES - AEREO",
+  "LIMA / LIMA / LA MOLINA / PARQUE LA MOLINA",
+  "LAMBAYEQUE / CHICLAYO / PATAPO / PATAPO",
+  "LAMBAYEQUE / CHICLAYO / PATAPO / PATAPO  - AEREO",
+  "JUNIN / HUANCAYO / PILCOMAYO / PILCOMAYO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / SJL-AV.PROCERES",
+  "LIMA / LIMA / PUEBLO LIBRE / AV. LA MARINA",
+  "LIMA / LIMA / PUENTE PIEDRA / PUENTE ARICA",
+  "LIMA / LIMA / LURIN / PUENTE LURIN",
+  "LORETO / MAYNAS / PUNCHANA / PUNCHANA",
+  "LORETO / MAYNAS / PUNCHANA / PUNCHANA  - AEREO",
+  "LIMA / LIMA / PUNTA HERMOSA / PUNTA HERMOSA",
+  "LAMBAYEQUE / CHICLAYO / REQUE / REQUE",
+  "LAMBAYEQUE / CHICLAYO / REQUE / REQUE  - AEREO",
+  "SAN MARTIN / RIOJA / RIOJA / RIOJA",
+  "SAN MARTIN / RIOJA / RIOJA / RIOJA - AEREO",
+  "ICA / ICA / SALAS / SALAS ICA",
+  "JUNIN / HUANCAYO / HUANCAYO / SAN CARLOS HUANCAYO",
+  "CAJAMARCA / SAN IGNACIO / SAN IGNACIO / SAN IGNACIO",
+  "SAN MARTIN / EL DORADO / SAN JOSE DE SISA / SAN JOSE DE SISA",
+  "SAN MARTIN / EL DORADO / SAN JOSE DE SISA / SAN JOSE DE SISA  - AEREO",
+  "AYACUCHO / HUAMANGA / SAN JUAN BAUTISTA / SAN JUAN BAUTISTA",
+  "AYACUCHO / HUAMANGA / SAN JUAN BAUTISTA / SAN JUAN BAUTISTA - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV. 13 DE ENERO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / AV SANTA ROSA URB LOS ALAMOS",
+  "SAN MARTIN / BELLAVISTA / BELLAVISTA / SAN MARTIN BELLAVISTA",
+  "SAN MARTIN / BELLAVISTA / BELLAVISTA / SAN MARTIN BELLAVISTA - AEREO",
+  "ANCASH / SANTA / SANTA / SANTA",
+  "LIMA / LIMA / CARABAYLLO / SANTO DOMINGO",
+  "CUSCO / CHUMBIVILCAS / SANTO TOMAS / SANTO TOMAS",
+  "CUSCO / CHUMBIVILCAS / SANTO TOMAS / SANTO TOMAS - AEREO",
+  "SAN MARTIN / HUALLAGA / SAPOSOA / SAPOSOA",
+  "PIURA / SECHURA / SECHURA / SECHURA",
+  "PIURA / SECHURA / SECHURA / SECHURA - AEREO",
+  "SAN MARTIN / RIOJA / ELIAS SOPLIN VARGAS  / SEGUNDA JERUSALEN",
+  "SAN MARTIN / RIOJA / ELIAS SOPLIN VARGAS  / SEGUNDA JERUSALEN - AEREO",
+  "LIMA / LIMA / SAN JUAN DE MIRAFLORES / ATOCONGO",
+  "PIURA / SULLANA / SULLANA / SULLANA SANTA ROSA",
+  "PIURA / SULLANA / SULLANA / SULLANA SANTA ROSA - AEREO",
+  "ICA / CHINCHA / SUNAMPE / SUNAMPE  CO",
+  "LIMA / BARRANCA / SUPE / SUPE",
+  "PIURA / PIURA / TAMBO GRANDE / TAMBO GRANDE",
+  "PIURA / PIURA / TAMBO GRANDE / TAMBO GRANDE - AEREO",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / TARAPOTO CO JR ALFONSO UGARTE",
+  "SAN MARTIN / SAN MARTIN / TARAPOTO / TARAPOTO CO JR ALFONSO UGARTE - AEREO",
+  "CAJAMARCA / CONTUMAZA / YONAN / TEMBLADERA  CAJAMARCA",
+  "CAJAMARCA / CONTUMAZA / YONAN / TEMBLADERA  CAJAMARCA - AEREO",
+  "JUNIN / JAUJA / JAUJA / TERMINAL JAUJA",
+  "JUNIN / JAUJA / JAUJA / TERMINAL JAUJA - AEREO",
+  "LIMA / LIMA / COMAS / AV. TRAPICHE",
+  "ANCASH / SANTA / NUEVO CHIMBOTE / TRES DE OCTUBRE",
+  "LIMA / LIMA / ATE-VITARTE / URB SANTA ELVIRA",
+  "LIMA / LIMA / CARABAYLLO / TUNGASUCA",
+  "LA LIBERTAD / VIRU / VIRU / PUENTE VIRU",
+  "LA LIBERTAD / VIRU / VIRU / PUENTE VIRU - AEREO",
+  "LA LIBERTAD / TRUJILLO / LA ESPERANZA / WICHANZAO",
+  "LA LIBERTAD / TRUJILLO / LA ESPERANZA / WICHANZAO - AEREO",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / YARINACOCHA  AV UNIVERSITARIA",
+  "UCAYALI / CORONEL PORTILLO / PUCALLPA YARINACOCHA / YARINACOCHA  AV UNIVERSITARIA - AEREO",
+  "LIMA / LIMA / SAN JUAN DE LURIGANCHO / JR CHINCHAYSUYO CDRA 4",
+  "TUMBES / ZARUMILLA / ZARUMILLA / ZARUMILLA",
+  "TUMBES / ZARUMILLA / ZARUMILLA / ZARUMILLA - AEREO"
+];
+
+// ============================================
+// VARIABLES GLOBALES
+// ============================================
+let cart = [];
+let selectedMethod = 'yape';
+
+// ============================================
+// FUNCIONES DE CARGA DE CARRITO
+// ============================================
+function loadCart() {
+  const checkoutCart = localStorage.getItem('checkout_cart');
+  const dzoeCart = localStorage.getItem('dzoe_cart');
+  
+  if (checkoutCart) { 
+    try { cart = JSON.parse(checkoutCart); } catch(e) { cart = []; } 
+  } else if (dzoeCart) { 
+    try { cart = JSON.parse(dzoeCart); } catch(e) { cart = []; } 
+  }
+  
+  if (cart.length > 0) { 
+    cart = cart.map(item => ({ 
+      name: item.name, 
+      price: Number(item.price), 
+      qty: Number(item.qty) || 1, 
+      img: item.img || item.image || 'https://via.placeholder.com/80' 
+    })); 
+    localStorage.setItem('dzoe_cart', JSON.stringify(cart)); 
+    localStorage.setItem('checkout_cart', JSON.stringify(cart)); 
+  }
+  
+  if (cart.length === 0) showEmptyCart();
+  else renderSummary();
+}
+
+function showEmptyCart() {
+  const layout = document.getElementById('checkout-layout');
+  if (layout) layout.innerHTML = '<div class="empty-checkout"><span>🛒</span><h2>Tu carrito está vacío</h2><p>Agrega productos antes de continuar con el pago.</p><a href="index.html" class="confirm-btn" style="display:inline-flex;text-decoration:none;width:auto;margin:20px auto 0;"><i class="fas fa-arrow-left"></i> Volver a la tienda</a></div>';
+}
+
+function renderSummary() {
+  const itemsContainer = document.getElementById('summary-items');
+  const subtotalSpan = document.getElementById('subtotal-val');
+  const totalSpan = document.getElementById('total-val');
+  if (!itemsContainer) return;
+  
+  let subtotal = 0, html = '';
+  cart.forEach((item) => { 
+    const itemTotal = item.price * item.qty; 
+    subtotal += itemTotal; 
+    html += '<div class="sum-item"><div class="sum-img">' + (item.img ? '<img src="' + item.img + '" alt="' + item.name + '" onerror="this.src=\'https://via.placeholder.com/80\'">' : '<div style="display:flex;align-items:center;justify-content:center;height:100%;">📦</div>') + '</div><div style="flex:1;"><div class="sum-name">' + item.name + '</div><div class="sum-qty">Cantidad: ' + item.qty + '</div></div><div class="sum-price">S/ ' + itemTotal.toFixed(2) + '</div></div>'; 
+  });
+  
+  itemsContainer.innerHTML = html;
+  subtotalSpan.textContent = subtotal.toFixed(2);
+  totalSpan.textContent = subtotal.toFixed(2);
+}
+
+// ============================================
+// GUARDAR PEDIDO EN SUPABASE
+// ============================================
+async function saveOrderToSupabase(orderData) {
+  const { data, error } = await supabaseClient
+    .from('orders')
+    .insert([orderData])
+    .select();
+  
+  if (error) {
+    console.error('Error guardando pedido en Supabase:', error);
+    throw error;
+  }
+  
+  console.log('✅ Pedido guardado en Supabase:', data);
+  return data;
+}
+
+function saveOrderToStorage(orderData) {
+  let existingOrders = JSON.parse(localStorage.getItem('dzoe_orders')) || [];
+  existingOrders.push(orderData);
+  localStorage.setItem('dzoe_orders', JSON.stringify(existingOrders));
+}
+
+// ============================================
+// VALIDACIÓN Y ENVÍO
+// ============================================
+function validateForm() {
+  let isValid = true;
+  
+  const fields = [
+    { id: 'f-name', err: 'err-name', msg: 'Ingresa tu nombre' },
+    { id: 'f-lastname', err: 'err-lastname', msg: 'Ingresa tu apellido' }
+  ];
+  
+  fields.forEach(field => { 
+    const input = document.getElementById(field.id); 
+    const error = document.getElementById(field.err); 
+    if (!input.value.trim()) { 
+      error.textContent = field.msg; 
+      input.classList.add('error'); 
+      isValid = false; 
+    } else { 
+      error.textContent = ''; 
+      input.classList.remove('error'); 
+    } 
+  });
+  
+  const inputId = document.getElementById('f-id'); 
+  const errorId = document.getElementById('err-id'); 
+  const idValue = inputId.value.trim();
+  
+  if (!idValue) { 
+    errorId.textContent = 'Ingresa tu DNI'; 
+    inputId.classList.add('error'); 
+    isValid = false; 
+  } else if (!/^\d+$/.test(idValue)) { 
+    errorId.textContent = 'El DNI debe contener solo números'; 
+    inputId.classList.add('error'); 
+    isValid = false; 
+  } else if (idValue.length !== 8) { 
+    errorId.textContent = 'El DNI debe tener exactamente 8 dígitos'; 
+    inputId.classList.add('error'); 
+    isValid = false; 
+  } else { 
+    errorId.textContent = ''; 
+    inputId.classList.remove('error'); 
+  }
+  
+  const inputPhone = document.getElementById('f-phone'); 
+  const errorPhone = document.getElementById('err-phone'); 
+  const phoneValue = inputPhone.value.trim();
+  
+  if (!phoneValue) { 
+    errorPhone.textContent = 'Ingresa tu teléfono'; 
+    inputPhone.classList.add('error'); 
+    isValid = false; 
+  } else if (!/^\d+$/.test(phoneValue)) { 
+    errorPhone.textContent = 'El teléfono debe contener solo números'; 
+    inputPhone.classList.add('error'); 
+    isValid = false; 
+  } else if (phoneValue.length !== 9) { 
+    errorPhone.textContent = 'El teléfono debe tener exactamente 9 dígitos'; 
+    inputPhone.classList.add('error'); 
+    isValid = false; 
+  } else { 
+    errorPhone.textContent = ''; 
+    inputPhone.classList.remove('error'); 
+  }
+  
+  const destino = document.getElementById('shalom-destino-value').value; 
+  const destinoErr = document.getElementById('err-destino');
+  
+  if (!destino) { 
+    destinoErr.textContent = 'Selecciona una agencia de destino'; 
+    document.getElementById('destino-search').classList.add('error'); 
+    isValid = false; 
+  } else { 
+    destinoErr.textContent = ''; 
+    document.getElementById('destino-search').classList.remove('error'); 
+  }
+  
+  return isValid;
+}
+
+function buildWhatsAppMessage(orderId) {
+  const name = document.getElementById('f-name').value.trim(); 
+  const lastname = document.getElementById('f-lastname').value.trim(); 
+  const id = document.getElementById('f-id').value.trim(); 
+  const phone = document.getElementById('f-phone').value.trim(); 
+  const whatsapp = document.getElementById('f-whatsapp').value.trim(); 
+  const destino = document.getElementById('shalom-destino-value').value; 
+  const note = document.getElementById('f-note').value.trim();
+  
+  const methodNames = { yape: 'Yape 💜', plin: 'Plin 💙', sip: 'Sip 💚', bank: 'Transferencia Interbank 🏦' };
+  let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  
+  let message = "🛍️ *NUEVO PEDIDO - D'Zoe Perú*\n\n";
+  message += "📋 *Número de pedido:* #" + orderId + "\n\n";
+  message += "👤 *Cliente:* " + name + " " + lastname + "\n";
+  message += "🪪 *DNI:* " + id + "\n";
+  message += "📱 *Teléfono:* " + phone + "\n";
+  if (whatsapp) message += "💬 *WhatsApp:* " + whatsapp + "\n";
+  message += "\n📦 *PRODUCTOS:*\n";
+  message += cart.map(item => "• " + item.name + " × " + item.qty + " — S/ " + (item.price * item.qty).toFixed(2)).join('\n');
+  message += "\n\n💰 *Subtotal:* S/ " + subtotal.toFixed(2) + "\n";
+  message += "*💳 Método de pago:* " + methodNames[selectedMethod] + "\n\n";
+  message += "🚚 *Envío (Shalom Express):*\n";
+  message += "Agencia: " + destino + "\n";
+  message += "*El costo de envío se calculará y coordinará aparte*\n\n";
+  if (note) message += "📝 *Nota:* " + note + "\n\n";
+  message += "✨ *¡Gracias por tu compra!*";
+  
+  return encodeURIComponent(message);
+}
+
+async function confirmOrder() {
+  if (!validateForm()) { 
+    showToast('⚠️ Completa los campos obligatorios correctamente'); 
+    return; 
+  }
+  
+  const btn = document.getElementById('confirm-btn'); 
+  btn.disabled = true; 
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+  
+  try {
+    const name = document.getElementById('f-name').value.trim(); 
+    const lastname = document.getElementById('f-lastname').value.trim(); 
+    const id = document.getElementById('f-id').value.trim(); 
+    const phone = document.getElementById('f-phone').value.trim(); 
+    const whatsapp = document.getElementById('f-whatsapp').value.trim(); 
+    const destino = document.getElementById('shalom-destino-value').value; 
+    const note = document.getElementById('f-note').value.trim();
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    const orderId = Date.now();
+    
+    const orderData = {
+      id: orderId,
+      name: name,
+      lastname: lastname,
+      dni: id,
+      phone: phone,
+      whatsapp: whatsapp || phone,
+      destination: destino,
+      payment_method: selectedMethod,
+      items: cart.map(item => ({
+        name: item.name,
+        price: item.price,
+        qty: item.qty,
+        size: item.size || '',
+        img: item.img || ''
+      })),
+      total: subtotal,
+      status: 'pending',
+      note: note,
+      created_at: new Date().toISOString()
+    };;
+    
+    // Guardar en Supabase
+    await saveOrderToSupabase(orderData);
+    
+    // Respaldar en localStorage
+    saveOrderToStorage(orderData);
+    
+    // Construir mensaje de WhatsApp
+    const message = buildWhatsAppMessage(orderId);
+    const whatsappLink = "https://wa.me/51956063145?text=" + message;
+    const whatsappLinkElement = document.getElementById('whatsapp-link');
+    if (whatsappLinkElement) whatsappLinkElement.href = whatsappLink;
+    
+    // Mostrar pantalla de éxito
+    const checkoutLayout = document.getElementById('checkout-layout');
+    const successScreen = document.getElementById('success-screen');
+    if (checkoutLayout) checkoutLayout.style.display = 'none';
+    if (successScreen) successScreen.classList.add('visible');
+    
+    // Limpiar carrito
+    localStorage.removeItem('dzoe_cart');
+    localStorage.removeItem('checkout_cart');
+    
+    // Actualizar pasos
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    
+    if (step1) { 
+      step1.classList.remove('active'); 
+      step1.classList.add('done'); 
+      const stepNum = step1.querySelector('.step-num'); 
+      if (stepNum) stepNum.textContent = '✓'; 
+    }
+    if (step2) { 
+      step2.classList.remove('active'); 
+      step2.classList.add('done'); 
+      const stepNum = step2.querySelector('.step-num'); 
+      if (stepNum) stepNum.textContent = '✓'; 
+    }
+    if (step3) step3.classList.add('active');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+  } catch (error) {
+    console.error('Error al guardar el pedido:', error);
+    showToast('❌ Error al procesar el pedido. Intenta nuevamente.');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar pedido';
+  }
+}
+
+// ============================================
+// FUNCIONES DE UI
+// ============================================
+function initSearchableDropdown() {
+  const wrapper = document.getElementById('dropdown-wrapper');
+  const searchInput = document.getElementById('destino-search');
+  const hiddenInput = document.getElementById('shalom-destino-value');
+  const resultsList = document.getElementById('dropdown-results');
+  if (!wrapper) return;
+  
+  function renderResults(items) { 
+    resultsList.innerHTML = ''; 
+    if (items.length === 0) { 
+      resultsList.innerHTML = '<div class="dropdown-item no-results">No se encontraron agencias</div>'; 
+      return; 
+    } 
+    items.forEach(item => { 
+      const div = document.createElement('div'); 
+      div.className = 'dropdown-item'; 
+      div.textContent = item; 
+      div.onclick = () => { 
+        searchInput.value = item; 
+        hiddenInput.value = item; 
+        wrapper.classList.remove('open'); 
+        const errorDiv = document.getElementById('err-destino'); 
+        if (errorDiv) errorDiv.textContent = ''; 
+        searchInput.classList.remove('error'); 
+      }; 
+      resultsList.appendChild(div); 
+    }); 
+  }
+  
+  searchInput.addEventListener('focus', () => { 
+    wrapper.classList.add('open'); 
+    renderResults(agenciasShalom); 
+  });
+  
+  searchInput.addEventListener('input', () => { 
+    const query = searchInput.value.toLowerCase(); 
+    const filtered = agenciasShalom.filter(a => a.toLowerCase().includes(query)); 
+    renderResults(filtered); 
+  });
+  
+  document.addEventListener('click', (e) => { 
+    if (!wrapper.contains(e.target)) wrapper.classList.remove('open'); 
+  });
+}
+
+function selectMethod(method) {
+  selectedMethod = method;
+  ['yape','plin','sip','bank'].forEach(function(m) {
+    var btn = document.getElementById('m-' + m);
+    var detail = document.getElementById('detail-' + m);
+    if (btn) {
+      if (m === method) { btn.classList.add('selected'); }
+      else { btn.classList.remove('selected'); }
+    }
+    if (detail) {
+      if (m === method) { detail.classList.add('visible'); detail.style.display = 'block'; }
+      else { detail.classList.remove('visible'); detail.style.display = 'none'; }
+    }
+  });
+}
+
+function previewUpload(input, previewId) { 
+  const file = input.files[0]; 
+  if (!file) return; 
+  const reader = new FileReader(); 
+  reader.onload = (e) => { 
+    const preview = document.getElementById(previewId); 
+    if (preview) { 
+      preview.querySelector('img').src = e.target.result; 
+      preview.style.display = 'block'; 
+    } 
+    const uploadArea = input.closest('.upload-area'); 
+    if (uploadArea) { 
+      uploadArea.querySelector('.upload-icon').innerHTML = '<i class="fas fa-check-circle"></i>'; 
+      uploadArea.querySelector('.upload-text').textContent = file.name; 
+    } 
+  }; 
+  reader.readAsDataURL(file); 
+}
+
+function copyText(text) { 
+  navigator.clipboard.writeText(text); 
+  showToast('📋 Copiado al portapapeles'); 
+}
+
+function showToast(message) { 
+  const toast = document.createElement('div'); 
+  toast.className = 'toast'; 
+  toast.innerHTML = '<i class="fas fa-check-circle"></i> ' + message; 
+  document.body.appendChild(toast); 
+  setTimeout(() => toast.remove(), 2000); 
+}
+
+// ============================================
+// VALIDACIONES DE SOLO NÚMEROS
+// ============================================
+document.addEventListener('DOMContentLoaded', () => { 
+  const soloNumeros = (e) => { 
+    e.target.value = e.target.value.replace(/\D/g, ''); 
+  }; 
+  document.getElementById('f-id')?.addEventListener('input', soloNumeros); 
+  document.getElementById('f-phone')?.addEventListener('input', soloNumeros); 
+});
+
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+function init() { 
+  loadCart(); 
+  initSearchableDropdown(); 
+  
+  // Escuchar cambios en el carrito desde otras pestañas
+  window.addEventListener('storage', (e) => { 
+    if (e.key === 'dzoe_cart' || e.key === 'checkout_cart') loadCart(); 
+  }); 
+}
+
+init();
+// Ensure initial payment method is visible
+setTimeout(function() { selectMethod('yape'); }, 100);
+</script>
+</body>
+</html>

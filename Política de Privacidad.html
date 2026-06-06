@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad — D'Zoe Peru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --rose:#e8a4c0; --rose-dark:#d4809f; --rose-light:#f9dde9; --rose-soft:#fef0f5;
+  --mint:#7ecfc8; --mint-light:#c8eeeb; --mint-soft:#e8f9f7;
+  --lavender:#c3aee4; --lav-light:#ede4f9;
+  --peach:#f5b97e; --peach-light:#fde9d1;
+  --sky:#8ec8f0; --sky-light:#d6edfa;
+  --cream:#fdf8f2; --text:#4a4460; --text-soft:#8a85a0;
+  --white:#fff; --border:#ede8f5;
+  --shadow-sm:0 2px 12px rgba(195,174,228,.12);
+  --shadow-md:0 8px 28px rgba(195,174,228,.20);
+  --shadow-lg:0 16px 40px rgba(195,174,228,.28);
+}
+html{ scroll-behavior:smooth; }
+body{ font-family:'Nunito',sans-serif; background:var(--cream); color:var(--text); overflow-x:hidden; }
+.container{ width:1100px; max-width:95%; margin:auto; }
+
+#hearts-canvas{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+/* ── TOP BAR ── */
+.topbar{ background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8); color:#fff; padding:9px 0; font-size:12.5px; font-weight:600; position:relative; z-index:10; }
+.topbar-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.topbar-left i{ margin-right:6px; }
+.topbar-right{ display:flex; align-items:center; gap:16px; }
+.topbar-right a{ color:rgba(255,255,255,.9); font-size:14px; transition:.2s; text-decoration:none; }
+.topbar-right a:hover{ color:#fff; transform:scale(1.15); }
+.topbar-right span{ font-size:12px; border-left:1px solid rgba(255,255,255,.4); padding-left:14px; }
+
+/* ── HEADER ── */
+.header{ background:#fff; position:sticky; top:0; z-index:100; box-shadow:var(--shadow-sm); border-bottom:1px solid var(--border); }
+.header-wrapper{ height:76px; display:flex; align-items:center; justify-content:space-between; }
+.logo{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-icon{ width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg,var(--rose-light),var(--lav-light)); display:flex; align-items:center; justify-content:center; font-size:21px; box-shadow:var(--shadow-sm); }
+.logo-text h1{ font-family:'Baloo 2',cursive; color:var(--rose); font-size:28px; line-height:1; }
+.logo-text span{ color:var(--text-soft); letter-spacing:3px; font-size:11px; }
+.back-btn{ display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text-soft); font-size:13px; font-weight:700; border:2px solid var(--border); padding:8px 18px; border-radius:30px; transition:.2s; }
+.back-btn:hover{ background:var(--rose-soft); border-color:var(--rose); color:var(--rose-dark); }
+
+/* ══════════════════
+   HERO
+══════════════════ */
+.hero{
+  background:linear-gradient(150deg,#fff0f8 0%,#f3e8ff 40%,#e8f9f7 100%);
+  padding:72px 0 60px; position:relative; z-index:1; overflow:hidden;
+}
+.hero::after{ content:''; position:absolute; bottom:-1px; left:0; right:0; height:55px; background:var(--cream); clip-path:ellipse(55% 100% at 50% 100%); }
+.bubble{ position:absolute; border-radius:50%; opacity:.15; animation:floatB ease-in-out infinite; }
+.b1{ width:200px; height:200px; background:var(--lavender); top:-60px; right:5%; animation-duration:9s; }
+.b2{ width:110px; height:110px; background:var(--rose); top:55%; left:2%; animation-duration:12s; }
+.b3{ width:70px; height:70px; background:var(--mint); bottom:30px; right:18%; animation-duration:10s; }
+@keyframes floatB{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-18px); } }
+
+.hero-inner{ display:grid; grid-template-columns:1fr auto; gap:40px; align-items:center; position:relative; z-index:2; }
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.85); border:1.5px solid var(--rose-light);
+  backdrop-filter:blur(6px); padding:7px 18px; border-radius:30px;
+  font-size:11.5px; font-weight:800; color:var(--rose-dark);
+  letter-spacing:.8px; margin-bottom:18px; text-transform:uppercase;
+}
+.hero-eyebrow i{ color:var(--rose); }
+.hero-title{ font-family:'Baloo 2',cursive; font-size:50px; font-weight:800; line-height:1.1; color:var(--text); margin-bottom:16px; }
+.hero-title span{ background:linear-gradient(135deg,var(--rose),var(--lavender)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero-desc{ font-size:14.5px; color:var(--text-soft); line-height:1.75; max-width:500px; margin-bottom:26px; }
+.hero-desc strong{ color:var(--text); }
+.hero-meta{ display:flex; gap:14px; flex-wrap:wrap; }
+.meta-pill{
+  display:flex; align-items:center; gap:7px;
+  background:#fff; border:1.5px solid var(--border);
+  padding:8px 15px; border-radius:20px;
+  font-size:12px; font-weight:700; color:var(--text-soft);
+  box-shadow:var(--shadow-sm);
+}
+.meta-pill i{ font-size:13px; }
+.meta-pill.rose i{ color:var(--rose); }
+.meta-pill.mint i{ color:var(--mint); }
+.meta-pill.lav  i{ color:var(--lavender); }
+
+.hero-shield{
+  width:190px; height:190px; border-radius:50%;
+  background:linear-gradient(135deg,rgba(195,174,228,.2),rgba(232,164,192,.2));
+  border:2px solid rgba(232,164,192,.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:80px;
+  animation:shieldPulse 4s ease-in-out infinite;
+  box-shadow:0 12px 40px rgba(195,174,228,.25), 0 0 0 18px rgba(232,164,192,.08);
+  flex-shrink:0;
+}
+@keyframes shieldPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.05); } }
+
+/* ══════════════════
+   ÍNDICE LATERAL + CONTENIDO
+══════════════════ */
+.layout{ display:grid; grid-template-columns:260px 1fr; gap:36px; padding:50px 0 80px; position:relative; z-index:1; align-items:start; }
+
+/* Índice sticky */
+.index-panel{
+  position:sticky; top:100px;
+  background:#fff; border-radius:24px;
+  border:1.5px solid var(--border);
+  box-shadow:var(--shadow-md);
+  overflow:hidden;
+}
+.index-header{
+  padding:20px 22px 16px;
+  background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));
+  border-bottom:2px solid var(--border);
+}
+.index-header h4{ font-family:'Baloo 2',cursive; font-size:17px; color:var(--text); display:flex; align-items:center; gap:8px; }
+.index-header h4 i{ color:var(--rose); }
+.index-header p{ font-size:11px; color:var(--text-soft); margin-top:3px; font-weight:600; }
+.index-list{ list-style:none; padding:12px 0; }
+.index-list li a{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 22px; font-size:13px; font-weight:700;
+  color:var(--text-soft); text-decoration:none; transition:.2s;
+  border-left:3px solid transparent;
+}
+.index-list li a:hover{ color:var(--rose-dark); background:var(--rose-soft); border-left-color:var(--rose); }
+.index-list li a.active{ color:var(--rose-dark); background:var(--rose-soft); border-left-color:var(--rose); }
+.index-list li a i{ font-size:13px; width:16px; text-align:center; }
+.index-num{ margin-left:auto; background:var(--border); color:var(--text-soft); font-size:10px; font-weight:800; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.index-footer{ padding:14px 22px; border-top:1px solid var(--border); }
+.updated-badge{ display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--text-soft); font-weight:600; }
+.updated-badge i{ color:var(--mint); }
+
+/* Contenido principal */
+.content-area{ display:flex; flex-direction:column; gap:28px; }
+
+.policy-block{
+  background:#fff; border-radius:26px;
+  border:1.5px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden; transition:.25s;
+}
+.policy-block:hover{ box-shadow:var(--shadow-md); border-color:var(--rose-light); }
+
+.block-header{
+  padding:22px 28px 18px;
+  display:flex; align-items:center; gap:16px;
+  border-bottom:2px solid var(--border);
+}
+.block-icon{
+  width:50px; height:50px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center; font-size:22px;
+  flex-shrink:0;
+}
+.bi-rose  { background:linear-gradient(135deg,var(--rose-soft),var(--rose-light)); }
+.bi-lav   { background:linear-gradient(135deg,var(--lav-light),#ddd0f5); }
+.bi-mint  { background:linear-gradient(135deg,var(--mint-soft),var(--mint-light)); }
+.bi-peach { background:linear-gradient(135deg,var(--peach-light),#fcd4ac); }
+.bi-sky   { background:linear-gradient(135deg,var(--sky-light),#b8d8f5); }
+.bi-yellow{ background:linear-gradient(135deg,#fef7d0,#fceea0); }
+.bi-green { background:linear-gradient(135deg,#edfaf3,#c8f5de); }
+.bi-dark  { background:linear-gradient(135deg,#ede8f5,#ddd0f5); }
+
+.block-header-text h3{ font-family:'Baloo 2',cursive; font-size:20px; font-weight:800; color:var(--text); margin-bottom:2px; }
+.block-header-text p{ font-size:12px; color:var(--text-soft); font-weight:600; }
+.block-num{
+  margin-left:auto; font-family:'Baloo 2',cursive; font-size:28px; font-weight:800;
+  background:linear-gradient(135deg,var(--rose-light),var(--lav-light));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  flex-shrink:0;
+}
+
+.block-body{ padding:24px 28px; }
+.block-body p{ font-size:14px; color:var(--text-soft); line-height:1.8; margin-bottom:14px; }
+.block-body p:last-child{ margin-bottom:0; }
+.block-body p strong{ color:var(--text); }
+.block-body h5{ font-size:14px; font-weight:800; color:var(--text); margin:18px 0 8px; display:flex; align-items:center; gap:7px; }
+.block-body h5 i{ color:var(--rose); font-size:13px; }
+
+/* Listas */
+.policy-list{ list-style:none; display:flex; flex-direction:column; gap:8px; margin:10px 0 14px; }
+.policy-list li{
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13.5px; color:var(--text-soft); line-height:1.6;
+  padding:10px 14px; border-radius:12px;
+  background:var(--cream); border:1px solid var(--border);
+  transition:.2s;
+}
+.policy-list li:hover{ background:#fff; border-color:var(--rose-light); }
+.policy-list li i{ font-size:13px; margin-top:2px; flex-shrink:0; }
+.policy-list li .li-rose{ color:var(--rose); }
+.policy-list li .li-mint{ color:var(--mint); }
+.policy-list li .li-lav { color:var(--lavender); }
+.policy-list li .li-peach{ color:var(--peach); }
+.policy-list li .li-sky { color:var(--sky); }
+
+/* Info boxes */
+.info-box{
+  border-radius:16px; padding:16px 18px;
+  display:flex; gap:12px; align-items:flex-start;
+  margin:16px 0;
+}
+.info-box.mint-box{ background:var(--mint-soft); border:1.5px solid var(--mint-light); }
+.info-box.rose-box{ background:var(--rose-soft); border:1.5px solid var(--rose-light); }
+.info-box.lav-box{ background:var(--lav-light); border:1.5px solid rgba(195,174,228,.4); }
+.info-box.peach-box{ background:var(--peach-light); border:1.5px solid rgba(245,185,126,.4); }
+.info-box i{ font-size:17px; flex-shrink:0; margin-top:1px; }
+.info-box.mint-box i{ color:var(--mint); }
+.info-box.rose-box i{ color:var(--rose); }
+.info-box.lav-box  i{ color:var(--lavender); }
+.info-box.peach-box i{ color:var(--peach); }
+.info-box p{ font-size:13px; color:var(--text-soft); line-height:1.65; }
+.info-box p strong{ color:var(--text); }
+
+/* Derechos grid */
+.rights-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+.right-card{
+  background:var(--cream); border:1.5px solid var(--border);
+  border-radius:16px; padding:16px;
+  display:flex; align-items:flex-start; gap:12px;
+  transition:.25s;
+}
+.right-card:hover{ background:#fff; border-color:var(--rose-light); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+.right-icon{ width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+.rc-rose  { background:var(--rose-soft); }
+.rc-mint  { background:var(--mint-soft); }
+.rc-lav   { background:var(--lav-light); }
+.rc-peach { background:var(--peach-light); }
+.rc-sky   { background:var(--sky-light); }
+.rc-yellow{ background:#fef7d0; }
+.right-card h5{ font-size:13px; font-weight:800; color:var(--text); margin-bottom:3px; }
+.right-card p{ font-size:12px; color:var(--text-soft); line-height:1.5; }
+
+/* Cookies table */
+.cookie-table{ width:100%; border-collapse:collapse; margin:14px 0; border-radius:14px; overflow:hidden; }
+.cookie-table th{ background:linear-gradient(135deg,var(--rose-soft),var(--lav-light)); padding:12px 16px; font-size:12.5px; font-weight:800; color:var(--text); text-align:left; border-bottom:2px solid var(--border); }
+.cookie-table td{ padding:11px 16px; font-size:13px; color:var(--text-soft); border-bottom:1px solid var(--border); line-height:1.5; }
+.cookie-table tr:last-child td{ border-bottom:none; }
+.cookie-table tr:hover td{ background:var(--rose-soft); }
+.badge-pill{ display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:800; }
+.bp-rose{ background:var(--rose-soft); color:var(--rose-dark); }
+.bp-mint{ background:var(--mint-soft); color:#2a9090; }
+.bp-lav{ background:var(--lav-light); color:#7055b8; }
+
+/* Contacto final block */
+.contact-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:16px 0; }
+.contact-item{
+  background:var(--cream); border:1.5px solid var(--border);
+  border-radius:16px; padding:18px; text-align:center;
+  transition:.25s;
+}
+.contact-item:hover{ background:#fff; border-color:var(--rose-light); transform:translateY(-3px); box-shadow:var(--shadow-sm); }
+.contact-item i{ font-size:26px; margin-bottom:10px; display:block; }
+.contact-item h5{ font-size:13px; font-weight:800; color:var(--text); margin-bottom:4px; }
+.contact-item p{ font-size:12px; color:var(--text-soft); }
+.contact-item a{ color:var(--rose-dark); font-weight:700; text-decoration:none; font-size:13px; }
+.contact-item a:hover{ text-decoration:underline; }
+
+/* Progress top bar */
+.progress-bar-wrap{ position:fixed; top:0; left:0; right:0; height:3px; z-index:9999; background:rgba(237,232,245,.4); }
+.progress-bar{ height:3px; background:linear-gradient(90deg,var(--rose),var(--lavender),var(--mint)); width:0%; transition:width .1s; }
+
+/* ── FOOTER ── */
+.footer{ background:linear-gradient(160deg,#3b3054,#4e3d6e,#3b3054); color:#fff; padding:44px 0 22px; position:relative; z-index:1; margin-top:20px; }
+.footer::before{ content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--rose),var(--lavender),var(--mint)); }
+.footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
+.footer-brand{ font-family:'Baloo 2',cursive; font-size:24px; font-weight:800; background:linear-gradient(90deg,var(--rose-light),var(--lav-light)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.footer-links{ display:flex; gap:20px; flex-wrap:wrap; }
+.footer-links a{ color:rgba(255,255,255,.55); font-size:12.5px; font-weight:600; text-decoration:none; transition:.2s; }
+.footer-links a:hover{ color:var(--rose-light); }
+.footer-social{ display:flex; gap:10px; }
+.social-btn{ width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid rgba(232,164,192,.25); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.7); font-size:13px; text-decoration:none; transition:.2s; }
+.social-btn:hover{ background:var(--rose); border-color:var(--rose); color:#fff; }
+.footer-copy{ text-align:center; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); font-size:11.5px; color:rgba(255,255,255,.3); }
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .layout{ grid-template-columns:1fr; }
+  .index-panel{ position:static; }
+  .hero-inner{ grid-template-columns:1fr; }
+  .hero-shield{ display:none; }
+  .rights-grid{ grid-template-columns:1fr; }
+  .contact-grid{ grid-template-columns:1fr 1fr; }
+}
+@media(max-width:600px){
+  .hero-title{ font-size:36px; }
+  .block-header{ flex-wrap:wrap; }
+  .block-num{ display:none; }
+  .contact-grid{ grid-template-columns:1fr; }
+  .cookie-table{ font-size:12px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- Barra de progreso de lectura -->
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<canvas id="hearts-canvas"></canvas>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-left"><i class="fas fa-shield-alt"></i> <strong>DATOS PROTEGIDOS</strong> — Tu privacidad es nuestra prioridad 🔒</div>
+    <div class="topbar-right">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <span>📞 +51 956 063 145</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container header-wrapper">
+    <a class="logo" href="index.html">
+      <div class="logo-icon">👧</div>
+      <div class="logo-text"><h1>D'Zoe</h1><span>PERÚ</span></div>
+    </a>
+    <a class="back-btn" href="index.html"><i class="fas fa-arrow-left"></i> Volver a la tienda</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><i class="fas fa-shield-alt"></i> DOCUMENTO LEGAL</div>
+      <h1 class="hero-title">Política de<br><span>Privacidad</span> 🔒</h1>
+      <p class="hero-desc">
+        En D'Zoe Peru nos comprometemos a proteger y respetar tu privacidad. Este documento explica <strong>qué datos recopilamos</strong>, cómo los usamos y cuáles son tus derechos como consumidora.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-pill rose"><i class="fas fa-calendar-alt"></i> Última actualización: Junio 2026</div>
+        <div class="meta-pill mint"><i class="fas fa-gavel"></i> Ley N° 29733 — Perú</div>
+        <div class="meta-pill lav"><i class="fas fa-lock"></i> Datos 100% seguros</div>
+      </div>
+    </div>
+    <div class="hero-shield">🛡️</div>
+  </div>
+</section>
+
+<!-- LAYOUT PRINCIPAL -->
+<div class="container layout">
+
+  <!-- ÍNDICE LATERAL -->
+  <aside class="index-panel">
+    <div class="index-header">
+      <h4><i class="fas fa-list-ul"></i> Contenido</h4>
+      <p>Haz clic para navegar</p>
+    </div>
+    <ul class="index-list" id="indexList">
+      <li><a href="#s1"><i class="fas fa-info-circle" style="color:var(--rose)"></i> Información general<span class="index-num">1</span></a></li>
+      <li><a href="#s2"><i class="fas fa-database" style="color:var(--lavender)"></i> Datos que recopilamos<span class="index-num">2</span></a></li>
+      <li><a href="#s3"><i class="fas fa-cogs" style="color:var(--mint)"></i> Uso de los datos<span class="index-num">3</span></a></li>
+      <li><a href="#s4"><i class="fas fa-share-alt" style="color:var(--peach)"></i> Compartir información<span class="index-num">4</span></a></li>
+      <li><a href="#s5"><i class="fas fa-lock" style="color:var(--sky)"></i> Seguridad<span class="index-num">5</span></a></li>
+      <li><a href="#s6"><i class="fas fa-cookie-bite" style="color:var(--rose)"></i> Cookies<span class="index-num">6</span></a></li>
+      <li><a href="#s7"><i class="fas fa-user-shield" style="color:var(--lavender)"></i> Tus derechos<span class="index-num">7</span></a></li>
+      <li><a href="#s8"><i class="fas fa-child" style="color:var(--mint)"></i> Menores de edad<span class="index-num">8</span></a></li>
+      <li><a href="#s9"><i class="fas fa-sync-alt" style="color:var(--peach)"></i> Cambios a esta política<span class="index-num">9</span></a></li>
+      <li><a href="#s10"><i class="fas fa-envelope" style="color:var(--sky)"></i> Contacto<span class="index-num">10</span></a></li>
+    </ul>
+    <div class="index-footer">
+      <div class="updated-badge"><i class="fas fa-check-circle"></i> Vigente desde Junio 2026</div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="content-area">
+
+    <!-- 1. Información general -->
+    <div class="policy-block" id="s1">
+      <div class="block-header">
+        <div class="block-icon bi-rose">ℹ️</div>
+        <div class="block-header-text">
+          <h3>Información General</h3>
+          <p>¿Quiénes somos y a qué se aplica esta política?</p>
+        </div>
+        <div class="block-num">01</div>
+      </div>
+      <div class="block-body">
+        <p>Bienvenida a <strong>D'Zoe Peru</strong>. Somos una empresa peruana dedicada a la venta de <strong>ropa infantil importada para niñas</strong>, con operaciones en Lima y envíos a todo el país.</p>
+        <p>Esta Política de Privacidad aplica a todos los datos personales que recopilamos a través de <strong>nuestra tienda web, WhatsApp, redes sociales</strong> y cualquier otro canal de comunicación que uses para comprar o consultar con nosotros.</p>
+        <div class="info-box mint-box">
+          <i class="fas fa-shield-alt"></i>
+          <p>Nos regimos por la <strong>Ley N° 29733 — Ley de Protección de Datos Personales del Perú</strong> y su reglamento (D.S. N° 003-2013-JUS). Tu privacidad es una prioridad para nosotros.</p>
+        </div>
+        <p>Al utilizar nuestros servicios, aceptas los términos descritos en esta política. Si no estás de acuerdo, te pedimos que no compartas tus datos con nosotros.</p>
+      </div>
+    </div>
+
+    <!-- 2. Datos que recopilamos -->
+    <div class="policy-block" id="s2">
+      <div class="block-header">
+        <div class="block-icon bi-lav">🗂️</div>
+        <div class="block-header-text">
+          <h3>Datos que Recopilamos</h3>
+          <p>Qué información guardamos sobre ti</p>
+        </div>
+        <div class="block-num">02</div>
+      </div>
+      <div class="block-body">
+        <h5><i class="fas fa-user"></i> Datos que tú nos proporcionas</h5>
+        <ul class="policy-list">
+          <li><i class="fas fa-id-card li-rose"></i> <span><strong>Nombre y apellidos</strong> — para identificarte y personalizar tu atención.</span></li>
+          <li><i class="fas fa-envelope li-lav"></i> <span><strong>Correo electrónico</strong> — para enviarte confirmaciones de pedido y novedades.</span></li>
+          <li><i class="fas fa-phone li-mint"></i> <span><strong>Teléfono / WhatsApp</strong> — para coordinar tu pedido y envío.</span></li>
+          <li><i class="fas fa-map-marker-alt li-peach"></i> <span><strong>Dirección de entrega</strong> — necesaria para procesar el envío con Courier Shalom.</span></li>
+          <li><i class="fas fa-file-alt li-sky"></i> <span><strong>Número de documento (DNI/CE)</strong> — solo cuando sea requerido por procesos legales como el Libro de Reclamaciones.</span></li>
+        </ul>
+        <h5><i class="fas fa-chart-bar"></i> Datos que recopilamos automáticamente</h5>
+        <ul class="policy-list">
+          <li><i class="fas fa-globe li-lav"></i> <span><strong>Dirección IP y ubicación aproximada</strong> — para mejorar la experiencia de navegación.</span></li>
+          <li><i class="fas fa-mouse-pointer li-mint"></i> <span><strong>Páginas visitadas y productos vistos</strong> — para mostrarte contenido relevante.</span></li>
+          <li><i class="fas fa-mobile-alt li-rose"></i> <span><strong>Tipo de dispositivo y navegador</strong> — para optimizar el diseño de la tienda.</span></li>
+        </ul>
+        <div class="info-box rose-box">
+          <i class="fas fa-heart"></i>
+          <p><strong>Nunca recopilamos</strong> datos sensibles como contraseñas bancarias, números de tarjeta completos, ni información médica o religiosa.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Uso de los datos -->
+    <div class="policy-block" id="s3">
+      <div class="block-header">
+        <div class="block-icon bi-mint">⚙️</div>
+        <div class="block-header-text">
+          <h3>Uso de los Datos</h3>
+          <p>Para qué usamos tu información</p>
+        </div>
+        <div class="block-num">03</div>
+      </div>
+      <div class="block-body">
+        <p>Usamos tus datos únicamente para los siguientes propósitos:</p>
+        <ul class="policy-list">
+          <li><i class="fas fa-shopping-bag li-rose"></i> <span><strong>Procesar y gestionar tu pedido</strong> — confirmación, empaque y coordinación de envío.</span></li>
+          <li><i class="fas fa-truck li-mint"></i> <span><strong>Coordinar el envío</strong> con Courier Shalom y mantenerte informada del estado de tu paquete.</span></li>
+          <li><i class="fas fa-headset li-lav"></i> <span><strong>Brindarte atención al cliente</strong> y dar seguimiento a consultas, cambios o reclamos.</span></li>
+          <li><i class="fas fa-bell li-peach"></i> <span><strong>Enviarte notificaciones</strong> sobre tu pedido, novedades o promociones especiales (solo si lo autorizaste).</span></li>
+          <li><i class="fas fa-chart-line li-sky"></i> <span><strong>Mejorar nuestra tienda</strong> analizando cómo navegas y qué productos te interesan.</span></li>
+          <li><i class="fas fa-gavel li-rose"></i> <span><strong>Cumplir obligaciones legales</strong> como el registro en el Libro de Reclamaciones.</span></li>
+        </ul>
+        <div class="info-box lav-box">
+          <i class="fas fa-ban"></i>
+          <p><strong>No vendemos</strong> ni cedemos tus datos a empresas de publicidad o terceros con fines comerciales propios. Tu información es exclusivamente para brindarte el mejor servicio.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Compartir información -->
+    <div class="policy-block" id="s4">
+      <div class="block-header">
+        <div class="block-icon bi-peach">🤝</div>
+        <div class="block-header-text">
+          <h3>Compartir Información</h3>
+          <p>Con quién podemos compartir tus datos</p>
+        </div>
+        <div class="block-num">04</div>
+      </div>
+      <div class="block-body">
+        <p>Solo compartimos tus datos con terceros cuando es <strong>estrictamente necesario</strong> para prestarte el servicio:</p>
+        <ul class="policy-list">
+          <li><i class="fas fa-truck li-mint"></i><span><strong>Courier Shalom</strong> — compartimos tu nombre, dirección y teléfono para realizar la entrega de tu pedido.</span></li>
+          <li><i class="fas fa-database li-lav"></i><span><strong>Supabase (base de datos)</strong> — plataforma segura donde almacenamos las reclamaciones registradas en nuestro libro electrónico.</span></li>
+          <li><i class="fas fa-gavel li-peach"></i><span><strong>Autoridades legales</strong> — únicamente si existe una orden judicial o requerimiento legal obligatorio.</span></li>
+        </ul>
+        <div class="info-box peach-box">
+          <i class="fas fa-handshake"></i>
+          <p>Todos los terceros con quienes compartimos datos están obligados a <strong>mantener la confidencialidad</strong> y solo usar la información para el fin específico acordado.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Seguridad -->
+    <div class="policy-block" id="s5">
+      <div class="block-header">
+        <div class="block-icon bi-sky">🔐</div>
+        <div class="block-header-text">
+          <h3>Seguridad de tus Datos</h3>
+          <p>Cómo protegemos tu información</p>
+        </div>
+        <div class="block-num">05</div>
+      </div>
+      <div class="block-body">
+        <p>Implementamos medidas técnicas y organizativas para proteger tus datos contra accesos no autorizados, pérdida o alteración:</p>
+        <ul class="policy-list">
+          <li><i class="fas fa-lock li-sky"></i><span><strong>Conexión HTTPS</strong> en toda nuestra tienda web para cifrar la comunicación.</span></li>
+          <li><i class="fas fa-server li-lav"></i><span><strong>Almacenamiento seguro</strong> en Supabase con cifrado en reposo y políticas de acceso restringido.</span></li>
+          <li><i class="fas fa-user-lock li-mint"></i><span><strong>Acceso limitado</strong> — solo el personal autorizado de D'Zoe Peru puede acceder a tus datos.</span></li>
+          <li><i class="fas fa-shield-alt li-rose"></i><span><strong>Revisión periódica</strong> de nuestras prácticas de seguridad para mantenerlas actualizadas.</span></li>
+        </ul>
+        <div class="info-box mint-box">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Aunque implementamos todas las medidas posibles, <strong>ningún sistema es 100% infalible</strong>. Si detectas algún uso no autorizado de tus datos, contáctanos de inmediato.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Cookies -->
+    <div class="policy-block" id="s6">
+      <div class="block-header">
+        <div class="block-icon bi-yellow">🍪</div>
+        <div class="block-header-text">
+          <h3>Uso de Cookies</h3>
+          <p>Pequeños archivos que mejoran tu experiencia</p>
+        </div>
+        <div class="block-num">06</div>
+      </div>
+      <div class="block-body">
+        <p>Nuestra tienda puede utilizar <strong>cookies</strong> (pequeños archivos de texto que se guardan en tu dispositivo) para mejorar tu experiencia de navegación.</p>
+        <table class="cookie-table">
+          <thead>
+            <tr>
+              <th>Tipo de Cookie</th>
+              <th>Propósito</th>
+              <th>Duración</th>
+              <th>¿Necesaria?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Sesión / Carrito</strong></td>
+              <td>Guardar tu carrito de compras y preferencias</td>
+              <td>Sesión</td>
+              <td><span class="badge-pill bp-rose">Sí</span></td>
+            </tr>
+            <tr>
+              <td><strong>Lista de deseos</strong></td>
+              <td>Recordar los productos que marcaste como favoritos</td>
+              <td>30 días</td>
+              <td><span class="badge-pill bp-mint">Funcional</span></td>
+            </tr>
+            <tr>
+              <td><strong>Analíticas</strong></td>
+              <td>Entender cómo navegas para mejorar la tienda</td>
+              <td>90 días</td>
+              <td><span class="badge-pill bp-lav">Opcional</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Puedes <strong>desactivar las cookies</strong> desde la configuración de tu navegador. Sin embargo, algunas funciones de la tienda (como el carrito) podrían no funcionar correctamente.</p>
+      </div>
+    </div>
+
+    <!-- 7. Tus derechos -->
+    <div class="policy-block" id="s7">
+      <div class="block-header">
+        <div class="block-icon bi-lav">⚖️</div>
+        <div class="block-header-text">
+          <h3>Tus Derechos (Ley N° 29733)</h3>
+          <p>Lo que puedes exigir en cualquier momento</p>
+        </div>
+        <div class="block-num">07</div>
+      </div>
+      <div class="block-body">
+        <p>Como titular de tus datos personales, la ley peruana te garantiza los siguientes derechos:</p>
+        <div class="rights-grid">
+          <div class="right-card">
+            <div class="right-icon rc-rose">🔍</div>
+            <div>
+              <h5>Derecho de Acceso</h5>
+              <p>Puedes pedirnos que te mostremos qué datos tenemos sobre ti.</p>
+            </div>
+          </div>
+          <div class="right-card">
+            <div class="right-icon rc-mint">✏️</div>
+            <div>
+              <h5>Derecho de Rectificación</h5>
+              <p>Puedes solicitar que corrijamos datos incorrectos o incompletos.</p>
+            </div>
+          </div>
+          <div class="right-card">
+            <div class="right-icon rc-lav">🗑️</div>
+            <div>
+              <h5>Derecho de Cancelación</h5>
+              <p>Puedes pedirnos que eliminemos tus datos cuando ya no sean necesarios.</p>
+            </div>
+          </div>
+          <div class="right-card">
+            <div class="right-icon rc-peach">🚫</div>
+            <div>
+              <h5>Derecho de Oposición</h5>
+              <p>Puedes oponerte al tratamiento de tus datos para fines de marketing.</p>
+            </div>
+          </div>
+          <div class="right-card">
+            <div class="right-icon rc-sky">📦</div>
+            <div>
+              <h5>Portabilidad</h5>
+              <p>Puedes solicitar una copia de tus datos en un formato legible.</p>
+            </div>
+          </div>
+          <div class="right-card">
+            <div class="right-icon rc-yellow">⏸️</div>
+            <div>
+              <h5>Limitación del Tratamiento</h5>
+              <p>Puedes pedir que pausemos el uso de tus datos en ciertos casos.</p>
+            </div>
+          </div>
+        </div>
+        <div class="info-box rose-box">
+          <i class="fas fa-envelope"></i>
+          <p>Para ejercer cualquiera de estos derechos, escríbenos a <strong>ventas@dzoeperu.com</strong> o por WhatsApp al <strong>+51 956 063 145</strong>. Responderemos en un plazo máximo de <strong>20 días hábiles</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Menores de edad -->
+    <div class="policy-block" id="s8">
+      <div class="block-header">
+        <div class="block-icon bi-mint">👧</div>
+        <div class="block-header-text">
+          <h3>Menores de Edad</h3>
+          <p>Protección especial para los más pequeños</p>
+        </div>
+        <div class="block-num">08</div>
+      </div>
+      <div class="block-body">
+        <p>D'Zoe Peru es una tienda de <strong>ropa para niñas</strong>, pero nuestros servicios van dirigidos a <strong>padres, madres y tutores legales</strong> mayores de 18 años.</p>
+        <div class="info-box mint-box">
+          <i class="fas fa-child"></i>
+          <p><strong>No recopilamos intencionalmente datos personales de menores de 18 años.</strong> Si eres padre o madre y crees que tu hija menor ha proporcionado datos sin tu consentimiento, contáctanos para eliminarlos de inmediato.</p>
+        </div>
+        <p>Los datos de menores que aparezcan en pedidos (como nombre en la etiqueta del paquete) son tratados con la misma confidencialidad y protección que los datos de adultos.</p>
+      </div>
+    </div>
+
+    <!-- 9. Cambios a esta política -->
+    <div class="policy-block" id="s9">
+      <div class="block-header">
+        <div class="block-icon bi-peach">🔄</div>
+        <div class="block-header-text">
+          <h3>Cambios a esta Política</h3>
+          <p>Cómo te avisamos si algo cambia</p>
+        </div>
+        <div class="block-num">09</div>
+      </div>
+      <div class="block-body">
+        <p>Podemos actualizar esta Política de Privacidad ocasionalmente para reflejar <strong>cambios en nuestra práctica, tecnología o requisitos legales</strong>.</p>
+        <ul class="policy-list">
+          <li><i class="fas fa-calendar li-rose"></i><span>La fecha de última actualización siempre aparece al inicio de este documento.</span></li>
+          <li><i class="fas fa-bell li-mint"></i><span>Cambios importantes serán comunicados por WhatsApp o correo a clientes activos.</span></li>
+          <li><i class="fas fa-eye li-lav"></i><span>Te recomendamos revisar esta página periódicamente para estar siempre informada.</span></li>
+        </ul>
+        <p>El uso continuado de nuestra tienda después de publicar cambios implica tu <strong>aceptación de la política actualizada</strong>.</p>
+      </div>
+    </div>
+
+    <!-- 10. Contacto -->
+    <div class="policy-block" id="s10">
+      <div class="block-header">
+        <div class="block-icon bi-sky">📬</div>
+        <div class="block-header-text">
+          <h3>Contacto y Consultas</h3>
+          <p>Estamos aquí para resolver tus dudas</p>
+        </div>
+        <div class="block-num">10</div>
+      </div>
+      <div class="block-body">
+        <p>Si tienes alguna pregunta sobre esta Política de Privacidad o sobre cómo tratamos tus datos, puedes contactarnos por cualquiera de estos medios:</p>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <i class="fab fa-whatsapp" style="color:#25d366"></i>
+            <h5>WhatsApp</h5>
+            <a href="https://wa.me/51956063145" target="_blank">+51 956 063 145</a>
+            <p>Respuesta rápida</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope" style="color:var(--rose)"></i>
+            <h5>Correo</h5>
+            <a href="mailto:ventas@dzoeperu.com">ventas@dzoeperu.com</a>
+            <p>Hasta 48 horas</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt" style="color:var(--lavender)"></i>
+            <h5>Tienda física</h5>
+            <p>Pasaje Gamarra N°173<br>La Victoria, Lima</p>
+          </div>
+        </div>
+        <div class="info-box lav-box" style="margin-top:8px;">
+          <i class="fas fa-balance-scale"></i>
+          <p>Si consideras que el tratamiento de tus datos infringe la normativa peruana, tienes derecho a presentar una reclamación ante la <strong>Autoridad Nacional de Protección de Datos Personales (MINJUS)</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">D'Zoe Peru 🌸</div>
+      <div class="footer-links">
+        <a href="index.html">Tienda</a>
+        <a href="envio.html">Envíos</a>
+        <a href="libro-reclamaciones.html">Libro de Reclamaciones</a>
+        <a href="#">Cambios y Devoluciones</a>
+      </div>
+      <div class="footer-social">
+        <a class="social-btn" href="#"><i class="fab fa-facebook-f"></i></a>
+        <a class="social-btn" href="#"><i class="fab fa-instagram"></i></a>
+        <a class="social-btn" href="#"><i class="fab fa-tiktok"></i></a>
+        <a class="social-btn" href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 D'Zoe Peru — Todos los derechos reservados | Política de Privacidad conforme a Ley N° 29733</div>
+  </div>
+</footer>
+
+<script>
+/* CORAZONES */
+(function(){
+  const canvas=document.getElementById('hearts-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+  const C=['#ffd6e7','#ffc0cb','#f9b8d4','#e8a4c0','#c3aee4','#b8e0f7','#b8f0e8','#fce4a8'];
+  const S=['♥','💕','💗','💖','💝','🌸','✿','❀'];
+  function H(){ this.reset(true); }
+  H.prototype.reset=function(i){ this.x=Math.random()*canvas.width; this.y=i?Math.random()*-canvas.height:-30; this.size=10+Math.random()*15; this.speed=0.6+Math.random()*1.3; this.opacity=0.3+Math.random()*0.4; this.swayT=Math.random()*Math.PI*2; this.swaySpeed=0.01+Math.random()*0.02; this.sway=(Math.random()-.5)*1.1; this.color=C[Math.floor(Math.random()*C.length)]; this.symbol=S[Math.floor(Math.random()*S.length)]; };
+  H.prototype.update=function(){ this.swayT+=this.swaySpeed; this.x+=Math.sin(this.swayT)*this.sway; this.y+=this.speed; if(this.y>canvas.height+40)this.reset(false); };
+  H.prototype.draw=function(){ ctx.save(); ctx.globalAlpha=this.opacity; ctx.font=this.size+'px serif'; ctx.fillStyle=this.color; ctx.translate(this.x,this.y); ctx.fillText(this.symbol,0,0); ctx.restore(); };
+  const hearts=Array.from({length:28},()=>new H());
+  (function a(){ ctx.clearRect(0,0,canvas.width,canvas.height); hearts.forEach(h=>{h.update();h.draw();}); requestAnimationFrame(a); })();
+})();
+
+/* BARRA DE PROGRESO DE LECTURA */
+window.addEventListener('scroll',()=>{
+  const doc=document.documentElement;
+  const total=doc.scrollHeight-doc.clientHeight;
+  const pct=(window.scrollY/total)*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+});
+
+/* ÍNDICE ACTIVO */
+(function(){
+  const sections=document.querySelectorAll('.policy-block');
+  const links=document.querySelectorAll('#indexList a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const id=e.target.id;
+        const active=document.querySelector(`#indexList a[href="#${id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(s=>obs.observe(s));
+})();
+</script>
+</body>
+</html>
