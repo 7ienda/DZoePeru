@@ -624,6 +624,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn active" data-section="dashboard-section"><i class="fas fa-chart-pie"></i><span>Dashboard</span></button>
     <span class="menu-label">Tienda</span>
     <button class="menu-btn" data-section="inventory-section"><i class="fas fa-boxes-stacked"></i><span>Inventario</span><span class="badge" id="badge-products">0</span></button>
+    <button class="menu-btn" data-section="sold-products-section"><i class="fas fa-bag-shopping"></i><span>Productos Vendidos</span><span class="badge" id="badge-sold-products">0</span></button>
     <button class="menu-btn" data-section="categories-section"><i class="fas fa-tags"></i><span>Categorías</span><span class="badge" id="badge-categories">0</span></button>
     <button class="menu-btn" data-section="sales-section"><i class="fas fa-receipt"></i><span>Ventas</span><span class="badge" id="badge-orders">0</span></button>
     <span class="menu-label">Personas</span>
@@ -706,6 +707,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div class="mini-stat">
             <div class="mini-stat-icon" style="background:var(--mint-soft);color:var(--mint)"><i class="fas fa-coins"></i></div>
             <div><div class="mini-stat-label">Ingreso hoy</div><div class="mini-stat-val" id="dash-today">S/0</div></div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon" style="background:var(--green-light);color:var(--green)"><i class="fas fa-sack-dollar"></i></div>
+            <div><div class="mini-stat-label">Ganancia productos vendidos</div><div class="mini-stat-val" id="dash-profit-sold" style="color:var(--green);">S/0</div></div>
           </div>
           <div class="mini-stat">
             <div class="mini-stat-icon" style="background:var(--peach-light);color:var(--peach)"><i class="fas fa-triangle-exclamation"></i></div>
@@ -1248,7 +1253,130 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       </div>
     </div>
 
-    <!-- ====== CONFIGURACIÓN ====== -->
+    <!-- ====== PRODUCTOS VENDIDOS ====== -->
+    <div id="sold-products-section" class="page-section" style="display:none;">
+      <div class="stats-grid" style="margin-bottom:24px;">
+        <div class="stat-card green">
+          <div class="stat-card-icon"><i class="fas fa-bag-shopping"></i></div>
+          <h3>Total Vendidos</h3>
+          <div class="stat-value" id="sold-total-count">0</div>
+          <div class="stat-change">Unidades vendidas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div>
+          <h3>Ingresos por Ventas</h3>
+          <div class="stat-value" id="sold-total-revenue">S/ 0</div>
+          <div class="stat-change">Suma de ventas confirmadas</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-card-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Ganancia Total</h3>
+          <div class="stat-value" id="sold-total-profit" style="color:var(--green);">S/ 0</div>
+          <div class="stat-change">Precio venta − Costo</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-card-icon"><i class="fas fa-trophy"></i></div>
+          <h3>Producto Top</h3>
+          <div class="stat-value" style="font-size:16px;" id="sold-top-product">—</div>
+          <div class="stat-change" id="sold-top-units"></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-bag-shopping" style="color:var(--rose)"></i> Productos Vendidos</div>
+          <div class="inventory-controls">
+            <div class="search-input-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" class="search-input" id="sold-search" placeholder="Buscar producto..." oninput="renderSoldProducts()">
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div id="sold-products-grid" class="products-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PRÉSTAMOS ====== -->
+    <div id="prestamos-section" class="page-section" style="display:none;">
+      <!-- KPIs -->
+      <div class="stats-grid" style="margin-bottom:24px;">
+        <div class="stat-card orange">
+          <div class="stat-card-icon"><i class="fas fa-hand-holding-dollar"></i></div>
+          <h3>Me prestaron</h3>
+          <div class="stat-value" id="prest-recibido">S/ 0</div>
+          <div class="stat-change">Total recibido</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-card-icon"><i class="fas fa-handshake"></i></div>
+          <h3>Presté</h3>
+          <div class="stat-value" id="prest-dado">S/ 0</div>
+          <div class="stat-change">Total dado</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+          <h3>Pendientes</h3>
+          <div class="stat-value" id="prest-pendientes">0</div>
+          <div class="stat-change">Sin saldar</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-card-icon"><i class="fas fa-check-double"></i></div>
+          <h3>Saldados</h3>
+          <div class="stat-value" id="prest-saldados">0</div>
+          <div class="stat-change">Pagados</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-hand-holding-dollar" style="color:var(--rose)"></i> Registro de Préstamos</div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <!-- Filtros -->
+            <button id="loan-filter-all" class="btn btn-ghost btn-sm" onclick="filterLoans('all')" style="border:1.5px solid var(--rose);color:var(--rose);">Todos</button>
+            <button id="loan-filter-me_prestaron" class="btn btn-ghost btn-sm" onclick="filterLoans('me_prestaron')">Me prestaron</button>
+            <button id="loan-filter-preste" class="btn btn-ghost btn-sm" onclick="filterLoans('preste')">Presté</button>
+            <button id="loan-filter-pending" class="btn btn-ghost btn-sm" onclick="filterLoans('pending')">Pendientes</button>
+            <button id="loan-filter-paid" class="btn btn-ghost btn-sm" onclick="filterLoans('paid')">Saldados</button>
+            <!-- Botón agregar -->
+            <button class="btn btn-primary btn-sm" onclick="openLoanModal()"><i class="fas fa-plus"></i> Agregar préstamo</button>
+          </div>
+        </div>
+        <div class="section-body">
+          <div id="prestamos-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Nuevo Préstamo -->
+    <div class="modal-overlay" id="prestamo-modal">
+      <div class="modal" style="max-width:480px;">
+        <div class="modal-head">
+          <div class="modal-title">🤝 Registrar Préstamo</div>
+          <button class="modal-close" onclick="closeLoanModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <!-- Tipo de préstamo -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+            <label id="loan-type-me_prestaron-label" style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:2px solid transparent;background:var(--orange-light);cursor:pointer;font-weight:700;font-size:13px;color:var(--orange);transition:.2s;">
+              <input type="radio" name="loan-type" value="me_prestaron" style="display:none;" onchange="updateLoanTypeUI()"> 💸 Me prestaron
+            </label>
+            <label id="loan-type-preste-label" style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:2px solid transparent;background:var(--blue-light);cursor:pointer;font-weight:700;font-size:13px;color:var(--blue);transition:.2s;">
+              <input type="radio" name="loan-type" value="preste" style="display:none;" onchange="updateLoanTypeUI()"> 🤝 Presté
+            </label>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group" style="grid-column:1/-1;"><label>Persona *</label><input type="text" id="loan-persona" placeholder="Nombre de quien prestó o recibió"></div>
+            <div class="form-group"><label>Monto (S/) *</label><input type="number" id="loan-monto" placeholder="0.00" step="0.01" min="0"></div>
+            <div class="form-group"><label>Fecha</label><input type="date" id="loan-fecha"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Nota</label><input type="text" id="loan-nota" placeholder="Motivo o descripción..."></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="saveLoan()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-ghost" onclick="closeLoanModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ====== CLIENTES ====== -->
     <div id="clients-section" class="page-section" style="display:none;">
@@ -1429,6 +1557,78 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
   </div><!-- end page-content -->
 </div><!-- end main -->
 
+<!-- ══════════════════════════════════════════
+     MODAL: REGISTRAR VENTA MANUAL
+     ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="manual-sale-modal">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">💰 Registrar Venta</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="manual-sale-product-label"></div>
+      </div>
+      <button class="modal-close" onclick="closeManualSale()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <!-- Product info -->
+      <div id="manual-sale-product-info" style="display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:14px;padding:12px 16px;margin-bottom:18px;border:1.5px solid var(--line2);"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label>Talla *</label>
+          <select id="ms-size" onchange="updateManualSalePrice()">
+            <option value="">— Selecciona talla —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Precio (S/) *</label>
+          <input type="number" id="ms-price" placeholder="0.00" step="0.01" oninput="updateManualSaleTotal()">
+        </div>
+        <div class="form-group">
+          <label>Cantidad *</label>
+          <input type="number" id="ms-qty" value="1" min="1" oninput="updateManualSaleTotal()">
+        </div>
+        <div class="form-group">
+          <label>Método de pago</label>
+          <select id="ms-method">
+            <option value="yape">💜 Yape</option>
+            <option value="plin">💙 Plin</option>
+            <option value="sip">💚 Sip</option>
+            <option value="bank">🏦 Transferencia</option>
+            <option value="cash">💵 Efectivo</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Nombre cliente *</label><input type="text" id="ms-name" placeholder="Nombre"></div>
+        <div class="form-group"><label>Apellido</label><input type="text" id="ms-lastname" placeholder="Apellido"></div>
+        <div class="form-group"><label>DNI</label><input type="text" id="ms-dni" placeholder="12345678"></div>
+        <div class="form-group"><label>Teléfono</label><input type="text" id="ms-phone" placeholder="9XXXXXXXX"></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Destino Shalom</label><input type="text" id="ms-destination" placeholder="Ej: Huancayo, Piura..."></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Nota</label><input type="text" id="ms-note" placeholder="Opcional..."></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding:14px 18px;background:var(--green-light);border-radius:14px;border:1.5px solid rgba(46,156,107,.25);">
+        <span style="font-weight:700;color:var(--green);">Total a cobrar</span>
+        <span id="ms-total-preview" style="font-family:Baloo2,cursive;font-size:24px;font-weight:800;color:var(--green);">S/ 0.00</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="saveManualSale()"><i class="fas fa-cash-register"></i> Guardar venta</button>
+        <button class="btn btn-ghost" onclick="closeManualSale()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: CONFIRMAR VENTA RÁPIDA
+     ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="confirm-sale-modal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-head">
+      <div class="modal-title">✅ Confirmar Venta</div>
+      <button class="modal-close" onclick="document.getElementById('confirm-sale-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="confirm-sale-body"></div>
+  </div>
+</div>
+
 <!-- Sale Detail Modal -->
 <div class="modal-overlay" id="sale-modal">
   <div class="modal">
@@ -1546,6 +1746,10 @@ async function loadAllData() {
   renderCategoriesList();
   renderCategorySelect();
   updateDashboard();
+  // Badge productos vendidos
+  const soldNames = new Set();
+  (orders||[]).filter(o=>o.status==='confirmed').forEach(o=>(o.items||[]).forEach(it=>soldNames.add(it.name)));
+  const bsp = document.getElementById('badge-sold-products'); if(bsp) bsp.textContent = soldNames.size;
   showToast('✅ Datos sincronizados');
 }
 
@@ -1586,6 +1790,20 @@ function updateDashboard() {
   const _elC = document.getElementById('dash-cancelled'); if (_elC) _elC.textContent = _cancelled;
   const _elT = document.getElementById('dash-today'); if (_elT) _elT.textContent = 'S/'+_todayAmt.toFixed(0);
   const _elL = document.getElementById('dash-low-stock'); if (_elL) _elL.textContent = _lowStock;
+
+  // Ganancia de productos vendidos (precio venta - costo * qty, solo órdenes confirmadas)
+  let _profitSold = 0;
+  orders.filter(o => o.status === 'confirmed').forEach(o => {
+    (o.items||[]).forEach(it => {
+      const prod = products.find(p => p.name === it.name);
+      const sizeObj = prod?.sizes?.find(s => s.size === it.size);
+      const cost = sizeObj?.cost || 0;
+      const price = it.price || sizeObj?.price || 0;
+      _profitSold += (price - cost) * (it.qty || 1);
+    });
+  });
+  const _elProfit = document.getElementById('dash-profit-sold');
+  if (_elProfit) _elProfit.textContent = 'S/'+_profitSold.toFixed(0);
 
   // Sales chart by month
   const months = {};
@@ -1864,13 +2082,83 @@ function openSaleDetail(id) {
 function closeSaleModal() { document.getElementById('sale-modal').classList.remove('open'); }
 
 // ============================================
+// PRODUCTOS VENDIDOS
+// ============================================
+function renderSoldProducts() {
+  // Construir mapa de productos vendidos desde órdenes confirmadas
+  const soldMap = {};
+  orders.filter(o => o.status === 'confirmed').forEach(o => {
+    (o.items||[]).forEach(it => {
+      const key = it.name;
+      if (!soldMap[key]) soldMap[key] = { name: it.name, totalQty: 0, totalRevenue: 0, totalProfit: 0, sizes: {} };
+      const prod = products.find(p => p.name === it.name);
+      const sizeObj = prod?.sizes?.find(s => s.size === it.size);
+      const cost = sizeObj?.cost || 0;
+      const price = it.price || sizeObj?.price || 0;
+      const qty = it.qty || 1;
+      soldMap[key].totalQty += qty;
+      soldMap[key].totalRevenue += price * qty;
+      soldMap[key].totalProfit += (price - cost) * qty;
+      if (it.size) soldMap[key].sizes[it.size] = (soldMap[key].sizes[it.size]||0) + qty;
+      // Guardar ref al producto para imagen/categorías
+      if (!soldMap[key]._prod) soldMap[key]._prod = prod;
+    });
+  });
+
+  const soldList = Object.values(soldMap).sort((a,b) => b.totalQty - a.totalQty);
+  const search = (document.getElementById('sold-search')?.value||'').toLowerCase();
+  const filtered = search ? soldList.filter(s => s.name.toLowerCase().includes(search)) : soldList;
+
+  // Stats
+  const totalCount = soldList.reduce((a,s) => a+s.totalQty, 0);
+  const totalRevenue = soldList.reduce((a,s) => a+s.totalRevenue, 0);
+  const totalProfit = soldList.reduce((a,s) => a+s.totalProfit, 0);
+  const top = soldList[0];
+  document.getElementById('sold-total-count').textContent = totalCount;
+  document.getElementById('sold-total-revenue').textContent = 'S/ '+totalRevenue.toFixed(2);
+  document.getElementById('sold-total-profit').textContent = 'S/ '+totalProfit.toFixed(2);
+  document.getElementById('sold-top-product').textContent = top?.name || '—';
+  document.getElementById('sold-top-units').textContent = top ? top.totalQty+' unidades' : '';
+  document.getElementById('badge-sold-products').textContent = soldList.length;
+
+  const grid = document.getElementById('sold-products-grid');
+  if (!grid) return;
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🛍️</div><h3>Sin productos vendidos aún</h3><p>Las ventas confirmadas aparecerán aquí.</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(s => {
+    const prod = s._prod;
+    const img = prod?.images?.[0] || prod?.image || '';
+    const cats = (prod?.categories||[]).slice(0,1).join(', ');
+    const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
+    return `<div class="product-card">
+      <div class="product-card-img">
+        ${img ? `<img src="${img}" alt="${s.name}" onerror="this.style.display='none'">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">👗</div>'}
+        <div class="product-card-badge" style="background:var(--green);color:#fff;">Vendido</div>
+      </div>
+      <div class="product-card-body">
+        <div class="product-name">${s.name}</div>
+        ${cats?`<div style="font-size:10px;color:var(--muted);margin-bottom:6px;">${cats}</div>`:''}
+        <div class="product-metrics">
+          <div class="metric-item"><div class="metric-label">Unidades</div><div class="metric-val rose">${s.totalQty}</div></div>
+          <div class="metric-item"><div class="metric-label">Ingresos</div><div class="metric-val orange">S/${s.totalRevenue.toFixed(2)}</div></div>
+          <div class="metric-item"><div class="metric-label">Ganancia</div><div class="metric-val green">S/${s.totalProfit.toFixed(2)}</div></div>
+        </div>
+        ${sizesHtml ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${sizesHtml}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================
 // MANUAL SALE
 // ============================================
 let manualSaleProductId = null;
 
 function openManualSale(productId) {
-  const p = products.find(x => x.id === productId);
-  if (!p) return;
+  const p = products.find(x => String(x.id) === String(productId));
+  if (!p) { showAlert('Producto no encontrado', 'error'); return; }
   manualSaleProductId = productId;
 
   // Product info banner
@@ -1885,7 +2173,7 @@ function openManualSale(productId) {
   const sizeSel = document.getElementById('ms-size');
   sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
     (p.sizes||[]).map(s =>
-      `<option value="${s.size}" data-price="${s.price||0}" data-stock="${s.stock||0}">
+      `<option value="${s.size}" data-price="${s.price||0}" data-cost="${s.cost||0}" data-stock="${s.stock||0}">
         ${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})
       </option>`).join('');
 
@@ -2846,8 +3134,8 @@ function goToSection(sectionId) {
   document.querySelectorAll('.page-section').forEach(s=>s.style.display='none');
   const sec = document.getElementById(sectionId);
   if (sec) { sec.style.display='block'; }
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -2857,6 +3145,7 @@ function goToSection(sectionId) {
   if (sectionId === 'ribbons-section') renderRibbonsSection();
   if (sectionId === 'caja-section') setTimeout(renderCaja, 50);
   if (sectionId === 'prestamos-section') setTimeout(renderPrestamos, 50);
+  if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') renderSuppliersSection();
   closeMobileSidebar();
