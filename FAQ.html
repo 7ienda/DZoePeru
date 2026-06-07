@@ -549,6 +549,82 @@ body.dark-mode .footer{background:linear-gradient(160deg,#3a2040,#2a1535,#281535
   .faq-section-header{flex-wrap:wrap;}
   .faq-section-count{margin-left:0;}
 }
+
+/* ═══ TOPBAR ═══ */
+.topbar{background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);color:#fff;padding:9px 0;font-size:12.5px;font-weight:600;letter-spacing:0.3px;overflow:hidden;position:relative;z-index:1001;}
+.topbar-container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.topbar-left i{margin-right:6px;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-right a{color:rgba(255,255,255,0.9);font-size:14px;transition:0.2s;text-decoration:none;}
+.topbar-right a:hover{color:#fff;transform:scale(1.15);}
+.topbar-right span{font-size:12px;border-left:1px solid rgba(255,255,255,0.4);padding-left:14px;}
+/* ═══ HEADER ═══ */
+.header{background:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 12px rgba(195,174,228,.12);border-bottom:1px solid var(--border,#ede8f5);transition:all .4s cubic-bezier(0.22,0.9,0.36,1);}
+.header-wrapper{height:82px;display:flex;align-items:center;justify-content:space-between;}
+.header.scrolled{box-shadow:0 4px 24px rgba(195,174,228,0.2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light,#f9dde9),var(--lav-light,#ede4f9));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 12px rgba(195,174,228,.12);}
+.logo-text h1{font-family:'Baloo 2',cursive;color:#e8a4c0;font-size:30px;line-height:1;}
+.logo-text span{color:#8a85a0;letter-spacing:3px;font-size:11px;}
+.menu{display:flex;gap:30px;}
+.menu a{text-decoration:none;color:#4a4460;font-size:14px;font-weight:600;transition:0.3s;position:relative;padding-bottom:3px;}
+.menu a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#e8a4c0;border-radius:2px;transition:0.3s;}
+.menu a:hover{color:#e8a4c0;}
+.menu a:hover::after{width:100%;}
+.menu-active{color:#e8a4c0 !important;font-weight:800 !important;}
+.menu-active::after{width:100% !important;}
+.header-icons{display:flex;align-items:center;gap:12px;}
+.dark-mode-btn{background:transparent;border:2px solid #ede8f5;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#8a85a0;transition:0.3s;flex-shrink:0;}
+.dark-mode-btn:hover{background:#ede4f9;border-color:#c3aee4;color:#4a4460;}
+.login-btn{padding:8px 16px;border-radius:30px;font-weight:700;font-size:13px;color:#8a85a0;border:2px solid #ede8f5;background:#fff;transition:0.3s;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;}
+.login-btn i{color:#c3aee4;font-size:13px;}
+.login-btn:hover{background:#ede4f9;border-color:#c3aee4;color:#4a4460;}
+.cart-btn{background:linear-gradient(135deg,#fef0f5,#ede4f9);padding:8px 18px;border-radius:40px;border:2px solid #f9dde9;transition:0.3s;position:relative;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;}
+.cart-btn i{font-size:18px;color:#e8a4c0;}
+.cart-info{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;}
+.cart-label{font-size:9px;font-weight:700;color:#8a85a0;letter-spacing:0.5px;text-transform:uppercase;}
+.cart-total{font-size:14px;font-weight:800;color:#4a4460;}
+.cart-btn:hover{background:linear-gradient(135deg,#f9dde9,#ede4f9);border-color:#e8a4c0;box-shadow:0 8px 28px rgba(195,174,228,.2);}
+.cart-count-badge{position:absolute;top:-5px;right:-5px;background:#e8a4c0;color:white;font-size:10px;font-weight:800;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;}
+.hamburger-btn{display:none;background:transparent;border:2px solid #ede8f5;border-radius:10px;padding:7px 10px;cursor:pointer;font-size:16px;color:#4a4460;transition:0.2s;}
+.hamburger-btn:hover{background:#fef0f5;border-color:#e8a4c0;}
+/* ═══ MENÚ DROPDOWN ═══ */
+.menu-dropdown{position:relative;}
+.menu-dropdown-btn{background:none;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#8a85a0;cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0;transition:0.2s;white-space:nowrap;}
+.menu-dropdown-btn:hover{color:#e8a4c0;}
+.menu-dropdown-btn i{font-size:10px;transition:transform 0.2s;}
+.menu-dropdown.open .menu-dropdown-btn i{transform:rotate(180deg);}
+.menu-dropdown-panel{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;box-shadow:0 8px 32px rgba(195,174,228,0.3);border:1.5px solid #ede8f5;min-width:220px;padding:8px;display:none;z-index:500;flex-direction:column;gap:2px;}
+.menu-dropdown.open .menu-dropdown-panel{display:flex;}
+.menu-dropdown-panel a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;color:#4a4460;text-decoration:none;transition:0.15s;white-space:nowrap;}
+.menu-dropdown-panel a:hover{background:#fef0f5;color:#d4809f;}
+.menu-dropdown-panel a i{color:#e8a4c0;width:16px;text-align:center;font-size:13px;}
+/* Dark mode menu */
+body.dark-mode .header{background:#241e34;}
+body.dark-mode .topbar{background:linear-gradient(90deg,#5a3a7a,#7a3a5a,#2a5a6a);}
+body.dark-mode .menu-dropdown-panel{background:#241e34;border-color:#3a3050;}
+body.dark-mode .menu-dropdown-panel a{color:#ede8f5;}
+body.dark-mode .menu-dropdown-panel a:hover{background:#3a2040;}
+body.dark-mode .menu-dropdown-btn{color:#a89ec0;}
+body.dark-mode .dark-mode-btn{border-color:#4a3060;color:#c3aee4;}
+body.dark-mode .login-btn{background:#2a2040;border-color:#4a3060;color:#a89ec0;}
+/* Responsive */
+@media(max-width:768px){
+  .hamburger-btn{display:flex;align-items:center;justify-content:center;}
+  .menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.98);flex-direction:column;align-items:center;justify-content:center;gap:24px;z-index:999;backdrop-filter:blur(8px);}
+  .menu.open{display:flex;}
+  .menu a{font-size:22px;font-weight:700;}
+  .header-wrapper{height:66px;}
+  .logo-text h1{font-size:24px;}
+  .login-btn span{display:none;}
+  .cart-label{display:none;}
+  .dark-mode-btn{width:34px;height:34px;font-size:13px;}
+  .topbar-left{display:none;}
+  .topbar-container{justify-content:center;}
+  .header-icons{gap:6px;}
+  .cart-btn{padding:6px 12px;}
+}
+
 </style>
 </head>
 <body>
@@ -557,11 +633,11 @@ body.dark-mode .footer{background:linear-gradient(160deg,#3a2040,#2a1535,#281535
 <div class="topbar">
   <div class="container topbar-container">
     <div class="topbar-left">
-      <i class="fas fa-gift"></i> <strong>OFERTAS EXCLUSIVAS</strong> &nbsp;|&nbsp; Envío gratis desde S/150
+      <i class="fas fa-gift"></i> <strong>OFERTAS EXCLUSIVAS</strong> &nbsp;|&nbsp; Envíos a todo el Perú 🚚
     </div>
     <div class="topbar-right">
-      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener noreferrer nofollow" aria-label="TikTok D'Zoe Perú"><i class="fab fa-tiktok"></i></a>
-      <a href="https://wa.me/51956063145" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp D'Zoe Perú"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
       <span>📞 +51 956 063 145</span>
     </div>
   </div>
@@ -570,25 +646,77 @@ body.dark-mode .footer{background:linear-gradient(160deg,#3a2040,#2a1535,#281535
 <!-- HEADER -->
 <header class="header" id="main-header">
   <div class="container header-wrapper">
-    <a href="index.html" class="logo" aria-label="D'Zoe Perú - Inicio">
-      <div class="logo-icon">🌸</div>
+    <a class="logo" href="index.html">
+      <div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="80" height="100">
+  <defs>
+    <style>
+      .st-rosa-frontal { fill: #ea79b0; }
+      .st-rosa-lateral { fill: #ca5790; }
+      .st-rosa-interior { fill: #f7bcdc; }
+      .st-asa { fill: none; stroke: #f094c4; stroke-width: 7; stroke-linecap: round; }
+      .st-asa-sombra { fill: none; stroke: #ca5790; stroke-width: 3; opacity: 0.3; }
+      .st-corazon-fondo { fill: #be92cb; stroke: #ffffff; stroke-width: 6; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <path class="st-asa-sombra" d="M145,130 C145,30 235,30 235,130" />
+  <path class="st-asa" d="M135,120 C135,15 225,15 225,120" />
+  <polygon class="st-rosa-lateral" points="290,135 365,150 365,435 285,475" />
+  <polygon class="st-rosa-interior" points="285,475 365,435 295,415" />
+  <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
+  <circle cx="135" cy="125" r="5" fill="#ca5790" />
+  <circle cx="225" cy="129" r="5" fill="#ca5790" />
+  <g transform="translate(125, 275) scale(0.9)">
+    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
+  </g>
+  <g transform="translate(210, 280) scale(0.9)">
+    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
+  </g>
+  <g transform="translate(168, 355) scale(0.9)">
+    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
+  </g>
+</svg></div>
       <div class="logo-text">
-        <h1>D'Zoe Perú</h1>
-        <span>MODA INFANTIL</span>
+        <h1>D'Zoe</h1>
+        <span>PERÚ</span>
       </div>
-      <span class="logo-badge">Premium</span>
     </a>
-    <nav class="menu" id="mainMenu" aria-label="Menú principal">
-      <a href="index.html">Inicio</a>
-      <a href="index.html#productos">Productos</a>
-      <a href="index.html#categorias">Categorías</a>
-      <a href="blog.html">Blog</a>
-      <a href="FAQ.html" class="active" aria-current="page">FAQ</a>
-      <a href="https://wa.me/51956063145" target="_blank" rel="noopener">Contacto</a>
+
+    <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+    <nav class="menu" id="mainMenu">
+      <a href="index.html">🛍️ Tienda</a>
+      <a href="#" onclick="openWishlist();return false;">🎀 Baby Shower</a>
+      <a href="user.html">👤 Mi Cuenta</a>
+      <a href="checkout.html">💳 Checkout</a>
+      <a href="envio.html">🚚 Envíos</a>
+
+      <!-- Dropdown Información -->
+      <div class="menu-dropdown">
+        <button class="menu-dropdown-btn">📋 Información <i class="fas fa-chevron-down"></i></button>
+        <div class="menu-dropdown-panel">
+          <a href="probador-tallas.html"><i class="fas fa-ruler"></i> Probador de Tallas</a>
+          <a href="Guía_de_Tallas.html"><i class="fas fa-table"></i> Guía de Tallas</a>
+          <a href="FAQ.html"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a>
+          <a href="blog.html"><i class="fas fa-newspaper"></i> Blog</a>
+          <a href="Política_de_Privacidad.html"><i class="fas fa-shield-alt"></i> Política de Privacidad</a>
+          <a href="libro-reclamaciones.html"><i class="fas fa-book"></i> Libro de Reclamaciones</a>
+        </div>
+      </div>
     </nav>
+
     <div class="header-icons">
-      <button class="dark-mode-btn" id="darkModeBtn" aria-label="Alternar modo oscuro">🌙</button>
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menú">☰</button>
+      <button class="dark-mode-btn" id="darkModeBtn" title="Modo oscuro"><i class="fas fa-moon"></i></button>
+      <button class="login-btn" id="loginBtn">
+        <i class="fas fa-user"></i>
+        <span>Iniciar sesión</span>
+      </button>
+      <button class="cart-btn" id="cartIconBtn">
+        <i class="fas fa-shopping-bag"></i>
+        <div class="cart-info">
+          <span class="cart-label">CARRITO</span>
+          <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
+        </div>
+        <span class="cart-count-badge" id="cartCountBadge" style="display:none;">0</span>
+      </button>
     </div>
   </div>
 </header>
@@ -1323,12 +1451,12 @@ document.getElementById('scrollTopBtn').addEventListener('click', () => window.s
 
 // ===== DARK MODE =====
 const darkBtn = document.getElementById('darkModeBtn');
-const saved = localStorage.getItem('dzoeDarkMode');
+const saved = localStorage.getItem('dzoeDark');
 if (saved === 'true') { document.body.classList.add('dark-mode'); darkBtn.textContent = '☀️'; }
 darkBtn.addEventListener('click', () => {
   const isDark = document.body.classList.toggle('dark-mode');
   darkBtn.textContent = isDark ? '☀️' : '🌙';
-  localStorage.setItem('dzoeDarkMode', isDark);
+  localStorage.setItem('dzoeDark', isDark);
 });
 
 // ===== HAMBURGER =====
