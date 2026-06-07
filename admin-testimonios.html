@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Testimonios | D'Zoe Perú</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root{
+  --rose:#e8a4c0;--rose-dark:#d4809f;--rose-light:#f9dde9;--rose-soft:#fef0f5;
+  --mint:#7ecfc8;--mint-soft:#e8f9f7;--lavender:#c3aee4;--lav-light:#ede4f9;
+  --peach:#f5b97e;--peach-light:#fde9d1;--cream:#fee4f5;
+  --text:#4a4460;--text-soft:#8a85a0;--white:#fff;--border:#ede8f5;
+  --shadow-sm:0 2px 12px rgba(195,174,228,.12);
+  --shadow-md:0 8px 28px rgba(195,174,228,.2);
+  --shadow-lg:0 16px 40px rgba(195,174,228,.28);
+  --trans:.4s cubic-bezier(0.22,0.9,0.36,1);
+  --green:#4caf50;--red:#ef5350;--orange:#f5b97e;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--rose),var(--lavender));border-radius:10px;}
+.container{width:1200px;max-width:96%;margin:auto;}
+
+/* ===== LOGIN SCREEN ===== */
+.login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--rose-soft),var(--cream),var(--lav-light));
+  padding:24px;
+}
+.login-card{
+  background:var(--white);border-radius:28px;padding:48px 44px;
+  max-width:420px;width:100%;box-shadow:var(--shadow-lg);
+  border:1.5px solid var(--border);text-align:center;
+}
+.login-logo{font-size:48px;margin-bottom:16px;}
+.login-title{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.login-title em{font-style:normal;color:var(--rose);}
+.login-sub{font-size:13px;color:var(--text-soft);margin-bottom:32px;line-height:1.6;}
+.login-group{margin-bottom:18px;text-align:left;}
+.login-group label{display:block;font-size:12.5px;font-weight:800;color:var(--text);margin-bottom:7px;letter-spacing:.02em;}
+.login-input{
+  width:100%;padding:13px 18px;border:1.5px solid var(--border);border-radius:14px;
+  font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);
+  background:var(--cream);outline:none;transition:all .25s;
+}
+.login-input:focus{border-color:var(--rose);box-shadow:0 0 0 4px rgba(232,164,192,.14);background:var(--white);}
+.login-btn{
+  width:100%;padding:14px;border-radius:50px;
+  background:linear-gradient(135deg,var(--rose),var(--rose-dark));
+  color:#fff;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;
+  transition:all var(--trans);box-shadow:0 4px 16px rgba(232,164,192,.4);
+  margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,164,192,.5);}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.login-error{
+  background:rgba(239,83,80,.1);border:1px solid rgba(239,83,80,.3);
+  border-radius:12px;padding:10px 16px;font-size:13px;color:var(--red);
+  margin-top:14px;font-weight:700;display:none;
+}
+.login-back{margin-top:20px;font-size:12.5px;color:var(--text-soft);}
+.login-back a{color:var(--rose);font-weight:700;text-decoration:none;}
+
+/* ===== ADMIN LAYOUT ===== */
+.admin-layout{display:none;min-height:100vh;flex-direction:column;}
+
+/* TOPBAR ADMIN */
+.admin-topbar{
+  background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);
+  color:#fff;padding:0;height:52px;
+  display:flex;align-items:center;
+  position:sticky;top:0;z-index:1000;
+  box-shadow:0 2px 12px rgba(195,174,228,.3);
+}
+.admin-topbar-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:0 24px;
+}
+.admin-brand{display:flex;align-items:center;gap:10px;font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;}
+.admin-brand-icon{font-size:20px;}
+.admin-nav{display:flex;align-items:center;gap:8px;}
+.admin-nav-btn{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  color:#fff;border-radius:50px;padding:6px 16px;
+  font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:700;
+  cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.admin-nav-btn:hover{background:rgba(255,255,255,.28);}
+.admin-nav-btn.danger{border-color:rgba(239,83,80,.5);}
+.admin-nav-btn.danger:hover{background:rgba(239,83,80,.25);}
+
+/* STATS ROW */
+.stats-row{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:20px 0;
+}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.stat-box{
+  background:var(--cream);border:1.5px solid var(--border);
+  border-radius:18px;padding:16px 20px;
+  display:flex;align-items:center;gap:14px;
+  transition:all var(--trans);
+}
+.stat-box:hover{border-color:var(--rose-light);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.stat-icon{
+  width:46px;height:46px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.stat-icon.pending{background:var(--peach-light);}
+.stat-icon.approved{background:var(--mint-soft);}
+.stat-icon.rejected{background:rgba(239,83,80,.1);}
+.stat-icon.total{background:var(--lav-light);}
+.stat-info{}
+.stat-val{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:var(--text);line-height:1;}
+.stat-lbl{font-size:11.5px;color:var(--text-soft);font-weight:700;margin-top:2px;}
+
+/* TOOLBAR */
+.toolbar{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:14px 0;
+}
+.toolbar-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.search-box{
+  display:flex;align-items:center;gap:8px;
+  background:var(--cream);border:1.5px solid var(--border);
+  border-radius:50px;padding:9px 18px;flex:1;max-width:340px;
+  transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--rose);}
+.search-box i{color:var(--rose);font-size:13px;}
+.search-box input{border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13.5px;font-weight:600;color:var(--text);outline:none;width:100%;}
+.search-box input::placeholder{color:var(--text-soft);}
+.filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{
+  padding:7px 16px;border-radius:50px;border:1.5px solid var(--border);
+  background:var(--white);color:var(--text-soft);font-size:12.5px;font-weight:700;
+  cursor:pointer;transition:all var(--trans);font-family:'Nunito',sans-serif;
+  display:flex;align-items:center;gap:5px;
+}
+.pill:hover{border-color:var(--rose-light);color:var(--rose);}
+.pill.active{background:var(--rose);color:#fff;border-color:var(--rose);}
+.pill-count{font-size:10px;background:rgba(255,255,255,.25);padding:1px 6px;border-radius:20px;}
+.pill:not(.active) .pill-count{background:var(--rose-soft);color:var(--rose);}
+.sort-select{
+  padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+  color:var(--text);background:var(--white);outline:none;cursor:pointer;
+}
+.bulk-actions{display:flex;gap:6px;margin-left:auto;}
+.bulk-btn{
+  padding:8px 16px;border-radius:50px;font-family:'Nunito',sans-serif;
+  font-size:12.5px;font-weight:800;cursor:pointer;border:none;
+  transition:all var(--trans);display:flex;align-items:center;gap:6px;
+}
+.bulk-approve{background:var(--mint-soft);color:#2a7a6a;}
+.bulk-approve:hover{background:var(--mint);color:#fff;}
+.bulk-reject{background:rgba(239,83,80,.1);color:var(--red);}
+.bulk-reject:hover{background:var(--red);color:#fff;}
+.bulk-delete{background:rgba(239,83,80,.08);color:var(--red);}
+.bulk-delete:hover{background:var(--red);color:#fff;}
+
+/* GRID ADMIN */
+.admin-content{padding:28px 0 60px;flex:1;}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+
+/* CARD ADMIN */
+.admin-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:22px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:all var(--trans);
+  position:relative;
+}
+.admin-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);}
+.admin-card.selected{border-color:var(--rose);box-shadow:0 0 0 3px rgba(232,164,192,.2);}
+.admin-card.pending-card{border-left:4px solid var(--peach);}
+.admin-card.approved-card{border-left:4px solid var(--mint);}
+.admin-card.rejected-card{border-left:4px solid var(--red);opacity:.75;}
+
+/* Checkbox selección */
+.card-select{
+  position:absolute;top:12px;left:12px;z-index:10;
+  width:22px;height:22px;border-radius:6px;cursor:pointer;
+  accent-color:var(--rose);
+}
+
+/* Foto */
+.card-photo{
+  height:160px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));
+}
+.card-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.admin-card:hover .card-photo img{transform:scale(1.05);}
+.card-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;}
+.card-status-badge{
+  position:absolute;top:10px;right:10px;
+  border-radius:50px;padding:4px 12px;
+  font-size:10px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;backdrop-filter:blur(8px);
+}
+.badge-pending{background:rgba(245,185,126,.9);color:#7a4a10;}
+.badge-approved{background:rgba(126,207,200,.9);color:#1a5a50;}
+.badge-rejected{background:rgba(239,83,80,.85);color:#fff;}
+
+/* Card body */
+.card-body{padding:18px 18px 14px;}
+.card-stars{display:flex;gap:2px;margin-bottom:8px;}
+.card-stars i{font-size:12px;color:#ffd700;}
+.card-stars i.empty{color:var(--border);}
+.card-comment{
+  font-size:13px;color:var(--text);line-height:1.6;
+  margin-bottom:12px;display:-webkit-box;
+  -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.card-meta{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.card-meta-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-soft);font-weight:600;}
+.card-meta-item i{color:var(--rose);font-size:10px;width:14px;}
+.card-meta-item strong{color:var(--text);}
+.card-date{font-size:11px;color:var(--text-soft);margin-top:2px;}
+
+/* Acciones */
+.card-actions{
+  display:flex;gap:6px;padding:12px 18px;
+  border-top:1px solid var(--border);background:var(--cream);
+}
+.action-btn{
+  flex:1;padding:9px 10px;border-radius:12px;border:none;
+  font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.btn-approve{background:var(--mint-soft);color:#2a7a6a;}
+.btn-approve:hover{background:var(--mint);color:#fff;}
+.btn-reject{background:var(--peach-light);color:#7a4a10;}
+.btn-reject:hover{background:var(--peach);color:#fff;}
+.btn-delete{background:rgba(239,83,80,.1);color:var(--red);}
+.btn-delete:hover{background:var(--red);color:#fff;}
+.btn-view{background:var(--lav-light);color:#6a50a0;}
+.btn-view:hover{background:var(--lavender);color:#fff;}
+
+/* Aprobado — solo ver y eliminar */
+.admin-card.approved-card .btn-approve{display:none;}
+.admin-card.rejected-card .btn-reject{display:none;}
+
+/* ===== LOADING ===== */
+.loading-state{text-align:center;padding:80px 20px;color:var(--text-soft);}
+.loading-state .spin{font-size:48px;animation:spin 1s linear infinite;display:block;margin-bottom:16px;}
+@keyframes spin{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+.loading-state p{font-size:15px;font-weight:700;}
+
+/* ===== EMPTY ===== */
+.empty-admin{text-align:center;padding:80px 20px;color:var(--text-soft);}
+.empty-admin span{font-size:60px;display:block;margin-bottom:18px;}
+.empty-admin h3{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;}
+
+/* ===== MODAL VER ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(74,68,96,.65);backdrop-filter:blur(12px);z-index:2000;padding:40px 20px;overflow-y:auto;}
+.modal-overlay.open{display:flex;justify-content:center;align-items:flex-start;}
+.modal-box{background:var(--white);border-radius:24px;max-width:520px;width:100%;position:relative;animation:modalIn .3s ease;border:1.5px solid var(--border);box-shadow:var(--shadow-lg);overflow:hidden;}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.modal-close-btn{position:absolute;top:14px;right:14px;background:var(--cream);border:1.5px solid var(--border);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:15px;color:var(--text);display:flex;align-items:center;justify-content:center;transition:.2s;z-index:10;}
+.modal-close-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose);transform:rotate(90deg);}
+.modal-img{width:100%;max-height:300px;object-fit:cover;display:block;}
+.modal-img-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));}
+.modal-body{padding:24px 28px 32px;}
+.modal-stars{display:flex;gap:3px;margin-bottom:12px;}
+.modal-stars i{font-size:16px;color:#ffd700;}
+.modal-comment-full{font-size:15px;color:var(--text);line-height:1.75;margin-bottom:18px;font-style:italic;}
+.modal-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.modal-field{background:var(--cream);border-radius:12px;padding:10px 14px;}
+.modal-field-label{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft);margin-bottom:4px;}
+.modal-field-val{font-size:13.5px;font-weight:700;color:var(--text);}
+.modal-actions{display:flex;gap:8px;}
+.modal-action-btn{flex:1;padding:11px;border-radius:12px;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--white);border-left:4px solid var(--rose);border-radius:16px;padding:14px 20px;font-size:13.5px;font-weight:700;color:var(--text);box-shadow:var(--shadow-md);z-index:9999;animation:toastIn .3s ease;max-width:320px;}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.toast.success{border-left-color:var(--mint);}
+.toast.error{border-left-color:var(--red);}
+
+/* ===== CONFIRM DIALOG ===== */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(74,68,96,.65);backdrop-filter:blur(8px);z-index:3000;align-items:center;justify-content:center;}
+.confirm-overlay.open{display:flex;}
+.confirm-box{background:var(--white);border-radius:22px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:var(--shadow-lg);border:1.5px solid var(--border);animation:modalIn .25s ease;}
+.confirm-icon{font-size:48px;margin-bottom:14px;}
+.confirm-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.confirm-msg{font-size:13.5px;color:var(--text-soft);line-height:1.6;margin-bottom:24px;}
+.confirm-btns{display:flex;gap:10px;}
+.confirm-yes{flex:1;padding:12px;border-radius:50px;background:var(--red);color:#fff;border:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;}
+.confirm-yes:hover{background:#c62828;}
+.confirm-no{flex:1;padding:12px;border-radius:50px;background:var(--cream);color:var(--text);border:1.5px solid var(--border);font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;}
+.confirm-no:hover{background:var(--border);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .admin-grid{grid-template-columns:1fr;}
+  .bulk-actions{margin-left:0;width:100%;}
+  .toolbar-inner{gap:8px;}
+  .search-box{max-width:100%;}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .login-card{padding:32px 22px;}
+  .filter-pills{gap:4px;}
+  .pill{padding:6px 12px;font-size:11.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">🌸</div>
+    <h1 class="login-title">Panel <em>Admin</em></h1>
+    <p class="login-sub">Inicia sesión con tu cuenta de Supabase para gestionar los testimonios de D'Zoe Perú.</p>
+    <button class="login-btn" id="loginBtn" onclick="doLoginGoogle()" type="button">
+      <svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.2 0-9.7-3.3-11.3-8H6.3C9.6 35.7 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.2 5.2C41.1 36.1 44 30.5 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+      Entrar con Google
+    </button>
+    <div class="login-error" id="loginError"></div>
+    <p class="login-back">← <a href="testimonios.html">Volver a testimonios</a></p>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-layout" id="adminLayout">
+
+  <!-- TOPBAR -->
+  <div class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <div class="admin-brand">
+        <span class="admin-brand-icon">🌸</span>
+        D'Zoe Perú · Admin
+      </div>
+      <div class="admin-nav">
+        <a href="testimonios.html" class="admin-nav-btn" target="_blank">
+          <i class="fas fa-eye"></i> Ver página
+        </a>
+        <span class="admin-nav-btn" style="cursor:default;opacity:.8;" id="adminEmail"></span>
+        <button class="admin-nav-btn danger" onclick="doLogout()">
+          <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-icon pending">⏳</div>
+          <div class="stat-info">
+            <div class="stat-val" id="sPending">—</div>
+            <div class="stat-lbl">Pendientes</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon approved">✅</div>
+          <div class="stat-info">
+            <div class="stat-val" id="sApproved">—</div>
+            <div class="stat-lbl">Aprobados</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon rejected">❌</div>
+          <div class="stat-info">
+            <div class="stat-val" id="sRejected">—</div>
+            <div class="stat-lbl">Rechazados</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon total">📊</div>
+          <div class="stat-info">
+            <div class="stat-val" id="sTotal">—</div>
+            <div class="stat-lbl">Total</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="container toolbar-inner">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar por nombre, ciudad o comentario..." oninput="applyFilters()">
+      </div>
+      <div class="filter-pills">
+        <button class="pill active" data-f="all" onclick="setStatusFilter('all',this)">
+          Todos <span class="pill-count" id="pc-all">0</span>
+        </button>
+        <button class="pill" data-f="pending" onclick="setStatusFilter('pending',this)">
+          ⏳ Pendientes <span class="pill-count" id="pc-pending">0</span>
+        </button>
+        <button class="pill" data-f="approved" onclick="setStatusFilter('approved',this)">
+          ✅ Aprobados <span class="pill-count" id="pc-approved">0</span>
+        </button>
+        <button class="pill" data-f="rejected" onclick="setStatusFilter('rejected',this)">
+          ❌ Rechazados <span class="pill-count" id="pc-rejected">0</span>
+        </button>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+        <option value="newest">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+        <option value="rating-desc">Mayor calificación</option>
+        <option value="rating-asc">Menor calificación</option>
+      </select>
+      <div class="bulk-actions" id="bulkActions" style="display:none;">
+        <button class="bulk-btn bulk-approve" onclick="bulkAction('approve')"><i class="fas fa-check"></i> Aprobar</button>
+        <button class="bulk-btn bulk-reject" onclick="bulkAction('reject')"><i class="fas fa-times"></i> Rechazar</button>
+        <button class="bulk-btn bulk-delete" onclick="bulkAction('delete')"><i class="fas fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="admin-content">
+    <div class="container">
+
+      <div id="loadingState" class="loading-state">
+        <span class="spin">⏳</span>
+        <p>Cargando testimonios...</p>
+      </div>
+
+      <div id="emptyState" class="empty-admin" style="display:none;">
+        <span>🎉</span>
+        <h3>¡Todo limpio!</h3>
+        <p>No hay testimonios con este filtro.</p>
+      </div>
+
+      <div class="admin-grid" id="adminGrid" style="display:none;"></div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL VER COMPLETO -->
+<div class="modal-overlay" id="viewModal" onclick="closeViewModal(event)">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeViewModal(null)"><i class="fas fa-times"></i></button>
+    <div id="viewModalContent"></div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirmIcon">⚠️</div>
+    <div class="confirm-title" id="confirmTitle">¿Estás segura?</div>
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="confirm-btns">
+      <button class="confirm-no" onclick="closeConfirm()">Cancelar</button>
+      <button class="confirm-yes" id="confirmYes">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+//  SUPABASE
+// =============================================
+const { createClient } = supabase;
+const sb = createClient(
+  'https://uxwmodnadidlsfwtshcq.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4d21vZG5hZGlkbHNmd3RzaGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzY0MjAsImV4cCI6MjA5NTY1MjQyMH0.V3tNuv2iT9J2WbZbs7bzxf9j9RwF2r-Li4KO_1qQWRo'
+);
+
+// =============================================
+//  ESTADO
+// =============================================
+let allData      = [];
+let filtered     = [];
+let statusFilter = 'all';
+let selected     = new Set();
+let confirmCb    = null;
+
+// =============================================
+//  AUTH
+// =============================================
+async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { showAdmin(session.user); return; }
+  // Manejar redirect de vuelta desde Google
+  const { data: { session: s2 } } = await sb.auth.getSession();
+  if (s2) showAdmin(s2.user);
+}
+
+async function doLoginGoogle() {
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('loginError');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirigiendo...';
+  errEl.style.display = 'none';
+
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.href
+    }
+  });
+
+  if (error) {
+    errEl.textContent = 'Error al conectar con Google: ' + error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.2 0-9.7-3.3-11.3-8H6.3C9.6 35.7 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.2 5.2C41.1 36.1 44 30.5 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg> Entrar con Google';
+  }
+}
+
+async function doLogin(e) {} // no usada
+
+async function doLogout() {
+  await sb.auth.signOut();
+  document.getElementById('adminLayout').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function showAdmin(user) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminLayout').style.display = 'flex';
+  document.getElementById('adminEmail').textContent = user.email;
+  loadData();
+}
+
+// =============================================
+//  CARGAR DATOS
+// =============================================
+async function loadData() {
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('adminGrid').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+
+  const { data, error } = await sb
+    .from('testimonios')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) { showToast('❌ Error cargando datos: ' + error.message, 'error'); return; }
+
+  allData = data || [];
+  updateStats();
+  updateCounts();
+  applyFilters();
+}
+
+// =============================================
+//  STATS Y CONTEOS
+// =============================================
+function updateStats() {
+  const pending  = allData.filter(t => !t.aprobado && !t.rechazado).length;
+  const approved = allData.filter(t => t.aprobado).length;
+  const rejected = allData.filter(t => t.rechazado).length;
+  document.getElementById('sPending').textContent  = pending;
+  document.getElementById('sApproved').textContent = approved;
+  document.getElementById('sRejected').textContent = rejected;
+  document.getElementById('sTotal').textContent    = allData.length;
+}
+
+function updateCounts() {
+  document.getElementById('pc-all').textContent      = allData.length;
+  document.getElementById('pc-pending').textContent  = allData.filter(t => !t.aprobado && !t.rechazado).length;
+  document.getElementById('pc-approved').textContent = allData.filter(t => t.aprobado).length;
+  document.getElementById('pc-rejected').textContent = allData.filter(t => t.rechazado).length;
+}
+
+// =============================================
+//  FILTROS Y BÚSQUEDA
+// =============================================
+function setStatusFilter(f, btn) {
+  statusFilter = f;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const q    = document.getElementById('searchInput').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+
+  filtered = allData.filter(t => {
+    // Filtro estado
+    if (statusFilter === 'pending'  && (t.aprobado || t.rechazado)) return false;
+    if (statusFilter === 'approved' && !t.aprobado) return false;
+    if (statusFilter === 'rejected' && !t.rechazado) return false;
+    // Búsqueda
+    if (q) {
+      const hay = `${t.nombre} ${t.ciudad} ${t.comentario} ${t.producto} ${t.edad}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  // Ordenar
+  filtered.sort((a, b) => {
+    if (sort === 'newest')      return new Date(b.created_at) - new Date(a.created_at);
+    if (sort === 'oldest')      return new Date(a.created_at) - new Date(b.created_at);
+    if (sort === 'rating-desc') return (b.calificacion||5) - (a.calificacion||5);
+    if (sort === 'rating-asc')  return (a.calificacion||5) - (b.calificacion||5);
+    return 0;
+  });
+
+  renderGrid();
+}
+
+// =============================================
+//  RENDER GRID
+// =============================================
+function renderGrid() {
+  const grid  = document.getElementById('adminGrid');
+  const empty = document.getElementById('emptyState');
+  const load  = document.getElementById('loadingState');
+  load.style.display = 'none';
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  grid.style.display  = 'grid';
+  grid.innerHTML = filtered.map(renderAdminCard).join('');
+}
+
+function renderAdminCard(t) {
+  const isPending  = !t.aprobado && !t.rechazado;
+  const isApproved = t.aprobado;
+  const isRejected = t.rechazado;
+  const statusClass = isPending ? 'pending-card' : isApproved ? 'approved-card' : 'rejected-card';
+  const badge       = isPending
+    ? '<span class="card-status-badge badge-pending">⏳ Pendiente</span>'
+    : isApproved
+      ? '<span class="card-status-badge badge-approved">✅ Aprobado</span>'
+      : '<span class="card-status-badge badge-rejected">❌ Rechazado</span>';
+
+  const date = t.created_at
+    ? new Date(t.created_at).toLocaleDateString('es-PE', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })
+    : '';
+
+  const stars = [1,2,3,4,5].map(i =>
+    `<i class="${i <= (t.calificacion||5) ? 'fas' : 'far'} fa-star${i > (t.calificacion||5) ? ' empty' : ''}"></i>`
+  ).join('');
+
+  return `
+    <div class="admin-card ${statusClass}" id="card-${t.id}">
+      <input type="checkbox" class="card-select" onchange="toggleSelect(${t.id}, this)" title="Seleccionar">
+
+      <div class="card-photo">
+        ${t.foto_url
+          ? `<img src="${esc(t.foto_url)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'card-photo-placeholder\'>👶</div>'">`
+          : `<div class="card-photo-placeholder">👶</div>`}
+        ${badge}
+      </div>
+
+      <div class="card-body">
+        <div class="card-stars">${stars}</div>
+        <p class="card-comment">${esc(t.comentario||'')}</p>
+        <div class="card-meta">
+          <div class="card-meta-item"><i class="fas fa-user"></i><strong>${esc(t.nombre||'')}</strong></div>
+          <div class="card-meta-item"><i class="fas fa-map-marker-alt"></i>${esc(t.ciudad||'—')}</div>
+          ${t.producto ? `<div class="card-meta-item"><i class="fas fa-tag"></i>${esc(t.producto)}</div>` : ''}
+          ${t.edad     ? `<div class="card-meta-item"><i class="fas fa-child"></i>${esc(t.edad)}</div>` : ''}
+        </div>
+        <div class="card-date"><i class="fas fa-clock" style="margin-right:4px;color:var(--rose);font-size:10px;"></i>${date}</div>
+      </div>
+
+      <div class="card-actions">
+        <button class="action-btn btn-view" onclick="viewTestimonio(${t.id})">
+          <i class="fas fa-eye"></i> Ver
+        </button>
+        ${!isApproved ? `<button class="action-btn btn-approve" onclick="changeStatus(${t.id},'approve')"><i class="fas fa-check"></i> Aprobar</button>` : ''}
+        ${!isRejected ? `<button class="action-btn btn-reject" onclick="changeStatus(${t.id},'reject')"><i class="fas fa-times"></i> Rechazar</button>` : ''}
+        <button class="action-btn btn-delete" onclick="deleteTestimonio(${t.id})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>`;
+}
+
+// =============================================
+//  ACCIONES INDIVIDUALES
+// =============================================
+async function changeStatus(id, action) {
+  const update = action === 'approve'
+    ? { aprobado: true,  rechazado: false }
+    : { aprobado: false, rechazado: true  };
+
+  const { error } = await sb.from('testimonios').update(update).eq('id', id);
+  if (error) { showToast('❌ Error: ' + error.message, 'error'); return; }
+
+  // Actualizar localmente
+  const t = allData.find(x => x.id === id);
+  if (t) Object.assign(t, update);
+  updateStats(); updateCounts(); applyFilters();
+  showToast(action === 'approve' ? '✅ Testimonio aprobado y publicado' : '❌ Testimonio rechazado', action === 'approve' ? 'success' : 'error');
+}
+
+function deleteTestimonio(id) {
+  showConfirm(
+    '🗑️', '¿Eliminar testimonio?',
+    'Esta acción no se puede deshacer. El testimonio y su foto serán eliminados permanentemente.',
+    async () => {
+      // Eliminar foto del storage si existe
+      const t = allData.find(x => x.id === id);
+      if (t?.foto_url) {
+        try {
+          const path = t.foto_url.split('/testimonios-fotos/')[1];
+          if (path) await sb.storage.from('testimonios-fotos').remove([path]);
+        } catch(e) {}
+      }
+      const { error } = await sb.from('testimonios').delete().eq('id', id);
+      if (error) { showToast('❌ Error: ' + error.message, 'error'); return; }
+      allData = allData.filter(x => x.id !== id);
+      selected.delete(id);
+      updateStats(); updateCounts(); applyFilters();
+      showToast('🗑️ Testimonio eliminado', 'error');
+    }
+  );
+}
+
+// =============================================
+//  SELECCIÓN MÚLTIPLE
+// =============================================
+function toggleSelect(id, cb) {
+  if (cb.checked) selected.add(id);
+  else selected.delete(id);
+  document.getElementById('bulkActions').style.display = selected.size > 0 ? 'flex' : 'none';
+  document.getElementById(`card-${id}`)?.classList.toggle('selected', cb.checked);
+}
+
+async function bulkAction(action) {
+  if (selected.size === 0) return;
+  const ids = [...selected];
+
+  if (action === 'delete') {
+    showConfirm('🗑️', `¿Eliminar ${ids.length} testimonios?`, 'Esta acción no se puede deshacer.', async () => {
+      for (const id of ids) await deleteOne(id);
+      selected.clear();
+      document.getElementById('bulkActions').style.display = 'none';
+      updateStats(); updateCounts(); applyFilters();
+      showToast(`🗑️ ${ids.length} testimonios eliminados`, 'error');
+    });
+    return;
+  }
+
+  const update = action === 'approve'
+    ? { aprobado: true,  rechazado: false }
+    : { aprobado: false, rechazado: true  };
+
+  const { error } = await sb.from('testimonios').update(update).in('id', ids);
+  if (error) { showToast('❌ Error: ' + error.message, 'error'); return; }
+
+  ids.forEach(id => {
+    const t = allData.find(x => x.id === id);
+    if (t) Object.assign(t, update);
+  });
+  selected.clear();
+  document.getElementById('bulkActions').style.display = 'none';
+  updateStats(); updateCounts(); applyFilters();
+  showToast(action === 'approve' ? `✅ ${ids.length} aprobados` : `❌ ${ids.length} rechazados`, action === 'approve' ? 'success' : 'error');
+}
+
+async function deleteOne(id) {
+  const t = allData.find(x => x.id === id);
+  if (t?.foto_url) {
+    try {
+      const path = t.foto_url.split('/testimonios-fotos/')[1];
+      if (path) await sb.storage.from('testimonios-fotos').remove([path]);
+    } catch(e) {}
+  }
+  await sb.from('testimonios').delete().eq('id', id);
+  allData = allData.filter(x => x.id !== id);
+}
+
+// =============================================
+//  MODAL VER COMPLETO
+// =============================================
+function viewTestimonio(id) {
+  const t = allData.find(x => x.id === id);
+  if (!t) return;
+  const stars = [1,2,3,4,5].map(i =>
+    `<i class="${i <= (t.calificacion||5) ? 'fas' : 'far'} fa-star"></i>`
+  ).join('');
+  const date = t.created_at ? new Date(t.created_at).toLocaleString('es-PE') : '';
+  const status = t.aprobado ? '✅ Aprobado' : t.rechazado ? '❌ Rechazado' : '⏳ Pendiente';
+
+  document.getElementById('viewModalContent').innerHTML = `
+    ${t.foto_url
+      ? `<img class="modal-img" src="${esc(t.foto_url)}" alt="" onerror="this.style.display='none'">`
+      : `<div class="modal-img-placeholder">👶</div>`}
+    <div class="modal-body">
+      <div class="modal-stars">${stars}</div>
+      <p class="modal-comment-full">${esc(t.comentario||'')}</p>
+      <div class="modal-fields">
+        <div class="modal-field"><div class="modal-field-label">Nombre</div><div class="modal-field-val">${esc(t.nombre||'—')}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Ciudad</div><div class="modal-field-val">${esc(t.ciudad||'—')}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Producto</div><div class="modal-field-val">${esc(t.producto||'—')}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Edad</div><div class="modal-field-val">${esc(t.edad||'—')}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Estado</div><div class="modal-field-val">${status}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Fecha</div><div class="modal-field-val">${date}</div></div>
+      </div>
+      <div class="modal-actions">
+        ${!t.aprobado ? `<button class="modal-action-btn btn-approve" onclick="changeStatus(${t.id},'approve');closeViewModal(null)"><i class="fas fa-check"></i> Aprobar</button>` : ''}
+        ${!t.rechazado ? `<button class="modal-action-btn btn-reject" onclick="changeStatus(${t.id},'reject');closeViewModal(null)"><i class="fas fa-times"></i> Rechazar</button>` : ''}
+        <button class="modal-action-btn btn-delete" onclick="closeViewModal(null);deleteTestimonio(${t.id})"><i class="fas fa-trash"></i> Eliminar</button>
+      </div>
+    </div>`;
+  document.getElementById('viewModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeViewModal(e) {
+  if (e && e.target !== document.getElementById('viewModal')) return;
+  document.getElementById('viewModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// =============================================
+//  CONFIRM DIALOG
+// =============================================
+function showConfirm(icon, title, msg, cb) {
+  document.getElementById('confirmIcon').textContent  = icon;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  document.getElementById('confirmYes').onclick = () => { closeConfirm(); cb(); };
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+}
+
+// =============================================
+//  TOAST
+// =============================================
+function showToast(msg, type='') {
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='.3s'; }, 3200);
+  setTimeout(() => el.remove(), 3600);
+}
+
+// =============================================
+//  HELPERS
+// =============================================
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ESC para cerrar modales
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeViewModal(null); closeConfirm(); }
+});
+
+// =============================================
+//  ARRANCAR
+// =============================================
+checkAuth();
+</script>
+</body>
+</html>
