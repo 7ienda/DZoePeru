@@ -276,6 +276,28 @@ body.dark-mode .breadcrumb-bar{background:#241e34;border-color:#3a3050;}
 body.dark-mode .breadcrumb a{color:#a89ec0;}
 body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 
+/* ===================== HERO BANNER ===================== */
+.hero-banner{width:100%;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--rose),var(--lavender));}
+.hero-banner-img-wrap{position:relative;width:100%;height:420px;}
+@media(max-width:768px){.hero-banner-img-wrap{height:280px;}}
+@media(max-width:500px){.hero-banner-img-wrap{height:220px;}}
+.hero-banner-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.hero-banner-fallback{width:100%;height:100%;background:linear-gradient(135deg,var(--rose),var(--lavender),var(--mint));display:flex;align-items:center;justify-content:center;}
+.hero-fallback-inner{text-align:center;}
+.hero-banner-overlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(74,68,96,0.72) 0%,rgba(232,164,192,0.18) 100%);display:flex;align-items:center;padding:0 60px;}
+@media(max-width:768px){.hero-banner-overlay{padding:0 24px;}}
+.hero-banner-content{max-width:540px;}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:12px;font-weight:800;padding:5px 16px;border-radius:30px;letter-spacing:0.5px;margin-bottom:14px;}
+.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(26px,5vw,48px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.hero-title span{color:#fce4f3;}
+.hero-sub{font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,0.88);font-weight:500;margin-bottom:22px;line-height:1.5;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-cta-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;padding:12px 28px;border-radius:40px;font-weight:800;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(232,164,192,0.5);transition:0.3s;}
+.hero-cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,164,192,0.6);}
+.hero-cta-secondary{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:11px 24px;border-radius:40px;font-weight:700;font-size:14px;text-decoration:none;transition:0.3s;}
+.hero-cta-secondary:hover{background:rgba(255,255,255,0.28);}
+body.dark-mode .hero-banner-overlay{background:linear-gradient(120deg,rgba(20,15,35,0.8) 0%,rgba(100,60,120,0.25) 100%);}
+
 /* ===================== SEARCH BAR ===================== */
 .search-bar-section{background:var(--white);padding:12px 0;border-bottom:2px solid var(--border);}
 .search-bar-inner{display:flex;align-items:center;gap:12px;max-width:680px;margin:auto;background:var(--rose-soft);border:2px solid var(--rose-light);border-radius:50px;padding:8px 20px;transition:0.3s;}
@@ -712,6 +734,27 @@ body.dark-mode .pp-btn-wish{background:#2a2040;border-color:#4a3060;}
 .cat-page-close:hover{background:rgba(255,255,255,.35);}
 .cat-page-body{padding:28px 0 80px;}
 
+/* ===================== BENEFITS STRIP ===================== */
+.benefits-strip{background:linear-gradient(135deg,var(--rose-soft),var(--lav-light),var(--mint-soft));padding:32px 0;border-top:2px solid var(--border);border-bottom:2px solid var(--border);}
+.benefits-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;}
+@media(max-width:900px){.benefits-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:550px){.benefits-grid{grid-template-columns:repeat(2,1fr);gap:14px;}}
+.benefit-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:white;border-radius:16px;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);transition:0.3s;}
+.benefit-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--rose-light);}
+.benefit-icon{font-size:28px;flex-shrink:0;line-height:1;}
+.benefit-text{display:flex;flex-direction:column;gap:2px;}
+.benefit-text strong{font-size:12.5px;font-weight:800;color:var(--text);line-height:1.2;}
+.benefit-text span{font-size:11px;color:var(--text-soft);font-weight:500;}
+body.dark-mode .benefits-strip{background:linear-gradient(135deg,#2a1f30,#2a2040,#1a2830);}
+body.dark-mode .benefit-item{background:#241e34;border-color:#3a3050;}
+body.dark-mode .benefit-text strong{color:#ede8f5;}
+
+/* ===================== TRUST BADGES (debajo del botón comprar) ===================== */
+.trust-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);}
+.trust-badge{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--text-soft);background:var(--rose-soft);padding:4px 10px;border-radius:20px;border:1px solid var(--rose-light);}
+.trust-badge i{color:var(--mint);font-size:10px;}
+body.dark-mode .trust-badge{background:#2a2040;border-color:#4a3060;color:#a89ec0;}
+
 /* ===================== NOTIF TOAST ===================== */
 .notif{position:fixed;bottom:30px;right:24px;background:white;border-left:4px solid var(--rose);border-radius:16px;padding:14px 20px;font-size:14px;font-weight:600;color:var(--text);box-shadow:0 8px 30px rgba(195,174,228,0.35);z-index:9999;animation:notifIn .3s ease;max-width:320px;}
 @keyframes notifIn{from{transform:translateX(30px);opacity:0;}to{transform:translateX(0);opacity:1;}}
@@ -828,6 +871,12 @@ body.dark-mode .whatsapp-btn{background:#1a2e22;color:#4ade80;border-color:#2a4a
 body.dark-mode .photo-counter{background:rgba(0,0,0,0.6);}
 body.dark-mode .category-card{background:#241e34;border-color:#3a3050;}
 body.dark-mode .cat-label{background:#241e34;color:#ede8f5;border-color:#3a3050;}
+
+/* Categoría activa */
+.category-card.cat-active .cat-label{background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;border-color:var(--rose);font-weight:800;}
+.category-card.cat-active{border-color:var(--rose)!important;box-shadow:0 6px 20px rgba(232,164,192,0.4);}
+.category-card.cat-active .cat-img-wrap{box-shadow:0 4px 14px rgba(232,164,192,0.35);}
+body.dark-mode .category-card.cat-active .cat-label{background:linear-gradient(135deg,#7a3a5a,#5a3a7a);color:#ede8f5;}
 body.dark-mode .cat-img-wrap.cc-rose{background:#3a1f2a;}
 body.dark-mode .cat-img-wrap.cc-blue{background:#1e2e3a;}
 body.dark-mode .cat-img-wrap.cc-lav{background:#2a2040;}
@@ -1067,6 +1116,35 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   </div>
 </header>
 
+<!-- HERO BANNER PRINCIPAL -->
+<section class="hero-banner" id="heroBanner">
+  <div class="hero-banner-img-wrap">
+    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=1400&q=80" 
+         alt="D'Zoe Perú — Ropa infantil importada premium" 
+         class="hero-banner-img"
+         id="heroBannerImg"
+         onerror="this.style.display='none';document.getElementById('heroBannerFallback').style.display='flex';">
+    <div class="hero-banner-fallback" id="heroBannerFallback" style="display:none;">
+      <div class="hero-fallback-inner">
+        <div style="font-size:64px;margin-bottom:16px;">🎀</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;color:#fff;margin-bottom:8px;">D'Zoe Perú</div>
+        <div style="color:rgba(255,255,255,0.85);font-size:16px;">Ropa infantil importada premium</div>
+      </div>
+    </div>
+    <div class="hero-banner-overlay">
+      <div class="hero-banner-content">
+        <div class="hero-badge">✨ Nueva Colección 2025</div>
+        <h2 class="hero-title">Moda infantil<br><span>exclusiva & premium</span></h2>
+        <p class="hero-sub">Diseños importados únicos para bebés y niños de 0 a 14 años</p>
+        <div class="hero-actions">
+          <a href="#productos" class="hero-cta-primary">Ver colección <i class="fas fa-arrow-right"></i></a>
+          <a href="#" onclick="openWishlist();return false;" class="hero-cta-secondary">🎀 Baby Shower</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- BREADCRUMBS — Schema.org BreadcrumbList -->
 <script type="application/ld+json" id="breadcrumbSchema">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://dzoeperu.com/"},{"@type":"ListItem","position":2,"name":"Tienda D'Zoe Perú","item":"https://dzoeperu.com/index.html"}]}
@@ -1188,6 +1266,49 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   </div>
 </section>
 
+<!-- FRANJA DE BENEFICIOS -->
+<section class="benefits-strip">
+  <div class="container">
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <span class="benefit-icon">🎀</span>
+        <div class="benefit-text">
+          <strong>Diseños exclusivos</strong>
+          <span>Modelos únicos importados</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">🚚</span>
+        <div class="benefit-text">
+          <strong>Envíos a todo el Perú</strong>
+          <span>Rápido y seguro</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">💎</span>
+        <div class="benefit-text">
+          <strong>Calidad premium</strong>
+          <span>Materiales de alta gama</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">🔒</span>
+        <div class="benefit-text">
+          <strong>Compra segura</strong>
+          <span>100% garantizado</span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="benefit-icon">📱</span>
+        <div class="benefit-text">
+          <strong>Atención por WhatsApp</strong>
+          <span>Respuesta rápida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="container">
@@ -1263,24 +1384,61 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 <div class="login-modal" id="loginModal">
   <div class="login-modal-content">
     <div class="login-modal-header">
-      <h3><i class="fas fa-user-circle"></i> Iniciar sesión</h3>
+      <h3><i class="fas fa-user-circle"></i> <span id="loginModalTitle">Iniciar sesión</span></h3>
       <button class="close-login" id="closeLoginBtn"><i class="fas fa-times"></i></button>
     </div>
     <div class="login-modal-body">
-      <form id="loginForm">
+      <!-- PANEL: Login -->
+      <div id="loginPanel">
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="tucorreo@ejemplo.com" required>
+          </div>
+          <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+          </div>
+          <div id="loginError" style="color:#d95f5f;font-size:12px;font-weight:600;margin-bottom:8px;display:none;"></div>
+          <button type="submit" class="login-submit" id="loginSubmitBtn">Ingresar a mi cuenta</button>
+        </form>
+        <div class="login-links">
+          <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+          <a href="#" id="showRegisterLink">Registrarse</a>
+        </div>
+      </div>
+      <!-- PANEL: Recuperar contraseña -->
+      <div id="forgotPanel" style="display:none;">
+        <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
         <div class="input-group">
           <label>Correo electrónico</label>
-          <input type="email" placeholder="tucorreo@ejemplo.com" required>
+          <input type="email" id="forgotEmail" placeholder="tucorreo@ejemplo.com">
+        </div>
+        <div id="forgotMsg" style="font-size:12px;font-weight:600;margin-bottom:8px;display:none;"></div>
+        <button class="login-submit" id="forgotSubmitBtn">Enviar enlace de recuperación</button>
+        <div class="login-links" style="margin-top:14px;">
+          <a href="#" id="backToLoginLink">← Volver al inicio de sesión</a>
+        </div>
+      </div>
+      <!-- PANEL: Registrarse -->
+      <div id="registerPanel" style="display:none;">
+        <div class="input-group">
+          <label>Nombre completo</label>
+          <input type="text" id="registerName" placeholder="Tu nombre">
+        </div>
+        <div class="input-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="registerEmail" placeholder="tucorreo@ejemplo.com">
         </div>
         <div class="input-group">
           <label>Contraseña</label>
-          <input type="password" placeholder="••••••••" required>
+          <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres">
         </div>
-        <button type="submit" class="login-submit">Ingresar a mi cuenta</button>
-      </form>
-      <div class="login-links">
-        <a href="#">¿Olvidaste tu contraseña?</a>
-        <a href="#">Registrarse</a>
+        <div id="registerMsg" style="font-size:12px;font-weight:600;margin-bottom:8px;display:none;"></div>
+        <button class="login-submit" id="registerSubmitBtn">Crear mi cuenta</button>
+        <div class="login-links" style="margin-top:14px;">
+          <a href="#" id="backToLoginFromRegLink">← Ya tengo cuenta</a>
+        </div>
       </div>
     </div>
   </div>
@@ -1921,16 +2079,32 @@ function renderCategoriesFromData() {
   const container = document.getElementById('categories-container');
   if (!container) return;
   const cats = getUniqueCategories();
-  if (!cats.length) return;
 
-  container.innerHTML = cats.slice(0, 10).map((cat, i) => {
-    const color = CAT_COLOR_MAP[i % CAT_COLOR_MAP.length];
+  // Tarjeta "TODOS LOS PRODUCTOS" siempre primero
+  const todosCard = `<div class="category-card ${currentFilter==='all'?'cat-active':''}" onclick="filterByCategory('all')">
+    <div class="cat-img-wrap cc-rose" style="display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="18" y="22" width="28" height="28" rx="6" fill="#f4a8cb" stroke="#e8a4c0" stroke-width="1.5"/>
+        <rect x="54" y="22" width="28" height="28" rx="6" fill="#b09ad8" stroke="#c3aee4" stroke-width="1.5"/>
+        <rect x="18" y="56" width="28" height="28" rx="6" fill="#70c4bc" stroke="#7ecfc8" stroke-width="1.5"/>
+        <rect x="54" y="56" width="28" height="28" rx="6" fill="#f0b880" stroke="#f5b97e" stroke-width="1.5"/>
+        <text x="50" y="53" font-size="9" fill="white" text-anchor="middle" font-weight="800" font-family="sans-serif">TODO</text>
+      </svg>
+    </div>
+    <div class="cat-label">🌸 Todos</div>
+  </div>`;
+
+  const catCards = cats.slice(0, 9).map((cat, i) => {
+    const color = CAT_COLOR_MAP[(i + 1) % CAT_COLOR_MAP.length];
     const svgIll = getCatSVG(cat, color);
-    return `<div class="category-card" onclick="filterByCategory('${cat}')">
+    const isActive = currentFilter === cat;
+    return `<div class="category-card ${isActive?'cat-active':''}" onclick="filterByCategory('${cat}')">
       <div class="cat-img-wrap ${color}">${svgIll}</div>
       <div class="cat-label">${cat}</div>
     </div>`;
   }).join('');
+
+  container.innerHTML = todosCard + catCards;
 }
 
 function getUniqueCategories() {
@@ -1998,6 +2172,7 @@ function filterByCategory(cat) {
   if (cat === 'all') { currentFilter = 'all'; } else { currentFilter = cat; }
   currentPage = 1;
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === currentFilter));
+  renderCategoriesFromData();
   renderProducts();
   renderBreadcrumb();
   const sec = document.getElementById('productos');
@@ -2316,6 +2491,12 @@ function renderProductCard(product) {
         <button class="add-to-cart" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}>
           <i class="fas fa-shopping-bag"></i> ${hasStock ? 'Agregar al carrito' : 'Agotado'}
         </button>
+        <div class="trust-badges">
+          <span class="trust-badge"><i class="fas fa-check-circle"></i> Pago seguro</span>
+          <span class="trust-badge"><i class="fas fa-check-circle"></i> Envíos nacionales</span>
+          <span class="trust-badge"><i class="fas fa-check-circle"></i> Importados</span>
+          <span class="trust-badge"><i class="fas fa-check-circle"></i> Garantía</span>
+        </div>
         <a href="${waUrl}" target="_blank" rel="noopener" class="whatsapp-btn">
           <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
         </a>
@@ -2733,6 +2914,12 @@ function openProductPage(productId) {
           <button class="pp-btn-primary" onclick="ppAddToCart('${productId}')" ${!inStock?'disabled':''}>
             <i class="fas fa-shopping-bag"></i> ${inStock ? 'Agregar al carrito' : 'Sin stock'}
           </button>
+          <div class="trust-badges" style="margin-top:10px;">
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Pago seguro</span>
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Envíos nacionales</span>
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Productos importados</span>
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Garantía de satisfacción</span>
+          </div>
           <a class="pp-btn-wa" href="https://wa.me/51956063145?text=${waMsg}" target="_blank" rel="noopener">
             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
           </a>
@@ -3055,20 +3242,131 @@ document.addEventListener('click', e => {
 });
 
 // ═══════════════════════════════════════════════════════
-//  MODAL LOGIN
+//  MODAL LOGIN — SUPABASE AUTH
 // ═══════════════════════════════════════════════════════
 const loginBtn = document.getElementById('loginBtn');
 const loginModal = document.getElementById('loginModal');
 const closeLoginBtn = document.getElementById('closeLoginBtn');
-loginBtn?.addEventListener('click', () => loginModal.classList.add('active'));
-loginModal?.querySelector('#loginMenuBtn') && document.getElementById('loginMenuBtn')?.addEventListener('click', () => loginModal.classList.add('active'));
+
+function showLoginPanel() {
+  document.getElementById('loginPanel').style.display='';
+  document.getElementById('forgotPanel').style.display='none';
+  document.getElementById('registerPanel').style.display='none';
+  document.getElementById('loginModalTitle').textContent='Iniciar sesión';
+}
+function showForgotPanel() {
+  document.getElementById('loginPanel').style.display='none';
+  document.getElementById('forgotPanel').style.display='';
+  document.getElementById('registerPanel').style.display='none';
+  document.getElementById('loginModalTitle').textContent='Recuperar contraseña';
+}
+function showRegisterPanel() {
+  document.getElementById('loginPanel').style.display='none';
+  document.getElementById('forgotPanel').style.display='none';
+  document.getElementById('registerPanel').style.display='';
+  document.getElementById('loginModalTitle').textContent='Crear cuenta';
+}
+
+loginBtn?.addEventListener('click', () => { showLoginPanel(); loginModal.classList.add('active'); });
+document.getElementById('loginMenuBtn') && document.getElementById('loginMenuBtn').addEventListener('click', () => { showLoginPanel(); loginModal.classList.add('active'); });
 closeLoginBtn?.addEventListener('click', () => loginModal.classList.remove('active'));
 loginModal?.addEventListener('click', e => { if (e.target === loginModal) loginModal.classList.remove('active'); });
-document.getElementById('loginForm')?.addEventListener('submit', e => {
+
+document.getElementById('forgotPasswordLink')?.addEventListener('click', e => { e.preventDefault(); showForgotPanel(); });
+document.getElementById('showRegisterLink')?.addEventListener('click', e => { e.preventDefault(); showRegisterPanel(); });
+document.getElementById('backToLoginLink')?.addEventListener('click', e => { e.preventDefault(); showLoginPanel(); });
+document.getElementById('backToLoginFromRegLink')?.addEventListener('click', e => { e.preventDefault(); showLoginPanel(); });
+
+// LOGIN con Supabase
+document.getElementById('loginForm')?.addEventListener('submit', async e => {
   e.preventDefault();
-  showNotif('🌸 ¡Bienvenida a D\'Zoe Perú!');
-  loginModal.classList.remove('active');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginSubmitBtn');
+  errEl.style.display='none';
+  btn.textContent='Iniciando sesión...'; btn.disabled=true;
+  try {
+    if (!supabaseClient) throw new Error('No hay conexión con Supabase');
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    showNotif(`🌸 ¡Bienvenida, ${data.user?.email?.split('@')[0] || ''}!`);
+    loginModal.classList.remove('active');
+    updateLoginUI(data.user);
+  } catch(err) {
+    errEl.textContent = err.message.includes('Invalid') ? '❌ Correo o contraseña incorrectos' : '❌ ' + err.message;
+    errEl.style.display='block';
+  } finally { btn.textContent='Ingresar a mi cuenta'; btn.disabled=false; }
 });
+
+// RECUPERAR CONTRASEÑA con Supabase
+document.getElementById('forgotSubmitBtn')?.addEventListener('click', async () => {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const msgEl = document.getElementById('forgotMsg');
+  if (!email) { msgEl.style.color='#d95f5f'; msgEl.textContent='Ingresa tu correo'; msgEl.style.display='block'; return; }
+  const btn = document.getElementById('forgotSubmitBtn');
+  btn.textContent='Enviando...'; btn.disabled=true;
+  try {
+    if (!supabaseClient) throw new Error('No hay conexión con Supabase');
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/user.html'
+    });
+    if (error) throw error;
+    msgEl.style.color='#2d8a82'; msgEl.textContent='✅ ¡Revisa tu correo! Te enviamos el enlace.'; msgEl.style.display='block';
+  } catch(err) {
+    msgEl.style.color='#d95f5f'; msgEl.textContent='❌ ' + err.message; msgEl.style.display='block';
+  } finally { btn.textContent='Enviar enlace de recuperación'; btn.disabled=false; }
+});
+
+// REGISTRO con Supabase
+document.getElementById('registerSubmitBtn')?.addEventListener('click', async () => {
+  const name = document.getElementById('registerName').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  const msgEl = document.getElementById('registerMsg');
+  if (!email || !password) { msgEl.style.color='#d95f5f'; msgEl.textContent='Completa todos los campos'; msgEl.style.display='block'; return; }
+  if (password.length < 6) { msgEl.style.color='#d95f5f'; msgEl.textContent='La contraseña debe tener al menos 6 caracteres'; msgEl.style.display='block'; return; }
+  const btn = document.getElementById('registerSubmitBtn');
+  btn.textContent='Creando cuenta...'; btn.disabled=true;
+  try {
+    if (!supabaseClient) throw new Error('No hay conexión con Supabase');
+    const { data, error } = await supabaseClient.auth.signUp({
+      email, password, options: { data: { full_name: name } }
+    });
+    if (error) throw error;
+    msgEl.style.color='#2d8a82';
+    msgEl.textContent='✅ ¡Cuenta creada! Revisa tu correo para confirmar.';
+    msgEl.style.display='block';
+    if (data.user && !data.user.confirmed_at) {
+      setTimeout(() => { loginModal.classList.remove('active'); showNotif('📧 Revisa tu correo para confirmar tu cuenta'); }, 2000);
+    }
+  } catch(err) {
+    const msg = err.message.includes('already registered') ? '❌ Este correo ya está registrado' : '❌ ' + err.message;
+    msgEl.style.color='#d95f5f'; msgEl.textContent=msg; msgEl.style.display='block';
+  } finally { btn.textContent='Crear mi cuenta'; btn.disabled=false; }
+});
+
+// Actualizar UI según sesión
+function updateLoginUI(user) {
+  const loginBtn = document.getElementById('loginBtn');
+  if (!loginBtn) return;
+  if (user) {
+    const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Mi cuenta';
+    loginBtn.innerHTML = `<i class="fas fa-user-check" style="color:var(--mint)"></i> <span>${name}</span>`;
+  } else {
+    loginBtn.innerHTML = `<i class="fas fa-user"></i> <span>Iniciar sesión</span>`;
+  }
+}
+
+// Verificar sesión al cargar
+(async () => {
+  if (!supabaseClient) return;
+  const { data } = await supabaseClient.auth.getSession();
+  if (data?.session?.user) updateLoginUI(data.session.user);
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    updateLoginUI(session?.user || null);
+  });
+})();
 
 // ═══════════════════════════════════════════════════════
 //  WISHLIST — EVENT LISTENERS
