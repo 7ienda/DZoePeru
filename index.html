@@ -277,26 +277,73 @@ body.dark-mode .breadcrumb a{color:#a89ec0;}
 body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 
 /* ===================== HERO BANNER ===================== */
-.hero-banner{width:100%;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--rose),var(--lavender));}
-.hero-banner-img-wrap{position:relative;width:100%;height:420px;}
-@media(max-width:768px){.hero-banner-img-wrap{height:280px;}}
-@media(max-width:500px){.hero-banner-img-wrap{height:220px;}}
-.hero-banner-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
-.hero-banner-fallback{width:100%;height:100%;background:linear-gradient(135deg,var(--rose),var(--lavender),var(--mint));display:flex;align-items:center;justify-content:center;}
-.hero-fallback-inner{text-align:center;}
-.hero-banner-overlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(74,68,96,0.72) 0%,rgba(232,164,192,0.18) 100%);display:flex;align-items:center;padding:0 60px;}
-@media(max-width:768px){.hero-banner-overlay{padding:0 24px;}}
-.hero-banner-content{max-width:540px;}
-.hero-badge{display:inline-block;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:12px;font-weight:800;padding:5px 16px;border-radius:30px;letter-spacing:0.5px;margin-bottom:14px;}
-.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(26px,5vw,48px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,0.2);}
-.hero-title span{color:#fce4f3;}
-.hero-sub{font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,0.88);font-weight:500;margin-bottom:22px;line-height:1.5;}
+.hero-banner{width:100%;position:relative;overflow:hidden;background:linear-gradient(135deg,#f8e8f4 0%,#ede4f9 50%,#e2f4f8 100%);}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;min-height:480px;max-width:100%;margin:0 auto;}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;min-height:auto;}}
+
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:52px 56px 52px 60px;position:relative;z-index:2;}
+@media(max-width:900px){.hero-left{padding:38px 24px 28px;text-align:center;align-items:center;}}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(232,164,192,0.18),rgba(195,174,228,0.15));border:1.5px solid rgba(232,164,192,0.4);color:var(--rose-dark);font-size:11px;font-weight:800;padding:5px 16px;border-radius:30px;letter-spacing:0.8px;margin-bottom:18px;text-transform:uppercase;}
+.hero-eyebrow i{font-size:12px;color:var(--rose);}
+
+.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(28px,4vw,50px);font-weight:800;color:var(--text);line-height:1.1;margin-bottom:14px;}
+.hero-title .ht-accent{background:linear-gradient(135deg,var(--rose),var(--lavender));-webkit-background-clip:text;background-clip:text;color:transparent;display:block;}
+.hero-title .ht-sub{color:var(--text-soft);font-size:clamp(20px,2.8vw,34px);font-weight:700;}
+
+.hero-desc{font-size:14.5px;color:var(--text-soft);font-weight:500;line-height:1.65;margin-bottom:24px;max-width:420px;}
+@media(max-width:900px){.hero-desc{max-width:100%;}}
+
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;}
+@media(max-width:900px){.hero-pills{justify-content:center;}}
+.hero-pill{display:inline-flex;align-items:center;gap:5px;background:white;border:1.5px solid var(--border);border-radius:30px;padding:5px 13px;font-size:11.5px;font-weight:700;color:var(--text);box-shadow:0 1px 6px rgba(195,174,228,0.12);}
+.hero-pill i{font-size:11px;}
+.hero-pill.p-rose{border-color:var(--rose-light);color:var(--rose-dark);}
+.hero-pill.p-mint{border-color:var(--mint-light);color:#2d9e97;}
+.hero-pill.p-lav{border-color:var(--lav-light);color:#7856b8;}
+.hero-pill.p-peach{border-color:var(--peach-light);color:#b86e25;}
+
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
-.hero-cta-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;padding:12px 28px;border-radius:40px;font-weight:800;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(232,164,192,0.5);transition:0.3s;}
-.hero-cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,164,192,0.6);}
-.hero-cta-secondary{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:11px 24px;border-radius:40px;font-weight:700;font-size:14px;text-decoration:none;transition:0.3s;}
-.hero-cta-secondary:hover{background:rgba(255,255,255,0.28);}
-body.dark-mode .hero-banner-overlay{background:linear-gradient(120deg,rgba(20,15,35,0.8) 0%,rgba(100,60,120,0.25) 100%);}
+@media(max-width:900px){.hero-actions{justify-content:center;}}
+.hero-cta-primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;padding:13px 30px;border-radius:40px;font-weight:800;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:8px;box-shadow:0 6px 22px rgba(232,164,192,0.55);transition:0.3s;}
+.hero-cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,164,192,0.65);}
+.hero-cta-secondary{background:white;border:2px solid var(--rose-light);color:var(--rose-dark);padding:12px 24px;border-radius:40px;font-weight:800;font-size:14px;text-decoration:none;transition:0.3s;display:flex;align-items:center;gap:7px;box-shadow:0 2px 10px rgba(195,174,228,0.12);}
+.hero-cta-secondary:hover{background:var(--rose-soft);border-color:var(--rose);transform:translateY(-1px);}
+
+.hero-right{position:relative;overflow:hidden;min-height:480px;}
+@media(max-width:900px){.hero-right{min-height:260px;}}
+.hero-collage{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;}
+.hc-img{overflow:hidden;position:relative;}
+.hc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
+.hc-img:hover img{transform:scale(1.07);}
+.hc-img:nth-child(1){grid-column:1/3;grid-row:1/2;}
+.hc-img:nth-child(2){grid-column:3/4;grid-row:1/2;}
+.hc-img:nth-child(3){grid-column:1/2;grid-row:2/3;}
+.hc-img:nth-child(4){grid-column:2/4;grid-row:2/3;}
+.hero-right::before{content:'';position:absolute;left:0;top:0;bottom:0;width:50px;background:linear-gradient(to right,#ede4f9,transparent);z-index:2;pointer-events:none;}
+@media(max-width:900px){.hero-right::before{display:none;}}
+.hero-bubble{position:absolute;bottom:16px;right:16px;background:rgba(255,255,255,0.94);backdrop-filter:blur(10px);border:1.5px solid rgba(232,164,192,0.35);border-radius:18px;padding:10px 16px;z-index:10;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(195,174,228,0.22);}
+.hero-bubble-icon{font-size:22px;}
+.hero-bubble-text{line-height:1.25;}
+.hero-bubble-text strong{font-size:13px;font-weight:800;color:var(--text);display:block;}
+.hero-bubble-text span{font-size:11px;color:var(--text-soft);font-weight:600;}
+
+.hero-strip{background:linear-gradient(90deg,var(--rose),var(--lavender),var(--mint),var(--lavender),var(--rose));background-size:200% 100%;animation:heroStrip 4s linear infinite;height:4px;}
+@keyframes heroStrip{0%{background-position:0%}100%{background-position:200%}}
+
+/* legacy selectors no longer used but kept for safety */
+.hero-banner-img-wrap{display:none;}
+.hero-badge{display:none;}
+.hero-sub{display:none;}
+.hero-banner-overlay{display:none;}
+
+body.dark-mode .hero-banner{background:linear-gradient(135deg,#241830 0%,#1e1630 50%,#162028 100%);}
+body.dark-mode .hero-title{color:#f5eeff;}
+body.dark-mode .hero-cta-secondary{background:#2a1f40;border-color:#5a4070;color:#e0c8ff;}
+body.dark-mode .hero-pill{background:#241e34;border-color:#3a3050;color:#c8b8e8;}
+body.dark-mode .hero-right::before{background:linear-gradient(to right,#1e1630,transparent);}
+body.dark-mode .hero-bubble{background:rgba(36,28,52,0.94);border-color:rgba(195,174,228,0.3);}
+body.dark-mode .hero-bubble-text strong{color:#e8d8ff;}
 
 /* ===================== SEARCH BAR ===================== */
 .search-bar-section{background:var(--white);padding:12px 0;border-bottom:2px solid var(--border);}
@@ -1117,28 +1164,49 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 </header>
 
 <!-- HERO BANNER PRINCIPAL -->
+<div class="hero-strip"></div>
 <section class="hero-banner" id="heroBanner">
-  <div class="hero-banner-img-wrap">
-    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=1400&q=80" 
-         alt="D'Zoe Perú — Ropa infantil importada premium" 
-         class="hero-banner-img"
-         id="heroBannerImg"
-         onerror="this.style.display='none';document.getElementById('heroBannerFallback').style.display='flex';">
-    <div class="hero-banner-fallback" id="heroBannerFallback" style="display:none;">
-      <div class="hero-fallback-inner">
-        <div style="font-size:64px;margin-bottom:16px;">🎀</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;color:#fff;margin-bottom:8px;">D'Zoe Perú</div>
-        <div style="color:rgba(255,255,255,0.85);font-size:16px;">Ropa infantil importada premium</div>
+  <div class="hero-inner">
+    <!-- Lado izquierdo: texto -->
+    <div class="hero-left">
+      <div class="hero-eyebrow"><i class="fas fa-star"></i> Nueva Colección 2025</div>
+      <h2 class="hero-title">
+        <span class="ht-accent">Ropa infantil</span>
+        <span class="ht-sub">importada & premium</span>
+      </h2>
+      <p class="hero-desc">Conjuntos, vestidos, abrigos y más para bebés y niños de 0 a 14 años. Diseños exclusivos traídos especialmente para los más pequeños del hogar.</p>
+      <div class="hero-pills">
+        <span class="hero-pill p-rose"><i class="fas fa-plane-arrival"></i> 100% Importado</span>
+        <span class="hero-pill p-mint"><i class="fas fa-truck"></i> Envíos a todo el Perú</span>
+        <span class="hero-pill p-lav"><i class="fas fa-shield-alt"></i> Compra segura</span>
+        <span class="hero-pill p-peach"><i class="fas fa-baby"></i> Tallas 0–14 años</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#productos" class="hero-cta-primary"><i class="fas fa-bag-shopping"></i> Ver colección</a>
+        <a href="#" onclick="openWishlist();return false;" class="hero-cta-secondary">🎀 Lista Baby Shower</a>
       </div>
     </div>
-    <div class="hero-banner-overlay">
-      <div class="hero-banner-content">
-        <div class="hero-badge">✨ Nueva Colección 2025</div>
-        <h2 class="hero-title">Moda infantil<br><span>exclusiva & premium</span></h2>
-        <p class="hero-sub">Diseños importados únicos para bebés y niños de 0 a 14 años</p>
-        <div class="hero-actions">
-          <a href="#productos" class="hero-cta-primary">Ver colección <i class="fas fa-arrow-right"></i></a>
-          <a href="#" onclick="openWishlist();return false;" class="hero-cta-secondary">🎀 Baby Shower</a>
+    <!-- Lado derecho: collage de fotos reales -->
+    <div class="hero-right">
+      <div class="hero-collage">
+        <div class="hc-img">
+          <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=700&q=80" alt="Conjuntos infantiles importados">
+        </div>
+        <div class="hc-img">
+          <img src="https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=400&q=80" alt="Ropa niña importada">
+        </div>
+        <div class="hc-img">
+          <img src="https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=400&q=80" alt="Vestidos niña premium">
+        </div>
+        <div class="hc-img">
+          <img src="https://images.unsplash.com/photo-1535572290543-960a8046f5af?w=700&q=80" alt="Moda infantil importada Perú">
+        </div>
+      </div>
+      <div class="hero-bubble">
+        <span class="hero-bubble-icon">🌸</span>
+        <div class="hero-bubble-text">
+          <strong>+500 modelos exclusivos</strong>
+          <span>Nuevos diseños cada semana</span>
         </div>
       </div>
     </div>
@@ -2465,9 +2533,9 @@ function renderProductCard(product) {
     <div class="product-img-wrap">
       ${imgHtml}
       ${isAgotado ? `<div class="agotado-overlay"><img src="https://www.psycolab.com/wp-content/uploads/agotado-chincheta.png" alt="Agotado"></div>` : ''}
-      <button class="wishlist-btn" data-wid="${product.id}" title="Agregar a lista de deseos">
+      ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Agregar a lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
-      </button>
+      </button>` : ''}
       <div class="product-quick">
         <button class="btn-sm btn-sm-primary" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}>🛒 Agregar</button>
         <button class="btn-sm btn-sm-ghost" onclick="openProductPage('${product.id}')">👁️ Ver</button>
@@ -2491,12 +2559,6 @@ function renderProductCard(product) {
         <button class="add-to-cart" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}>
           <i class="fas fa-shopping-bag"></i> ${hasStock ? 'Agregar al carrito' : 'Agotado'}
         </button>
-        <div class="trust-badges">
-          <span class="trust-badge"><i class="fas fa-check-circle"></i> Pago seguro</span>
-          <span class="trust-badge"><i class="fas fa-check-circle"></i> Envíos nacionales</span>
-          <span class="trust-badge"><i class="fas fa-check-circle"></i> Importados</span>
-          <span class="trust-badge"><i class="fas fa-check-circle"></i> Garantía</span>
-        </div>
         <a href="${waUrl}" target="_blank" rel="noopener" class="whatsapp-btn">
           <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
         </a>
@@ -2923,10 +2985,10 @@ function openProductPage(productId) {
           <a class="pp-btn-wa" href="https://wa.me/51956063145?text=${waMsg}" target="_blank" rel="noopener">
             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
           </a>
-          <button class="pp-btn-wish" onclick="ppToggleWishlist('${productId}')">
+          ${inStock ? `<button class="pp-btn-wish" onclick="ppToggleWishlist('${productId}')">
             <i class="${wishlist.find(w=>String(w.id)===String(productId))?'fas':'far'} fa-heart" style="color:var(--rose);"></i>
             ${wishlist.find(w=>String(w.id)===String(productId)) ? 'En tu lista de deseos' : 'Agregar a lista de deseos'}
-          </button>
+          </button>` : ''}
         </div>
 
         <div class="pp-features">
@@ -2986,12 +3048,16 @@ function ppAddToCart(productId) {
 function ppToggleWishlist(productId) {
   const product = products.find(p => String(p.id) === String(productId));
   if (!product) return;
-  toggleWishlistItem(product);
+  const sizes = product.sizes || [];
+  const si = ppSelectedSize[productId] ?? 0;
+  const price = sizes[si]?.price || (sizes.length ? Math.min(...sizes.filter(s=>s.price>0).map(s=>s.price)) : 0);
+  const added = toggleWishlistItem(productId, product.name, price);
   // Re-render solo el botón
   const btn = document.querySelector('.pp-btn-wish');
   if (btn) {
     const inList = wishlist.find(w => String(w.id) === String(productId));
     btn.innerHTML = `<i class="${inList?'fas':'far'} fa-heart" style="color:var(--rose);"></i> ${inList ? 'En tu lista de deseos' : 'Agregar a lista de deseos'}`;
+    if (added) { btn.style.transform='scale(1.05)'; setTimeout(()=>{btn.style.transform='';},300); showNotif('💝 Agregado a tu lista de deseos'); }
   }
 }
 
