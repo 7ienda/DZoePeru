@@ -757,6 +757,22 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
       </div>
 
+      <!-- Deudores rápidos -->
+      <div class="section" style="margin-top:24px;border-left:4px solid var(--orange);">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Deudores activos <span id="dash-deudores-count" style="background:var(--orange-light);color:var(--orange);font-size:11px;padding:2px 10px;border-radius:99px;margin-left:6px;font-weight:700;"></span></div>
+          <button class="btn btn-ghost btn-sm" onclick="goToSection('sales-section')" style="color:var(--orange);"><i class="fas fa-arrow-right"></i> Ver todos</button>
+        </div>
+        <div class="section-body" style="padding:0;">
+          <div class="table-wrap">
+            <table class="orders-table" id="dash-deudores-table">
+              <thead><tr><th>Cliente</th><th>Producto</th><th>Total</th><th>Adelantó</th><th style="color:var(--orange);">Debe</th><th>Fecha</th><th>Acción</th></tr></thead>
+              <tbody id="dash-deudores-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- ====== ANALYTICS DE VISITAS ====== -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;">
         <!-- Países visitantes -->
@@ -991,6 +1007,21 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
         <div class="section-body">
           <div id="cities-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
+        </div>
+      </div>
+      <!-- ====== DEUDORES ====== -->
+      <div class="section" style="margin-top:24px;" id="deudores-section-sales">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Deudores — Adelantos pendientes</div>
+          <div id="deudores-total-badge" style="font-size:12px;font-weight:700;color:var(--orange);background:var(--orange-light);padding:4px 12px;border-radius:99px;"></div>
+        </div>
+        <div class="section-body" style="padding:0;">
+          <div class="table-wrap">
+            <table class="orders-table">
+              <thead><tr><th>#</th><th>Cliente</th><th>Teléfono</th><th>Destino</th><th>Producto</th><th>Total</th><th>Adelantó</th><th style="color:var(--orange);">Debe</th><th>Fecha</th><th>Acción</th></tr></thead>
+              <tbody id="deudores-table-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1413,6 +1444,34 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     </div>
 
     <!-- Modal: Nuevo Préstamo -->
+    <!-- ====== MODAL: PONER EN OFERTA ====== -->
+    <div class="modal-overlay" id="offer-modal">
+      <div class="modal" style="max-width:420px;">
+        <div class="modal-head">
+          <div class="modal-title">🏷️ Poner en Oferta</div>
+          <button class="modal-close" onclick="document.getElementById('offer-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="background:var(--orange-light);border-radius:14px;padding:14px 18px;margin-bottom:18px;">
+            <div style="font-weight:700;font-size:14px;" id="offer-product-name">—</div>
+            <div style="font-size:12px;color:var(--orange);margin-top:4px;">Precio actual: <strong id="offer-original-price">—</strong></div>
+          </div>
+          <div class="form-group">
+            <label>Etiqueta de oferta</label>
+            <input type="text" id="offer-label-input" placeholder="🔥 OFERTA" value="🔥 OFERTA">
+          </div>
+          <div class="form-group">
+            <label style="color:var(--orange);font-weight:700;">Nuevo precio de oferta (S/) *</label>
+            <input type="number" id="offer-price-input" placeholder="Ej: 25.00" step="0.01" min="0" style="border-color:var(--orange);font-size:18px;font-weight:700;">
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" style="flex:1;background:var(--orange);border-color:var(--orange);" onclick="saveOffer()"><i class="fas fa-tag"></i> Aplicar oferta</button>
+            <button class="btn btn-ghost" style="color:var(--red);" onclick="removeOffer()"><i class="fas fa-times"></i> Quitar oferta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-overlay" id="prestamo-modal">
       <div class="modal" style="max-width:480px;">
         <div class="modal-head">
@@ -1646,7 +1705,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
         <div class="form-group">
           <label>Precio (S/) *</label>
-          <input type="number" id="ms-price" placeholder="0.00" step="0.01" oninput="updateManualSaleTotal()">
+          <input type="number" id="ms-price" placeholder="0.00" step="0.01" readonly style="background:var(--bg2);cursor:not-allowed;opacity:.85;">
         </div>
         <div class="form-group">
           <label>Cantidad *</label>
@@ -1668,6 +1727,12 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         <div class="form-group"><label>Teléfono</label><input type="text" id="ms-phone" placeholder="9XXXXXXXX"></div>
         <div class="form-group" style="grid-column:1/-1;"><label>Destino Shalom</label><input type="text" id="ms-destination" placeholder="Ej: Huancayo, Piura..."></div>
         <div class="form-group" style="grid-column:1/-1;"><label>Nota</label><input type="text" id="ms-note" placeholder="Opcional..."></div>
+        <!-- ADELANTO -->
+        <div class="form-group" style="grid-column:1/-1;">
+          <label style="color:var(--orange);font-weight:700;"><i class="fas fa-hand-holding-dollar"></i> Adelanto (S/) — dejar en 0 si paga completo</label>
+          <input type="number" id="ms-adelanto" placeholder="0.00" step="0.01" min="0" value="0" oninput="updateManualSaleTotal()" style="border-color:var(--orange);">
+          <div id="ms-deuda-preview" style="margin-top:6px;font-size:12px;color:var(--orange);font-weight:700;display:none;"></div>
+        </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding:14px 18px;background:var(--green-light);border-radius:14px;border:1.5px solid rgba(46,156,107,.25);">
         <span style="font-weight:700;color:var(--green);">Total a cobrar</span>
@@ -2017,14 +2082,16 @@ function productCardHtml(p) {
       <div class="product-name">${p.name}</div>
       ${cats?`<div style="font-size:10px;color:var(--muted);margin-bottom:6px;">${cats}</div>`:''}
       <div class="product-metrics">
-        <div class="metric-item"><div class="metric-label">Precio desde</div><div class="metric-val rose">S/${minPrice.toFixed(2)}</div></div>
+        <div class="metric-item"><div class="metric-label">Precio desde</div><div class="metric-val rose">${p.offer_price ? `<span style="text-decoration:line-through;opacity:.5;font-size:11px;">S/${minPrice.toFixed(2)}</span> <span style="color:var(--orange);">S/${parseFloat(p.offer_price).toFixed(2)}</span>` : `S/${minPrice.toFixed(2)}`}</div></div>
         <div class="metric-item"><div class="metric-label">Costo total</div><div class="metric-val orange">S/${totalCost.toFixed(2)}</div></div>
         <div class="metric-item"><div class="metric-label">Ganancia</div><div class="metric-val green">S/${totalProfit.toFixed(2)}</div></div>
       </div>
       <div class="product-footer">
         <div class="product-price">S/ ${minPrice.toFixed(2)}</div>
-        <div style="display:flex;gap:6px;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="icon-btn" style="background:var(--green-light);color:var(--green);" onclick="openManualSale(${p.id})" title="Registrar venta"><i class="fas fa-cash-register"></i></button>
+          <button class="icon-btn" style="background:var(--orange-light);color:var(--orange);" onclick="openOfferModal(${p.id})" title="Poner en oferta"><i class="fas fa-tag"></i></button>
+          <button class="icon-btn" style="background:var(--sky-light);color:var(--sky);" onclick="duplicateProduct(${p.id})" title="Duplicar"><i class="fas fa-copy"></i></button>
           <button class="icon-btn edit-btn" onclick="editProduct(${p.id})" title="Editar"><i class="fas fa-pen"></i></button>
           <button class="icon-btn delete-btn" onclick="deleteProduct(${p.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
         </div>
@@ -2247,8 +2314,10 @@ function openManualSale(productId) {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   document.getElementById('ms-qty').value = 1;
+  document.getElementById('ms-adelanto').value = 0;
   document.getElementById('ms-method').value = 'yape';
   document.getElementById('ms-total-preview').textContent = 'S/ 0.00';
+  if (document.getElementById('ms-deuda-preview')) document.getElementById('ms-deuda-preview').style.display = 'none';
 
   document.getElementById('manual-sale-modal').classList.add('open');
 }
@@ -2265,7 +2334,23 @@ function updateManualSalePrice() {
 function updateManualSaleTotal() {
   const price = parseFloat(document.getElementById('ms-price')?.value)||0;
   const qty = parseInt(document.getElementById('ms-qty')?.value)||1;
-  document.getElementById('ms-total-preview').textContent = 'S/ ' + (price*qty).toFixed(2);
+  const adelanto = parseFloat(document.getElementById('ms-adelanto')?.value)||0;
+  const total = price * qty;
+  const deuda = Math.max(0, total - adelanto);
+  document.getElementById('ms-total-preview').textContent = 'S/ ' + total.toFixed(2);
+  const deudaEl = document.getElementById('ms-deuda-preview');
+  if (deudaEl) {
+    if (adelanto > 0 && adelanto < total) {
+      deudaEl.style.display = 'block';
+      deudaEl.textContent = `⚠️ Adelanta S/ ${adelanto.toFixed(2)} · Queda debiendo: S/ ${deuda.toFixed(2)}`;
+    } else if (adelanto >= total && total > 0) {
+      deudaEl.style.display = 'block';
+      deudaEl.style.color = 'var(--green)';
+      deudaEl.textContent = '✅ Pago completo';
+    } else {
+      deudaEl.style.display = 'none';
+    }
+  }
 }
 
 function closeManualSale() {
@@ -2296,7 +2381,9 @@ async function saveManualSale() {
     note: document.getElementById('ms-note').value.trim(),
     items: [{ name: p.name, size, price, qty }],
     total: price * qty,
-    status: 'confirmed',
+    adelanto: parseFloat(document.getElementById('ms-adelanto').value)||0,
+    deuda: Math.max(0, price * qty - (parseFloat(document.getElementById('ms-adelanto').value)||0)),
+    status: (parseFloat(document.getElementById('ms-adelanto').value)||0) > 0 && (parseFloat(document.getElementById('ms-adelanto').value)||0) < price * qty ? 'pending' : 'confirmed',
     manual: true,
     created_at: new Date().toISOString()
   };
@@ -3755,6 +3842,131 @@ function renderPrestamos() {
 document.getElementById('prestamo-modal')?.addEventListener('click', function(e) { if (e.target===this) closeLoanModal(); });
 
 // ============================================
+// DUPLICAR PRODUCTO
+// ============================================
+async function duplicateProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  const copy = JSON.parse(JSON.stringify(p));
+  copy.id = Date.now();
+  copy.name = copy.name + ' (copia)';
+  copy.created_at = new Date().toISOString();
+  products.unshift(copy);
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('products').insert([copy]);
+    if (error) { showAlert('Error al duplicar: ' + error.message, 'error'); return; }
+  }
+  filterInventory(); updateStats();
+  showAlert('✅ Producto duplicado como "' + copy.name + '"');
+}
+
+// ============================================
+// OFERTA MODAL
+// ============================================
+let offerProductId = null;
+function openOfferModal(id) {
+  offerProductId = id;
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  const minPrice = Math.min(...(p.sizes||[{price:0}]).map(s => s.price||0));
+  document.getElementById('offer-product-name').textContent = p.name;
+  document.getElementById('offer-original-price').textContent = 'S/ ' + minPrice.toFixed(2);
+  document.getElementById('offer-label-input').value = p.offer_label || '🔥 OFERTA';
+  document.getElementById('offer-price-input').value = p.offer_price || '';
+  document.getElementById('offer-modal').classList.add('open');
+}
+async function saveOffer() {
+  const p = products.find(x => x.id === offerProductId);
+  if (!p) return;
+  const offerPrice = parseFloat(document.getElementById('offer-price-input').value);
+  const label = document.getElementById('offer-label-input').value.trim() || '🔥 OFERTA';
+  if (!offerPrice || offerPrice <= 0) { showAlert('Ingresa un precio de oferta válido', 'error'); return; }
+  p.offer_price = offerPrice;
+  p.offer_label = label;
+  p.ribbon = label;
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('products').update({ offer_price: offerPrice, offer_label: label, ribbon: label }).eq('id', offerProductId);
+    if (error) { showAlert('Error: ' + error.message, 'error'); return; }
+  }
+  document.getElementById('offer-modal').classList.remove('open');
+  filterInventory();
+  showAlert('✅ Oferta aplicada — S/ ' + offerPrice.toFixed(2));
+}
+async function removeOffer() {
+  const p = products.find(x => x.id === offerProductId);
+  if (!p) return;
+  delete p.offer_price; delete p.offer_label; delete p.ribbon;
+  if (supabaseClient) {
+    await supabaseClient.from('products').update({ offer_price: null, offer_label: null, ribbon: null }).eq('id', offerProductId);
+  }
+  document.getElementById('offer-modal').classList.remove('open');
+  filterInventory();
+  showAlert('Oferta eliminada');
+}
+document.getElementById('offer-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
+
+// ============================================
+// DEUDORES
+// ============================================
+function getDeudores() {
+  return orders.filter(o => o.adelanto > 0 && o.deuda > 0);
+}
+function renderDeudores() {
+  const deudores = getDeudores();
+  const totalDeuda = deudores.reduce((a,o) => a + (o.deuda||0), 0);
+  const badge = document.getElementById('deudores-total-badge');
+  if (badge) badge.textContent = `${deudores.length} deudores · Total debe: S/ ${totalDeuda.toFixed(2)}`;
+  const dashCount = document.getElementById('dash-deudores-count');
+  if (dashCount) dashCount.textContent = deudores.length;
+  const rowFn = (o, compact) => {
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short'}) : '—';
+    const prod = (o.items||[]).map(i => `${i.name}${i.size?' T:'+i.size:''}`).join(', ') || '—';
+    if (compact) return `<tr>
+      <td><strong>${o.name||''} ${o.lastname||''}</strong></td>
+      <td style="font-size:11px;">${prod}</td>
+      <td>S/ ${parseFloat(o.total||0).toFixed(2)}</td>
+      <td style="color:var(--mint);">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
+      <td style="color:var(--orange);font-weight:700;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</td>
+      <td style="font-size:11px;">${date}</td>
+      <td><button class="btn btn-sm" style="background:var(--green-light);color:var(--green);font-size:11px;padding:5px 10px;border-radius:8px;border:none;cursor:pointer;" onclick="marcarDeudaPagada(${o.id})"><i class="fas fa-check"></i> Pagó</button></td></tr>`;
+    return `<tr>
+      <td><span class="order-id">${String(o.id).slice(-6)}</span></td>
+      <td><strong>${o.name||''} ${o.lastname||''}</strong></td>
+      <td>${o.phone||'—'}</td>
+      <td style="font-size:11px;">${o.destination||'—'}</td>
+      <td style="font-size:11px;">${prod}</td>
+      <td>S/ ${parseFloat(o.total||0).toFixed(2)}</td>
+      <td style="color:var(--mint);">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
+      <td style="color:var(--orange);font-weight:700;font-size:14px;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</td>
+      <td style="font-size:11px;">${date}</td>
+      <td><button class="btn btn-sm" style="background:var(--green-light);color:var(--green);font-size:11px;padding:5px 10px;border-radius:8px;border:none;cursor:pointer;" onclick="marcarDeudaPagada(${o.id})"><i class="fas fa-check"></i> Pagó</button></td></tr>`;
+  };
+  const tbody = document.getElementById('deudores-table-body');
+  if (tbody) tbody.innerHTML = deudores.length
+    ? deudores.map(o => rowFn(o, false)).join('')
+    : `<tr><td colspan="10"><div class="empty-state" style="padding:30px;"><div class="empty-icon">✅</div><h3>Sin deudores</h3><p>Todos los pagos están al día.</p></div></td></tr>`;
+  const dbody = document.getElementById('dash-deudores-body');
+  if (dbody) dbody.innerHTML = deudores.length
+    ? deudores.slice(0,5).map(o => rowFn(o, true)).join('') + (deudores.length>5?`<tr><td colspan="7" style="text-align:center;font-size:12px;color:var(--muted);padding:10px;">+${deudores.length-5} más</td></tr>`:'')
+    : `<tr><td colspan="7"><div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">✅ Sin deudores activos</div></td></tr>`;
+}
+async function marcarDeudaPagada(id) {
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  if (!confirm(`¿Marcar a ${o.name} como deuda cancelada?`)) return;
+  o.adelanto = o.total; o.deuda = 0; o.status = 'confirmed';
+  if (supabaseClient) {
+    await supabaseClient.from('orders').update({ adelanto: o.total, deuda: 0, status: 'confirmed' }).eq('id', id);
+  }
+  renderDeudores(); filterSales();
+  showAlert(`✅ Deuda de ${o.name} marcada como pagada`);
+}
+
+// Hook deudores into filterSales override
+const _origFilterSalesDeuda = filterSales;
+filterSales = function() { _origFilterSalesDeuda.apply(this, arguments); renderDeudores(); };
+
+// ============================================
 // "AGREGAR DIGITAL" — visible solo en productosdigitales.html
 // ============================================
 (function() {
@@ -3939,7 +4151,7 @@ function renderVisitsChart() {
 const _origUpdateDashboard = updateDashboard;
 updateDashboard = function() {
   _origUpdateDashboard.apply(this, arguments);
-  setTimeout(() => { renderVisitsChart(); renderCountriesList(); renderManualInputs(); }, 80);
+  setTimeout(() => { renderVisitsChart(); renderCountriesList(); renderManualInputs(); renderDeudores(); }, 80);
 };
 const _origFilterSales = filterSales;
 filterSales = function() {
