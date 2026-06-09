@@ -1865,7 +1865,11 @@ async function loadAllData() {
   ]);
   products = productsRes.data || [];
   categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color }));
-  orders = ordersRes.data || [];
+  orders = (ordersRes.data || []).map(o => {
+    o.adelanto = parseFloat(o.adelanto) || 0;
+    o.deuda = parseFloat(o.deuda) || 0;
+    return o;
+  });
   if (!categories.length) {
     categories = [{ name:'Bebés', emoji:'👶', color:'#c2617a' },{ name:'Niñas', emoji:'🎀', color:'#7c3aed' },{ name:'Niños', emoji:'👦', color:'#2563eb' }];
     for (const cat of categories) await saveCategoryToSupabase(cat);
@@ -2167,6 +2171,7 @@ function salesRowHtml(o) {
     <td>
       <div class="sale-actions">
         <button class="icon-btn edit-btn" onclick="openSaleDetail(${o.id})" title="Ver detalle"><i class="fas fa-eye"></i></button>
+        <button class="icon-btn delete-btn" onclick="deleteSale(${o.id})" title="Borrar venta"><i class="fas fa-trash"></i></button>
       </div>
     </td>
   </tr>`;
@@ -2369,6 +2374,11 @@ async function saveManualSale() {
   if (!size) { showAlert('Selecciona una talla','error'); return; }
   if (!price) { showAlert('Ingresa el precio','error'); return; }
 
+  const adelantoVal = parseFloat(document.getElementById('ms-adelanto').value)||0;
+  const totalVal = price * qty;
+  const deudaVal = Math.max(0, totalVal - adelantoVal);
+  const noteTxt = document.getElementById('ms-note').value.trim();
+
   const orderData = {
     id: Date.now(),
     name,
@@ -2378,12 +2388,12 @@ async function saveManualSale() {
     whatsapp: document.getElementById('ms-phone').value.trim(),
     destination: document.getElementById('ms-destination').value.trim(),
     payment_method: document.getElementById('ms-method').value,
-    note: document.getElementById('ms-note').value.trim(),
+    note: noteTxt,
     items: [{ name: p.name, size, price, qty }],
-    total: price * qty,
-    adelanto: parseFloat(document.getElementById('ms-adelanto').value)||0,
-    deuda: Math.max(0, price * qty - (parseFloat(document.getElementById('ms-adelanto').value)||0)),
-    status: (parseFloat(document.getElementById('ms-adelanto').value)||0) > 0 && (parseFloat(document.getElementById('ms-adelanto').value)||0) < price * qty ? 'pending' : 'confirmed',
+    total: totalVal,
+    adelanto: adelantoVal,
+    deuda: deudaVal,
+    status: adelantoVal > 0 && deudaVal > 0 ? 'pending' : 'confirmed',
     manual: true,
     created_at: new Date().toISOString()
   };
@@ -2466,6 +2476,20 @@ async function quickConfirmSale(id) {
       <button class="btn btn-ghost" onclick="document.getElementById('confirm-sale-modal').classList.remove('open')">Cancelar</button>
     </div>`;
   document.getElementById('confirm-sale-modal').classList.add('open');
+}
+
+async function deleteSale(id) {
+  const o = orders.find(x => x.id === id);
+  const name = o ? `${o.name||''} ${o.lastname||''}`.trim() : String(id).slice(-6);
+  if (!confirm(`¿Eliminar la venta de "${name}"?\nEsta acción no se puede deshacer.`)) return;
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('orders').delete().eq('id', id);
+    if (error) { showAlert('Error al eliminar: ' + error.message, 'error'); return; }
+  }
+  orders = orders.filter(x => x.id !== id);
+  filterSales();
+  updateDashboard();
+  showAlert('🗑️ Venta eliminada');
 }
 
 async function doConfirmSale(id) {
