@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>D'Zoe Perú | Productos Digitales Premium — Plantillas, Baby Shower, Mamás & Emprendedores</title>
+<meta name="description" content="Descarga productos digitales exclusivos de D'Zoe Perú: plantillas Canva para Baby Shower, Mamás y Bebés, Emprendedores y más. Diseños premium editables al instante.">
+<meta name="theme-color" content="#e8a4c0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ══════════════════════════════════════════════
+   D'ZOE PERÚ — DIGITAL PRODUCTS PAGE
+══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --rose:#e8a4c0;
+  --rose-dark:#d4809f;
+  --rose-light:#f9dde9;
+  --rose-soft:#fef0f5;
+  --mint:#7ecfc8;
+  --mint-light:#c8eeeb;
+  --mint-soft:#e8f9f7;
+  --lavender:#c3aee4;
+  --lav-light:#ede4f9;
+  --lav-soft:#f5f0fd;
+  --peach:#f5b97e;
+  --peach-light:#fde9d1;
+  --sky:#8ec8f0;
+  --sky-light:#d6edfa;
+  --cream:#fee4f5;
+  --gold:#f5c842;
+  --gold-light:#fef6d0;
+  --text:#4a4460;
+  --text-soft:#8a85a0;
+  --white:#ffffff;
+  --border:#ede8f5;
+  --shadow-sm:0 2px 12px rgba(195,174,228,0.12);
+  --shadow-md:0 8px 28px rgba(195,174,228,0.2);
+  --shadow-lg:0 16px 40px rgba(195,174,228,0.28);
+  --trans:.4s cubic-bezier(0.22,0.9,0.36,1);
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--rose-soft);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--rose),var(--lavender));border-radius:10px;}
+.container{width:1200px;max-width:95%;margin:auto;}
+
+/* ══ TOPBAR ══ */
+.topbar{background:linear-gradient(90deg,#c3aee4,#e8a4c0,#7ecfc8);color:#fff;padding:9px 0;font-size:12.5px;font-weight:600;letter-spacing:0.3px;overflow:hidden;position:relative;z-index:1001;}
+.topbar-container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-right a{color:rgba(255,255,255,0.9);font-size:14px;transition:0.2s;text-decoration:none;}
+.topbar-right a:hover{color:#fff;transform:scale(1.15);}
+
+/* ══ HEADER ══ */
+.header{background:var(--white);position:sticky;top:0;z-index:1000;box-shadow:var(--shadow-sm);border-bottom:1px solid var(--border);transition:all var(--trans);}
+.header-wrapper{height:82px;display:flex;align-items:center;justify-content:space-between;}
+.header.scrolled{box-shadow:0 4px 24px rgba(195,174,228,0.2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--shadow-sm);}
+.logo-text h1{font-family:'Baloo 2',cursive;color:var(--rose);font-size:30px;line-height:1;}
+.logo-text span{color:var(--text-soft);letter-spacing:3px;font-size:11px;}
+.menu{display:flex;gap:30px;}
+.menu a{text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:0.3s;position:relative;padding-bottom:3px;}
+.menu a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--rose);border-radius:2px;transition:0.3s;}
+.menu a:hover{color:var(--rose);}
+.menu a:hover::after,.menu a.active::after{width:100%;}
+.menu a.active{color:var(--rose);}
+.header-icons{display:flex;align-items:center;gap:12px;}
+.header-icons button,.header-icons a{border:none;background:transparent;cursor:pointer;transition:0.3s;display:flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;text-decoration:none;}
+.cart-btn{background:linear-gradient(135deg,var(--rose-soft),var(--lav-light))!important;padding:8px 18px;border-radius:40px;border:2px solid var(--rose-light)!important;transition:0.3s;position:relative;display:flex;align-items:center;gap:8px;}
+.cart-btn i{font-size:18px;color:var(--rose);}
+.cart-btn span{font-size:13px;font-weight:800;color:var(--text);}
+.cart-btn:hover{background:linear-gradient(135deg,var(--rose-light),var(--lav-light))!important;box-shadow:var(--shadow-md);}
+.hamburger-btn{display:none;background:transparent;border:2px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;font-size:16px;color:var(--text);transition:0.2s;}
+.hamburger-btn:hover{background:var(--rose-soft);border-color:var(--rose);}
+
+/* ══ BREADCRUMB ══ */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:9px 0;font-size:12px;}
+.breadcrumb{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--text-soft);font-weight:600;}
+.breadcrumb a{color:var(--text-soft);text-decoration:none;transition:.2s;display:flex;align-items:center;gap:4px;}
+.breadcrumb a:hover{color:var(--rose);}
+.breadcrumb .sep{color:var(--rose-light);font-size:9px;}
+.breadcrumb .cur{color:var(--rose-dark);font-weight:800;}
+
+/* ══ HERO DIGITAL ══ */
+.hero-digital{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#fde8f5 0%,#ede4f9 40%,#d6f0fd 100%);
+  padding:70px 0 60px;
+}
+.hero-digital::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e8a4c0' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.hero-digital-inner{display:flex;align-items:center;gap:60px;position:relative;z-index:1;}
+.hero-digital-text{flex:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;padding:6px 18px;border-radius:40px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;box-shadow:0 4px 14px rgba(232,164,192,0.4);}
+.hero-digital-text h2{font-family:'Baloo 2',cursive;font-size:52px;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:18px;}
+.hero-digital-text h2 span{background:linear-gradient(90deg,var(--rose),var(--lavender));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-digital-text p{font-size:16px;color:var(--text-soft);line-height:1.7;max-width:520px;margin-bottom:30px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;}
+.hero-pill{display:flex;align-items:center;gap:7px;background:white;border:2px solid var(--border);border-radius:40px;padding:7px 16px;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:var(--shadow-sm);}
+.hero-pill i{color:var(--rose);}
+.hero-cta-group{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:white;padding:14px 30px;border-radius:50px;font-size:15px;font-weight:800;text-decoration:none;box-shadow:0 6px 20px rgba(232,164,192,0.5);transition:all 0.3s;border:none;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(232,164,192,0.6);}
+.btn-secondary{display:inline-flex;align-items:center;gap:9px;background:white;color:var(--text);padding:14px 28px;border-radius:50px;font-size:15px;font-weight:800;text-decoration:none;border:2px solid var(--border);box-shadow:var(--shadow-sm);transition:all 0.3s;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-secondary:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-2px);}
+.hero-digital-visual{flex-shrink:0;width:380px;position:relative;}
+.hero-float-card{background:white;border-radius:24px;padding:24px;box-shadow:var(--shadow-lg);border:2px solid var(--border);position:relative;overflow:hidden;}
+.hero-float-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:linear-gradient(135deg,var(--rose-light),var(--lav-light));border-radius:50%;opacity:0.6;}
+.hfc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;position:relative;z-index:1;}
+.hfc-item{background:linear-gradient(135deg,var(--rose-soft),var(--lav-soft));border-radius:16px;padding:16px 12px;text-align:center;border:1.5px solid var(--border);transition:0.3s;}
+.hfc-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.hfc-emoji{font-size:32px;display:block;margin-bottom:8px;}
+.hfc-label{font-size:11.5px;font-weight:800;color:var(--text);line-height:1.3;}
+.hero-stats{display:flex;gap:16px;margin-top:16px;position:relative;z-index:1;}
+.stat-chip{flex:1;background:linear-gradient(135deg,var(--lav-soft),var(--mint-soft));border-radius:14px;padding:12px 10px;text-align:center;border:1.5px solid var(--border);}
+.stat-num{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);display:block;line-height:1;}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--text-soft);}
+.hero-badge{position:absolute;top:-14px;right:-14px;width:72px;height:72px;background:linear-gradient(135deg,var(--gold),#f5a820);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(245,200,66,0.5);animation:badge-spin 8s linear infinite;}
+.hero-badge span:first-child{font-size:10px;font-weight:900;color:white;line-height:1;text-align:center;}
+.hero-badge span:last-child{font-size:8px;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:0.5px;}
+@keyframes badge-spin{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(5deg);}}
+.floating-icons{position:absolute;}
+.fi-1{top:20px;left:-20px;font-size:28px;animation:float1 3s ease-in-out infinite;}
+.fi-2{bottom:30px;right:-25px;font-size:24px;animation:float2 4s ease-in-out infinite;}
+@keyframes float1{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-8px) rotate(10deg);}}
+
+/* ══ TRUST STRIP ══ */
+.trust-strip{background:white;border-bottom:1px solid var(--border);padding:16px 0;}
+.trust-inner{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--text);}
+.trust-item i{font-size:18px;color:var(--rose);}
+.trust-sep{width:1px;height:28px;background:var(--border);}
+
+/* ══ SECCIÓN TÍTULO ══ */
+.section-header{text-align:center;margin-bottom:40px;}
+.section-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--rose-soft);color:var(--rose-dark);padding:5px 16px;border-radius:40px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;border:1.5px solid var(--rose-light);}
+.section-title{font-family:'Baloo 2',cursive;font-size:36px;font-weight:800;color:var(--text);margin-bottom:12px;}
+.section-title span{background:linear-gradient(90deg,var(--rose),var(--lavender));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-sub{font-size:15px;color:var(--text-soft);max-width:540px;margin:0 auto;line-height:1.7;}
+
+/* ══ FILTROS CATEGORÍAS ══ */
+.cat-filters{padding:40px 0 0;}
+.cat-filter-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+.cat-filter-btn{display:flex;align-items:center;gap:9px;padding:10px 20px;border-radius:50px;border:2px solid var(--border);background:white;color:var(--text-soft);cursor:pointer;font-size:13px;font-weight:700;transition:all 0.25s;font-family:'Nunito',sans-serif;box-shadow:var(--shadow-sm);}
+.cat-filter-btn .cf-emoji{font-size:18px;}
+.cat-filter-btn:hover{border-color:var(--rose);color:var(--rose-dark);background:var(--rose-soft);}
+.cat-filter-btn.active{background:linear-gradient(135deg,var(--rose),var(--lavender));color:white;border-color:transparent;box-shadow:0 4px 16px rgba(232,164,192,0.4);}
+.cat-filter-btn .cf-count{background:rgba(255,255,255,0.3);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:800;}
+.cat-filter-btn:not(.active) .cf-count{background:var(--rose-soft);color:var(--rose-dark);}
+
+/* ══ PRODUCTO CARDS DIGITALES ══ */
+.products-section{padding:32px 0 80px;}
+.digital-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+
+.digi-card{background:white;border-radius:20px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);transition:all 0.35s;display:flex;flex-direction:column;position:relative;}
+.digi-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(195,174,228,0.3);border-color:var(--rose-light);}
+
+/* Imagen mock */
+.digi-cover{position:relative;aspect-ratio:4/3;overflow:hidden;}
+.digi-cover-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+.digi-cover-bg{position:absolute;inset:0;}
+.digi-mockup{position:relative;z-index:2;text-align:center;padding:16px;}
+.digi-mockup-frame{background:white;border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,0.12);width:85%;margin:0 auto;transition:transform 0.4s;}
+.digi-card:hover .digi-mockup-frame{transform:rotate(-2deg) scale(1.04);}
+.digi-mockup-frame .mf-header{height:6px;background:linear-gradient(90deg,var(--rose),var(--lavender));border-radius:4px;margin-bottom:8px;}
+.mf-lines{display:flex;flex-direction:column;gap:4px;}
+.mf-line{height:5px;border-radius:3px;background:var(--border);}
+.mf-line.w80{width:80%;}
+.mf-line.w60{width:60%;}
+.mf-line.w90{width:90%;}
+.mf-emoji-big{font-size:42px;margin-bottom:6px;display:block;}
+
+/* Badges */
+.digi-ribbon{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:5px;z-index:10;}
+.d-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:0.4px;}
+.d-badge.nuevo{background:linear-gradient(135deg,var(--mint),#3eb5ac);color:white;}
+.d-badge.popular{background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:white;}
+.d-badge.promo{background:linear-gradient(135deg,var(--gold),#e8a830);color:#fff;}
+.d-badge.gratis{background:linear-gradient(135deg,var(--lavender),#9a7fd4);color:white;}
+
+.digi-wishlist{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,0.1);transition:0.2s;z-index:10;font-size:16px;color:#ccc;}
+.digi-wishlist:hover{transform:scale(1.15);color:var(--rose);}
+
+.canva-badge{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);color:white;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;white-space:nowrap;z-index:10;}
+.canva-badge .cb-dot{width:8px;height:8px;border-radius:50%;background:#7DE2D1;}
+
+/* Body */
+.digi-body{padding:16px 16px 12px;flex:1;display:flex;flex-direction:column;}
+.digi-cat-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.digi-body h4{font-size:14px;font-weight:800;color:var(--text);line-height:1.4;margin-bottom:6px;}
+.digi-body p{font-size:12px;color:var(--text-soft);line-height:1.5;margin-bottom:12px;flex:1;}
+
+.digi-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.digi-meta-chip{display:flex;align-items:center;gap:4px;background:var(--lav-soft);border:1px solid var(--border);border-radius:20px;padding:3px 9px;font-size:10.5px;font-weight:700;color:var(--text);}
+.digi-meta-chip i{font-size:9px;color:var(--lavender);}
+
+/* Precio */
+.digi-price-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.digi-price{font-size:22px;font-weight:900;color:var(--rose-dark);font-family:'Baloo 2',cursive;letter-spacing:-0.5px;}
+.digi-price-before{font-size:13px;color:var(--text-soft);text-decoration:line-through;font-weight:600;}
+.digi-discount-tag{background:var(--peach-light);color:#b85e10;border-radius:20px;padding:2px 8px;font-size:10.5px;font-weight:800;}
+.digi-price-free{font-size:22px;font-weight:900;color:var(--mint);font-family:'Baloo 2',cursive;}
+
+/* Acciones */
+.digi-actions{display:flex;flex-direction:column;gap:8px;margin-top:auto;}
+.digi-buy-btn{width:100%;background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:white;border:none;padding:11px 14px;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(232,164,192,0.4);}
+.digi-buy-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,164,192,0.55);}
+.digi-buy-btn.free-btn{background:linear-gradient(135deg,var(--lavender),#9a7fd4);box-shadow:0 4px 14px rgba(195,174,228,0.4);}
+.digi-buy-btn.free-btn:hover{box-shadow:0 8px 22px rgba(195,174,228,0.55);}
+.digi-preview-btn{width:100%;background:var(--lav-soft);color:var(--text);border:1.5px solid var(--border);padding:9px 14px;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.digi-preview-btn:hover{background:var(--lav-light);border-color:var(--lavender);}
+
+/* ══ SECCIÓN BENEFICIOS DIGITALES ══ */
+.benefits-section{background:white;padding:70px 0;border-top:1px solid var(--border);}
+.benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+.benefit-card{background:linear-gradient(145deg,var(--rose-soft),var(--lav-soft));border-radius:20px;padding:30px 22px;text-align:center;border:1.5px solid var(--border);transition:0.3s;}
+.benefit-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);}
+.benefit-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--lavender));display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:28px;box-shadow:0 6px 18px rgba(232,164,192,0.4);}
+.benefit-card h4{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.benefit-card p{font-size:13px;color:var(--text-soft);line-height:1.6;}
+
+/* ══ BANNER CANVA ══ */
+.canva-promo{background:linear-gradient(135deg,#7DE2D1 0%,#c3aee4 50%,#e8a4c0 100%);border-radius:24px;padding:44px 50px;display:flex;align-items:center;gap:40px;overflow:hidden;position:relative;margin:0 0 60px;}
+.canva-promo::before{content:'✦';position:absolute;top:20px;right:80px;font-size:80px;color:rgba(255,255,255,0.15);}
+.canva-promo::after{content:'✦';position:absolute;bottom:10px;right:40px;font-size:40px;color:rgba(255,255,255,0.1);}
+.cp-text{flex:1;color:white;}
+.cp-text .cp-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.25);color:white;padding:5px 14px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;backdrop-filter:blur(4px);}
+.cp-text h3{font-family:'Baloo 2',cursive;font-size:34px;font-weight:800;line-height:1.2;margin-bottom:12px;}
+.cp-text p{font-size:14px;opacity:0.9;line-height:1.7;max-width:480px;margin-bottom:22px;}
+.cp-btn{display:inline-flex;align-items:center;gap:9px;background:white;color:var(--rose-dark);padding:13px 28px;border-radius:50px;font-size:14px;font-weight:800;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:0.3s;}
+.cp-btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.2);}
+.cp-visual{flex-shrink:0;width:220px;text-align:center;}
+.cp-emoji-stack{font-size:64px;line-height:1.2;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15));}
+
+/* ══ BUNDLE SECTION ══ */
+.bundle-section{padding:60px 0;}
+.bundle-card{background:linear-gradient(135deg,#fde8f5,#ede4f9,#d6f0fd);border-radius:28px;padding:50px;display:flex;align-items:center;gap:50px;border:2px dashed var(--lavender);position:relative;overflow:hidden;}
+.bundle-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,var(--rose-light),transparent);opacity:0.5;}
+.bc-text{flex:1;position:relative;z-index:1;}
+.bc-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),#f5a820);color:white;padding:5px 16px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;box-shadow:0 3px 12px rgba(245,200,66,0.4);}
+.bc-text h3{font-family:'Baloo 2',cursive;font-size:36px;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.2;}
+.bc-text h3 span{background:linear-gradient(90deg,var(--rose),var(--lavender));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.bc-text p{font-size:14.5px;color:var(--text-soft);line-height:1.7;margin-bottom:24px;max-width:460px;}
+.bc-includes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.bc-chip{display:flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--border);border-radius:30px;padding:6px 14px;font-size:12.5px;font-weight:700;color:var(--text);box-shadow:var(--shadow-sm);}
+.bc-chip i{color:var(--mint);}
+.bc-price-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.bc-price-new{font-family:'Baloo 2',cursive;font-size:42px;font-weight:800;color:var(--rose-dark);line-height:1;}
+.bc-price-old{font-size:18px;color:var(--text-soft);text-decoration:line-through;font-weight:600;}
+.bc-save{background:linear-gradient(135deg,var(--mint),#3eb5ac);color:white;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:800;}
+.bc-visual{flex-shrink:0;width:280px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;position:relative;z-index:1;}
+.bc-mini-card{background:white;border-radius:16px;padding:18px 14px;text-align:center;box-shadow:var(--shadow-md);border:1.5px solid var(--border);transition:0.3s;}
+.bc-mini-card:hover{transform:translateY(-4px);}
+.bc-mini-card:first-child{grid-column:span 2;background:linear-gradient(135deg,var(--rose-soft),var(--lav-soft));}
+.bc-mc-emoji{font-size:30px;margin-bottom:6px;display:block;}
+.bc-mc-label{font-size:11px;font-weight:800;color:var(--text);}
+
+/* ══ TESTIMONIALES ══ */
+.reviews-section{background:white;padding:70px 0;border-top:1px solid var(--border);}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:10px;}
+.review-card{background:var(--rose-soft);border-radius:18px;padding:26px;border:1.5px solid var(--rose-light);transition:0.3s;}
+.review-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.review-stars{display:flex;gap:3px;color:var(--gold);font-size:15px;margin-bottom:12px;}
+.review-text{font-size:13.5px;color:var(--text);line-height:1.7;margin-bottom:16px;font-style:italic;}
+.review-author{display:flex;align-items:center;gap:10px;}
+.ra-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--lavender));display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ra-name{font-weight:800;font-size:13px;color:var(--text);}
+.ra-role{font-size:11px;color:var(--text-soft);}
+
+/* ══ FAQ ══ */
+.faq-section{padding:70px 0;}
+.faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;}
+.faq-item{background:white;border-radius:16px;padding:22px;border:1.5px solid var(--border);cursor:pointer;transition:0.3s;}
+.faq-item:hover,.faq-item.open{border-color:var(--rose-light);box-shadow:var(--shadow-md);}
+.faq-item.open{background:var(--rose-soft);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800;font-size:14px;color:var(--text);}
+.faq-q i{color:var(--rose);font-size:12px;transition:0.3s;flex-shrink:0;}
+.faq-item.open .faq-q i{transform:rotate(180deg);}
+.faq-a{font-size:13px;color:var(--text-soft);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding-top 0.3s;}
+.faq-item.open .faq-a{max-height:200px;padding-top:12px;}
+
+/* ══ CTA FINAL ══ */
+.cta-final{background:linear-gradient(135deg,var(--rose),var(--lavender),var(--mint));padding:70px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-final::before{content:'💕';position:absolute;top:20px;left:60px;font-size:50px;opacity:0.2;}
+.cta-final::after{content:'✨';position:absolute;bottom:20px;right:60px;font-size:50px;opacity:0.2;}
+.cta-final h3{font-family:'Baloo 2',cursive;font-size:40px;font-weight:800;color:white;margin-bottom:14px;}
+.cta-final p{font-size:16px;color:rgba(255,255,255,0.9);margin-bottom:32px;line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto;}
+.cta-final .btn-white{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--rose-dark);padding:15px 36px;border-radius:50px;font-size:16px;font-weight:800;text-decoration:none;box-shadow:0 8px 28px rgba(0,0,0,0.15);transition:0.3s;}
+.cta-final .btn-white:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,0.2);}
+
+/* ══ FOOTER ══ */
+.footer{background:linear-gradient(160deg,#f0e0f4,#e8daf5,#d8f0ee);padding:50px 0 28px;border-top:1px solid var(--border);}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-brand .fb-logo{font-family:'Baloo 2',cursive;font-size:28px;color:var(--rose);font-weight:800;margin-bottom:8px;}
+.footer-brand p{font-size:13px;color:var(--text-soft);line-height:1.7;max-width:280px;margin-bottom:16px;}
+.footer-socials{display:flex;gap:10px;}
+.fs-btn{width:36px;height:36px;border-radius:50%;background:white;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text-soft);text-decoration:none;transition:0.2s;}
+.fs-btn:hover{background:var(--rose);color:white;border-color:var(--rose);}
+.footer-col h5{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--text);margin-bottom:14px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:8px;}
+.footer-col ul li a{color:var(--text-soft);font-size:13px;text-decoration:none;font-weight:600;transition:0.2s;}
+.footer-col ul li a:hover{color:var(--rose);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:22px;text-align:center;font-size:12px;color:var(--text-soft);}
+.footer-bottom span{color:var(--rose);}
+
+/* ══ FLOATING WA ══ */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:980;}
+.wa-float-btn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;cursor:pointer;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 22px rgba(37,211,102,0.5);transition:all 0.3s;text-decoration:none;}
+.wa-float-btn:hover{transform:scale(1.1);}
+.wa-pulse{position:absolute;top:2px;right:2px;width:13px;height:13px;background:#4cfa8a;border-radius:50%;border:2px solid white;animation:waPulse 2s infinite;}
+@keyframes waPulse{0%,100%{box-shadow:0 0 0 0 rgba(76,250,138,0.6);}60%{box-shadow:0 0 0 8px rgba(76,250,138,0);}}
+
+/* ══ NOTIF ══ */
+.notif{position:fixed;bottom:90px;right:24px;background:white;border:1.5px solid var(--rose-light);border-radius:16px;padding:12px 18px;font-size:13px;font-weight:700;color:var(--text);box-shadow:var(--shadow-lg);z-index:999;transform:translateY(20px);opacity:0;transition:all 0.4s;max-width:280px;}
+.notif.show{transform:translateY(0);opacity:1;}
+
+/* ══ EMPTY STATE ══ */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-soft);}
+.empty-state .es-icon{font-size:60px;display:block;margin-bottom:16px;}
+.empty-state h4{font-family:'Baloo 2',cursive;font-size:22px;color:var(--text);margin-bottom:8px;}
+.empty-state p{font-size:14px;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1100px){
+  .digital-grid{grid-template-columns:repeat(3,1fr);}
+  .benefits-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:900px){
+  .hero-digital-inner{flex-direction:column;gap:40px;text-align:center;}
+  .hero-digital-text h2{font-size:38px;}
+  .hero-digital-visual{width:100%;max-width:360px;margin:0 auto;}
+  .hero-pills{justify-content:center;}
+  .hero-cta-group{justify-content:center;}
+  .bundle-card{flex-direction:column;text-align:center;}
+  .bc-visual{width:100%;max-width:300px;margin:0 auto;}
+  .bc-includes{justify-content:center;}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:28px;}
+  .canva-promo{flex-direction:column;text-align:center;padding:36px 28px;}
+  .cp-visual{width:100%;}
+  .reviews-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  .digital-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
+  .benefits-grid{grid-template-columns:1fr 1fr;}
+  .faq-grid{grid-template-columns:1fr;}
+  .menu,.header-icons .cart-btn{display:none;}
+  .hamburger-btn{display:flex;}
+  .trust-sep{display:none;}
+  .trust-inner{gap:20px;}
+  .hero-digital{padding:48px 0 44px;}
+}
+@media(max-width:500px){
+  .digital-grid{grid-template-columns:1fr;}
+  .cat-filter-row{gap:8px;}
+  .cat-filter-btn{padding:8px 14px;font-size:12px;}
+  .benefits-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr;}
+  .bc-visual{grid-template-columns:1fr 1fr;}
+  .cta-final h3{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div class="container topbar-container">
+    <span><i class="fas fa-download"></i> Descarga inmediata tras el pago · 100% editable en Canva</span>
+    <div class="topbar-right">
+      <a href="https://wa.me/51956063145" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <span>Lima, Perú 🇵🇪</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header class="header" id="main-header">
+  <div class="container header-wrapper">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🎀</div>
+      <div class="logo-text">
+        <h1>D'Zoe</h1>
+        <span>PERÚ</span>
+      </div>
+    </a>
+    <nav class="menu">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Ropa Infantil</a>
+      <a href="productosDigitales.html" class="active">Digitales ✨</a>
+      <a href="index.html#lista-de-deseos">Baby Shower</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <div class="header-icons">
+      <a href="https://wa.me/51956063145" class="cart-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>Consultar</span>
+      </a>
+      <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ BREADCRUMB ══ -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <span class="sep"><i class="fas fa-chevron-right"></i></span>
+      <span class="cur">✨ Productos Digitales</span>
+    </nav>
+  </div>
+</div>
+
+<!-- ══ HERO DIGITAL ══ -->
+<section class="hero-digital">
+  <div class="container">
+    <div class="hero-digital-inner">
+      <div class="hero-digital-text">
+        <div class="hero-tag"><i class="fas fa-bolt"></i> Descarga instantánea</div>
+        <h2>Productos Digitales<br><span>Premium para ti</span> 💕</h2>
+        <p>Plantillas editables 100% en Canva, diseñadas con amor para mamás, bebés, emprendedoras y más. Descarga al instante y personaliza a tu gusto.</p>
+        <div class="hero-pills">
+          <div class="hero-pill"><i class="fas fa-check-circle"></i> Editable en Canva gratis</div>
+          <div class="hero-pill"><i class="fas fa-download"></i> Descarga inmediata</div>
+          <div class="hero-pill"><i class="fas fa-heart"></i> Diseño exclusivo D'Zoe</div>
+          <div class="hero-pill"><i class="fas fa-infinity"></i> Uso ilimitado</div>
+        </div>
+        <div class="hero-cta-group">
+          <a href="#productos" class="btn-primary"><i class="fas fa-store"></i> Ver todos los productos</a>
+          <a href="https://wa.me/51956063145" class="btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+        </div>
+      </div>
+      <div class="hero-digital-visual">
+        <div style="position:relative;">
+          <div class="hero-badge">
+            <span>100%</span>
+            <span>DIGITAL</span>
+          </div>
+          <div class="hero-float-card">
+            <div class="hfc-grid">
+              <div class="hfc-item">
+                <span class="hfc-emoji">🎂</span>
+                <div class="hfc-label">Baby Shower Kits</div>
+              </div>
+              <div class="hfc-item">
+                <span class="hfc-emoji">👶</span>
+                <div class="hfc-label">Mamás & Bebés</div>
+              </div>
+              <div class="hfc-item">
+                <span class="hfc-emoji">🎨</span>
+                <div class="hfc-label">Plantillas Canva</div>
+              </div>
+              <div class="hfc-item">
+                <span class="hfc-emoji">💼</span>
+                <div class="hfc-label">Emprendedoras</div>
+              </div>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-chip">
+                <span class="stat-num">50+</span>
+                <span class="stat-lbl">Plantillas</span>
+              </div>
+              <div class="stat-chip">
+                <span class="stat-num">5★</span>
+                <span class="stat-lbl">Calificación</span>
+              </div>
+              <div class="stat-chip">
+                <span class="stat-num">∞</span>
+                <span class="stat-lbl">Usos</span>
+              </div>
+            </div>
+          </div>
+          <div class="floating-icons fi-1">🌸</div>
+          <div class="floating-icons fi-2">⭐</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST STRIP ══ -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item"><i class="fas fa-bolt"></i> Descarga al instante</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><i class="fas fa-paint-brush"></i> Editable en Canva</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><i class="fas fa-shield-alt"></i> Compra 100% segura</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><i class="fas fa-headset"></i> Soporte por WhatsApp</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><i class="fas fa-heart"></i> Diseñado en Perú 🇵🇪</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FILTROS ══ -->
+<section class="cat-filters" id="categorias">
+  <div class="container">
+    <div class="cat-filter-row" id="filterRow">
+      <button class="cat-filter-btn active" data-cat="all" onclick="filterProducts('all',this)">
+        <span class="cf-emoji">✨</span> Todos <span class="cf-count" id="cnt-all">12</span>
+      </button>
+      <button class="cat-filter-btn" data-cat="baby-shower" onclick="filterProducts('baby-shower',this)">
+        <span class="cf-emoji">🎂</span> Baby Shower <span class="cf-count">4</span>
+      </button>
+      <button class="cat-filter-btn" data-cat="mamas-bebes" onclick="filterProducts('mamas-bebes',this)">
+        <span class="cf-emoji">👶</span> Mamás & Bebés <span class="cf-count">3</span>
+      </button>
+      <button class="cat-filter-btn" data-cat="plantillas-canva" onclick="filterProducts('plantillas-canva',this)">
+        <span class="cf-emoji">🎨</span> Plantillas Canva <span class="cf-count">3</span>
+      </button>
+      <button class="cat-filter-btn" data-cat="emprendedoras" onclick="filterProducts('emprendedoras',this)">
+        <span class="cf-emoji">💼</span> Emprendedoras <span class="cf-count">2</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTOS ══ -->
+<section class="products-section" id="productos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><i class="fas fa-star"></i> Colección Digital D'Zoe</div>
+      <h2 class="section-title">Nuestros Productos <span>Digitales</span></h2>
+      <p class="section-sub">Plantillas premium diseñadas con mucho amor, listas para descargar y personalizar en minutos.</p>
+    </div>
+
+    <div class="digital-grid" id="digitalGrid">
+
+      <!-- CARD 1 — Baby Shower Kit Rosa -->
+      <div class="digi-card" data-cat="baby-shower">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fde8f5,#f9c8e0);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">🎂</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#e8a4c0,#c3aee4);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:#f9dde9;"></div>
+                  <div class="mf-line w60" style="background:#ede4f9;"></div>
+                  <div class="mf-line w90" style="background:#f9dde9;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge popular"><i class="fas fa-fire"></i> Popular</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Kit Baby Shower Rosa')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);">🎂 Baby Shower</div>
+          <h4>Kit Completo Baby Shower Rosa Premium</h4>
+          <p>Invitaciones, tarjetas de agradecimiento, carteles y más. Todo editable, listo en minutos.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 18 archivos</div>
+            <div class="digi-meta-chip"><i class="fas fa-expand"></i> Varios formatos</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimible</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 25</div>
+            <div class="digi-price-before">S/ 45</div>
+            <div class="digi-discount-tag">-44%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Kit Completo Baby Shower Rosa Premium','S/ 25')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Kit Completo Baby Shower Rosa Premium')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 — Kit Baby Shower Celeste -->
+      <div class="digi-card" data-cat="baby-shower">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#d6edfa,#b8d8f0);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">🍼</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#8ec8f0,#7ecfc8);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:#d6edfa;"></div>
+                  <div class="mf-line w60" style="background:#c8eeeb;"></div>
+                  <div class="mf-line w90" style="background:#d6edfa;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge nuevo"><i class="fas fa-sparkles"></i> Nuevo</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Kit Baby Shower Celeste')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--sky-light);color:#2878a8;border:1px solid var(--sky);">🍼 Baby Shower</div>
+          <h4>Kit Baby Shower Celeste & Menta Niño</h4>
+          <p>Diseño tierno y moderno para celebrar la llegada del bebé varón. Incluye invitaciones y decoración.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 14 archivos</div>
+            <div class="digi-meta-chip"><i class="fas fa-expand"></i> A4 + Instagram</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimible</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 22</div>
+            <div class="digi-price-before">S/ 38</div>
+            <div class="digi-discount-tag">-42%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Kit Baby Shower Celeste & Menta Niño','S/ 22')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Kit Baby Shower Celeste & Menta Niño')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 — Tarjetas Bienvenida Bebé -->
+      <div class="digi-card" data-cat="baby-shower">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fde9d1,#f9c8a8);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">💌</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#f5b97e,#f0a060);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:#fde9d1;"></div>
+                  <div class="mf-line w60" style="background:#fde9d1;"></div>
+                  <div class="mf-line w90" style="background:#fde9d1;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge promo"><i class="fas fa-tag"></i> Oferta</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Tarjetas Bienvenida Bebé')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--peach-light);color:#a05010;border:1px solid var(--peach);">💌 Baby Shower</div>
+          <h4>Tarjetas de Agradecimiento Bienvenida Bebé</h4>
+          <p>8 diseños exclusivos de tarjetas para agradecer los regalos del baby shower. Minimalistas y elegantes.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 8 diseños</div>
+            <div class="digi-meta-chip"><i class="fas fa-expand"></i> Tarjeta estándar</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 12</div>
+            <div class="digi-price-before">S/ 20</div>
+            <div class="digi-discount-tag">-40%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Tarjetas de Agradecimiento Bienvenida Bebé','S/ 12')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Tarjetas de Agradecimiento Bienvenida Bebé')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4 — Guía Embarazo -->
+      <div class="digi-card" data-cat="mamas-bebes">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#ede4f9,#d8c8f0);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">🤰</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#c3aee4,#9a7fd4);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--lav-light);"></div>
+                  <div class="mf-line w60" style="background:var(--lav-light);"></div>
+                  <div class="mf-line w90" style="background:var(--lav-light);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge nuevo"><i class="fas fa-sparkles"></i> Nuevo</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Guía Semana a Semana')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> PDF editable</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--lav-soft);color:#6a40b8;border:1px solid var(--lavender);">🤰 Mamás & Bebés</div>
+          <h4>Guía de Embarazo Semana a Semana Illustrada</h4>
+          <p>Diario ilustrado del embarazo para llenar semana a semana con espacio para fotos, síntomas y emociones.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-book"></i> 45 páginas</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimible A5</div>
+            <div class="digi-meta-chip"><i class="fas fa-paint-brush"></i> Illustrado</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 35</div>
+            <div class="digi-price-before">S/ 55</div>
+            <div class="digi-discount-tag">-36%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Guía de Embarazo Semana a Semana','S/ 35')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Guía de Embarazo Semana a Semana')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5 — Tracker Bebé -->
+      <div class="digi-card" data-cat="mamas-bebes">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#e8f9f7,#c8eeeb);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">👶</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#7ecfc8,#3eb5ac);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--mint-soft);"></div>
+                  <div class="mf-line w60" style="background:var(--mint-light);"></div>
+                  <div class="mf-line w90" style="background:var(--mint-soft);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Tracker Primer Año')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--mint-soft);color:#2a7a74;border:1px solid var(--mint);">👶 Mamás & Bebés</div>
+          <h4>Tracker Primer Año del Bebé — Milestone Cards</h4>
+          <p>Tarjetas de hitos para registrar cada momento especial del primer año: primeros pasos, dientes, palabras y más.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 24 tarjetas</div>
+            <div class="digi-meta-chip"><i class="fas fa-expand"></i> Cuadrado IG</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 18</div>
+            <div class="digi-price-before">S/ 30</div>
+            <div class="digi-discount-tag">-40%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Tracker Primer Año del Bebé','S/ 18')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Tracker Primer Año del Bebé')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 6 — Pack Redes Sociales -->
+      <div class="digi-card" data-cat="plantillas-canva">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#f0e8ff,#e0d0f8);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">📱</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#c3aee4,#e8a4c0);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--lav-light);"></div>
+                  <div class="mf-line w60" style="background:var(--rose-light);"></div>
+                  <div class="mf-line w90" style="background:var(--lav-light);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge popular"><i class="fas fa-fire"></i> Más vendido</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Pack Redes Sociales')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--lav-soft);color:#6a40b8;border:1px solid var(--lavender);">🎨 Plantillas Canva</div>
+          <h4>Pack 30 Templates Redes Sociales Estilo Pastel</h4>
+          <p>30 plantillas premium para Instagram, Facebook y TikTok. Estilo pastel D'Zoe, 100% editables.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-layer-group"></i> 30 templates</div>
+            <div class="digi-meta-chip"><i class="fab fa-instagram"></i> IG + FB + TT</div>
+            <div class="digi-meta-chip"><i class="fas fa-palette"></i> Pastel Premium</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 28</div>
+            <div class="digi-price-before">S/ 50</div>
+            <div class="digi-discount-tag">-44%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Pack 30 Templates Redes Sociales','S/ 28')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Pack 30 Templates Redes Sociales')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 7 — Kit Bienvenida Tienda -->
+      <div class="digi-card" data-cat="emprendedoras">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fff3d0,#ffe0a0);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">💼</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#f5c842,#f5a820);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:#fef6d0;"></div>
+                  <div class="mf-line w60" style="background:#fef6d0;"></div>
+                  <div class="mf-line w90" style="background:#fef6d0;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge nuevo"><i class="fas fa-sparkles"></i> Nuevo</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Kit Bienvenida Emprendedora')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--gold-light);color:#8a6000;border:1px solid var(--gold);">💼 Emprendedoras</div>
+          <h4>Kit Completo Branding Tienda Online Pastel</h4>
+          <p>Logo, portadas, stories, highlights, catálogo y más. Todo para lanzar o renovar tu tienda online.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-layer-group"></i> 40 piezas</div>
+            <div class="digi-meta-chip"><i class="fas fa-palette"></i> Colores editables</div>
+            <div class="digi-meta-chip"><i class="fas fa-store"></i> Para tiendas</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 45</div>
+            <div class="digi-price-before">S/ 80</div>
+            <div class="digi-discount-tag">-44%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Kit Completo Branding Tienda Online Pastel','S/ 45')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Kit Completo Branding Tienda Online Pastel')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 8 — Tarjetitas Precio -->
+      <div class="digi-card" data-cat="emprendedoras">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fde8f5,#f0d0ea);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">🏷️</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#e8a4c0,#d4809f);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--rose-soft);"></div>
+                  <div class="mf-line w60" style="background:var(--rose-light);"></div>
+                  <div class="mf-line w90" style="background:var(--rose-soft);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Tarjetitas de Precio')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);">🏷️ Emprendedoras</div>
+          <h4>Pack 20 Tarjetitas de Precio Estilo Pastel</h4>
+          <p>Perfectas para ferias, tiendas físicas y digitales. Diseño pastel premium, fácil de editar con tu precio.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 20 diseños</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimibles</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 15</div>
+            <div class="digi-price-before">S/ 25</div>
+            <div class="digi-discount-tag">-40%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Pack 20 Tarjetitas de Precio Pastel','S/ 15')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Pack 20 Tarjetitas de Precio Pastel')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 9 — Plantilla Stories -->
+      <div class="digi-card" data-cat="plantillas-canva">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#e8f9f7,#d0f0ed);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">✨</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#7ecfc8,#3eb5ac);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--mint-soft);"></div>
+                  <div class="mf-line w60" style="background:var(--mint-light);"></div>
+                  <div class="mf-line w90" style="background:var(--mint-soft);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Pack Stories Animadas')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--mint-soft);color:#2a7a74;border:1px solid var(--mint);">🎨 Plantillas Canva</div>
+          <h4>Pack 15 Stories Animadas Estilo Pastel</h4>
+          <p>Stories con animaciones suaves para destacar productos, anuncios y promociones en Instagram y Facebook.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-layer-group"></i> 15 stories</div>
+            <div class="digi-meta-chip"><i class="fas fa-magic"></i> Animadas</div>
+            <div class="digi-meta-chip"><i class="fab fa-instagram"></i> Instagram</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 20</div>
+            <div class="digi-price-before">S/ 35</div>
+            <div class="digi-discount-tag">-43%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Pack 15 Stories Animadas Pastel','S/ 20')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Pack 15 Stories Animadas Pastel')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 10 — Diario Bebé Gratis -->
+      <div class="digi-card" data-cat="mamas-bebes">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fef0f5,#fde8f5);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">📖</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#e8a4c0,#c3aee4);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--rose-soft);"></div>
+                  <div class="mf-line w60" style="background:var(--lav-light);"></div>
+                  <div class="mf-line w90" style="background:var(--rose-soft);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge gratis"><i class="fas fa-gift"></i> Gratis</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Diario Recién Nacido')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Descarga gratis</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);">📖 Mamás & Bebés</div>
+          <h4>Diario Recién Nacido — Mini Guía Gratuita</h4>
+          <p>5 páginas ilustradas para registrar los primeros días del bebé en casa. ¡Un regalo de D'Zoe para ti!</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 5 páginas</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimible A5</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price-free">¡GRATIS!</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn free-btn" onclick="descargarGratis('Diario Recién Nacido')"><i class="fas fa-download"></i> Descargar gratis</button>
+            <button class="digi-preview-btn" onclick="preview('Diario Recién Nacido')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 11 — Baby Shower Dorado -->
+      <div class="digi-card" data-cat="baby-shower">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fff3d0,#f8e0a0);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">👑</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#f5c842,#e8a4c0);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:#fef6d0;"></div>
+                  <div class="mf-line w60" style="background:var(--rose-soft);"></div>
+                  <div class="mf-line w90" style="background:#fef6d0;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="digi-ribbon">
+            <span class="d-badge promo"><i class="fas fa-crown"></i> Premium</span>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Baby Shower Dorado')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--gold-light);color:#8a6000;border:1px solid var(--gold);">👑 Baby Shower</div>
+          <h4>Kit Baby Shower Dorado & Rosa — Estilo Lujoso</h4>
+          <p>Diseño de lujo con detalles dorados y rosados para un baby shower único e inolvidable. Todo incluido.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-file-alt"></i> 22 archivos</div>
+            <div class="digi-meta-chip"><i class="fas fa-star"></i> Lujoso</div>
+            <div class="digi-meta-chip"><i class="fas fa-print"></i> Imprimible</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 32</div>
+            <div class="digi-price-before">S/ 58</div>
+            <div class="digi-discount-tag">-45%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Kit Baby Shower Dorado & Rosa','S/ 32')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Kit Baby Shower Dorado & Rosa')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 12 — Plantilla Catálogo -->
+      <div class="digi-card" data-cat="plantillas-canva">
+        <div class="digi-cover">
+          <div class="digi-cover-inner">
+            <div class="digi-cover-bg" style="background:linear-gradient(135deg,#fde8f5,#ede4f9);"></div>
+            <div class="digi-mockup">
+              <span class="mf-emoji-big">📋</span>
+              <div class="digi-mockup-frame">
+                <div class="mf-header" style="background:linear-gradient(90deg,#e8a4c0,#c3aee4,#7ecfc8);"></div>
+                <div class="mf-lines">
+                  <div class="mf-line w80" style="background:var(--rose-soft);"></div>
+                  <div class="mf-line w60" style="background:var(--lav-light);"></div>
+                  <div class="mf-line w90" style="background:var(--rose-soft);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="digi-wishlist" onclick="toggleWish(this,'Plantilla Catálogo Digital')"><i class="far fa-heart"></i></button>
+          <div class="canva-badge"><span class="cb-dot"></span> Editable en Canva</div>
+        </div>
+        <div class="digi-body">
+          <div class="digi-cat-tag" style="background:var(--lav-soft);color:#6a40b8;border:1px solid var(--lavender);">🎨 Plantillas Canva</div>
+          <h4>Plantilla Catálogo Digital D'Zoe para Tienda</h4>
+          <p>Catálogo digital de 10 páginas para presentar tus productos de forma profesional. Perfecto para WhatsApp y redes.</p>
+          <div class="digi-meta">
+            <div class="digi-meta-chip"><i class="fas fa-book"></i> 10 páginas</div>
+            <div class="digi-meta-chip"><i class="fas fa-expand"></i> A4 + PDF</div>
+            <div class="digi-meta-chip"><i class="fas fa-share-alt"></i> Para WA & RRSS</div>
+          </div>
+          <div class="digi-price-row">
+            <div class="digi-price">S/ 30</div>
+            <div class="digi-price-before">S/ 52</div>
+            <div class="digi-discount-tag">-42%</div>
+          </div>
+          <div class="digi-actions">
+            <button class="digi-buy-btn" onclick="comprar('Plantilla Catálogo Digital','S/ 30')"><i class="fas fa-shopping-cart"></i> Comprar ahora</button>
+            <button class="digi-preview-btn" onclick="preview('Plantilla Catálogo Digital')"><i class="fas fa-eye"></i> Ver preview</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /digitalGrid -->
+  </div>
+</section>
+
+<!-- ══ BANNER CANVA ══ -->
+<section style="padding:0 0 0;background:white;padding:50px 0;">
+  <div class="container">
+    <div class="canva-promo">
+      <div class="cp-text">
+        <div class="cp-badge"><i class="fas fa-paint-brush"></i> Canva Compatible</div>
+        <h3>100% editable en Canva<br>¡Sin experiencia necesaria! 🎨</h3>
+        <p>Todos nuestros productos digitales funcionan con Canva gratuito. Solo necesitas una cuenta gratuita para personalizar colores, textos y fotos en minutos.</p>
+        <a href="https://wa.me/51956063145?text=Hola!%20quiero%20info%20sobre%20los%20productos%20digitales%20de%20D%27Zoe" class="cp-btn" target="_blank">
+          <i class="fab fa-whatsapp"></i> Consultar ahora
+        </a>
+      </div>
+      <div class="cp-visual">
+        <div class="cp-emoji-stack">🎨<br>✏️<br>💻</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BENEFICIOS ══ -->
+<section class="benefits-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><i class="fas fa-gem"></i> ¿Por qué elegir D'Zoe Digital?</div>
+      <h2 class="section-title">Todo lo que <span>necesitas</span></h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">⚡</div>
+        <h4>Descarga Instantánea</h4>
+        <p>Al completar tu pago recibes el link de descarga directamente por WhatsApp en minutos.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🎨</div>
+        <h4>Editable en Canva</h4>
+        <p>Cambia colores, textos y fotos desde tu celular o computadora con Canva gratuito.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">♾️</div>
+        <h4>Uso Ilimitado</h4>
+        <p>Una sola compra, úsalo cuantas veces quieras. Sin restricciones de uso personal.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">💕</div>
+        <h4>Diseño Premium</h4>
+        <p>Creados con mucho amor por el equipo D'Zoe Perú, con estética pastel exclusiva y elegante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BUNDLE ══ -->
+<section class="bundle-section">
+  <div class="container">
+    <div class="bundle-card">
+      <div class="bc-text">
+        <div class="bc-badge"><i class="fas fa-crown"></i> Mega Pack</div>
+        <h3>Bundle Todo en Uno<br><span>D'Zoe Digital Premium ✨</span></h3>
+        <p>Llévate todos nuestros productos digitales en un solo paquete con el mejor precio. Más de 200 archivos y plantillas para tenerlo todo listo.</p>
+        <div class="bc-includes">
+          <div class="bc-chip"><i class="fas fa-check"></i> Baby Shower Kits</div>
+          <div class="bc-chip"><i class="fas fa-check"></i> Plantillas Canva</div>
+          <div class="bc-chip"><i class="fas fa-check"></i> Mamás & Bebés</div>
+          <div class="bc-chip"><i class="fas fa-check"></i> Branding Emprendedoras</div>
+          <div class="bc-chip"><i class="fas fa-check"></i> +Actualizaciones gratis</div>
+        </div>
+        <div class="bc-price-row">
+          <div class="bc-price-new">S/ 89</div>
+          <div class="bc-price-old">S/ 250</div>
+          <div class="bc-save">Ahorras S/ 161 🎉</div>
+        </div>
+        <button class="btn-primary" style="font-size:15px;" onclick="comprar('Bundle Todo en Uno D\'Zoe Digital Premium','S/ 89')">
+          <i class="fas fa-bolt"></i> ¡Quiero el Bundle!
+        </button>
+      </div>
+      <div class="bc-visual">
+        <div class="bc-mini-card">
+          <span class="bc-mc-emoji">🎁</span>
+          <div class="bc-mc-label">12+ Productos incluidos</div>
+        </div>
+        <div class="bc-mini-card">
+          <span class="bc-mc-emoji">🎂</span>
+          <div class="bc-mc-label">Baby Shower</div>
+        </div>
+        <div class="bc-mini-card">
+          <span class="bc-mc-emoji">👶</span>
+          <div class="bc-mc-label">Mamás & Bebés</div>
+        </div>
+        <div class="bc-mini-card">
+          <span class="bc-mc-emoji">💼</span>
+          <div class="bc-mc-label">Emprendedoras</div>
+        </div>
+        <div class="bc-mini-card">
+          <span class="bc-mc-emoji">🎨</span>
+          <div class="bc-mc-label">Plantillas Canva</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REVIEWS ══ -->
+<section class="reviews-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><i class="fas fa-star"></i> Reseñas</div>
+      <h2 class="section-title">Lo que dicen nuestras <span>clientas</span> 💕</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"¡Increíble! Compré el kit de baby shower rosa y quedó precioso. Súper fácil de editar en Canva, en 20 minutos tenía todo listo para imprimir."</p>
+        <div class="review-author">
+          <div class="ra-avatar">👩</div>
+          <div>
+            <div class="ra-name">María Fernanda R.</div>
+            <div class="ra-role">Lima, Perú · Baby Shower Kit Rosa</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"Las plantillas para redes sociales son hermosas, muy profesionales. Mis clientas me preguntan quién me hace el diseño 😂 ¡Las recomiendo al 100%!"</p>
+        <div class="review-author">
+          <div class="ra-avatar">🌸</div>
+          <div>
+            <div class="ra-name">Camila T.</div>
+            <div class="ra-role">Arequipa · Pack Redes Sociales</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"Compré el bundle completo y fue la mejor inversión. Todo llegó super rápido por WhatsApp y el soporte de D'Zoe es 10/10. ¡Gracias!"</p>
+        <div class="review-author">
+          <div class="ra-avatar">💜</div>
+          <div>
+            <div class="ra-name">Sofía V.</div>
+            <div class="ra-role">Trujillo · Bundle Premium</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><i class="fas fa-question-circle"></i> Preguntas frecuentes</div>
+      <h2 class="section-title">¿Tienes <span>dudas?</span></h2>
+    </div>
+    <div class="faq-grid" id="faqGrid">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Cómo recibo el producto digital? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">Tras confirmar tu pago (Yape, Plin o transferencia), te enviamos el enlace de descarga por WhatsApp en menos de 10 minutos.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Necesito Canva Pro para editarlos? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">¡No! Todos nuestros productos funcionan con la versión gratuita de Canva. Solo necesitas crear una cuenta gratis en canva.com.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Puedo imprimir los diseños? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">Sí, todos los archivos incluyen versión para impresión en alta resolución (300 DPI). Perfectos para imprimir en casa o en cualquier imprenta.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Puedo usar los diseños en mi negocio? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">Los productos son para uso personal e interno de tu propio negocio. No está permitida la reventa de los archivos originales o editados.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Qué métodos de pago aceptan? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">Aceptamos Yape, Plin, transferencia bancaria y tarjetas de crédito/débito. Contacta por WhatsApp y te damos los datos.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Tienen soporte después de la compra? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">¡Claro! Puedes escribirnos por WhatsApp si tienes dudas al editar o cualquier inconveniente. Te ayudamos con gusto 💕</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══ -->
+<section class="cta-final">
+  <div class="container">
+    <h3>¿Lista para crear algo hermoso? 🌸</h3>
+    <p>Descarga tus productos digitales y dale ese toque especial a tu baby shower, negocio o recuerdos de mamá.</p>
+    <a href="#productos" class="btn-white"><i class="fas fa-shopping-bag"></i> Ver todos los productos</a>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="fb-logo">🎀 D'Zoe Perú</div>
+        <p>Ropa infantil importada premium y productos digitales para mamás, bebés y emprendedoras. Diseñado con amor en Perú.</p>
+        <div class="footer-socials">
+          <a href="https://www.tiktok.com/@dzoeperu" class="fs-btn" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://wa.me/51956063145" class="fs-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="fs-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="fs-btn"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Digitales</h5>
+        <ul>
+          <li><a href="#" onclick="filterProducts('baby-shower',null);return false;">🎂 Baby Shower</a></li>
+          <li><a href="#" onclick="filterProducts('mamas-bebes',null);return false;">👶 Mamás & Bebés</a></li>
+          <li><a href="#" onclick="filterProducts('plantillas-canva',null);return false;">🎨 Plantillas Canva</a></li>
+          <li><a href="#" onclick="filterProducts('emprendedoras',null);return false;">💼 Emprendedoras</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Ayuda</h5>
+        <ul>
+          <li><a href="https://wa.me/51956063145" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+          <li><a href="index.html">Ropa Infantil</a></li>
+          <li><a href="index.html#lista-de-deseos">Baby Shower</a></li>
+          <li><a href="#faq">Preguntas Frecuentes</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 <span>D'Zoe Perú</span> · Todos los derechos reservados · Lima, Perú 🇵🇪
+    </div>
+  </div>
+</footer>
+
+<!-- ══ FLOATING WA ══ -->
+<a class="wa-float" href="https://wa.me/51956063145?text=Hola!%20me%20interesa%20un%20producto%20digital%20de%20D%27Zoe%20Peru" target="_blank">
+  <div style="position:relative;">
+    <div class="wa-float-btn"><i class="fab fa-whatsapp"></i></div>
+    <div class="wa-pulse"></div>
+  </div>
+</a>
+
+<!-- ══ NOTIF ══ -->
+<div class="notif" id="notifBox"></div>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+// ── Header scroll ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('main-header')?.classList.toggle('scrolled',window.scrollY>10);
+});
+
+// ── Filtros ──
+function filterProducts(cat, btn){
+  const cards = document.querySelectorAll('.digi-card');
+  cards.forEach(c=>{
+    if(cat==='all'||c.dataset.cat===cat){
+      c.style.display='flex';
+      c.style.animation='fadeIn 0.4s ease';
+    } else {
+      c.style.display='none';
+    }
+  });
+  // Update buttons
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.cat-filter-btn').forEach(b=>{
+      if(b.dataset.cat===cat) b.classList.add('active');
+    });
+  }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── Wishlist toggle ──
+function toggleWish(btn, name){
+  const active = btn.classList.toggle('active');
+  btn.querySelector('i').className = active ? 'fas fa-heart' : 'far fa-heart';
+  btn.style.color = active ? 'var(--rose)' : '';
+  showNotif(active ? `💕 "${name}" guardado en favoritos` : `💔 Eliminado de favoritos`);
+}
+
+// ── FAQ toggle ──
+function toggleFaq(item){
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+// ── Comprar ──
+function comprar(nombre, precio){
+  const msg = encodeURIComponent(`Hola! Quiero comprar el producto digital:\n\n🛒 *${nombre}*\n💰 Precio: ${precio}\n\n¿Cómo procedo con el pago?`);
+  window.open(`https://wa.me/51956063145?text=${msg}`,'_blank');
+}
+
+// ── Descargar gratis ──
+function descargarGratis(nombre){
+  const msg = encodeURIComponent(`Hola! Quiero descargar gratis:\n\n🎁 *${nombre}*\n\n¿Cómo lo recibo?`);
+  window.open(`https://wa.me/51956063145?text=${msg}`,'_blank');
+}
+
+// ── Preview ──
+function preview(nombre){
+  showNotif(`👀 Solicitando preview de "${nombre}"...`);
+  setTimeout(()=>{
+    const msg = encodeURIComponent(`Hola! Quisiera ver un preview de:\n\n🎨 *${nombre}*`);
+    window.open(`https://wa.me/51956063145?text=${msg}`,'_blank');
+  },700);
+}
+
+// ── Notif ──
+function showNotif(msg){
+  const n = document.getElementById('notifBox');
+  n.textContent = msg;
+  n.classList.add('show');
+  clearTimeout(n._t);
+  n._t = setTimeout(()=>n.classList.remove('show'),3000);
+}
+
+// ── Mobile menu (simple) ──
+function toggleMobileMenu(){
+  showNotif('📱 Menú — usa los enlaces de la página');
+}
+
+// ── Smooth scroll para botones CTA internos ──
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href').slice(1);
+    const el=document.getElementById(id);
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+// Animación fade in para cards
+const style = document.createElement('style');
+style.textContent = '@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
