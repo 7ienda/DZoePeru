@@ -939,12 +939,40 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== VENTAS ====== -->
     <div id="sales-section" class="page-section" style="display:none;">
-      <!-- Summary cards -->
-      <div class="sales-summary-row" id="sales-summary-row">
-        <div class="sales-stat"><div class="sales-stat-label">Total ventas</div><div class="sales-stat-val" id="sales-total-amt">S/ 0.00</div></div>
-        <div class="sales-stat"><div class="sales-stat-label">Nº pedidos</div><div class="sales-stat-val" id="sales-count">0</div></div>
-        <div class="sales-stat"><div class="sales-stat-label">Ticket promedio</div><div class="sales-stat-val" id="sales-avg">S/ 0.00</div></div>
-        <div class="sales-stat"><div class="sales-stat-label">Pendientes</div><div class="sales-stat-val" id="sales-pending-count">0</div></div>
+      <!-- Summary cards mejoradas -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" id="sales-summary-row">
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-sack-dollar" style="color:var(--rose-dark);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Total cobrado</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose);" id="sales-total-amt">S/ 0.00</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--lav-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-receipt" style="color:var(--lavender);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Pedidos</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--lavender);" id="sales-count">0</div><div style="font-size:10px;color:var(--muted);" id="sales-confirmed-sub">0 confirmados</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-clock" style="color:var(--orange);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Pendientes</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--orange);" id="sales-pending-count">0</div><div style="font-size:10px;color:var(--muted);" id="sales-deuda-sub">S/ 0.00 en deuda</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--mint-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-chart-line" style="color:var(--mint);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Ticket promedio</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--mint);" id="sales-avg">S/ 0.00</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-coins" style="color:var(--green);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Cobrado hoy</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="sales-today">S/ 0.00</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--sky-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-mobile-screen" style="color:var(--sky);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Método + usado</div><div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--sky);" id="sales-top-method">—</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-ban" style="color:var(--red);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Cancelados</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--red);" id="sales-cancelled-count">0</div></div>
+        </div>
+        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--peach-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-star" style="color:var(--peach);"></i></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Producto top</div><div style="font-size:13px;font-weight:700;color:var(--peach);line-height:1.2;margin-top:2px;" id="sales-top-product">—</div></div>
+        </div>
       </div>
       <div class="section">
         <div class="section-header">
@@ -1444,6 +1472,33 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     </div>
 
     <!-- Modal: Nuevo Préstamo -->
+    <!-- ====== MODAL: ADELANTO+ ====== -->
+    <div class="modal-overlay" id="adelanto-plus-modal">
+      <div class="modal" style="max-width:400px;">
+        <div class="modal-head">
+          <div class="modal-title"><i class="fas fa-plus-circle" style="color:var(--sky);"></i> Registrar Abono</div>
+          <button class="modal-close" onclick="document.getElementById('adelanto-plus-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="background:var(--bg);border-radius:14px;padding:14px 18px;margin-bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Cliente</div><div style="font-weight:700;font-size:14px;" id="ap-name">—</div></div>
+            <div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Total prenda</div><div style="font-weight:700;font-size:14px;" id="ap-total">—</div></div>
+            <div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Ya adelantó</div><div style="font-weight:700;font-size:14px;color:var(--mint);" id="ap-adelanto">—</div></div>
+            <div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Aún debe</div><div style="font-weight:700;font-size:18px;color:var(--orange);" id="ap-deuda">—</div></div>
+          </div>
+          <div class="form-group">
+            <label style="color:var(--sky);font-weight:700;"><i class="fas fa-hand-holding-dollar"></i> Monto del abono (S/)</label>
+            <input type="number" id="ap-monto" placeholder="Ej: 10.00" step="0.01" min="0" oninput="updateApPreview()" style="font-size:20px;font-weight:700;border-color:var(--sky);text-align:center;">
+          </div>
+          <div id="ap-preview" style="text-align:center;font-weight:700;font-size:13px;margin:-4px 0 12px;min-height:20px;"></div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" style="flex:1;background:var(--sky);border-color:var(--sky);" onclick="saveAdelantoPlus()"><i class="fas fa-floppy-disk"></i> Guardar abono</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('adelanto-plus-modal').classList.remove('open')">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ====== MODAL: PONER EN OFERTA ====== -->
     <div class="modal-overlay" id="offer-modal">
       <div class="modal" style="max-width:420px;">
@@ -1998,11 +2053,28 @@ function updateDashboard() {
   document.getElementById('recent-sales-body').innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
 
   // Sales stats
+  const today = new Date().toDateString();
   const salesTotal = orders.reduce((a,o) => a+(parseFloat(o.total)||0), 0);
+  const salesConfirmed = orders.filter(o => o.status==='confirmed').length;
+  const salesCancelled = orders.filter(o => o.status==='cancelled').length;
+  const salesPending = orders.filter(o => !o.status||o.status==='pending').length;
+  const totalDeuda = orders.reduce((a,o) => a+(parseFloat(o.deuda)||0), 0);
+  const todayTotal = orders.filter(o => o.created_at && new Date(o.created_at).toDateString()===today).reduce((a,o) => a+(parseFloat(o.total)||0), 0);
+  const methodCount = {}; orders.forEach(o => { if(o.payment_method) methodCount[o.payment_method]=(methodCount[o.payment_method]||0)+1; });
+  const topMethodKey = Object.entries(methodCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  const methodNames = {yape:'💜 Yape',plin:'💙 Plin',sip:'💚 Sip',bank:'🏦 Banco',cash:'💵 Efectivo'};
+  const prodCount = {}; orders.forEach(o => (o.items||[]).forEach(it => { prodCount[it.name]=(prodCount[it.name]||0)+(it.qty||1); }));
+  const topProd = Object.entries(prodCount).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
   document.getElementById('sales-total-amt').textContent = 'S/ '+salesTotal.toFixed(2);
   document.getElementById('sales-count').textContent = orders.length;
+  const confirmedSub = document.getElementById('sales-confirmed-sub'); if(confirmedSub) confirmedSub.textContent = salesConfirmed+' confirmados';
   document.getElementById('sales-avg').textContent = orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00';
-  document.getElementById('sales-pending-count').textContent = pending;
+  document.getElementById('sales-pending-count').textContent = salesPending;
+  const deudaSub = document.getElementById('sales-deuda-sub'); if(deudaSub) deudaSub.textContent = 'S/ '+totalDeuda.toFixed(2)+' en deuda';
+  const todayEl = document.getElementById('sales-today'); if(todayEl) todayEl.textContent = 'S/ '+todayTotal.toFixed(2);
+  const topMethodEl = document.getElementById('sales-top-method'); if(topMethodEl) topMethodEl.textContent = topMethodKey ? methodNames[topMethodKey]||topMethodKey : '—';
+  const cancelledEl = document.getElementById('sales-cancelled-count'); if(cancelledEl) cancelledEl.textContent = salesCancelled;
+  const topProdEl = document.getElementById('sales-top-product'); if(topProdEl) topProdEl.textContent = topProd;
 }
 
 // ============================================
@@ -2165,8 +2237,19 @@ function salesRowHtml(o) {
       </select>
     </td>
     <td style="font-size:11px;white-space:nowrap;">${date}</td>
-    <td style="text-align:center;">
-      ${(!o.status||o.status==='pending') ? `<button class="btn btn-green btn-sm" onclick="quickConfirmSale(${o.id})" style="font-size:11px;padding:6px 12px;border-radius:8px;"><i class="fas fa-check"></i> Confirmar</button>` : `<span style="font-size:11px;color:var(--muted);">—</span>`}
+    <td style="text-align:center;min-width:120px;">
+      ${o.status==='confirmed'
+        ? `<span style="display:inline-flex;align-items:center;gap:4px;background:var(--green-light);color:var(--green);font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;"><i class="fas fa-check-circle"></i> Confirmado</span>`
+        : o.status==='cancelled'
+        ? `<span style="display:inline-flex;align-items:center;gap:4px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;"><i class="fas fa-ban"></i> Cancelado</span>`
+        : `<div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+            ${o.deuda>0 ? `<span style="font-size:10px;color:var(--orange);font-weight:700;">Debe S/ ${parseFloat(o.deuda).toFixed(2)}</span>` : ''}
+            <div style="display:flex;gap:4px;">
+              <button style="background:var(--green-light);color:var(--green);border:none;cursor:pointer;font-size:10px;font-weight:700;padding:4px 8px;border-radius:8px;" onclick="quickConfirmSale(${o.id})" title="Confirmar pago completo"><i class="fas fa-check"></i> OK</button>
+              <button style="background:var(--red-light);color:var(--red);border:none;cursor:pointer;font-size:10px;font-weight:700;padding:4px 8px;border-radius:8px;" onclick="updateOrderStatus(${o.id},'cancelled')" title="Cancelar pedido"><i class="fas fa-ban"></i></button>
+            </div>
+          </div>`
+      }
     </td>
     <td>
       <div class="sale-actions">
@@ -3942,6 +4025,20 @@ function renderDeudores() {
   if (badge) badge.textContent = `${deudores.length} deudores · Total debe: S/ ${totalDeuda.toFixed(2)}`;
   const dashCount = document.getElementById('dash-deudores-count');
   if (dashCount) dashCount.textContent = deudores.length;
+
+  const accionesHtml = (o, compact) => {
+    if (compact) return `
+      <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;">
+        <button style="background:var(--sky-light);color:var(--sky);border:none;cursor:pointer;font-size:10px;font-weight:700;padding:5px 8px;border-radius:8px;white-space:nowrap;" onclick="openAdelantoPlus(${o.id})" title="Agregar abono"><i class="fas fa-plus"></i> Abono</button>
+        <button style="background:var(--green-light);color:var(--green);border:none;cursor:pointer;font-size:10px;font-weight:700;padding:5px 8px;border-radius:8px;white-space:nowrap;" onclick="marcarDeudaPagada(${o.id})" title="Canceló toda la deuda"><i class="fas fa-check"></i> Pagó</button>
+      </div>`;
+    return `
+      <div style="display:flex;gap:4px;flex-direction:column;">
+        <button style="background:var(--sky-light);color:var(--sky);border:none;cursor:pointer;font-size:11px;font-weight:700;padding:6px 10px;border-radius:8px;white-space:nowrap;width:100%;" onclick="openAdelantoPlus(${o.id})"><i class="fas fa-plus"></i> Adelanto+</button>
+        <button style="background:var(--green-light);color:var(--green);border:none;cursor:pointer;font-size:11px;font-weight:700;padding:6px 10px;border-radius:8px;white-space:nowrap;width:100%;" onclick="marcarDeudaPagada(${o.id})"><i class="fas fa-check-circle"></i> Cancelado</button>
+      </div>`;
+  };
+
   const rowFn = (o, compact) => {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short'}) : '—';
     const prod = (o.items||[]).map(i => `${i.name}${i.size?' T:'+i.size:''}`).join(', ') || '—';
@@ -3952,18 +4049,18 @@ function renderDeudores() {
       <td style="color:var(--mint);">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
       <td style="color:var(--orange);font-weight:700;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</td>
       <td style="font-size:11px;">${date}</td>
-      <td><button class="btn btn-sm" style="background:var(--green-light);color:var(--green);font-size:11px;padding:5px 10px;border-radius:8px;border:none;cursor:pointer;" onclick="marcarDeudaPagada(${o.id})"><i class="fas fa-check"></i> Pagó</button></td></tr>`;
+      <td>${accionesHtml(o, true)}</td></tr>`;
     return `<tr>
       <td><span class="order-id">${String(o.id).slice(-6)}</span></td>
-      <td><strong>${o.name||''} ${o.lastname||''}</strong></td>
+      <td><strong>${o.name||''} ${o.lastname||''}</strong>${o.phone?`<div style="font-size:10px;color:var(--muted);">${o.phone}</div>`:''}</td>
       <td>${o.phone||'—'}</td>
       <td style="font-size:11px;">${o.destination||'—'}</td>
       <td style="font-size:11px;">${prod}</td>
-      <td>S/ ${parseFloat(o.total||0).toFixed(2)}</td>
-      <td style="color:var(--mint);">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
-      <td style="color:var(--orange);font-weight:700;font-size:14px;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</td>
+      <td><strong>S/ ${parseFloat(o.total||0).toFixed(2)}</strong></td>
+      <td style="color:var(--mint);font-weight:700;">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
+      <td><span style="display:inline-block;background:var(--orange-light);color:var(--orange);font-weight:800;font-size:15px;padding:3px 10px;border-radius:8px;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</span></td>
       <td style="font-size:11px;">${date}</td>
-      <td><button class="btn btn-sm" style="background:var(--green-light);color:var(--green);font-size:11px;padding:5px 10px;border-radius:8px;border:none;cursor:pointer;" onclick="marcarDeudaPagada(${o.id})"><i class="fas fa-check"></i> Pagó</button></td></tr>`;
+      <td>${accionesHtml(o, false)}</td></tr>`;
   };
   const tbody = document.getElementById('deudores-table-body');
   if (tbody) tbody.innerHTML = deudores.length
@@ -3977,14 +4074,63 @@ function renderDeudores() {
 async function marcarDeudaPagada(id) {
   const o = orders.find(x => x.id === id);
   if (!o) return;
-  if (!confirm(`¿Marcar a ${o.name} como deuda cancelada?`)) return;
+  if (!confirm(`¿Marcar a ${o.name} como deuda cancelada (pago completo)?`)) return;
   o.adelanto = o.total; o.deuda = 0; o.status = 'confirmed';
   if (supabaseClient) {
     await supabaseClient.from('orders').update({ adelanto: o.total, deuda: 0, status: 'confirmed' }).eq('id', id);
   }
   renderDeudores(); filterSales();
-  showAlert(`✅ Deuda de ${o.name} marcada como pagada`);
+  showAlert(`✅ Deuda de ${o.name} cancelada — pago completo`);
 }
+
+// ============================================
+// ADELANTO+  — abono parcial
+// ============================================
+let adelantoPlusOrderId = null;
+function openAdelantoPlus(id) {
+  adelantoPlusOrderId = id;
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('ap-name').textContent = `${o.name||''} ${o.lastname||''}`.trim();
+  document.getElementById('ap-total').textContent = `S/ ${parseFloat(o.total||0).toFixed(2)}`;
+  document.getElementById('ap-adelanto').textContent = `S/ ${parseFloat(o.adelanto||0).toFixed(2)}`;
+  document.getElementById('ap-deuda').textContent = `S/ ${parseFloat(o.deuda||0).toFixed(2)}`;
+  document.getElementById('ap-monto').value = '';
+  document.getElementById('ap-preview').textContent = '';
+  document.getElementById('adelanto-plus-modal').classList.add('open');
+}
+function updateApPreview() {
+  const o = orders.find(x => x.id === adelantoPlusOrderId);
+  if (!o) return;
+  const monto = parseFloat(document.getElementById('ap-monto').value)||0;
+  const nuevaDeuda = Math.max(0, (o.deuda||0) - monto);
+  const prev = document.getElementById('ap-preview');
+  if (monto <= 0) { prev.textContent = ''; return; }
+  if (monto >= (o.deuda||0)) {
+    prev.style.color = 'var(--green)';
+    prev.textContent = `✅ Pago completo — deuda queda en S/ 0.00`;
+  } else {
+    prev.style.color = 'var(--orange)';
+    prev.textContent = `Deuda restante: S/ ${nuevaDeuda.toFixed(2)}`;
+  }
+}
+async function saveAdelantoPlus() {
+  const o = orders.find(x => x.id === adelantoPlusOrderId);
+  if (!o) return;
+  const monto = parseFloat(document.getElementById('ap-monto').value)||0;
+  if (!monto || monto <= 0) { showAlert('Ingresa un monto válido', 'error'); return; }
+  const nuevoAdelanto = Math.min(o.total, (o.adelanto||0) + monto);
+  const nuevaDeuda = Math.max(0, o.total - nuevoAdelanto);
+  const nuevoStatus = nuevaDeuda === 0 ? 'confirmed' : 'pending';
+  o.adelanto = nuevoAdelanto; o.deuda = nuevaDeuda; o.status = nuevoStatus;
+  if (supabaseClient) {
+    await supabaseClient.from('orders').update({ adelanto: nuevoAdelanto, deuda: nuevaDeuda, status: nuevoStatus }).eq('id', adelantoPlusOrderId);
+  }
+  document.getElementById('adelanto-plus-modal').classList.remove('open');
+  renderDeudores(); filterSales();
+  showAlert(nuevaDeuda === 0 ? `✅ ${o.name} canceló toda su deuda` : `✅ Abono de S/ ${monto.toFixed(2)} registrado · Queda: S/ ${nuevaDeuda.toFixed(2)}`);
+}
+document.getElementById('adelanto-plus-modal')?.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
 
 // Hook deudores into filterSales override
 const _origFilterSalesDeuda = filterSales;
