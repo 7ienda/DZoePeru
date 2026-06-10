@@ -2430,7 +2430,23 @@ function renderSalesPage() {
   renderPagination('sales-pagination', 'sales-pagination-btns', total, salesCurrentPage, salesPageSize, (pg) => { salesCurrentPage=pg; renderSalesPage(); });
 }
 
+// Devuelve los datos del cliente aplicando overrides si existen
+function getClientData(o) {
+  const key = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
+  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  const ov = overrides[key] || {};
+  return {
+    name:        ov.name        || o.name        || '',
+    lastname:    ov.lastname    || o.lastname     || '',
+    dni:         ov.dni         || o.dni          || '',
+    phone:       ov.phone       || o.phone        || '',
+    destination: ov.destino     || o.destination  || o.destino || '',
+    nota:        ov.nota        || o.note         || ''
+  };
+}
+
 function salesRowHtml(o) {
+  const cl = getClientData(o);
   const methodBadge = { yape:'badge-yape', plin:'badge-plin', sip:'badge-sip', bank:'badge-bank', cash:'badge-sip' }[o.payment_method] || '';
   const methodLabel = { yape:'💜 Yape', plin:'💙 Plin', sip:'💚 Sip', bank:'🏦 Banco', cash:'💵 Efectivo' }[o.payment_method] || o.payment_method||'—';
   const statusCls = { confirmed:'status-confirmed', cancelled:'status-cancelled' }[o.status] || 'status-pending';
@@ -2446,10 +2462,10 @@ function salesRowHtml(o) {
   const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
   return `<tr>
     <td><span class="order-id">${String(o.id).slice(-6)}</span></td>
-    <td><strong>${o.name||''} ${o.lastname||''}</strong></td>
-    <td>${o.dni||'—'}</td>
-    <td>${o.phone||'—'}</td>
-    <td style="max-width:130px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${o.destination||''}">${o.destination||'—'}</td>
+    <td><strong>${cl.name} ${cl.lastname}</strong></td>
+    <td>${cl.dni||'—'}</td>
+    <td>${cl.phone||'—'}</td>
+    <td style="max-width:130px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${cl.destination}">${cl.destination||'—'}</td>
     <td><div class="sale-items-preview">${itemsHtml||'—'}</div></td>
     <td><span class="sale-total">S/ ${parseFloat(o.total||0).toFixed(2)}</span></td>
     <td><span class="sale-method-badge ${methodBadge}">${methodLabel}</span></td>
@@ -2497,6 +2513,7 @@ async function updateOrderStatus(id, newStatus) {
 function openSaleDetail(id) {
   const o = orders.find(o => o.id === id);
   if (!o) return;
+  const cl = getClientData(o);
   const date = o.created_at ? new Date(o.created_at).toLocaleString('es-PE') : '—';
   const itemsHtml = (o.items||[]).map(it => {
     const _sub = ((it.price||0)*(it.qty||1)).toFixed(2);
@@ -2506,12 +2523,12 @@ function openSaleDetail(id) {
   document.getElementById('modal-sale-title').textContent = `Pedido #${String(o.id).slice(-6)}`;
   document.getElementById('modal-sale-body').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;">
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Cliente</div><div style="font-weight:600;">${o.name||''} ${o.lastname||''}</div></div>
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">DNI</div><div>${o.dni||'—'}</div></div>
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Teléfono</div><div>${o.phone||'—'}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Cliente</div><div style="font-weight:600;">${cl.name} ${cl.lastname}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">DNI</div><div>${cl.dni||'—'}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Teléfono</div><div>${cl.phone||'—'}</div></div>
       <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">WhatsApp</div><div>${o.whatsapp||'—'}</div></div>
-      <div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Destino Shalom</div><div style="font-size:12px;">${o.destination||'—'}</div></div>
-      ${o.note?`<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Nota</div><div style="font-size:13px;">${o.note}</div></div>`:''}
+      <div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Destino Shalom</div><div style="font-size:12px;">${cl.destination||'—'}</div></div>
+      ${cl.nota?`<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Nota</div><div style="font-size:13px;">${cl.nota}</div></div>`:''}
     </div>
     <div style="font-weight:700;margin-bottom:10px;">Productos del pedido</div>
     ${itemsHtml}
