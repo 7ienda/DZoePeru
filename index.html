@@ -584,17 +584,35 @@ body.dark-mode .hero-bubble-text strong{color:#e8d8ff;}
 .btn-sm:disabled{opacity:0.4;cursor:not-allowed;}
 
 /* Paginación */
-.pagination{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:44px;flex-wrap:wrap;}
-.pg-btn{min-width:38px;height:38px;padding:0 6px;border-radius:12px;background:white;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--text-soft);font-size:13px;font-weight:700;transition:0.2s;font-family:'Nunito',sans-serif;}
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:44px;flex-wrap:wrap;padding:0 8px;}
+.pg-btn{min-width:44px;height:44px;padding:0 10px;border-radius:14px;background:white;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;color:var(--text-soft);font-size:14px;font-weight:700;transition:0.2s;font-family:'Nunito',sans-serif;flex-shrink:0;}
 .pg-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-soft);}
-.pg-btn.active-page{background:var(--rose);border-color:var(--rose);color:white;pointer-events:none;}
-.pg-btn.pg-arrow{font-size:14px;min-width:38px;}
+.pg-btn.active-page{background:var(--rose);border-color:var(--rose);color:white;pointer-events:none;box-shadow:0 4px 14px rgba(232,164,192,0.45);}
+.pg-btn.pg-arrow{font-size:14px;min-width:44px;}
 .pg-btn.pg-arrow:disabled,.pg-btn.pg-arrow[disabled]{opacity:0.35;cursor:not-allowed;pointer-events:none;}
-.pg-dots{color:var(--text-soft);font-weight:700;padding:0 2px;line-height:38px;}
+.pg-dots{color:var(--text-soft);font-weight:700;padding:0 2px;line-height:44px;font-size:16px;}
 body.dark-mode .pg-btn{background:#241e34;border-color:#3a3050;color:#a89ec0;}
 body.dark-mode .pg-btn:hover{background:#2a2040;border-color:var(--rose);color:var(--rose);}
 body.dark-mode .pg-btn.active-page{background:var(--rose);border-color:var(--rose);color:#fff;}
-@media(max-width:500px){.pg-btn{min-width:34px;height:34px;font-size:12px;border-radius:10px;}.pagination{gap:4px;}}
+@media(max-width:600px){
+  .pagination{gap:6px;padding:0 4px;}
+  .pg-btn{min-width:42px;height:42px;font-size:13px;border-radius:12px;}
+  .pg-btn.pg-arrow{min-width:42px;}
+  .pg-dots{line-height:42px;}
+}
+@media(max-width:360px){
+  .pg-btn{min-width:38px;height:38px;font-size:12px;border-radius:10px;padding:0 6px;}
+  .pagination{gap:4px;}
+}
+
+/* Botón Pedir Reingreso */
+.reingreso-btn{width:100%;background:linear-gradient(135deg,#fff5e6,#fff0f0);color:#c05a20;border:2px solid #f5c07e;padding:11px 14px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:0.2px;}
+.reingreso-btn:hover{background:linear-gradient(135deg,#f5b97e,#e8845a);color:#fff;border-color:#e87b3a;transform:translateY(-1px);box-shadow:0 6px 18px rgba(245,185,126,0.45);}
+/* Variante grande para modal de producto */
+.pp-btn-reingreso{background:linear-gradient(135deg,#fff5e6,#fff0e8);color:#c05a20;border:2px solid #f5c07e;padding:14px;border-radius:40px;font-weight:800;font-size:15px;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(245,185,126,0.3);}
+.pp-btn-reingreso:hover{background:linear-gradient(135deg,#f5b97e,#e8845a);color:#fff;border-color:#e87b3a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,185,126,0.5);}
+body.dark-mode .reingreso-btn{background:linear-gradient(135deg,#2e1e10,#2a1a18);color:#f5b97e;border-color:#7a4820;}
+body.dark-mode .pp-btn-reingreso{background:linear-gradient(135deg,#2e1e10,#2a1a18);color:#f5b97e;border-color:#7a4820;}
 
 /* Loading state */
 .products-loading{text-align:center;padding:60px 20px;color:var(--text-soft);}
@@ -2614,6 +2632,16 @@ function injectProductSchema(productList) {
   });
 }
 
+// ═══════════════════════════════════════════════════════
+//  PEDIR REINGRESO — WhatsApp
+// ═══════════════════════════════════════════════════════
+function pedirReingreso(productId) {
+  const product = products.find(p => String(p.id) === String(productId));
+  const name = product ? product.name : 'producto';
+  const msg = encodeURIComponent(`Hola D'Zoe Perú 🌸 me interesa el producto *${name}* que aparece como agotado. ¿Podrían avisarme cuando vuelva a estar disponible? ¡Gracias! 🙏`);
+  window.open(`https://wa.me/51956063145?text=${msg}`, '_blank');
+}
+
 function renderProducts() {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
@@ -2738,9 +2766,14 @@ function renderProductCard(product) {
         <button class="view-product-btn" onclick="openProductPage('${product.id}')">
           <i class="fas fa-eye"></i> Ver producto
         </button>
-        <button class="add-to-cart" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}>
-          <i class="fas fa-shopping-bag"></i> ${hasStock ? 'Agregar al carrito' : 'Agotado'}
-        </button>
+        ${hasStock
+          ? `<button class="add-to-cart" onclick="addToCartById('${product.id}')">
+              <i class="fas fa-shopping-bag"></i> Agregar al carrito
+             </button>`
+          : `<button class="reingreso-btn" onclick="pedirReingreso('${product.id}')">
+              <i class="fas fa-bell"></i> Pedir Reingreso
+             </button>`
+        }
         <a href="${waUrl}" target="_blank" rel="noopener" class="whatsapp-btn">
           <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
         </a>
@@ -3158,6 +3191,9 @@ function openProductPage(productId) {
           <button class="pp-btn-primary" onclick="ppAddToCart('${productId}')" ${!inStock?'disabled':''}>
             <i class="fas fa-shopping-bag"></i> ${inStock ? 'Agregar al carrito' : 'Sin stock'}
           </button>
+          ${!inStock ? `<button class="pp-btn-reingreso" onclick="pedirReingreso('${productId}')">
+            <i class="fas fa-bell"></i> Pedir Reingreso por WhatsApp
+          </button>` : ''}
           <div class="trust-badges" style="margin-top:10px;">
             <span class="trust-badge"><i class="fas fa-check-circle"></i> Pago seguro</span>
             <span class="trust-badge"><i class="fas fa-check-circle"></i> Envíos nacionales</span>
