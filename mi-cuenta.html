@@ -633,9 +633,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <span class="menu-label">Finanzas</span>
     <button class="menu-btn" data-section="caja-section"><i class="fas fa-cash-register"></i><span>Caja</span><span class="badge" id="badge-caja">0</span></button>
     <button class="menu-btn" data-section="prestamos-section"><i class="fas fa-hand-holding-dollar"></i><span>Préstamos</span><span class="badge" id="badge-prestamos">0</span></button>
+    <span class="menu-label">Contenido</span>
+    <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
+    <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
-    <button class="menu-btn" id="btn-agregar-digital" style="display:none;" onclick="window.location.href='productosdigitales.html?agregar=1'"><i class="fas fa-cloud-arrow-up"></i><span>Agregar Digital</span></button>
     <button class="menu-btn" data-section="ribbons-section"><i class="fas fa-ribbon"></i><span>Listones</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
   </div>
@@ -1708,6 +1710,211 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div style="display:flex;gap:10px;margin-top:20px;">
             <button class="btn btn-primary" style="flex:1;" onclick="saveOrder()"><i class="fas fa-floppy-disk"></i> Guardar orden</button>
             <button class="btn btn-ghost" onclick="closeOrderModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== BLOG ADMIN ====== -->
+    <div id="blog-admin-section" class="page-section" style="display:none;">
+      <!-- KPIs -->
+      <div class="stats-grid" style="margin-bottom:24px;">
+        <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-pen-nib"></i></div><h3>Total Posts</h3><div class="stat-value" id="blog-total">0</div><div class="stat-change">Publicaciones</div></div>
+        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-eye"></i></div><h3>Publicados</h3><div class="stat-value" id="blog-published">0</div><div class="stat-change">Visibles en tienda</div></div>
+        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-file-pen"></i></div><h3>Borradores</h3><div class="stat-value" id="blog-drafts">0</div><div class="stat-change">Sin publicar</div></div>
+        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-tags"></i></div><h3>Categorías</h3><div class="stat-value" id="blog-cats">0</div><div class="stat-change">Temas distintos</div></div>
+      </div>
+
+      <!-- Formulario nuevo/editar post -->
+      <div class="section" style="margin-bottom:24px;" id="blog-form-section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="blog-form-title">Nuevo Post</span></div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="clearBlogForm()"><i class="fas fa-broom"></i> Limpiar</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleBlogForm(false)"><i class="fas fa-chevron-up"></i> Minimizar</button>
+          </div>
+        </div>
+        <div class="section-body" id="blog-form-body">
+          <div class="form-grid">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group"><label>Título del post *</label><input type="text" id="blog-titulo" placeholder="Ej: Los 5 pijamas más cómodos para bebés"></div>
+              <div class="form-group"><label>Extracto / Descripción corta</label><textarea id="blog-extracto" rows="2" placeholder="Resumen breve que aparece en la lista del blog..."></textarea></div>
+              <div class="form-group"><label>Contenido completo</label><textarea id="blog-contenido" rows="7" placeholder="Escribe el artículo completo aquí..."></textarea></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="form-group"><label>Categoría</label>
+                  <input type="text" id="blog-categoria" placeholder="Ej: Tips, Novedades, Guías..." list="blog-cat-list">
+                  <datalist id="blog-cat-list"></datalist>
+                </div>
+                <div class="form-group"><label>Etiquetas (separadas por comas)</label><input type="text" id="blog-tags" placeholder="bebés, pijamas, invierno"></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group"><label>URL de imagen de portada</label><input type="text" id="blog-imagen" placeholder="https://..." oninput="previewBlogImg()"></div>
+              <div id="blog-img-preview" style="width:100%;height:160px;border-radius:14px;background:var(--bg2);border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:13px;">Vista previa</div>
+              <div class="form-group"><label>Autor</label><input type="text" id="blog-autor" placeholder="Ej: D'Zoe Perú" value="D'Zoe Perú"></div>
+              <div class="form-group"><label>Fecha de publicación</label><input type="date" id="blog-fecha"></div>
+              <div class="form-group"><label>Estado</label>
+                <div class="status-pills" id="blog-status-pills">
+                  <div class="status-pill active-pill selected" data-bstatus="published" onclick="selectBlogStatus('published',this)">✅ Publicado</div>
+                  <div class="status-pill inactive-pill" data-bstatus="draft" onclick="selectBlogStatus('draft',this)">📝 Borrador</div>
+                </div>
+              </div>
+              <div class="form-group"><label>Destacar post</label>
+                <div class="toggle-group" id="blog-featured-toggle" onclick="this.classList.toggle('on')">
+                  <div class="toggle"></div><span>Mostrar como destacado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="saveBlogPost()"><i class="fas fa-floppy-disk"></i> <span id="blog-save-btn-text">Publicar post</span></button>
+            <button class="btn btn-ghost" onclick="clearBlogForm()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de posts -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-list" style="color:var(--rose)"></i> Posts del Blog</div>
+          <div class="inventory-controls">
+            <div class="search-input-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" class="search-input" id="blog-search" placeholder="Buscar post..." oninput="renderBlogList()">
+            </div>
+            <select class="filter-select" id="blog-status-filter" onchange="renderBlogList()">
+              <option value="">Todos</option>
+              <option value="published">Publicados</option>
+              <option value="draft">Borradores</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="toggleBlogForm(true);window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-plus"></i> Nuevo Post</button>
+          </div>
+        </div>
+        <div class="section-body" style="padding:0 0 24px;">
+          <div id="blog-posts-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PRODUCTOS DIGITALES ADMIN ====== -->
+    <div id="digitales-admin-section" class="page-section" style="display:none;">
+      <!-- KPIs -->
+      <div class="stats-grid" style="margin-bottom:24px;">
+        <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-cloud-arrow-up"></i></div><h3>Total Digitales</h3><div class="stat-value" id="dig-total">0</div><div class="stat-change">Productos</div></div>
+        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-eye"></i></div><h3>Activos</h3><div class="stat-value" id="dig-activos">0</div><div class="stat-change">Visibles en tienda</div></div>
+        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-download"></i></div><h3>Descargas</h3><div class="stat-value" id="dig-descargas">0</div><div class="stat-change">Total histórico</div></div>
+        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div><h3>Ingresos Digitales</h3><div class="stat-value" id="dig-ingresos">S/ 0</div><div class="stat-change">Ventas totales</div></div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="section" style="margin-bottom:24px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="dig-form-title">Nuevo Producto Digital</span></div>
+          <button class="btn btn-ghost btn-sm" onclick="clearDigForm()"><i class="fas fa-broom"></i> Limpiar</button>
+        </div>
+        <div class="section-body">
+          <div class="form-grid">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group"><label>Nombre del producto *</label><input type="text" id="dig-nombre" placeholder="Ej: Guía de tallas bebés PDF"></div>
+              <div class="form-group"><label>Descripción</label><textarea id="dig-descripcion" rows="3" placeholder="¿Qué incluye este producto?"></textarea></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="form-group"><label>Precio (S/) *</label><input type="number" id="dig-precio" placeholder="0.00" step="0.01" min="0"></div>
+                <div class="form-group"><label>Categoría</label>
+                  <select id="dig-categoria">
+                    <option value="Guías">📚 Guías</option>
+                    <option value="Patrones">✂️ Patrones</option>
+                    <option value="Plantillas">📋 Plantillas</option>
+                    <option value="Cursos">🎓 Cursos</option>
+                    <option value="Otros">📦 Otros</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group"><label>URL del archivo de descarga *</label><input type="text" id="dig-url" placeholder="https://drive.google.com/... o enlace de descarga"></div>
+              <div class="form-group"><label>Tipo de archivo</label>
+                <select id="dig-tipo">
+                  <option value="PDF">📄 PDF</option>
+                  <option value="ZIP">🗜️ ZIP</option>
+                  <option value="Video">🎥 Video</option>
+                  <option value="Imagen">🖼️ Imagen</option>
+                  <option value="Excel">📊 Excel</option>
+                  <option value="Otro">📁 Otro</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group"><label>URL de imagen de portada</label><input type="text" id="dig-imagen" placeholder="https://..." oninput="previewDigImg()"></div>
+              <div id="dig-img-preview" style="width:100%;height:160px;border-radius:14px;background:var(--bg2);border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:13px;">Vista previa</div>
+              <div class="form-group"><label>Tags (separados por comas)</label><input type="text" id="dig-tags" placeholder="guía, tallas, bebés"></div>
+              <div class="form-group"><label>Estado</label>
+                <div class="status-pills" id="dig-status-pills">
+                  <div class="status-pill active-pill selected" data-dstatus="active" onclick="selectDigStatus('active',this)">Activo</div>
+                  <div class="status-pill inactive-pill" data-dstatus="inactive" onclick="selectDigStatus('inactive',this)">Inactivo</div>
+                </div>
+              </div>
+              <div class="form-group"><label>Destacado</label>
+                <div class="toggle-group" id="dig-featured-toggle" onclick="this.classList.toggle('on')">
+                  <div class="toggle"></div><span>Mostrar como destacado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="saveDigital()"><i class="fas fa-floppy-disk"></i> <span id="dig-save-btn-text">Guardar producto digital</span></button>
+            <button class="btn btn-ghost" onclick="clearDigForm()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de productos digitales -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-list" style="color:var(--rose)"></i> Productos Digitales</div>
+          <div class="inventory-controls">
+            <div class="search-input-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" class="search-input" id="dig-search" placeholder="Buscar producto..." oninput="renderDigitalesList()">
+            </div>
+            <select class="filter-select" id="dig-cat-filter" onchange="renderDigitalesList()">
+              <option value="">Todas las categorías</option>
+              <option value="Guías">Guías</option>
+              <option value="Patrones">Patrones</option>
+              <option value="Plantillas">Plantillas</option>
+              <option value="Cursos">Cursos</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+        </div>
+        <div class="section-body" style="padding:0 0 24px;">
+          <div id="digitales-list" class="products-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== MODAL: EDITAR CLIENTE ====== -->
+    <div class="modal-overlay" id="edit-client-modal">
+      <div class="modal" style="max-width:520px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">✏️ Editar Cliente</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Actualiza los datos del cliente manualmente</div>
+          </div>
+          <button class="modal-close" onclick="closeEditClientModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-client-key">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group"><label>Nombre *</label><input type="text" id="edit-client-name" placeholder="Nombre"></div>
+            <div class="form-group"><label>Apellido</label><input type="text" id="edit-client-lastname" placeholder="Apellido"></div>
+            <div class="form-group"><label>DNI</label><input type="text" id="edit-client-dni" placeholder="12345678" maxlength="8"></div>
+            <div class="form-group"><label>WhatsApp / Teléfono</label><input type="text" id="edit-client-phone" placeholder="9XXXXXXXX"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Nota interna</label><input type="text" id="edit-client-nota" placeholder="Ej: Cliente VIP, prefiere tallas grandes..."></div>
+          </div>
+          <div style="background:var(--bg2);border-radius:12px;padding:12px 16px;margin-top:12px;font-size:12px;color:var(--muted);">
+            <i class="fas fa-info-circle" style="color:var(--sky);"></i> Los cambios se aplican como una nota extra al cliente. Los datos originales provienen de las ventas.
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="saveClientEdit()"><i class="fas fa-floppy-disk"></i> Guardar cambios</button>
+            <button class="btn btn-ghost" onclick="closeEditClientModal()">Cancelar</button>
           </div>
         </div>
       </div>
@@ -3090,13 +3297,14 @@ async function removeRibbonFromProduct(pid) {
 // CLIENTES (auto desde ventas)
 // ============================================
 function buildClientsFromOrders() {
+  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
   const map = {};
   orders.forEach(o => {
     const key = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
     if (!map[key]) {
       map[key] = {
         dni: o.dni||'', name: o.name||'', lastname: o.lastname||'',
-        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null
+        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null, _key: key
       };
     }
     map[key].total += parseFloat(o.total)||0;
@@ -3105,6 +3313,18 @@ function buildClientsFromOrders() {
     if (d && (!map[key].lastDate || d > map[key].lastDate)) map[key].lastDate = d;
     // prefer whatsapp if available
     if (o.whatsapp && o.whatsapp.trim()) map[key].phone = o.whatsapp.trim();
+  });
+  // Apply overrides
+  Object.values(map).forEach(cl => {
+    const ov = overrides[cl._key];
+    if (ov) {
+      if (ov.name) cl.name = ov.name;
+      if (ov.lastname) cl.lastname = ov.lastname;
+      if (ov.dni) cl.dni = ov.dni;
+      if (ov.phone) cl.phone = ov.phone;
+      if (ov.nota) cl.nota = ov.nota;
+      cl._overridden = true;
+    }
   });
   return Object.values(map).sort((a,b) => b.total - a.total);
 }
@@ -3142,16 +3362,17 @@ function renderClientsSection() {
     const waUrl = cl.phone ? `https://wa.me/51${cl.phone.replace(/^51/,'')}?text=${encodeURIComponent(`Hola ${cl.name}, somos D'Zoe Perú 👗`)}` : '';
     return `<tr>
       <td><span style="font-family:monospace;font-size:12px;background:var(--bg2);padding:2px 8px;border-radius:6px;">${cl.dni||'—'}</span></td>
-      <td><strong>${cl.name||'—'}</strong></td>
+      <td><strong>${cl.name||'—'}</strong>${cl._overridden?'<span style="font-size:9px;background:var(--lav-light);color:var(--lavender);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700;">Editado</span>':''}</td>
       <td>${cl.lastname||'—'}</td>
       <td>${cl.phone ? `<a href="${waUrl}" target="_blank" style="color:var(--green);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px;"><i class="fab fa-whatsapp"></i> ${cl.phone}</a>` : '—'}</td>
       <td style="text-align:center;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${cl.count}</span></td>
-      <td><span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span></td>
+      <td><span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span>${cl.nota?`<div style="font-size:10px;color:var(--muted);margin-top:2px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${cl.nota}">📝 ${cl.nota}</div>`:''}</td>
       <td style="font-size:12px;color:var(--muted);">${lastDate}</td>
       <td>
         <div style="display:flex;gap:5px;">
           ${waUrl ? `<a href="${waUrl}" target="_blank" class="icon-btn" style="background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;text-decoration:none;" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
           <button class="icon-btn edit-btn" onclick="filterSalesByClient('${cl.dni||cl.phone}')" title="Ver pedidos"><i class="fas fa-receipt"></i></button>
+          <button class="icon-btn" style="background:var(--lav-light);color:var(--lavender);" onclick="openEditClientModal('${cl.dni||cl.phone}')" title="Editar cliente"><i class="fas fa-user-pen"></i></button>
         </div>
       </td>
     </tr>`;
@@ -3393,7 +3614,7 @@ function goToSection(sectionId) {
   document.querySelectorAll('.page-section').forEach(s=>s.style.display='none');
   const sec = document.getElementById(sectionId);
   if (sec) { sec.style.display='block'; }
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
   const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
@@ -4179,8 +4400,418 @@ function renderCitiesSales() {
 }
 
 // ============================================
-// PAÍSES VISITANTES
+// EDITAR CLIENTE
 // ============================================
+let editingClientKey = null;
+
+function openEditClientModal(key) {
+  editingClientKey = key;
+  const clients = buildClientsFromOrders();
+  const cl = clients.find(c => c._key === key || c.dni === key || c.phone === key);
+  if (!cl) return;
+  document.getElementById('edit-client-key').value = key;
+  document.getElementById('edit-client-name').value = cl.name || '';
+  document.getElementById('edit-client-lastname').value = cl.lastname || '';
+  document.getElementById('edit-client-dni').value = cl.dni || '';
+  document.getElementById('edit-client-phone').value = cl.phone || '';
+  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  document.getElementById('edit-client-nota').value = overrides[key]?.nota || '';
+  document.getElementById('edit-client-modal').classList.add('open');
+}
+
+function closeEditClientModal() {
+  document.getElementById('edit-client-modal').classList.remove('open');
+  editingClientKey = null;
+}
+
+function saveClientEdit() {
+  const key = document.getElementById('edit-client-key').value;
+  if (!key) return;
+  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  overrides[key] = {
+    name: document.getElementById('edit-client-name').value.trim(),
+    lastname: document.getElementById('edit-client-lastname').value.trim(),
+    dni: document.getElementById('edit-client-dni').value.trim(),
+    phone: document.getElementById('edit-client-phone').value.trim(),
+    nota: document.getElementById('edit-client-nota').value.trim()
+  };
+  localStorage.setItem('dzoe_client_overrides', JSON.stringify(overrides));
+  closeEditClientModal();
+  renderClientsSection();
+  showAlert('✅ Cliente actualizado');
+}
+
+document.getElementById('edit-client-modal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeEditClientModal();
+});
+
+// ============================================
+// BLOG ADMIN
+// ============================================
+let blogPosts = JSON.parse(localStorage.getItem('dzoe_blog_posts') || '[]');
+let editingBlogId = null;
+let blogStatus = 'published';
+
+function saveBlogPosts() { localStorage.setItem('dzoe_blog_posts', JSON.stringify(blogPosts)); }
+
+function selectBlogStatus(val, el) {
+  blogStatus = val;
+  document.querySelectorAll('#blog-status-pills .status-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function previewBlogImg() {
+  const url = document.getElementById('blog-imagen').value;
+  const prev = document.getElementById('blog-img-preview');
+  if (!prev) return;
+  if (url) {
+    prev.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.innerHTML='❌ URL no válida'">`;
+  } else {
+    prev.innerHTML = 'Vista previa';
+  }
+}
+
+function toggleBlogForm(show) {
+  const body = document.getElementById('blog-form-body');
+  if (body) body.style.display = show ? 'block' : 'none';
+}
+
+function clearBlogForm() {
+  editingBlogId = null;
+  blogStatus = 'published';
+  ['blog-titulo','blog-extracto','blog-contenido','blog-categoria','blog-tags','blog-imagen','blog-autor'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = id === 'blog-autor' ? "D'Zoe Perú" : '';
+  });
+  const fd = document.getElementById('blog-fecha');
+  if (fd) fd.value = new Date().toISOString().slice(0,10);
+  const prev = document.getElementById('blog-img-preview');
+  if (prev) prev.innerHTML = 'Vista previa';
+  document.querySelectorAll('#blog-status-pills .status-pill').forEach(p => p.classList.remove('selected'));
+  document.querySelector('#blog-status-pills .active-pill')?.classList.add('selected');
+  const feat = document.getElementById('blog-featured-toggle');
+  if (feat) feat.classList.remove('on');
+  document.getElementById('blog-form-title').textContent = 'Nuevo Post';
+  document.getElementById('blog-save-btn-text').textContent = 'Publicar post';
+}
+
+function saveBlogPost() {
+  const titulo = document.getElementById('blog-titulo')?.value.trim();
+  if (!titulo) { showAlert('El título es requerido', 'error'); return; }
+  const post = {
+    id: editingBlogId || Date.now(),
+    titulo,
+    extracto: document.getElementById('blog-extracto')?.value.trim() || '',
+    contenido: document.getElementById('blog-contenido')?.value.trim() || '',
+    categoria: document.getElementById('blog-categoria')?.value.trim() || 'General',
+    tags: (document.getElementById('blog-tags')?.value || '').split(',').map(t=>t.trim()).filter(Boolean),
+    imagen: document.getElementById('blog-imagen')?.value.trim() || '',
+    autor: document.getElementById('blog-autor')?.value.trim() || "D'Zoe Perú",
+    fecha: document.getElementById('blog-fecha')?.value || new Date().toISOString().slice(0,10),
+    status: blogStatus,
+    featured: document.getElementById('blog-featured-toggle')?.classList.contains('on') || false,
+    updated_at: new Date().toISOString()
+  };
+  if (editingBlogId) {
+    const idx = blogPosts.findIndex(p => p.id === editingBlogId);
+    if (idx !== -1) blogPosts[idx] = post;
+  } else {
+    post.created_at = new Date().toISOString();
+    blogPosts.unshift(post);
+  }
+  saveBlogPosts();
+  clearBlogForm();
+  renderBlogList();
+  updateBlogStats();
+  showAlert(editingBlogId ? '✅ Post actualizado' : '✅ Post publicado');
+  editingBlogId = null;
+}
+
+function editBlogPost(id) {
+  const post = blogPosts.find(p => p.id === id);
+  if (!post) return;
+  editingBlogId = id;
+  blogStatus = post.status || 'published';
+  document.getElementById('blog-titulo').value = post.titulo || '';
+  document.getElementById('blog-extracto').value = post.extracto || '';
+  document.getElementById('blog-contenido').value = post.contenido || '';
+  document.getElementById('blog-categoria').value = post.categoria || '';
+  document.getElementById('blog-tags').value = (post.tags||[]).join(', ');
+  document.getElementById('blog-imagen').value = post.imagen || '';
+  document.getElementById('blog-autor').value = post.autor || "D'Zoe Perú";
+  document.getElementById('blog-fecha').value = post.fecha || '';
+  previewBlogImg();
+  document.querySelectorAll('#blog-status-pills .status-pill').forEach(p => {
+    p.classList.toggle('selected', p.dataset.bstatus === blogStatus);
+  });
+  const feat = document.getElementById('blog-featured-toggle');
+  if (feat) feat.classList.toggle('on', !!post.featured);
+  document.getElementById('blog-form-title').textContent = '✏️ Editar Post';
+  document.getElementById('blog-save-btn-text').textContent = 'Actualizar post';
+  toggleBlogForm(true);
+  document.getElementById('blog-form-section')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function deleteBlogPost(id) {
+  if (!confirm('¿Eliminar este post?')) return;
+  blogPosts = blogPosts.filter(p => p.id !== id);
+  saveBlogPosts();
+  renderBlogList();
+  updateBlogStats();
+  showAlert('Post eliminado');
+}
+
+function toggleBlogPostStatus(id) {
+  const post = blogPosts.find(p => p.id === id);
+  if (!post) return;
+  post.status = post.status === 'published' ? 'draft' : 'published';
+  saveBlogPosts();
+  renderBlogList();
+  updateBlogStats();
+  showAlert(post.status === 'published' ? '✅ Post publicado' : '📝 Guardado como borrador');
+}
+
+function updateBlogStats() {
+  const total = blogPosts.length;
+  const published = blogPosts.filter(p => p.status === 'published').length;
+  const drafts = blogPosts.filter(p => p.status === 'draft').length;
+  const cats = new Set(blogPosts.map(p => p.categoria).filter(Boolean)).size;
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('blog-total', total);
+  set('blog-published', published);
+  set('blog-drafts', drafts);
+  set('blog-cats', cats);
+  const badge = document.getElementById('badge-blog'); if(badge) badge.textContent = total;
+  // Populate datalist for categories
+  const dl = document.getElementById('blog-cat-list');
+  if (dl) {
+    const uniqCats = [...new Set(blogPosts.map(p => p.categoria).filter(Boolean))];
+    dl.innerHTML = uniqCats.map(c => `<option value="${c}">`).join('');
+  }
+}
+
+function renderBlogList() {
+  updateBlogStats();
+  const search = (document.getElementById('blog-search')?.value || '').toLowerCase();
+  const statusF = document.getElementById('blog-status-filter')?.value || '';
+  let posts = [...blogPosts];
+  if (search) posts = posts.filter(p => (p.titulo||'').toLowerCase().includes(search) || (p.categoria||'').toLowerCase().includes(search));
+  if (statusF) posts = posts.filter(p => p.status === statusF);
+
+  const el = document.getElementById('blog-posts-list');
+  if (!el) return;
+  if (!posts.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:60px 20px;text-align:center;"><div class="empty-icon">📝</div><h3>Sin posts aún</h3><p>Crea tu primer artículo del blog arriba.</p></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="table-wrap"><table class="orders-table"><thead><tr><th>Portada</th><th>Título</th><th>Categoría</th><th>Autor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${
+    posts.map(p => {
+      const imgEl = p.imagen ? `<img src="${p.imagen}" style="width:52px;height:40px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">` : `<div style="width:52px;height:40px;border-radius:8px;background:var(--rose-soft);display:flex;align-items:center;justify-content:center;font-size:18px;">📝</div>`;
+      const dateStr = p.fecha ? new Date(p.fecha).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+      const statusBadge = p.status === 'published'
+        ? '<span style="background:var(--green-light);color:var(--green);padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;">✅ Publicado</span>'
+        : '<span style="background:var(--orange-light);color:var(--orange);padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;">📝 Borrador</span>';
+      return `<tr>
+        <td>${imgEl}</td>
+        <td><strong style="font-size:13px;">${p.titulo}</strong>${p.featured?'<span style="margin-left:6px;background:var(--peach-light);color:var(--peach);font-size:9px;padding:2px 6px;border-radius:99px;font-weight:700;">⭐</span>':''}${p.extracto?`<div style="font-size:11px;color:var(--muted);margin-top:2px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.extracto}</div>`:''}
+        </td>
+        <td><span style="background:var(--lav-light);color:var(--lavender);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${p.categoria||'—'}</span></td>
+        <td style="font-size:12px;">${p.autor||'—'}</td>
+        <td style="font-size:12px;color:var(--muted);">${dateStr}</td>
+        <td>${statusBadge}</td>
+        <td>
+          <div style="display:flex;gap:5px;">
+            <button class="icon-btn" style="background:${p.status==='published'?'var(--orange-light)':'var(--green-light)'};color:${p.status==='published'?'var(--orange)':'var(--green)'};" onclick="toggleBlogPostStatus(${p.id})" title="${p.status==='published'?'Pasar a borrador':'Publicar'}"><i class="fas fa-${p.status==='published'?'eye-slash':'eye'}"></i></button>
+            <button class="icon-btn edit-btn" onclick="editBlogPost(${p.id})" title="Editar"><i class="fas fa-pen"></i></button>
+            <button class="icon-btn delete-btn" onclick="deleteBlogPost(${p.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('')
+  }</tbody></table></div>`;
+}
+
+// ============================================
+// PRODUCTOS DIGITALES ADMIN
+// ============================================
+let digitales = JSON.parse(localStorage.getItem('dzoe_digitales') || '[]');
+let editingDigId = null;
+let digStatus = 'active';
+
+function saveDigitalesData() { localStorage.setItem('dzoe_digitales', JSON.stringify(digitales)); }
+
+function selectDigStatus(val, el) {
+  digStatus = val;
+  document.querySelectorAll('#dig-status-pills .status-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function previewDigImg() {
+  const url = document.getElementById('dig-imagen').value;
+  const prev = document.getElementById('dig-img-preview');
+  if (!prev) return;
+  if (url) {
+    prev.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.innerHTML='❌ URL no válida'">`;
+  } else {
+    prev.innerHTML = 'Vista previa';
+  }
+}
+
+function clearDigForm() {
+  editingDigId = null;
+  digStatus = 'active';
+  ['dig-nombre','dig-descripcion','dig-url','dig-tags','dig-imagen'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  const dp = document.getElementById('dig-precio'); if(dp) dp.value = '';
+  const prev = document.getElementById('dig-img-preview');
+  if (prev) prev.innerHTML = 'Vista previa';
+  document.querySelectorAll('#dig-status-pills .status-pill').forEach(p => p.classList.remove('selected'));
+  document.querySelector('#dig-status-pills .active-pill')?.classList.add('selected');
+  const feat = document.getElementById('dig-featured-toggle');
+  if (feat) feat.classList.remove('on');
+  document.getElementById('dig-form-title').textContent = 'Nuevo Producto Digital';
+  document.getElementById('dig-save-btn-text').textContent = 'Guardar producto digital';
+}
+
+function saveDigital() {
+  const nombre = document.getElementById('dig-nombre')?.value.trim();
+  if (!nombre) { showAlert('El nombre es requerido', 'error'); return; }
+  const url = document.getElementById('dig-url')?.value.trim();
+  if (!url) { showAlert('La URL de descarga es requerida', 'error'); return; }
+  const precio = parseFloat(document.getElementById('dig-precio')?.value) || 0;
+  const prod = {
+    id: editingDigId || Date.now(),
+    nombre,
+    descripcion: document.getElementById('dig-descripcion')?.value.trim() || '',
+    precio,
+    categoria: document.getElementById('dig-categoria')?.value || 'Otros',
+    tipo: document.getElementById('dig-tipo')?.value || 'PDF',
+    url,
+    imagen: document.getElementById('dig-imagen')?.value.trim() || '',
+    tags: (document.getElementById('dig-tags')?.value || '').split(',').map(t=>t.trim()).filter(Boolean),
+    status: digStatus,
+    featured: document.getElementById('dig-featured-toggle')?.classList.contains('on') || false,
+    descargas: editingDigId ? (digitales.find(d=>d.id===editingDigId)?.descargas||0) : 0,
+    updated_at: new Date().toISOString()
+  };
+  if (editingDigId) {
+    const idx = digitales.findIndex(d => d.id === editingDigId);
+    if (idx !== -1) digitales[idx] = prod;
+  } else {
+    prod.created_at = new Date().toISOString();
+    digitales.unshift(prod);
+  }
+  saveDigitalesData();
+  clearDigForm();
+  renderDigitalesList();
+  showAlert(editingDigId ? '✅ Producto actualizado' : '✅ Producto digital guardado');
+  editingDigId = null;
+}
+
+function editDigital(id) {
+  const prod = digitales.find(d => d.id === id);
+  if (!prod) return;
+  editingDigId = id;
+  digStatus = prod.status || 'active';
+  document.getElementById('dig-nombre').value = prod.nombre || '';
+  document.getElementById('dig-descripcion').value = prod.descripcion || '';
+  document.getElementById('dig-precio').value = prod.precio || '';
+  document.getElementById('dig-categoria').value = prod.categoria || 'Otros';
+  document.getElementById('dig-tipo').value = prod.tipo || 'PDF';
+  document.getElementById('dig-url').value = prod.url || '';
+  document.getElementById('dig-imagen').value = prod.imagen || '';
+  document.getElementById('dig-tags').value = (prod.tags||[]).join(', ');
+  previewDigImg();
+  document.querySelectorAll('#dig-status-pills .status-pill').forEach(p => {
+    p.classList.toggle('selected', p.dataset.dstatus === digStatus);
+  });
+  const feat = document.getElementById('dig-featured-toggle');
+  if (feat) feat.classList.toggle('on', !!prod.featured);
+  document.getElementById('dig-form-title').textContent = '✏️ Editar Producto Digital';
+  document.getElementById('dig-save-btn-text').textContent = 'Actualizar producto';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function deleteDigital(id) {
+  if (!confirm('¿Eliminar este producto digital?')) return;
+  digitales = digitales.filter(d => d.id !== id);
+  saveDigitalesData();
+  renderDigitalesList();
+  showAlert('Producto eliminado');
+}
+
+function renderDigitalesList() {
+  // Stats
+  const total = digitales.length;
+  const activos = digitales.filter(d => d.status === 'active').length;
+  const descargas = digitales.reduce((a,d) => a+(d.descargas||0), 0);
+  const ingresos = digitales.reduce((a,d) => a+(d.precio||0)*(d.descargas||0), 0);
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('dig-total', total);
+  set('dig-activos', activos);
+  set('dig-descargas', descargas);
+  set('dig-ingresos', 'S/ '+ingresos.toFixed(2));
+  const badge = document.getElementById('badge-digitales'); if(badge) badge.textContent = total;
+
+  const search = (document.getElementById('dig-search')?.value || '').toLowerCase();
+  const catF = document.getElementById('dig-cat-filter')?.value || '';
+  let prods = [...digitales];
+  if (search) prods = prods.filter(d => (d.nombre||'').toLowerCase().includes(search) || (d.descripcion||'').toLowerCase().includes(search));
+  if (catF) prods = prods.filter(d => d.categoria === catF);
+
+  const el = document.getElementById('digitales-list');
+  if (!el) return;
+  if (!prods.length) {
+    el.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:60px 20px;text-align:center;"><div class="empty-icon">☁️</div><h3>Sin productos digitales</h3><p>Agrega tu primer producto digital arriba.</p></div>`;
+    return;
+  }
+
+  const tipoIcons = { 'PDF':'📄','ZIP':'🗜️','Video':'🎥','Imagen':'🖼️','Excel':'📊','Otro':'📁' };
+  const catColors = { 'Guías':'var(--sky)','Patrones':'var(--lavender)','Plantillas':'var(--peach)','Cursos':'var(--green)','Otros':'var(--muted)' };
+  const catBgs = { 'Guías':'var(--sky-light)','Patrones':'var(--lav-light)','Plantillas':'var(--peach-light)','Cursos':'var(--green-light)','Otros':'var(--bg2)' };
+
+  el.innerHTML = prods.map(d => `
+    <div class="product-card" style="position:relative;">
+      <div class="product-card-img">
+        ${d.imagen ? `<img src="${d.imagen}" alt="${d.nombre}" onerror="this.style.display='none'">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">${tipoIcons[d.tipo]||'📁'}</div>`}
+        ${d.featured?'<div style="position:absolute;top:10px;right:10px;background:#fef3c7;color:#d97706;font-size:9px;padding:3px 8px;border-radius:99px;font-weight:700;">⭐ Destacado</div>':''}
+        <div class="product-card-badge ${d.status==='inactive'?'inactive':''}">${d.status==='inactive'?'Inactivo':'Activo'}</div>
+        <div style="position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;">${tipoIcons[d.tipo]||'📁'} ${d.tipo}</div>
+      </div>
+      <div class="product-card-body">
+        <div class="product-name">${d.nombre}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span style="background:${catBgs[d.categoria]||'var(--bg2)'};color:${catColors[d.categoria]||'var(--muted)'};font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;">${d.categoria}</span>
+          ${d.descargas?`<span style="background:var(--blue-light);color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;"><i class="fas fa-download"></i> ${d.descargas}</span>`:''}
+        </div>
+        ${d.descripcion?`<div style="font-size:11px;color:var(--muted);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.descripcion}</div>`:''}
+        <div class="product-footer">
+          <div class="product-price" style="color:var(--green);">S/ ${(d.precio||0).toFixed(2)}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a href="${d.url}" target="_blank" class="icon-btn" style="background:var(--sky-light);color:var(--sky);display:flex;align-items:center;justify-content:center;text-decoration:none;" title="Ver/Descargar"><i class="fas fa-external-link-alt"></i></a>
+            <button class="icon-btn edit-btn" onclick="editDigital(${d.id})" title="Editar"><i class="fas fa-pen"></i></button>
+            <button class="icon-btn delete-btn" onclick="deleteDigital(${d.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// Hook goToSection for new sections
+const _origGoToSection = goToSection;
+goToSection = function(sectionId) {
+  _origGoToSection.apply(this, arguments);
+  if (sectionId === 'blog-admin-section') { renderBlogList(); const fd=document.getElementById('blog-fecha'); if(fd&&!fd.value) fd.value=new Date().toISOString().slice(0,10); }
+  if (sectionId === 'digitales-admin-section') renderDigitalesList();
+};
+
+// Init
+(function initNewModules() {
+  updateBlogStats();
+  renderDigitalesList();
+})();
+
+
 let countriesData = JSON.parse(localStorage.getItem('dzoe_countries') || '[]');
 const countryFlags = { 'Perú':'🇵🇪','Peru':'🇵🇪','Colombia':'🇨🇴','Chile':'🇨🇱','México':'🇲🇽','Mexico':'🇲🇽','Argentina':'🇦🇷','Ecuador':'🇪🇨','Bolivia':'🇧🇴','Venezuela':'🇻🇪','España':'🇪🇸','Spain':'🇪🇸','Estados Unidos':'🇺🇸','USA':'🇺🇸','USA/US':'🇺🇸','Brasil':'🇧🇷','Brazil':'🇧🇷','Uruguay':'🇺🇾','Paraguay':'🇵🇾','Panamá':'🇵🇦','Costa Rica':'🇨🇷' };
 
