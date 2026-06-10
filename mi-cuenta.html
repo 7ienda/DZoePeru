@@ -2121,10 +2121,11 @@ async function loadAllData() {
   showToast('Cargando datos...');
   // returns promise so callers can chain .then()
   if (!supabaseClient) { showAlert('No se encontró config.js', 'error'); return; }
-  const [productsRes, categoriesRes, ordersRes] = await Promise.all([
+  const [productsRes, categoriesRes, ordersRes, clientOverridesRes] = await Promise.all([
     supabaseClient.from('products').select('*').order('created_at', { ascending: false }),
     supabaseClient.from('categories').select('*').order('name'),
-    supabaseClient.from('orders').select('*').order('created_at', { ascending: false })
+    supabaseClient.from('orders').select('*').order('created_at', { ascending: false }),
+    supabaseClient.from('client_overrides').select('*')
   ]);
   products = productsRes.data || [];
   categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color }));
@@ -2133,6 +2134,21 @@ async function loadAllData() {
     o.deuda = parseFloat(o.deuda) || 0;
     return o;
   });
+  // Sincronizar overrides de clientes desde Supabase a localStorage
+  if (clientOverridesRes.data && clientOverridesRes.data.length) {
+    const overridesMap = {};
+    clientOverridesRes.data.forEach(row => {
+      overridesMap[row.client_key] = {
+        name: row.name || '',
+        lastname: row.lastname || '',
+        dni: row.dni || '',
+        phone: row.phone || '',
+        destino: row.destino || '',
+        nota: row.nota || ''
+      };
+    });
+    localStorage.setItem('dzoe_client_overrides', JSON.stringify(overridesMap));
+  }
   if (!categories.length) {
     categories = [{ name:'Bebés', emoji:'👶', color:'#c2617a' },{ name:'Niñas', emoji:'🎀', color:'#7c3aed' },{ name:'Niños', emoji:'👦', color:'#2563eb' }];
     for (const cat of categories) await saveCategoryToSupabase(cat);
@@ -4429,19 +4445,40 @@ function closeEditClientModal() {
   editingClientKey = null;
 }
 
-function saveClientEdit() {
+async function saveClientEdit() {
   const key = document.getElementById('edit-client-key').value;
   if (!key) return;
-  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
-  overrides[key] = {
+
+  const data = {
+    client_key: key,
     name: document.getElementById('edit-client-name').value.trim(),
     lastname: document.getElementById('edit-client-lastname').value.trim(),
     dni: document.getElementById('edit-client-dni').value.trim(),
     phone: document.getElementById('edit-client-phone').value.trim(),
     destino: document.getElementById('edit-client-destino').value.trim(),
-    nota: document.getElementById('edit-client-nota').value.trim()
+    nota: document.getElementById('edit-client-nota').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+
+  // Guardar en localStorage como respaldo local inmediato
+  const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  overrides[key] = {
+    name: data.name, lastname: data.lastname, dni: data.dni,
+    phone: data.phone, destino: data.destino, nota: data.nota
   };
   localStorage.setItem('dzoe_client_overrides', JSON.stringify(overrides));
+
+  // Guardar en Supabase
+  if (supabaseClient) {
+    const { error } = await supabaseClient
+      .from('client_overrides')
+      .upsert(data, { onConflict: 'client_key' });
+    if (error) {
+      showAlert('Error al guardar en Supabase: ' + error.message, 'error');
+      return;
+    }
+  }
+
   closeEditClientModal();
   renderClientsSection();
   showAlert('✅ Cliente actualizado');
