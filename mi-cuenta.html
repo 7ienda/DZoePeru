@@ -4409,7 +4409,7 @@ filterSales = function() { _origFilterSalesDeuda.apply(this, arguments); renderD
 function renderCitiesSales() {
   const cityMap = {};
   orders.forEach(o => {
-    const dest = (o.destination || '').trim();
+    const dest = (getClientData(o).destination || '').trim();
     if (!dest || dest === '—') return;
     // Tomar la primera parte como ciudad (antes de coma o guión)
     const city = dest.split(/[,\-–]/)[0].trim();
