@@ -1601,7 +1601,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div class="table-wrap">
             <table class="orders-table">
               <thead>
-                <tr><th>DNI</th><th>Nombre</th><th>Apellido</th><th>WhatsApp</th><th>Compras</th><th>Total Invertido</th><th>Último pedido</th><th>Acciones</th></tr>
+                <tr><th>DNI</th><th>Nombre</th><th>Apellido</th><th>WhatsApp</th><th>Destino</th><th>Compras</th><th>Total Invertido</th><th>Último pedido</th><th>Acciones</th></tr>
               </thead>
               <tbody id="clients-table-body"></tbody>
             </table>
@@ -1907,6 +1907,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
             <div class="form-group"><label>Apellido</label><input type="text" id="edit-client-lastname" placeholder="Apellido"></div>
             <div class="form-group"><label>DNI</label><input type="text" id="edit-client-dni" placeholder="12345678" maxlength="8"></div>
             <div class="form-group"><label>WhatsApp / Teléfono</label><input type="text" id="edit-client-phone" placeholder="9XXXXXXXX"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Destino Shalom</label><input type="text" id="edit-client-destino" placeholder="Ej: Huancayo, Piura, Lima..."></div>
             <div class="form-group" style="grid-column:1/-1;"><label>Nota interna</label><input type="text" id="edit-client-nota" placeholder="Ej: Cliente VIP, prefiere tallas grandes..."></div>
           </div>
           <div style="background:var(--bg2);border-radius:12px;padding:12px 16px;margin-top:12px;font-size:12px;color:var(--muted);">
@@ -3304,7 +3305,7 @@ function buildClientsFromOrders() {
     if (!map[key]) {
       map[key] = {
         dni: o.dni||'', name: o.name||'', lastname: o.lastname||'',
-        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null, _key: key
+        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null, destino: o.destination||o.destino||'', _key: key
       };
     }
     map[key].total += parseFloat(o.total)||0;
@@ -3313,6 +3314,7 @@ function buildClientsFromOrders() {
     if (d && (!map[key].lastDate || d > map[key].lastDate)) map[key].lastDate = d;
     // prefer whatsapp if available
     if (o.whatsapp && o.whatsapp.trim()) map[key].phone = o.whatsapp.trim();
+    if (o.destination || o.destino) map[key].destino = o.destination || o.destino;
   });
   // Apply overrides
   Object.values(map).forEach(cl => {
@@ -3322,6 +3324,7 @@ function buildClientsFromOrders() {
       if (ov.lastname) cl.lastname = ov.lastname;
       if (ov.dni) cl.dni = ov.dni;
       if (ov.phone) cl.phone = ov.phone;
+      if (ov.destino) cl.destino = ov.destino;
       if (ov.nota) cl.nota = ov.nota;
       cl._overridden = true;
     }
@@ -3365,6 +3368,7 @@ function renderClientsSection() {
       <td><strong>${cl.name||'—'}</strong>${cl._overridden?'<span style="font-size:9px;background:var(--lav-light);color:var(--lavender);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700;">Editado</span>':''}</td>
       <td>${cl.lastname||'—'}</td>
       <td>${cl.phone ? `<a href="${waUrl}" target="_blank" style="color:var(--green);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px;"><i class="fab fa-whatsapp"></i> ${cl.phone}</a>` : '—'}</td>
+      <td>${cl.destino ? `<span style="background:var(--sky-light);color:var(--sky);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;"><i class="fas fa-location-dot"></i> ${cl.destino}</span>` : '<span style="color:var(--muted);font-size:12px;">—</span>'}</td>
       <td style="text-align:center;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${cl.count}</span></td>
       <td><span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span>${cl.nota?`<div style="font-size:10px;color:var(--muted);margin-top:2px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${cl.nota}">📝 ${cl.nota}</div>`:''}</td>
       <td style="font-size:12px;color:var(--muted);">${lastDate}</td>
@@ -4415,6 +4419,7 @@ function openEditClientModal(key) {
   document.getElementById('edit-client-dni').value = cl.dni || '';
   document.getElementById('edit-client-phone').value = cl.phone || '';
   const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  document.getElementById('edit-client-destino').value = overrides[key]?.destino || cl.destino || '';
   document.getElementById('edit-client-nota').value = overrides[key]?.nota || '';
   document.getElementById('edit-client-modal').classList.add('open');
 }
@@ -4433,6 +4438,7 @@ function saveClientEdit() {
     lastname: document.getElementById('edit-client-lastname').value.trim(),
     dni: document.getElementById('edit-client-dni').value.trim(),
     phone: document.getElementById('edit-client-phone').value.trim(),
+    destino: document.getElementById('edit-client-destino').value.trim(),
     nota: document.getElementById('edit-client-nota').value.trim()
   };
   localStorage.setItem('dzoe_client_overrides', JSON.stringify(overrides));
