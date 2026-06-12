@@ -1,0 +1,43 @@
+name: Generate Meta Commerce Catalog
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # cada 6 horas
+  workflow_dispatch:          # ejecución manual desde GitHub Actions
+
+# ── PERMISOS NECESARIOS PARA HACER PUSH ──────────────────────────────────────
+permissions:
+  contents: write
+
+jobs:
+  build-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # token con permisos de escritura
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install @supabase/supabase-js
+
+      - name: Generate catalog.xml
+        env:
+          # Si no creaste los Secrets, usa los valores hardcodeados del script
+          SUPABASE_URL:      ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node generate-catalog.js
+
+      - name: Commit and push catalog.xml
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add catalog.xml
+          # Solo hace commit si el archivo cambió
+          git diff --cached --quiet || git commit -m "chore: regenerar catalog.xml [skip ci]"
+          git push
