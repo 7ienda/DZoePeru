@@ -16,7 +16,7 @@ const SUPABASE_ANON_KEY = (process.env.SUPABASE_ANON_KEY || '').trim()
 const STORE_URL   = 'https://dzoeperu.com';
 const BRAND       = "D'Zoe Perú";
 const OUTPUT_FILE = 'catalog.xml';
-const GOOGLE_CAT  = '5323'; // Baby & Toddler Clothing
+const GOOGLE_CAT  = '5323';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function esc(str) {
@@ -89,7 +89,12 @@ ${extraLines ? extraLines + '\n' : ''}    <g:availability>${hasStock ? 'in stock
   </item>`;
   });
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  // IMPORTANTE: las dos líneas de guiones al inicio hacen que Jekyll
+  // no procese este archivo y lo sirva tal cual.
+  return `---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>${esc(BRAND)} — Catálogo de Productos</title>
@@ -106,7 +111,6 @@ ${items.join('\n')}
 async function main() {
   console.log('🔄 Conectando a Supabase...');
 
-  // Pasar ws como transport para compatibilidad con Node.js < 22
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     realtime: { transport: ws }
   });
