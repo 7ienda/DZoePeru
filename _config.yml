@@ -1,3 +1,7 @@
-# Permite que GitHub Pages sirva archivos XML
+# GitHub Pages / Jekyll config — D'Zoe Perú
 include:
+  - catalog.xml
+
+# Evita que Jekyll procese el XML y lo rompa
+keep_files:
   - catalog.xml
