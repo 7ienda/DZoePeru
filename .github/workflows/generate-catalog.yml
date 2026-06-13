@@ -1,10 +1,12 @@
 name: Generate Catalog
 
 on:
+  schedule:
+    - cron: "0 */6 * * *"
   workflow_dispatch:
-  push:
-    paths:
-      - "productos.json"
+
+permissions:
+  contents: write
 
 jobs:
   generate:
@@ -13,9 +15,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate catalog
-        run: node scripts/generate-catalog.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install @supabase/supabase-js ws
+
+      - name: Generate catalog.xml
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node generate-catalog.js
 
       - name: Commit and push catalog
         run: |
