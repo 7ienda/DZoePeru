@@ -31,10 +31,11 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: node generate-catalog.js
 
-      - name: Commit and push catalog.xml
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add catalog.xml
-          git diff --cached --quiet || git commit -m "chore: regenerar catalog.xml [skip ci]"
-          git push
+      - name: Commit and push catalog
+  run: |
+    git config user.name "github-actions[bot]"
+    git config user.email "github-actions[bot]@users.noreply.github.com"
+    git add catalog.xml
+    git commit -m "chore: regenerar catalog.xml [skip ci]" || echo "No changes"
+    git pull --rebase origin main
+    git push origin main
