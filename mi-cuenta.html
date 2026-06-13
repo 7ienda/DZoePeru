@@ -895,29 +895,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
               <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
             </div>
           </div>
-          <!-- ── Meta/Google Shopping: género y grupo de edad ── -->
-          <div class="form-grid" style="margin-top:14px;">
-            <div class="form-group">
-              <label>Género <span style="font-size:10px;color:var(--muted);font-weight:400;">(g:gender — para Google/Meta Shopping)</span></label>
-              <select id="product-gender" style="width:100%;">
-                <option value="">— No especificar —</option>
-                <option value="female">Niña / Femenino</option>
-                <option value="male">Niño / Masculino</option>
-                <option value="unisex">Unisex</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Grupo de edad <span style="font-size:10px;color:var(--muted);font-weight:400;">(g:age_group — para Google/Meta Shopping)</span></label>
-              <select id="product-age-group" style="width:100%;">
-                <option value="">— No especificar —</option>
-                <option value="newborn">Recién nacido (0–3 m)</option>
-                <option value="infant">Bebé (3–12 m)</option>
-                <option value="toddler">Pequeño (1–5 años)</option>
-                <option value="kids">Niños (5–13 años)</option>
-                <option value="adult">Adulto</option>
-              </select>
-            </div>
-          </div>
           <div class="form-divider">Tallas — Precio, Costo y Stock</div>
           <div class="sizes-section">
             <div class="size-header"><span>Talla</span><span>Precio venta</span><span>Costo compra</span><span>Stock</span><span></span></div>
@@ -2891,8 +2868,6 @@ async function saveProduct() {
     image: validImages[0]||'', featured: featuredValue, status: statusValue,
     categories: [...selectedCategories],
     sizes: finalSizes.map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock })),
-    gender: document.getElementById('product-gender')?.value || '',
-    age_group: document.getElementById('product-age-group')?.value || '',
     created_at: new Date().toISOString()
   };
   if (editingProductId) { const idx = products.findIndex(p=>p.id===editingProductId); if(idx!==-1) products[idx]=productData; }
@@ -2926,8 +2901,6 @@ function editProduct(id) {
   if (!(p.images||[]).length) addImageInput();
   renderPreviewImages();
   renderSizesList();
-  const gEl = document.getElementById('product-gender'); if(gEl) gEl.value = p.gender||'';
-  const agEl = document.getElementById('product-age-group'); if(agEl) agEl.value = p.age_group||'';
   document.getElementById('form-section-title').textContent = 'Editar producto';
   document.getElementById('save-btn-text').textContent = 'Actualizar producto';
   goToSection('add-product-section');
@@ -2943,8 +2916,6 @@ function clearForm() {
   document.getElementById('image-urls-container').innerHTML='';
   document.getElementById('preview-images').innerHTML='';
   document.getElementById('sizes-container').innerHTML='<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar talla"</div>';
-  const gEl=document.getElementById('product-gender'); if(gEl) gEl.value='';
-  const agEl=document.getElementById('product-age-group'); if(agEl) agEl.value='';
   document.getElementById('form-section-title').textContent='Agregar producto';
   document.getElementById('save-btn-text').textContent='Guardar producto';
   addImageInput();
