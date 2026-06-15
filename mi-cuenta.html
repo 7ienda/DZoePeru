@@ -5006,6 +5006,7 @@ goToSection = function(sectionId) {
   _origGoToSection.apply(this, arguments);
   if (sectionId === 'blog-admin-section') { renderBlogList(); const fd=document.getElementById('blog-fecha'); if(fd&&!fd.value) fd.value=new Date().toISOString().slice(0,10); }
   if (sectionId === 'digitales-admin-section') renderDigitalesList();
+  if (sectionId === 'nuevo-ingreso-section') setTimeout(niCargarForm, 60);
 };
 
 // Init
@@ -5295,21 +5296,8 @@ function niPreviewTienda() {
   window.open('index.html', '_blank');
 }
 
-// Cargar al entrar a la sección
-const _origGoToSection = typeof goToSection === 'function' ? goToSection : null;
-document.addEventListener('DOMContentLoaded', () => {
-  const bc = document.getElementById('badge-caja'); if(bc) bc.textContent = gastos.length;
-  const bp = document.getElementById('badge-prestamos'); if(bp) bp.textContent = prestamos.filter(p=>p.status==='pending').length || prestamos.length;
-  const vd = document.getElementById('visit-date-input'); if(vd) vd.value = new Date().toISOString().slice(0,10);
-  // Cargar datos si ya se abrió la sección
-  niCargarForm();
-});
 
-// Hook: cuando el usuario navega a nuevo-ingreso-section, cargar el form
-document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-section="nuevo-ingreso-section"]');
-  if (btn) setTimeout(niCargarForm, 80);
-});
+
 
 
 </body>
