@@ -636,6 +636,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <span class="menu-label">Contenido</span>
     <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
+    <span class="menu-label">Vitrina</span>
+    <button class="menu-btn" data-section="nuevo-ingreso-section"><i class="fas fa-star"></i><span>⭐ Nuevo Ingreso</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
     <button class="menu-btn" data-section="ribbons-section"><i class="fas fa-ribbon"></i><span>Listones</span></button>
@@ -1940,6 +1942,147 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
       </div>
     </div>
+
+    <!-- ====== ⭐ NUEVO INGRESO ====== -->
+    <div id="nuevo-ingreso-section" class="page-section" style="display:none;">
+
+      <!-- Preview live -->
+      <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,#fdf0f8,#f4eafe);border:1.5px solid var(--rose-light);">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-eye" style="color:var(--lavender)"></i> Vista previa — como se ve en la tienda</div>
+          <span style="font-size:11px;color:var(--muted);font-weight:600;">Se actualiza en tiempo real</span>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+            <!-- Tarjeta producto preview -->
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;">🎴 Tarjeta del Héroe</div>
+              <div style="background:#fff;border-radius:18px;overflow:hidden;border:1.5px solid rgba(220,200,240,.5);box-shadow:0 6px 24px rgba(195,174,228,.18);max-width:220px;margin:0 auto;">
+                <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(135deg,#fef0f5,#ede4f9);">
+                  <img id="ni-preview-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'" onload="this.style.display='block'">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(60,40,90,.06) 0%,rgba(60,40,90,.35) 100%);"></div>
+                  <span style="position:absolute;top:10px;left:10px;z-index:3;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;font-size:9px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:20px;box-shadow:0 3px 10px rgba(232,164,192,.45);">⭐ Nuevo ingreso</span>
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;" id="ni-preview-lock-wrap">
+                    <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:2px solid rgba(232,164,192,.5);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(195,174,228,.35);">🔒</div>
+                  </div>
+                </div>
+                <div style="padding:12px 14px 14px;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--lavender);margin-bottom:3px;" id="ni-preview-cat">Categoría</div>
+                  <div style="font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:var(--text);margin-bottom:7px;line-height:1.2;" id="ni-preview-name">Nombre del producto</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;" id="ni-preview-tags"></div>
+                  <button style="width:100%;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));color:var(--rose-dark);border:1.5px solid var(--rose-light);padding:8px 10px;border-radius:25px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fas fa-bell"></i> Avisarme cuando llegue</button>
+                </div>
+              </div>
+            </div>
+            <!-- Countdown preview -->
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em;">🚨 Banner Cuenta Regresiva</div>
+              <div style="background:linear-gradient(135deg,rgba(195,174,228,.12),rgba(232,164,192,.10));border:1px solid rgba(232,164,192,.25);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;font-size:10px;font-weight:800;padding:5px 14px;border-radius:20px;box-shadow:0 4px 14px rgba(232,164,192,.4);">🚨 Próximo ingreso</div>
+                <span style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Llega en</span>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <div style="display:flex;flex-direction:column;align-items:center;min-width:36px;">
+                    <span style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);line-height:1;" id="ni-cd-days">--</span>
+                    <span style="font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;">Días</span>
+                  </div>
+                  <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--rose-light);margin-top:-4px;">:</span>
+                  <div style="display:flex;flex-direction:column;align-items:center;min-width:36px;">
+                    <span style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);line-height:1;" id="ni-cd-hours">--</span>
+                    <span style="font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;">Horas</span>
+                  </div>
+                  <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--rose-light);margin-top:-4px;">:</span>
+                  <div style="display:flex;flex-direction:column;align-items:center;min-width:36px;">
+                    <span style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose-dark);line-height:1;" id="ni-cd-mins">--</span>
+                    <span style="font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;">Min</span>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:var(--muted);font-weight:600;" id="ni-cd-label-fecha">Fecha: —</div>
+              </div>
+              <div style="margin-top:14px;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;">
+                <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">📋 Datos guardados actualmente</div>
+                <pre id="ni-current-data" style="font-size:11px;color:var(--text2);font-family:'Nunito',sans-serif;white-space:pre-wrap;line-height:1.6;">Cargando...</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de configuración -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-star" style="color:var(--peach)"></i> Configurar Nuevo Ingreso</div>
+          <button class="btn btn-ghost btn-sm" onclick="niLimpiarForm()"><i class="fas fa-broom"></i> Limpiar</button>
+        </div>
+        <div class="section-body">
+
+          <!-- Nombre y categoría -->
+          <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+            <div class="form-group" style="margin:0;">
+              <label>Nombre del producto *</label>
+              <input type="text" id="ni-nombre" placeholder="Ej: Abrigos Lana Doble Face" oninput="niUpdatePreview()">
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label>Categoría / Temporada</label>
+              <input type="text" id="ni-categoria" placeholder="Ej: Abrigos · Invierno 2026" oninput="niUpdatePreview()">
+            </div>
+          </div>
+
+          <!-- URL imagen -->
+          <div class="form-group" style="margin-bottom:18px;">
+            <label>URL de imagen principal</label>
+            <input type="url" id="ni-imagen" placeholder="https://... (URL de la imagen del producto)" oninput="niUpdatePreview()">
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fas fa-info-circle"></i> La imagen aparecerá en la tarjeta del héroe en la tienda</div>
+          </div>
+
+          <!-- Tags -->
+          <div class="form-group" style="margin-bottom:18px;">
+            <label>Etiquetas (máx. 3, separadas por coma)</label>
+            <input type="text" id="ni-tags" placeholder="Ej: 4–14 años, Lana premium, Edición limitada" oninput="niUpdatePreview()">
+          </div>
+
+          <!-- Fecha de llegada (para countdown) -->
+          <div style="background:linear-gradient(135deg,rgba(245,185,126,.08),rgba(232,164,192,.08));border:1.5px solid var(--peach-light);border-radius:16px;padding:20px;margin-bottom:18px;">
+            <div style="font-weight:800;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:8px;"><i class="fas fa-clock" style="color:var(--peach)"></i> Fecha estimada de llegada</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Esta fecha controla la cuenta regresiva 🚨 Próximo ingreso que se muestra en la tienda.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:flex-end;">
+              <div class="form-group" style="margin:0;">
+                <label>Fecha de llegada *</label>
+                <input type="date" id="ni-fecha" oninput="niUpdatePreview()">
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Hora estimada (opcional)</label>
+                <input type="time" id="ni-hora" value="09:00" oninput="niUpdatePreview()">
+              </div>
+              <div>
+                <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(7)">+7 días</button>
+                <button class="btn btn-ghost btn-sm" style="margin-top:4px;" onclick="niFechaRapida(14)">+14 días</button>
+                <button class="btn btn-ghost btn-sm" style="margin-top:4px;" onclick="niFechaRapida(30)">+30 días</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Imagen editorial (fondo hero) -->
+          <div class="form-group" style="margin-bottom:18px;">
+            <label>URL imagen editorial / fondo del héroe <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+            <input type="url" id="ni-img-editorial" placeholder="https://... (imagen de fondo de la sección izquierda del hero)" oninput="niUpdatePreview()">
+          </div>
+
+          <!-- Mensaje WhatsApp personalizado -->
+          <div class="form-group" style="margin-bottom:24px;">
+            <label>Mensaje WhatsApp al avisar <span style="font-weight:400;color:var(--muted)">(opcional, deja vacío para el predeterminado)</span></label>
+            <textarea id="ni-msg-wa" rows="2" placeholder="Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *{producto}*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕" style="width:100%;border-radius:10px;border:1.5px solid var(--border);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Usa <code style="background:var(--bg2);padding:1px 5px;border-radius:4px;">{producto}</code> para insertar el nombre del producto automáticamente.</div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="niGuardar()" style="min-width:180px;"><i class="fas fa-floppy-disk"></i> Guardar y publicar en tienda</button>
+            <button class="btn btn-ghost" onclick="niPreviewTienda()"><i class="fas fa-external-link-alt"></i> Ver tienda</button>
+            <button class="btn btn-ghost btn-sm" onclick="niBorrarConfig()" style="color:var(--red);border-color:var(--red-light);margin-left:auto;"><i class="fas fa-trash-alt"></i> Borrar configuración</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /nuevo-ingreso-section -->
 
   </div><!-- end page-content -->
 </div><!-- end main -->
@@ -3651,8 +3794,8 @@ function goToSection(sectionId) {
   document.querySelectorAll('.page-section').forEach(s=>s.style.display='none');
   const sec = document.getElementById(sectionId);
   if (sec) { sec.style.display='block'; }
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'nuevo-ingreso-section':'fa-star' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos', 'nuevo-ingreso-section':'⭐ Nuevo Ingreso' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -5020,14 +5163,154 @@ filterSales = function() {
   renderCitiesSales();
 };
 
-// Init visits date input to today
+// ============================================
+// ⭐ NUEVO INGRESO — Configuración
+// ============================================
+const NI_KEY = 'dzoe_nuevo_ingreso';
+
+function niCargarForm() {
+  const data = JSON.parse(localStorage.getItem(NI_KEY) || '{}');
+  if (data.nombre)       document.getElementById('ni-nombre').value = data.nombre;
+  if (data.categoria)    document.getElementById('ni-categoria').value = data.categoria;
+  if (data.imagen)       document.getElementById('ni-imagen').value = data.imagen;
+  if (data.tags)         document.getElementById('ni-tags').value = data.tags;
+  if (data.fecha)        document.getElementById('ni-fecha').value = data.fecha;
+  if (data.hora)         document.getElementById('ni-hora').value = data.hora;
+  if (data.imgEditorial) document.getElementById('ni-img-editorial').value = data.imgEditorial;
+  if (data.msgWa)        document.getElementById('ni-msg-wa').value = data.msgWa;
+  niUpdatePreview();
+  niMostrarDatosActuales(data);
+}
+
+function niMostrarDatosActuales(data) {
+  const el = document.getElementById('ni-current-data');
+  if (!el) return;
+  if (!data || !data.nombre) { el.textContent = 'Sin configuración guardada aún.'; return; }
+  el.textContent =
+    `Producto : ${data.nombre || '—'}\n` +
+    `Categoría: ${data.categoria || '—'}\n` +
+    `Tags     : ${data.tags || '—'}\n` +
+    `Llegada  : ${data.fecha || '—'} ${data.hora || ''}\n` +
+    `Imagen   : ${data.imagen ? data.imagen.slice(0,50)+'…' : '—'}`;
+}
+
+function niUpdatePreview() {
+  const nombre    = document.getElementById('ni-nombre')?.value.trim() || 'Nombre del producto';
+  const categoria = document.getElementById('ni-categoria')?.value.trim() || 'Categoría';
+  const imagen    = document.getElementById('ni-imagen')?.value.trim();
+  const tagsStr   = document.getElementById('ni-tags')?.value.trim();
+  const fecha     = document.getElementById('ni-fecha')?.value;
+  const hora      = document.getElementById('ni-hora')?.value || '09:00';
+
+  // Actualizar tarjeta
+  const pNombre = document.getElementById('ni-preview-name');
+  const pCat    = document.getElementById('ni-preview-cat');
+  const pImg    = document.getElementById('ni-preview-img');
+  const pTags   = document.getElementById('ni-preview-tags');
+  const pLock   = document.getElementById('ni-preview-lock-wrap');
+
+  if (pNombre) pNombre.textContent = nombre;
+  if (pCat)    pCat.textContent    = categoria;
+  if (pImg) {
+    if (imagen) { pImg.src = imagen; pImg.style.display = 'block'; if(pLock) pLock.style.display='flex'; }
+    else { pImg.src = ''; pImg.style.display = 'none'; }
+  }
+  if (pTags) {
+    const tagColors = ['t-rose','t-peach','t-lav','t-mint'];
+    const tags = tagsStr ? tagsStr.split(',').map(t=>t.trim()).filter(Boolean).slice(0,3) : [];
+    pTags.innerHTML = tags.map((t,i) =>
+      `<span style="font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;border:1.5px solid;" class="prox-tag ${tagColors[i%tagColors.length]}">${t}</span>`
+    ).join('');
+  }
+
+  // Countdown preview
+  if (fecha) {
+    const llegada = new Date(`${fecha}T${hora}`);
+    const diff = llegada - new Date();
+    const pad = n => String(Math.max(0,n)).padStart(2,'0');
+    if (diff > 0) {
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor((diff%86400000)/3600000);
+      const m = Math.floor((diff%3600000)/60000);
+      const cdD = document.getElementById('ni-cd-days');
+      const cdH = document.getElementById('ni-cd-hours');
+      const cdM = document.getElementById('ni-cd-mins');
+      if(cdD) cdD.textContent = pad(d);
+      if(cdH) cdH.textContent = pad(h);
+      if(cdM) cdM.textContent = pad(m);
+    } else {
+      ['ni-cd-days','ni-cd-hours','ni-cd-mins'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent='00'; });
+    }
+    const lbl = document.getElementById('ni-cd-label-fecha');
+    if (lbl) lbl.textContent = 'Fecha: ' + new Date(`${fecha}T${hora}`).toLocaleDateString('es-PE',{day:'numeric',month:'long',year:'numeric'});
+  }
+}
+
+function niFechaRapida(dias) {
+  const d = new Date();
+  d.setDate(d.getDate() + dias);
+  document.getElementById('ni-fecha').value = d.toISOString().slice(0,10);
+  niUpdatePreview();
+}
+
+function niGuardar() {
+  const nombre = document.getElementById('ni-nombre')?.value.trim();
+  const fecha  = document.getElementById('ni-fecha')?.value;
+  if (!nombre) { showAlert('⚠️ Escribe el nombre del producto', 'error'); return; }
+  if (!fecha)  { showAlert('⚠️ Elige la fecha de llegada', 'error'); return; }
+
+  const data = {
+    nombre,
+    categoria:    document.getElementById('ni-categoria')?.value.trim(),
+    imagen:       document.getElementById('ni-imagen')?.value.trim(),
+    tags:         document.getElementById('ni-tags')?.value.trim(),
+    fecha,
+    hora:         document.getElementById('ni-hora')?.value || '09:00',
+    imgEditorial: document.getElementById('ni-img-editorial')?.value.trim(),
+    msgWa:        document.getElementById('ni-msg-wa')?.value.trim(),
+    updatedAt:    new Date().toISOString()
+  };
+  localStorage.setItem(NI_KEY, JSON.stringify(data));
+  niMostrarDatosActuales(data);
+  showAlert('✅ ¡Nuevo ingreso publicado en la tienda!');
+}
+
+function niLimpiarForm() {
+  ['ni-nombre','ni-categoria','ni-imagen','ni-tags','ni-fecha','ni-img-editorial','ni-msg-wa'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  const hora = document.getElementById('ni-hora'); if(hora) hora.value = '09:00';
+  niUpdatePreview();
+}
+
+function niBorrarConfig() {
+  if (!confirm('¿Borrar toda la configuración del Nuevo Ingreso? Esto reseteará el hero y el countdown en la tienda.')) return;
+  localStorage.removeItem(NI_KEY);
+  niLimpiarForm();
+  niMostrarDatosActuales({});
+  showAlert('🗑️ Configuración borrada');
+}
+
+function niPreviewTienda() {
+  window.open('index.html', '_blank');
+}
+
+// Cargar al entrar a la sección
+const _origGoToSection = typeof goToSection === 'function' ? goToSection : null;
 document.addEventListener('DOMContentLoaded', () => {
   const bc = document.getElementById('badge-caja'); if(bc) bc.textContent = gastos.length;
   const bp = document.getElementById('badge-prestamos'); if(bp) bp.textContent = prestamos.filter(p=>p.status==='pending').length || prestamos.length;
   const vd = document.getElementById('visit-date-input'); if(vd) vd.value = new Date().toISOString().slice(0,10);
+  // Cargar datos si ya se abrió la sección
+  niCargarForm();
+});
+
+// Hook: cuando el usuario navega a nuevo-ingreso-section, cargar el form
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-section="nuevo-ingreso-section"]');
+  if (btn) setTimeout(niCargarForm, 80);
 });
 
 
-</script>
 </body>
 </html>
