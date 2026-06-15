@@ -9,7 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="config.js"></script>
+<script>
+// config.js inline — evita error de archivo no encontrado
+window.SUPABASE_CONFIG = null;
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
@@ -2193,28 +2196,34 @@ const DEFAULT_USER = 'dzoe_admin';
 const DEFAULT_PASS = 'dzoe2024';
 
 function doLogin() {
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
-  const validUser = stored.user || DEFAULT_USER;
-  const validPass = stored.pass || DEFAULT_PASS;
-  if (u === validUser && p === validPass) {
-    localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
-    document.getElementById('session-user').textContent = u;
-    const screen = document.getElementById('login-screen');
-    screen.classList.add('hidden');
-    document.getElementById('main-app').style.display = 'block';
-    setTimeout(() => screen.remove(), 500);
-    loadAllData().then(() => {
-      goToSection('dashboard-section');
-    });
-  } else {
-    const err = document.getElementById('login-error');
-    err.classList.add('show');
-    document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
-    document.getElementById('login-pass').value = '';
-    document.getElementById('login-user').classList.add('shake');
-    setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
+  try {
+    const u = document.getElementById('login-user').value.trim();
+    const p = document.getElementById('login-pass').value;
+    const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
+    const validUser = stored.user || DEFAULT_USER;
+    const validPass = stored.pass || DEFAULT_PASS;
+    if (u === validUser && p === validPass) {
+      localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
+      const su = document.getElementById('session-user'); if(su) su.textContent = u;
+      const screen = document.getElementById('login-screen');
+      screen.classList.add('hidden');
+      document.getElementById('main-app').style.display = 'block';
+      setTimeout(() => { try { screen.remove(); } catch(e){} }, 500);
+      try {
+        loadAllData().then(() => { goToSection('dashboard-section'); }).catch(e => { console.error('loadAllData error:', e); goToSection('dashboard-section'); });
+      } catch(e) { console.error('loadAllData threw:', e); goToSection('dashboard-section'); }
+    } else {
+      const err = document.getElementById('login-error');
+      err.classList.add('show');
+      document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
+      document.getElementById('login-pass').value = '';
+      const lu = document.getElementById('login-user');
+      lu.classList.add('shake');
+      setTimeout(() => lu.classList.remove('shake'), 400);
+    }
+  } catch(e) {
+    console.error('doLogin error:', e);
+    alert('Error al iniciar sesión: ' + e.message);
   }
 }
 
@@ -2228,13 +2237,13 @@ function togglePassVisible() {
 function checkSession() {
   const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
   if (session.ts && (Date.now() - session.ts < 8 * 60 * 60 * 1000)) {
-    document.getElementById('session-user').textContent = session.user || 'Admin';
+    const su = document.getElementById('session-user'); if(su) su.textContent = session.user || 'Admin';
     const screen = document.getElementById('login-screen');
-    screen.style.display = 'none';
+    if(screen) screen.style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
-    loadAllData().then(() => {
-      goToSection('dashboard-section');
-    });
+    try {
+      loadAllData().then(() => { goToSection('dashboard-section'); }).catch(e => { console.error('checkSession loadAllData error:', e); goToSection('dashboard-section'); });
+    } catch(e) { console.error('checkSession error:', e); goToSection('dashboard-section'); }
   }
 }
 
