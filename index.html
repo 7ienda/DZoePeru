@@ -276,7 +276,7 @@ body.dark-mode .breadcrumb-bar{background:#241e34;border-color:#3a3050;}
 body.dark-mode .breadcrumb a{color:#a89ec0;}
 body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 
-/* ===================== HERO PREMIUM D'ZOE ===================== */
+/* ===================== HERO PREMIUM D'ZOE — 3 PRÓXIMOS INGRESOS ===================== */
 .hero-strip{background:linear-gradient(90deg,var(--rose),var(--lavender),var(--mint),var(--lavender),var(--rose));background-size:200% 100%;animation:heroStrip 4s linear infinite;height:4px;}
 @keyframes heroStrip{0%{background-position:0%}100%{background-position:200%}}
 
@@ -285,380 +285,362 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .hero-badge{display:none;}
 .hero-sub{display:none;}
 .hero-banner-overlay{display:none;}
+.hero3-editorial{display:none;}
+.hero3-incoming{display:none;}
+.hero-float-cats{display:none;}
+.hero-float-review{display:none;}
+.hero-float-ship{display:none;}
+.hero3-copy{display:none;}
 
 /* ── WRAPPER PRINCIPAL ── */
 .proximos-section {
   width: 100%;
-  background: linear-gradient(140deg, #fdf0f8 0%, #f4eafe 50%, #e8f8f6 100%);
+  background: linear-gradient(140deg, #fdf0f8 0%, #f4eafe 45%, #eaf8f6 100%);
   position: relative;
   overflow: hidden;
-  padding: 0;
+  padding: 54px 0 60px;
 }
 .proximos-section::before {
   content: '';
   position: absolute;
-  top: -100px; right: -80px;
-  width: 380px; height: 380px;
-  background: radial-gradient(circle, rgba(195,174,228,0.18) 0%, transparent 70%);
+  top: -120px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(195,174,228,0.14) 0%, transparent 65%);
   border-radius: 50%;
   pointer-events: none;
 }
 .proximos-section::after {
   content: '';
   position: absolute;
-  bottom: -80px; left: 25%;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(126,207,200,0.14) 0%, transparent 70%);
+  bottom: -100px; left: 10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(126,207,200,0.11) 0%, transparent 65%);
   border-radius: 50%;
   pointer-events: none;
 }
 
-/* ── GRID 2 COLUMNAS: COPY + IMAGEN ── */
-.hero3-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  min-height: 660px;
+/* ── CABECERA DEL HERO ── */
+.hero-prox-head {
+  text-align: center;
+  margin-bottom: 44px;
   position: relative;
   z-index: 2;
-  gap: 0;
 }
-
-/* ── COLUMNA 1: COPY ── */
-.hero3-copy {
-  padding: 52px 44px 52px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Eyebrow pill */
-.hero3-eyebrow {
+.hero-prox-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   background: linear-gradient(135deg, var(--rose), var(--lavender));
   color: #fff;
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 1.8px;
-  padding: 5px 16px;
-  border-radius: 30px;
+  letter-spacing: 2px;
+  padding: 6px 20px;
+  border-radius: 40px;
   text-transform: uppercase;
-  margin-bottom: 16px;
-  width: fit-content;
-  box-shadow: 0 4px 16px rgba(232,164,192,0.4);
+  margin-bottom: 18px;
+  box-shadow: 0 4px 18px rgba(232,164,192,0.42);
 }
-
-/* Social proof row */
-.hero-social-proof {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.hero-avatars {
-  display: flex;
-}
-.hero-av {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  border: 2.5px solid #fff;
-  background: linear-gradient(135deg, var(--rose), var(--lavender));
-  font-size: 10px;
-  font-weight: 800;
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  margin-left: -8px;
-  box-shadow: 0 2px 8px rgba(232,164,192,0.3);
-}
-.hero-av:first-child { margin-left: 0; }
-.hero-sp-text { font-size: 12px; font-weight: 700; color: var(--text-soft); line-height: 1.4; }
-.hero-sp-text strong { color: var(--text); display: block; }
-.hero-stars { color: var(--peach); font-size: 12px; letter-spacing: -1px; }
-
-/* Título */
-.hero3-title {
+.hero-prox-title {
   font-family: 'Baloo 2', cursive;
-  font-size: clamp(28px, 3vw, 48px);
+  font-size: clamp(26px, 3.5vw, 46px);
   font-weight: 800;
-  line-height: 1.08;
   color: var(--text);
-  margin-bottom: 14px;
+  line-height: 1.1;
+  margin-bottom: 10px;
 }
-.hero3-title .hero3-accent {
+.hero-prox-title span {
   background: linear-gradient(135deg, var(--rose), var(--lavender));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
-/* Descripción */
-.hero3-desc {
+.hero-prox-sub {
   font-size: 14px;
   color: var(--text-soft);
   font-weight: 500;
-  line-height: 1.75;
-  margin-bottom: 24px;
-  max-width: 400px;
-}
-.hero3-desc strong { color: var(--text); }
-
-/* CTAs */
-.hero3-ctas {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-}
-.hero3-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
-  color: #fff;
-  font-size: 13px;
-  font-weight: 800;
-  padding: 12px 26px;
-  border-radius: 40px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
-  box-shadow: 0 6px 22px rgba(232,164,192,0.5);
-  transition: 0.3s;
-}
-.hero3-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(232,164,192,0.65);
-}
-.hero3-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: transparent;
-  color: var(--rose-dark);
-  font-size: 13px;
-  font-weight: 800;
-  padding: 12px 22px;
-  border-radius: 40px;
-  border: 2px solid var(--rose-light);
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
-  transition: 0.3s;
-}
-.hero3-btn-secondary:hover {
-  background: var(--rose-soft);
-  border-color: var(--rose);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.7;
 }
 
-/* Trust pills */
-.hero-trust-pills {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.hero-trust-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(255,255,255,0.85);
-  border: 1.5px solid rgba(232,164,192,0.28);
-  padding: 5px 13px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text);
-  backdrop-filter: blur(4px);
-}
-
-/* ── COLUMNA 2: IMAGEN + FLOATINGS ── */
-.hero3-incoming {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 36px 20px 36px 28px;
-}
-
-/* Tarjeta principal de producto */
-.hero3-product-card {
-  width: 210px;
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  border: 2px solid rgba(220,200,240,0.5);
-  box-shadow: 0 20px 60px rgba(195,174,228,0.3);
+/* ── GRID 3 TARJETAS ── */
+.hero-prox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
   position: relative;
   z-index: 2;
 }
-.hero3-product-img {
+
+/* ── TARJETA PRÓXIMO INGRESO ── */
+.prox-ni-card {
+  background: #fff;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1.5px solid rgba(220,200,245,0.5);
+  box-shadow: 0 8px 40px rgba(195,174,228,0.18);
+  transition: transform 0.35s cubic-bezier(0.22,0.9,0.36,1), box-shadow 0.35s;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  aspect-ratio: 3/4;
+}
+.prox-ni-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(195,174,228,0.32);
+}
+
+/* Card destacada */
+.prox-ni-card--featured {
+  border-color: rgba(232,164,192,0.55);
+  box-shadow: 0 12px 50px rgba(232,164,192,0.28);
+}
+.prox-ni-card--featured::before {
+  content: '⭐ MÁS ESPERADO';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, var(--rose), var(--lavender));
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-align: center;
+  padding: 6px 0;
+  z-index: 10;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Imagen */
+.prox-ni-img {
+  position: relative;
+  height: 260px;
   overflow: hidden;
   background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
 }
-.hero3-product-img img {
+.prox-ni-card--featured .prox-ni-img {
+  padding-top: 30px;
+  height: 290px;
+}
+.prox-ni-img img {
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: blur(5px) brightness(0.88);
+  object-position: center top;
+  transition: transform 0.5s cubic-bezier(0.22,0.9,0.36,1);
+}
+.prox-ni-card:hover .prox-ni-img img {
   transform: scale(1.06);
-  transition: filter 0.5s ease, transform 0.5s ease;
 }
-.hero3-product-card:hover .hero3-product-img img {
-  filter: blur(2px) brightness(0.92);
-  transform: scale(1.1);
-}
-.hero3-product-img .prox-card-overlay {
+.prox-ni-img-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(60,40,90,0.05) 0%, rgba(60,40,90,0.35) 100%);
+  background: linear-gradient(180deg, rgba(40,20,65,0.02) 0%, rgba(40,20,65,0.28) 100%);
   z-index: 1;
 }
-.hero3-product-ribbon {
+
+/* Ribbon */
+.prox-ni-ribbon {
   position: absolute;
-  top: 10px; left: 10px;
-  z-index: 3;
-  font-size: 9.5px;
+  top: 12px; left: 12px;
+  z-index: 5;
+  font-size: 9px;
   font-weight: 800;
-  letter-spacing: 0.4px;
-  padding: 3px 11px;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
   border-radius: 20px;
-  background: linear-gradient(135deg, var(--rose), var(--lavender));
   color: #fff;
-  box-shadow: 0 2px 10px rgba(232,164,192,0.45);
+  backdrop-filter: blur(4px);
+  font-family: 'Nunito', sans-serif;
 }
-.hero3-product-lock {
+.prox-ni-ribbon--new {
+  background: linear-gradient(135deg, var(--rose), #d070a0);
+  box-shadow: 0 3px 12px rgba(232,164,192,0.5);
+}
+.prox-ni-ribbon--coming {
+  background: linear-gradient(135deg, var(--lavender), #9070c8);
+  box-shadow: 0 3px 12px rgba(195,174,228,0.5);
+}
+.prox-ni-ribbon--exclusive {
+  background: linear-gradient(135deg, var(--peach), #e8954e);
+  box-shadow: 0 3px 12px rgba(245,185,126,0.5);
+}
+
+/* Lock icon */
+.prox-ni-lock {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  width: 46px; height: 46px;
+  bottom: 12px; right: 12px;
+  z-index: 5;
+  width: 38px; height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.93);
-  backdrop-filter: blur(6px);
-  border: 2px solid rgba(232,164,192,0.5);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255,255,255,0.8);
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 18px rgba(195,174,228,0.35);
+  font-size: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-.hero3-product-card:hover .hero3-product-lock {
-  transform: translate(-50%, -50%) scale(1.12);
+.prox-ni-card:hover .prox-ni-lock {
+  transform: scale(1.18) rotate(-8deg);
 }
-.hero3-product-body {
-  padding: 13px 14px 14px;
+
+/* Body */
+.prox-ni-body {
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
-.hero3-product-cat {
+.prox-ni-cat {
   font-size: 9.5px;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--lavender);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
-.hero3-product-name {
+.prox-ni-name {
   font-family: 'Baloo 2', cursive;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--text);
   line-height: 1.25;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-.hero3-product-tags {
+.prox-ni-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
-.hero3-notify-btn {
+.prox-ni-divider {
   width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(195,174,228,0.3), transparent);
+  margin-bottom: 14px;
+}
+
+/* Countdown mini */
+.prox-ni-countdown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.prox-ni-cd-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+.prox-ni-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
-  color: var(--rose-dark);
-  border: 1.5px solid var(--rose-light);
-  padding: 8px 12px;
-  border-radius: 30px;
-  font-size: 11.5px;
+  border-radius: 8px;
+  padding: 4px 7px;
+  min-width: 34px;
+}
+.prox-ni-cd-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 15px;
   font-weight: 800;
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  color: var(--rose-dark);
+  line-height: 1;
+}
+.prox-ni-cd-sub {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.prox-ni-cd-sep {
+  font-family: 'Baloo 2', cursive;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--rose-light);
+  line-height: 1;
+  padding-bottom: 8px;
+}
+
+/* Botón notificar */
+.prox-ni-btn {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  gap: 7px;
+  padding: 11px 16px;
+  border-radius: 30px;
+  font-size: 12.5px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  margin-top: auto;
 }
-.hero3-notify-btn:hover {
+.prox-ni-btn--primary {
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(232,164,192,0.48);
+}
+.prox-ni-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232,164,192,0.65);
+}
+.prox-ni-btn--outline {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  color: var(--rose-dark);
+  border: 1.5px solid var(--rose-light);
+}
+.prox-ni-btn--outline:hover {
   background: linear-gradient(135deg, var(--rose), var(--lavender));
   color: #fff;
   border-color: transparent;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(232,164,192,0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232,164,192,0.45);
 }
-.hero3-notify-btn.notified {
-  background: linear-gradient(135deg, var(--mint-soft), #c8f0ec);
-  color: #2d8a82;
-  border-color: var(--mint-light);
+.prox-ni-btn.notified {
+  background: linear-gradient(135deg, var(--mint-soft), #c8f0ec) !important;
+  color: #2d8a82 !important;
+  border-color: var(--mint-light) !important;
+  box-shadow: none !important;
   cursor: default;
+  transform: none !important;
 }
 
-/* ── TARJETAS FLOTANTES ── */
-/* Reseña — arriba derecha */
-.hero-float-review {
-  position: absolute;
-  top: 24px; right: 8px;
-  background: #fff;
-  border: 1.5px solid rgba(232,164,192,0.35);
-  border-radius: 16px;
-  padding: 11px 14px;
-  box-shadow: 0 8px 28px rgba(195,174,228,0.22);
-  max-width: 158px;
-  z-index: 5;
-}
-.hfr-stars { color: var(--peach); font-size: 12px; margin-bottom: 5px; }
-.hfr-text { font-size: 10.5px; color: var(--text); font-weight: 600; line-height: 1.45; margin-bottom: 6px; }
-.hfr-author { font-size: 9.5px; color: var(--text-soft); font-weight: 700; }
-
-/* Envío — abajo derecha */
-.hero-float-ship {
-  position: absolute;
-  bottom: 50px; right: 6px;
-  background: #fff;
-  border: 1.5px solid rgba(126,207,200,0.4);
-  border-radius: 14px;
-  padding: 9px 13px;
+/* ── TRUST ROW ── */
+.hero-prox-trust {
   display: flex;
   align-items: center;
-  gap: 9px;
-  box-shadow: 0 6px 20px rgba(126,207,200,0.2);
-  z-index: 5;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
-.hfs-icon {
-  width: 32px; height: 32px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--mint-light), var(--mint-soft));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0;
+.hero-prox-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.88);
+  border: 1.5px solid rgba(232,164,192,0.3);
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 10px rgba(195,174,228,0.12);
 }
-.hfs-text strong { display: block; font-size: 11px; font-weight: 800; color: var(--text); }
-.hfs-text span { font-size: 10px; color: var(--mint); font-weight: 700; }
 
-/* Categorías — izquierda */
-.hero-float-cats {
-  position: absolute;
-  left: 0px; top: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-  border: 1.5px solid rgba(195,174,228,0.35);
-  border-radius: 16px;
-  padding: 12px 13px;
-  box-shadow: 0 8px 28px rgba(195,174,228,0.2);
-  display: flex; flex-direction: column; gap: 9px;
-  z-index: 5;
-}
-.hfc-item { display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; color: var(--text); white-space: nowrap; }
-.hfc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-/* ── COUNTDOWN BANNER — debajo del hero ── */
+/* ── COUNTDOWN BANNER ── */
 .hero-countdown-banner {
   background: linear-gradient(135deg, rgba(195,174,228,0.12), rgba(232,164,192,0.1));
   border-top: 1px solid rgba(232,164,192,0.2);
@@ -706,7 +688,7 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 }
 .hcb-notify-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,164,192,0.6); }
 
-/* ── BARRA DE CATEGORÍAS RÁPIDAS ── */
+/* ── BARRA CATEGORÍAS ── */
 .hero-cat-bar {
   background: #fff;
   border-bottom: 1px solid var(--border);
@@ -719,8 +701,9 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
   display: flex;
   gap: 8px;
   padding: 0 20px;
-  width: max-content;
-  min-width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
 }
 .hero-cat-chip {
   display: inline-flex;
@@ -745,146 +728,28 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
   box-shadow: 0 4px 14px rgba(232,164,192,0.4);
 }
 
-/* ── EDITORIAL IMAGE COL ── */
-.hero3-editorial {
-  position: relative;
-  padding: 0 !important;
-  overflow: hidden;
-  min-height: 460px;
-}
-.hero3-editorial-img {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
-.hero3-editorial-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(30,10,50,0.72) 0%,
-    rgba(60,20,80,0.55) 50%,
-    rgba(180,100,140,0.20) 100%
-  );
-  z-index: 1;
-}
-.hero3-editorial-content {
-  position: relative;
-  z-index: 2;
-  padding: 52px 44px 52px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  min-height: 460px;
-}
-/* Eyebrow blanco sobre imagen */
-.hero3-editorial .hero3-eyebrow {
-  background: rgba(255,255,255,0.18);
-  border: 1.5px solid rgba(255,255,255,0.4);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  box-shadow: none;
-}
-/* Título blanco */
-.hero3-editorial .hero3-title {
-  color: #fff;
-  text-shadow: 0 2px 18px rgba(0,0,0,0.3);
-}
-.hero3-accent-white {
-  background: linear-gradient(135deg, #ffc8de, #e0c8ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-/* Desc blanco */
-.hero3-desc-white {
-  color: rgba(255,255,255,0.88) !important;
-}
-.hero3-desc-white strong { color: #fff !important; }
-/* Botón secundario blanco */
-.hero3-btn-white {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 800;
-  padding: 12px 22px;
-  border-radius: 40px;
-  border: 2px solid rgba(255,255,255,0.5);
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
-  backdrop-filter: blur(6px);
-  transition: 0.3s;
-}
-.hero3-btn-white:hover {
-  background: rgba(255,255,255,0.28);
-  border-color: rgba(255,255,255,0.8);
-}
-/* Social proof sobre imagen */
-.hero-social-proof--white { margin-top: 20px; }
-.hero-sp-text--white { color: rgba(255,255,255,0.85) !important; }
-.hero-sp-text--white strong { color: #fff !important; }
-.hero-social-proof--white .hero-stars { color: #ffd97d; }
-.hero-social-proof--white .hero-av {
-  border-color: rgba(255,255,255,0.6);
-  background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,200,220,0.5));
-}
-
-/* ── TARJETA SIN BLUR ── */
-.hero3-product-img--clear img {
-  filter: none !important;
-  transform: scale(1) !important;
-}
-.hero3-product-img--clear:hover img {
-  filter: brightness(1.04) !important;
-  transform: scale(1.04) !important;
-}
-
-/* ── BARRA DE CATEGORÍAS CENTRADA ── */
-.hero-cat-bar-inner {
-  justify-content: center;
-  min-width: unset;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
 /* ── DARK MODE ── */
 body.dark-mode .proximos-section { background: linear-gradient(140deg, #1e1428 0%, #1c1530 50%, #141f28 100%); }
-body.dark-mode .hero3-incoming { background: transparent; }
-body.dark-mode .hero3-product-card { background: #241e34; border-color: #3a3050; }
-body.dark-mode .hero3-product-name { color: #ede8f5; }
-body.dark-mode .hero3-notify-btn { background: linear-gradient(135deg, #2a2040, #241e34); color: var(--rose-light); border-color: #4a3060; }
-body.dark-mode .hero-float-review,
-body.dark-mode .hero-float-ship,
-body.dark-mode .hero-float-cats { background: #241e34; border-color: #3a3050; }
-body.dark-mode .hfr-text, body.dark-mode .hfc-item,
-body.dark-mode .hfs-text strong { color: #ede8f5; }
-body.dark-mode .hero-trust-pill { background: rgba(36,30,52,0.8); border-color: #4a3060; color: #ede8f5; }
+body.dark-mode .prox-ni-card { background: #241e34; border-color: #3a3050; }
+body.dark-mode .prox-ni-name { color: #ede8f5; }
+body.dark-mode .prox-ni-cat { color: var(--lavender); }
+body.dark-mode .prox-ni-btn--outline { background: linear-gradient(135deg,#2a2040,#241e34); color: var(--rose-light); border-color:#4a3060; }
+body.dark-mode .prox-ni-cd-unit { background: linear-gradient(135deg,#2a2040,#241e34); }
+body.dark-mode .hero-prox-trust-pill { background: rgba(36,30,52,0.85); border-color:#4a3060; color:#ede8f5; }
 body.dark-mode .hero-countdown-banner { background: linear-gradient(135deg, rgba(36,30,52,0.6), rgba(30,20,40,0.5)); border-color: rgba(195,174,228,0.15); }
 body.dark-mode .hero-cat-bar { background: #1e1830; border-color: #3a3050; }
 body.dark-mode .hero-cat-chip { background: #2a2040; border-color: #4a3060; color: #ede8f5; }
 
 /* ── RESPONSIVE ── */
-@media(max-width: 1000px) {
-  .hero3-grid { grid-template-columns: 1fr; min-height: unset; }
-  .hero3-copy { padding: 40px 0 28px; align-items: center; text-align: center; }
-  .hero3-desc { max-width: 100%; }
-  .hero3-ctas { justify-content: center; }
-  .hero-trust-pills { justify-content: center; }
-  .hero-social-proof { justify-content: center; }
-  .hero3-incoming { padding: 0 0 40px; justify-content: center; }
-  .hero-float-cats { display: none; }
+@media(max-width: 900px) {
+  .hero-prox-grid { grid-template-columns: 1fr 1fr; }
+  .prox-ni-card:nth-child(3) { display: none; }
 }
-@media(max-width: 600px) {
-  .hero-float-review { display: none; }
-  .hero-float-ship { display: none; }
-  .hero3-product-card { width: 180px; }
+@media(max-width: 580px) {
+  .hero-prox-grid { grid-template-columns: 1fr; }
+  .prox-ni-card:nth-child(2),
+  .prox-ni-card:nth-child(3) { display: none; }
+  .proximos-section { padding: 36px 0 40px; }
   .hero-countdown-banner { flex-wrap: wrap; gap: 10px; padding: 14px 16px; }
 }
 
@@ -2681,84 +2546,128 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   </div>
 </header>
 
-<!-- HERO PREMIUM — D'ZOE PERÚ -->
+<!-- HERO PREMIUM — D'ZOE PERÚ | 3 PRÓXIMOS INGRESOS -->
 <div class="hero-strip"></div>
 <section class="proximos-section" id="heroBanner">
   <div class="container">
-    <div class="hero3-grid">
 
-      <!-- ══ COL 1: EDITORIAL IMAGE + TEXTO ENCIMA ══ -->
-      <div class="hero3-copy hero3-editorial">
-        <!-- Imagen de fondo editorial -->
-        <img
-          id="heroEditorialImg"
-          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-tN2XW43rI63kdtXwX7vLwTj1agYMKnWXvHOHDxvEfx0OXd6b1hxSN_f6AYwGqYCMksl2d2Il3-2zfI3Ol1qMlN0GxVMaF_luG48ldw3EmWKRWqC3xwzI2RYHcgqzt7gtZObPeM3YnIzeewXpLRzR8IEv81owro9EQsJwSVdmb0Sfn4yIF-BmbWqjf38/s16000/Gemini_Generated_Image_qmjmwpqmjmwpqmjm-Photoroom.png"
-          alt="Niña con ropa infantil premium"
-          class="hero3-editorial-img"
-          onerror="this.src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-tN2XW43rI63kdtXwX7vLwTj1agYMKnWXvHOHDxvEfx0OXd6b1hxSN_f6AYwGqYCMksl2d2Il3-2zfI3Ol1qMlN0GxVMaF_luG48ldw3EmWKRWqC3xwzI2RYHcgqzt7gtZObPeM3YnIzeewXpLRzR8IEv81owro9EQsJwSVdmb0Sfn4yIF-BmbWqjf38/s16000/Gemini_Generated_Image_qmjmwpqmjmwpqmjm-Photoroom.png'"
-        >
-  
+    <!-- Cabecera -->
+    <div class="hero-prox-head">
+      <div class="hero-prox-eyebrow">✨ Colección Invierno 2026</div>
+      <h2 class="hero-prox-title">Próximos <span>Ingresos</span></h2>
+      <p class="hero-prox-sub">Sé la primera en reservar. Recibe aviso directo por WhatsApp cuando lleguen.</p>
+    </div>
 
-        <!-- Contenido sobre la imagen -->
-        <div class="hero3-editorial-content">
+    <!-- Grid 3 tarjetas -->
+    <div class="hero-prox-grid">
 
-
-          <!-- Social proof sobre imagen -->
-
-
+      <!-- ══ TARJETA 1 — DESTACADA ══ -->
+      <div class="prox-ni-card prox-ni-card--featured">
+        <div class="prox-ni-img">
+          <img id="heroProductImg"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
+            alt="Próximo ingreso D'Zoe Perú">
+          <div class="prox-ni-img-overlay"></div>
+          <span class="prox-ni-ribbon prox-ni-ribbon--new">🌸 Nuevo ingreso</span>
+          <div class="prox-ni-lock">🔒</div>
+        </div>
+        <div class="prox-ni-body">
+          <div class="prox-ni-cat" id="heroProductCat">Abrigos · Invierno 2026</div>
+          <div class="prox-ni-name" id="heroProductName">Abrigos Lana Doble Face</div>
+          <div class="prox-ni-tags" id="heroProductTags">
+            <span class="prox-tag t-rose">4–14 años</span>
+            <span class="prox-tag t-peach">Lana premium</span>
+            <span class="prox-tag t-lav">Edición limitada</span>
+          </div>
+          <div class="prox-ni-divider"></div>
+          <div class="prox-ni-countdown">
+            <span class="prox-ni-cd-label">Llega en</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Secs">--</span><span class="prox-ni-cd-sub">Seg</span></div>
+          </div>
+          <button class="prox-ni-btn prox-ni-btn--primary" id="heroNotifyBtn" onclick="heroNotify(this)">
+            <i class="fas fa-bell"></i> Avisarme cuando llegue
+          </button>
         </div>
       </div>
 
-      <!-- ══ COL 2: PRODUCTO DESTACADO + FLOATINGS ══ -->
-      <div class="hero3-incoming">
-
-        <!-- Flotante: categorías rápidas -->
-        <div class="hero-float-cats">
-          <div class="hfc-item"><div class="hfc-dot" style="background:var(--rose);"></div>Vestidos niña</div>
-          <div class="hfc-item"><div class="hfc-dot" style="background:var(--lavender);"></div>Abrigos</div>
-          <div class="hfc-item"><div class="hfc-dot" style="background:var(--mint);"></div>Conjuntos bebé</div>
-          <div class="hfc-item"><div class="hfc-dot" style="background:var(--peach);"></div>Jeans infantil</div>
+      <!-- ══ TARJETA 2 ══ -->
+      <div class="prox-ni-card">
+        <div class="prox-ni-img">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
+            alt="Próximo ingreso vestidos niña">
+          <div class="prox-ni-img-overlay"></div>
+          <span class="prox-ni-ribbon prox-ni-ribbon--coming">✦ Muy pronto</span>
+          <div class="prox-ni-lock">✦</div>
         </div>
-
-        <!-- Tarjeta producto — dinámica desde mi-cuenta.html -->
-        <div class="hero3-product-card">
-          <div class="hero3-product-img hero3-product-img--clear">
-            <img id="heroProductImg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png" alt="Próximo ingreso D'Zoe Perú">
-            <span class="hero3-product-ribbon">⭐ Nuevo ingreso</span>
+        <div class="prox-ni-body">
+          <div class="prox-ni-cat">Vestidos · Primavera 2026</div>
+          <div class="prox-ni-name">Vestidos Floreados con Encaje</div>
+          <div class="prox-ni-tags">
+            <span class="prox-tag t-lav">2–10 años</span>
+            <span class="prox-tag t-mint">Algodón premium</span>
           </div>
-          <div class="hero3-product-body">
-            <div class="hero3-product-cat" id="heroProductCat">Abrigos · Invierno 2026</div>
-            <div class="hero3-product-name" id="heroProductName">Abrigos Lana Doble Face</div>
-            <div class="hero3-product-tags" id="heroProductTags">
-              <span class="prox-tag t-rose">4–14 años</span>
-              <span class="prox-tag t-peach">Lana premium</span>
-              <span class="prox-tag t-lav">Edición limitada</span>
-            </div>
-            <button class="hero3-notify-btn" id="heroNotifyBtn" onclick="heroNotify(this)">
-              <i class="fas fa-bell"></i> Avisarme cuando llegue
-            </button>
+          <div class="prox-ni-divider"></div>
+          <div class="prox-ni-countdown">
+            <span class="prox-ni-cd-label">Llega en</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
           </div>
+          <button class="prox-ni-btn prox-ni-btn--outline" onclick="notifyProximo(this, 'Vestidos Floreados con Encaje')">
+            <i class="fas fa-bell"></i> Avisarme cuando llegue
+          </button>
         </div>
+      </div>
 
-        <!-- Flotante: reseña -->
-        <div class="hero-float-review">
-          <div class="hfr-stars">★★★★★</div>
-          <div class="hfr-text">"Le queda perfecto a mi hija, la tela es suavísima!"</div>
-          <div class="hfr-author">— Valeria M., Lima</div>
+      <!-- ══ TARJETA 3 ══ -->
+      <div class="prox-ni-card">
+        <div class="prox-ni-img">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
+            alt="Próximo ingreso conjuntos bebé">
+          <div class="prox-ni-img-overlay"></div>
+          <span class="prox-ni-ribbon prox-ni-ribbon--exclusive">🎀 Exclusivo</span>
+          <div class="prox-ni-lock">🎀</div>
         </div>
-
-        <!-- Flotante: envío -->
-        <div class="hero-float-ship">
-          <div class="hfs-icon">🚚</div>
-          <div class="hfs-text">
-            <strong>Envío por Shalom</strong>
-            <span>Todos los dias</span>
+        <div class="prox-ni-body">
+          <div class="prox-ni-cat">Conjuntos Bebé · 0–24 meses</div>
+          <div class="prox-ni-name">Conjuntos Recién Nacido Luxury</div>
+          <div class="prox-ni-tags">
+            <span class="prox-tag t-peach">0–24 meses</span>
+            <span class="prox-tag t-rose">Bambú suave</span>
           </div>
+          <div class="prox-ni-divider"></div>
+          <div class="prox-ni-countdown">
+            <span class="prox-ni-cd-label">Llega en</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
+            <span class="prox-ni-cd-sep">:</span>
+            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
+          </div>
+          <button class="prox-ni-btn prox-ni-btn--outline" onclick="notifyProximo(this, 'Conjuntos Recién Nacido Luxury')">
+            <i class="fas fa-bell"></i> Avisarme cuando llegue
+          </button>
         </div>
+      </div>
 
-      </div><!-- /hero3-incoming -->
+    </div><!-- /hero-prox-grid -->
 
-    </div><!-- /hero3-grid -->
+    <!-- Trust pills -->
+    <div class="hero-prox-trust">
+      <div class="hero-prox-trust-pill">🚚 Envío por Shalom todos los días</div>
+      <div class="hero-prox-trust-pill">⭐ +500 mamás satisfechas</div>
+      <div class="hero-prox-trust-pill">🌸 Modelos exclusivos importados</div>
+      <div class="hero-prox-trust-pill">💬 Aviso por WhatsApp gratis</div>
+    </div>
+
   </div>
 </section>
 
@@ -2766,13 +2675,13 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 <div class="hero-countdown-banner">
   <div class="hcb-badge">🚨 Próximo ingreso</div>
   <span class="hcb-label">Llega en</span>
-  <div class="hcb-unit"><span class="hcb-num" id="h3Days">--</span><span class="hcb-sub">Días</span></div>
+  <div class="hcb-unit"><span class="hcb-num" id="hcbDays">--</span><span class="hcb-sub">Días</span></div>
   <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="h3Hours">--</span><span class="hcb-sub">Horas</span></div>
+  <div class="hcb-unit"><span class="hcb-num" id="hcbHours">--</span><span class="hcb-sub">Horas</span></div>
   <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="h3Mins">--</span><span class="hcb-sub">Min</span></div>
+  <div class="hcb-unit"><span class="hcb-num" id="hcbMins">--</span><span class="hcb-sub">Min</span></div>
   <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="h3Secs">--</span><span class="hcb-sub">Seg</span></div>
+  <div class="hcb-unit"><span class="hcb-num" id="hcbSecs">--</span><span class="hcb-sub">Seg</span></div>
   <button class="hcb-notify-btn" onclick="heroNotify(document.getElementById('heroNotifyBtn'))">
     <i class="fas fa-bell"></i> Avisarme
   </button>
@@ -2851,16 +2760,38 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
     var pad = function(n){ return String(Math.max(0,Math.floor(n))).padStart(2,'0'); };
     var gel = function(id){ return document.getElementById(id); };
 
+    /* Tarjeta 2: llega 17 días después */
+    var llegada2 = new Date(llegada.getTime() + 7*24*3600000);
+    /* Tarjeta 3: llega 25 días después */
+    var llegada3 = new Date(llegada.getTime() + 15*24*3600000);
+
     function tick() {
-      var diff = llegada - new Date();
+      var now = new Date();
+      /* Card 1 */
+      var diff = llegada - now;
       if (diff <= 0) {
         ['h3Days','h3Hours','h3Mins','h3Secs'].forEach(function(id){ var e=gel(id); if(e) e.textContent='00'; });
-        return;
+      } else {
+        if(gel('h3Days'))  gel('h3Days').textContent  = pad(diff/86400000);
+        if(gel('h3Hours')) gel('h3Hours').textContent = pad((diff%86400000)/3600000);
+        if(gel('h3Mins'))  gel('h3Mins').textContent  = pad((diff%3600000)/60000);
+        if(gel('h3Secs'))  gel('h3Secs').textContent  = pad((diff%60000)/1000);
+        /* Sync banner */
+        if(gel('hcbDays'))  gel('hcbDays').textContent  = pad(diff/86400000);
+        if(gel('hcbHours')) gel('hcbHours').textContent = pad((diff%86400000)/3600000);
+        if(gel('hcbMins'))  gel('hcbMins').textContent  = pad((diff%3600000)/60000);
+        if(gel('hcbSecs'))  gel('hcbSecs').textContent  = pad((diff%60000)/1000);
       }
-      if(gel('h3Days'))  gel('h3Days').textContent  = pad(diff/86400000);
-      if(gel('h3Hours')) gel('h3Hours').textContent = pad((diff%86400000)/3600000);
-      if(gel('h3Mins'))  gel('h3Mins').textContent  = pad((diff%3600000)/60000);
-      if(gel('h3Secs'))  gel('h3Secs').textContent  = pad((diff%60000)/1000);
+      /* Card 2 */
+      var diff2 = llegada2 - now;
+      if(gel('ni2Days'))  gel('ni2Days').textContent  = pad(Math.max(0,diff2/86400000));
+      if(gel('ni2Hours')) gel('ni2Hours').textContent = pad(Math.max(0,(diff2%86400000)/3600000));
+      if(gel('ni2Mins'))  gel('ni2Mins').textContent  = pad(Math.max(0,(diff2%3600000)/60000));
+      /* Card 3 */
+      var diff3 = llegada3 - now;
+      if(gel('ni3Days'))  gel('ni3Days').textContent  = pad(Math.max(0,diff3/86400000));
+      if(gel('ni3Hours')) gel('ni3Hours').textContent = pad(Math.max(0,(diff3%86400000)/3600000));
+      if(gel('ni3Mins'))  gel('ni3Mins').textContent  = pad(Math.max(0,(diff3%3600000)/60000));
     }
     tick();
     setInterval(tick, 1000);
