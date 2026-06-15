@@ -8,7 +8,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Chart.js — carga async con fallback stub si falla (ej: file://)
+(function() {
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+  s.onerror = function() {
+    // Stub mínimo para que el código no rompa
+    window.Chart = function(ctx, cfg) { return { destroy:function(){}, update:function(){}, data: cfg&&cfg.data||{datasets:[]}, options:{} }; };
+    window.Chart.register = function(){};
+  };
+  document.head.appendChild(s);
+})();
+</script>
 <script>
 // config.js inline — evita error de archivo no encontrado
 window.SUPABASE_CONFIG = null;
@@ -606,6 +618,59 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="login-btn" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
   </div>
 </div>
+
+<script>
+// ── Login autónomo — funciona aunque el script principal falle ──
+var _LOGIN_DEFAULT_USER = 'dzoe_admin';
+var _LOGIN_DEFAULT_PASS = 'dzoe2024';
+
+function doLogin() {
+  try {
+    var u = document.getElementById('login-user').value.trim();
+    var p = document.getElementById('login-pass').value;
+    var stored = {};
+    try { stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}'); } catch(e){}
+    var validUser = stored.user || _LOGIN_DEFAULT_USER;
+    var validPass = stored.pass || _LOGIN_DEFAULT_PASS;
+    if (u === validUser && p === validPass) {
+      localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
+      var su = document.getElementById('session-user'); if(su) su.textContent = u;
+      var screen = document.getElementById('login-screen');
+      screen.classList.add('hidden');
+      document.getElementById('main-app').style.display = 'block';
+      setTimeout(function(){ try{ screen.remove(); }catch(e){} }, 500);
+      // Llamar loadAllData si ya está definida (script principal cargó bien)
+      setTimeout(function(){
+        try {
+          if (typeof loadAllData === 'function') {
+            loadAllData().then(function(){ if(typeof goToSection==='function') goToSection('dashboard-section'); }).catch(function(){});
+          } else if (typeof goToSection === 'function') {
+            goToSection('dashboard-section');
+          }
+        } catch(e){ console.error('post-login error:', e); }
+      }, 100);
+    } else {
+      var err = document.getElementById('login-error');
+      err.classList.add('show');
+      document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
+      document.getElementById('login-pass').value = '';
+      var lu = document.getElementById('login-user');
+      lu.classList.add('shake');
+      setTimeout(function(){ lu.classList.remove('shake'); }, 400);
+    }
+  } catch(e) {
+    alert('Error: ' + e.message);
+    console.error(e);
+  }
+}
+
+function togglePassVisible() {
+  var inp = document.getElementById('login-pass');
+  var ico = document.getElementById('toggle-pass');
+  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash login-input-icon'; }
+  else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
+}
+</script>
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
@@ -2188,49 +2253,10 @@ const supabaseKey = null;
 const supabaseClient = null;
 
 // ============================================
-// LOGIN
+// LOGIN — definido antes del main script (ver script inline arriba del sidebar)
 // ============================================
 const DEFAULT_USER = 'dzoe_admin';
 const DEFAULT_PASS = 'dzoe2024';
-
-function doLogin() {
-  try {
-    const u = document.getElementById('login-user').value.trim();
-    const p = document.getElementById('login-pass').value;
-    const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
-    const validUser = stored.user || DEFAULT_USER;
-    const validPass = stored.pass || DEFAULT_PASS;
-    if (u === validUser && p === validPass) {
-      localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
-      const su = document.getElementById('session-user'); if(su) su.textContent = u;
-      const screen = document.getElementById('login-screen');
-      screen.classList.add('hidden');
-      document.getElementById('main-app').style.display = 'block';
-      setTimeout(() => { try { screen.remove(); } catch(e){} }, 500);
-      try {
-        loadAllData().then(() => { goToSection('dashboard-section'); }).catch(e => { console.error('loadAllData error:', e); goToSection('dashboard-section'); });
-      } catch(e) { console.error('loadAllData threw:', e); goToSection('dashboard-section'); }
-    } else {
-      const err = document.getElementById('login-error');
-      err.classList.add('show');
-      document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
-      document.getElementById('login-pass').value = '';
-      const lu = document.getElementById('login-user');
-      lu.classList.add('shake');
-      setTimeout(() => lu.classList.remove('shake'), 400);
-    }
-  } catch(e) {
-    console.error('doLogin error:', e);
-    alert('Error al iniciar sesión: ' + e.message);
-  }
-}
-
-function togglePassVisible() {
-  const inp = document.getElementById('login-pass');
-  const ico = document.getElementById('toggle-pass');
-  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash login-input-icon'; }
-  else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
-}
 
 function checkSession() {
   const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
