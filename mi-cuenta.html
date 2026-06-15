@@ -13,7 +13,7 @@
 // config.js inline — evita error de archivo no encontrado
 window.SUPABASE_CONFIG = null;
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root {
   /* === D'Zoe Perú — Paleta Pastel (igual que index.html) === */
@@ -2181,13 +2181,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
 <script>
 // ============================================
-// SUPABASE — inicializado primero antes que todo
+// SUPABASE — desactivado (modo localStorage)
 // ============================================
-const supabaseUrl = window.SUPABASE_CONFIG?.URL;
-const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
-if (!supabaseUrl || !supabaseKey) console.error('❌ config.js no encontrado');
-const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
-console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
+const supabaseUrl = null;
+const supabaseKey = null;
+const supabaseClient = null;
 
 // ============================================
 // LOGIN
