@@ -1,7 +1,6 @@
  <!DOCTYPE html>
 <html lang="es">
 <head>
-	
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
@@ -277,7 +276,7 @@ body.dark-mode .breadcrumb-bar{background:#241e34;border-color:#3a3050;}
 body.dark-mode .breadcrumb a{color:#a89ec0;}
 body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 
-/* ===================== PRÓXIMOS INGRESOS — HERO ===================== */
+/* ===================== HERO PREMIUM D'ZOE ===================== */
 .hero-strip{background:linear-gradient(90deg,var(--rose),var(--lavender),var(--mint),var(--lavender),var(--rose));background-size:200% 100%;animation:heroStrip 4s linear infinite;height:4px;}
 @keyframes heroStrip{0%{background-position:0%}100%{background-position:200%}}
 
@@ -290,17 +289,16 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 /* ── WRAPPER PRINCIPAL ── */
 .proximos-section {
   width: 100%;
-  background: linear-gradient(160deg, #fdf0f8 0%, #f4eafe 45%, #e8f8f6 100%);
+  background: linear-gradient(140deg, #fdf0f8 0%, #f4eafe 50%, #e8f8f6 100%);
   position: relative;
   overflow: hidden;
-  padding: 52px 0 56px;
+  padding: 0;
 }
-/* Orbes decorativos de fondo */
 .proximos-section::before {
   content: '';
   position: absolute;
-  top: -120px; right: -120px;
-  width: 420px; height: 420px;
+  top: -100px; right: -80px;
+  width: 380px; height: 380px;
   background: radial-gradient(circle, rgba(195,174,228,0.18) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
@@ -308,11 +306,586 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .proximos-section::after {
   content: '';
   position: absolute;
-  bottom: -100px; left: -80px;
-  width: 340px; height: 340px;
+  bottom: -80px; left: 25%;
+  width: 300px; height: 300px;
   background: radial-gradient(circle, rgba(126,207,200,0.14) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
+}
+
+/* ── GRID 2 COLUMNAS: COPY + IMAGEN ── */
+.hero3-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  min-height: 660px;
+  position: relative;
+  z-index: 2;
+  gap: 0;
+}
+
+/* ── COLUMNA 1: COPY ── */
+.hero3-copy {
+  padding: 52px 44px 52px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Eyebrow pill */
+.hero3-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  padding: 5px 16px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(232,164,192,0.4);
+}
+
+/* Social proof row */
+.hero-social-proof {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.hero-avatars {
+  display: flex;
+}
+.hero-av {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -8px;
+  box-shadow: 0 2px 8px rgba(232,164,192,0.3);
+}
+.hero-av:first-child { margin-left: 0; }
+.hero-sp-text { font-size: 12px; font-weight: 700; color: var(--text-soft); line-height: 1.4; }
+.hero-sp-text strong { color: var(--text); display: block; }
+.hero-stars { color: var(--peach); font-size: 12px; letter-spacing: -1px; }
+
+/* Título */
+.hero3-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: 800;
+  line-height: 1.08;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.hero3-title .hero3-accent {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Descripción */
+.hero3-desc {
+  font-size: 14px;
+  color: var(--text-soft);
+  font-weight: 500;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  max-width: 400px;
+}
+.hero3-desc strong { color: var(--text); }
+
+/* CTAs */
+.hero3-ctas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.hero3-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 12px 26px;
+  border-radius: 40px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 6px 22px rgba(232,164,192,0.5);
+  transition: 0.3s;
+}
+.hero3-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232,164,192,0.65);
+}
+.hero3-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--rose-dark);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 12px 22px;
+  border-radius: 40px;
+  border: 2px solid var(--rose-light);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: 0.3s;
+}
+.hero3-btn-secondary:hover {
+  background: var(--rose-soft);
+  border-color: var(--rose);
+}
+
+/* Trust pills */
+.hero-trust-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hero-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.85);
+  border: 1.5px solid rgba(232,164,192,0.28);
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  backdrop-filter: blur(4px);
+}
+
+/* ── COLUMNA 2: IMAGEN + FLOATINGS ── */
+.hero3-incoming {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px 36px 28px;
+}
+
+/* Tarjeta principal de producto */
+.hero3-product-card {
+  width: 210px;
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid rgba(220,200,240,0.5);
+  box-shadow: 0 20px 60px rgba(195,174,228,0.3);
+  position: relative;
+  z-index: 2;
+}
+.hero3-product-img {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+}
+.hero3-product-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: blur(5px) brightness(0.88);
+  transform: scale(1.06);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.hero3-product-card:hover .hero3-product-img img {
+  filter: blur(2px) brightness(0.92);
+  transform: scale(1.1);
+}
+.hero3-product-img .prox-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(60,40,90,0.05) 0%, rgba(60,40,90,0.35) 100%);
+  z-index: 1;
+}
+.hero3-product-ribbon {
+  position: absolute;
+  top: 10px; left: 10px;
+  z-index: 3;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  padding: 3px 11px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(232,164,192,0.45);
+}
+.hero3-product-lock {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(232,164,192,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 18px rgba(195,174,228,0.35);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.hero3-product-card:hover .hero3-product-lock {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+.hero3-product-body {
+  padding: 13px 14px 14px;
+}
+.hero3-product-cat {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--lavender);
+  margin-bottom: 4px;
+}
+.hero3-product-name {
+  font-family: 'Baloo 2', cursive;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.hero3-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.hero3-notify-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  color: var(--rose-dark);
+  border: 1.5px solid var(--rose-light);
+  padding: 8px 12px;
+  border-radius: 30px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.hero3-notify-btn:hover {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232,164,192,0.45);
+}
+.hero3-notify-btn.notified {
+  background: linear-gradient(135deg, var(--mint-soft), #c8f0ec);
+  color: #2d8a82;
+  border-color: var(--mint-light);
+  cursor: default;
+}
+
+/* ── TARJETAS FLOTANTES ── */
+/* Reseña — arriba derecha */
+.hero-float-review {
+  position: absolute;
+  top: 24px; right: 8px;
+  background: #fff;
+  border: 1.5px solid rgba(232,164,192,0.35);
+  border-radius: 16px;
+  padding: 11px 14px;
+  box-shadow: 0 8px 28px rgba(195,174,228,0.22);
+  max-width: 158px;
+  z-index: 5;
+}
+.hfr-stars { color: var(--peach); font-size: 12px; margin-bottom: 5px; }
+.hfr-text { font-size: 10.5px; color: var(--text); font-weight: 600; line-height: 1.45; margin-bottom: 6px; }
+.hfr-author { font-size: 9.5px; color: var(--text-soft); font-weight: 700; }
+
+/* Envío — abajo derecha */
+.hero-float-ship {
+  position: absolute;
+  bottom: 50px; right: 6px;
+  background: #fff;
+  border: 1.5px solid rgba(126,207,200,0.4);
+  border-radius: 14px;
+  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 6px 20px rgba(126,207,200,0.2);
+  z-index: 5;
+}
+.hfs-icon {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--mint-light), var(--mint-soft));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.hfs-text strong { display: block; font-size: 11px; font-weight: 800; color: var(--text); }
+.hfs-text span { font-size: 10px; color: var(--mint); font-weight: 700; }
+
+/* Categorías — izquierda */
+.hero-float-cats {
+  position: absolute;
+  left: 0px; top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 1.5px solid rgba(195,174,228,0.35);
+  border-radius: 16px;
+  padding: 12px 13px;
+  box-shadow: 0 8px 28px rgba(195,174,228,0.2);
+  display: flex; flex-direction: column; gap: 9px;
+  z-index: 5;
+}
+.hfc-item { display: flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.hfc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── COUNTDOWN BANNER — debajo del hero ── */
+.hero-countdown-banner {
+  background: linear-gradient(135deg, rgba(195,174,228,0.12), rgba(232,164,192,0.1));
+  border-top: 1px solid rgba(232,164,192,0.2);
+  border-bottom: 1px solid rgba(232,164,192,0.2);
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  position: relative;
+  z-index: 3;
+}
+.hcb-badge {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 5px 16px;
+  border-radius: 20px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 4px 14px rgba(232,164,192,0.4);
+}
+.hcb-label { font-size: 11px; font-weight: 800; color: var(--text-soft); letter-spacing: 0.5px; text-transform: uppercase; }
+.hcb-unit { display: flex; flex-direction: column; align-items: center; }
+.hcb-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 26px; font-weight: 800;
+  color: var(--rose-dark); line-height: 1;
+}
+.hcb-sub { font-size: 8.5px; font-weight: 700; color: var(--text-soft); letter-spacing: 0.5px; text-transform: uppercase; }
+.hcb-sep {
+  font-family: 'Baloo 2', cursive;
+  font-size: 20px; font-weight: 800;
+  color: var(--rose-light); margin-top: -4px;
+}
+.hcb-notify-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff; border: none;
+  padding: 9px 20px; border-radius: 30px;
+  font-size: 12px; font-weight: 800;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 4px 16px rgba(232,164,192,0.45);
+  transition: 0.3s;
+}
+.hcb-notify-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,164,192,0.6); }
+
+/* ── BARRA DE CATEGORÍAS RÁPIDAS ── */
+.hero-cat-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  position: relative;
+  z-index: 3;
+  overflow-x: auto;
+}
+.hero-cat-bar-inner {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px;
+  width: max-content;
+  min-width: 100%;
+}
+.hero-cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--rose-soft);
+  border: 1.5px solid var(--rose-light);
+  border-radius: 30px;
+  padding: 6px 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.hero-cat-chip:hover, .hero-cat-chip.active {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(232,164,192,0.4);
+}
+
+/* ── EDITORIAL IMAGE COL ── */
+.hero3-editorial {
+  position: relative;
+  padding: 0 !important;
+  overflow: hidden;
+  min-height: 460px;
+}
+.hero3-editorial-img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.hero3-editorial-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(30,10,50,0.72) 0%,
+    rgba(60,20,80,0.55) 50%,
+    rgba(180,100,140,0.20) 100%
+  );
+  z-index: 1;
+}
+.hero3-editorial-content {
+  position: relative;
+  z-index: 2;
+  padding: 52px 44px 52px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-height: 460px;
+}
+/* Eyebrow blanco sobre imagen */
+.hero3-editorial .hero3-eyebrow {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  box-shadow: none;
+}
+/* Título blanco */
+.hero3-editorial .hero3-title {
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.3);
+}
+.hero3-accent-white {
+  background: linear-gradient(135deg, #ffc8de, #e0c8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Desc blanco */
+.hero3-desc-white {
+  color: rgba(255,255,255,0.88) !important;
+}
+.hero3-desc-white strong { color: #fff !important; }
+/* Botón secundario blanco */
+.hero3-btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 12px 22px;
+  border-radius: 40px;
+  border: 2px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  backdrop-filter: blur(6px);
+  transition: 0.3s;
+}
+.hero3-btn-white:hover {
+  background: rgba(255,255,255,0.28);
+  border-color: rgba(255,255,255,0.8);
+}
+/* Social proof sobre imagen */
+.hero-social-proof--white { margin-top: 20px; }
+.hero-sp-text--white { color: rgba(255,255,255,0.85) !important; }
+.hero-sp-text--white strong { color: #fff !important; }
+.hero-social-proof--white .hero-stars { color: #ffd97d; }
+.hero-social-proof--white .hero-av {
+  border-color: rgba(255,255,255,0.6);
+  background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,200,220,0.5));
+}
+
+/* ── TARJETA SIN BLUR ── */
+.hero3-product-img--clear img {
+  filter: none !important;
+  transform: scale(1) !important;
+}
+.hero3-product-img--clear:hover img {
+  filter: brightness(1.04) !important;
+  transform: scale(1.04) !important;
+}
+
+/* ── BARRA DE CATEGORÍAS CENTRADA ── */
+.hero-cat-bar-inner {
+  justify-content: center;
+  min-width: unset;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* ── DARK MODE ── */
+body.dark-mode .proximos-section { background: linear-gradient(140deg, #1e1428 0%, #1c1530 50%, #141f28 100%); }
+body.dark-mode .hero3-incoming { background: transparent; }
+body.dark-mode .hero3-product-card { background: #241e34; border-color: #3a3050; }
+body.dark-mode .hero3-product-name { color: #ede8f5; }
+body.dark-mode .hero3-notify-btn { background: linear-gradient(135deg, #2a2040, #241e34); color: var(--rose-light); border-color: #4a3060; }
+body.dark-mode .hero-float-review,
+body.dark-mode .hero-float-ship,
+body.dark-mode .hero-float-cats { background: #241e34; border-color: #3a3050; }
+body.dark-mode .hfr-text, body.dark-mode .hfc-item,
+body.dark-mode .hfs-text strong { color: #ede8f5; }
+body.dark-mode .hero-trust-pill { background: rgba(36,30,52,0.8); border-color: #4a3060; color: #ede8f5; }
+body.dark-mode .hero-countdown-banner { background: linear-gradient(135deg, rgba(36,30,52,0.6), rgba(30,20,40,0.5)); border-color: rgba(195,174,228,0.15); }
+body.dark-mode .hero-cat-bar { background: #1e1830; border-color: #3a3050; }
+body.dark-mode .hero-cat-chip { background: #2a2040; border-color: #4a3060; color: #ede8f5; }
+
+/* ── RESPONSIVE ── */
+@media(max-width: 1000px) {
+  .hero3-grid { grid-template-columns: 1fr; min-height: unset; }
+  .hero3-copy { padding: 40px 0 28px; align-items: center; text-align: center; }
+  .hero3-desc { max-width: 100%; }
+  .hero3-ctas { justify-content: center; }
+  .hero-trust-pills { justify-content: center; }
+  .hero-social-proof { justify-content: center; }
+  .hero3-incoming { padding: 0 0 40px; justify-content: center; }
+  .hero-float-cats { display: none; }
+}
+@media(max-width: 600px) {
+  .hero-float-review { display: none; }
+  .hero-float-ship { display: none; }
+  .hero3-product-card { width: 180px; }
+  .hero-countdown-banner { flex-wrap: wrap; gap: 10px; padding: 14px 16px; }
 }
 
 /* ── CABECERA ── */
@@ -1815,25 +2388,171 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   .products-title{font-size:20px;}
   .footer{padding:36px 0 20px;}
 }
-</style>
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '876087535537675');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=876087535537675&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+/* ═══════════════════════════════════════════════
+   📱 MEJORAS MOBILE COMPLETAS
+═══════════════════════════════════════════════ */
+
+/* ── Hero section en móvil ── */
+@media(max-width:768px){
+  /* Hero layout: solo tarjeta centrada */
+  .proximos-section { padding: 28px 0 0; }
+  .hero3-grid { gap: 0; }
+  /* Ocultar columna editorial en móvil — enfoque en la tarjeta */
+  .hero3-editorial { display: none; }
+  .hero3-incoming {
+    padding: 0 16px 28px;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero3-product-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .hero3-product-img { border-radius: 18px 18px 0 0; }
+  .hero3-product-body { padding: 14px 16px 18px; }
+  .hero3-product-cat { font-size: 10px; }
+  .hero3-product-name { font-size: 18px; }
+  .hero3-notify-btn { font-size: 13px; padding: 12px 18px; }
+  /* Floatantes compactos */
+  .hero-float-cats { display: none; }
+  .hero-float-review {
+    display: block;
+    position: static !important;
+    transform: none !important;
+    width: 100%;
+    max-width: 300px;
+    margin: 12px auto 0;
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 11px;
+    box-shadow: 0 3px 14px rgba(195,174,228,.18);
+  }
+  .hfr-text { font-size: 11px; }
+  .hfr-author { font-size: 10px; }
+  .hero-float-ship { display: none; }
+}
+
+/* ── Countdown banner móvil ── */
+@media(max-width:768px){
+  .hero-countdown-banner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 14px;
+    padding: 12px 14px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  .hcb-badge { font-size: 10px; padding: 4px 12px; }
+  .hcb-label { font-size: 10px; }
+  .hcb-num { font-size: 22px; }
+  .hcb-sub { font-size: 8px; }
+  .hcb-unit { min-width: 32px; }
+  .hcb-sep { font-size: 16px; }
+  .hcb-notify-btn { font-size: 11px; padding: 8px 14px; }
+}
+
+/* ── Barra categorías rápidas ── */
+@media(max-width:768px){
+  .hero-cat-bar { padding: 0; }
+  .hero-cat-bar-inner { gap: 6px; padding: 10px 14px; }
+  .hero-cat-chip { font-size: 11px; padding: 6px 12px; white-space: nowrap; }
+}
+
+/* ── Hub3 (categorías + edades) en móvil ── */
+@media(max-width:768px){
+  .hub3-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .hub3-panel { border-radius: 16px; padding: 18px 14px; }
+  .hub3-panel-title { font-size: 15px; }
+  .hub3-ages-table { gap: 6px; }
+  .h3-age { font-size: 11px; padding: 7px 8px; }
+  .h3-age--all { font-size: 12px; }
+}
+
+/* ── Topbar en móvil: compacto ── */
+@media(max-width:480px){
+  .topbar { padding: 5px 0; }
+  .topbar-right span { display: none; }
+  .topbar-right { gap: 14px; }
+}
+
+/* ── Header: logo + íconos apretados ── */
+@media(max-width:380px){
+  .logo-text h1 { font-size: 20px !important; }
+  .header-icons { gap: 4px; }
+  .cart-btn { padding: 5px 10px; font-size: 12px; }
+  .dark-mode-btn { width: 30px; height: 30px; font-size: 12px; }
+}
+
+/* ── Tarjetas de producto en grilla ── */
+@media(max-width:400px){
+  .product-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .product-img-wrap { border-radius: 12px 12px 0 0; }
+  .product-body { padding: 8px 8px 6px; }
+  .product-body h4 { font-size: 11px; line-height: 1.3; }
+  .product-price { font-size: 13px; }
+  .size-btn,.size-option { font-size: 9.5px; padding: 2px 5px; border-radius: 5px; }
+  .add-to-cart { font-size: 10.5px; padding: 7px 6px; border-radius: 10px; }
+  .whatsapp-btn { font-size: 10px; padding: 6px 6px; }
+}
+
+/* ── Footer ── */
+@media(max-width:480px){
+  .footer-main { grid-template-columns: 1fr !important; gap: 22px; }
+  .footer-col-title { font-size: 13px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* ── Buscador ── */
+@media(max-width:480px){
+  .search-bar-inner input { font-size: 13px; }
+  .search-bar-inner button { font-size: 12px; padding: 8px 14px; }
+}
+
+/* ── Baby shower banner ── */
+@media(max-width:400px){
+  .babyshower-banner { flex-direction: column; text-align: center; gap: 8px; padding: 12px 14px; }
+  .babyshower-banner-cta { width: 100%; justify-content: center; }
+}
+
+/* ── FAB: wishlist & scroll-top ── */
+@media(max-width:480px){
+  .wishlist-fab { width: 46px; height: 46px; font-size: 16px; bottom: 14px; left: 14px; }
+  .scroll-top-btn { width: 38px; height: 38px; font-size: 13px; left: 14px; bottom: 70px; }
+}
+
+/* ── Popup (panel lateral del producto) ── */
+@media(max-width:480px){
+  .product-panel { width: 100% !important; right: -100% !important; border-radius: 0; }
+  .product-panel.open { right: 0 !important; }
+  .pp-img-wrap { height: 220px; }
+  .pp-name { font-size: 18px; }
+  .pp-price { font-size: 22px; }
+}
+
+/* ── Carrito ── */
+@media(max-width:380px){
+  .cart-sidebar { width: 100% !important; }
+}
+
+/* ── Beneficios ── */
+@media(max-width:380px){
+  .benefits-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+  .benefit-icon { font-size: 22px; }
+  .benefit-label { font-size: 10px; }
+}
+
+/* ── Talla flotante ── */
+@media(max-width:480px){
+  .talla-float { bottom: 70px; left: 12px; font-size: 11px; padding: 8px 12px; }
+}
+</style>
 </head>
 <body>
 
@@ -1962,136 +2681,220 @@ src="https://www.facebook.com/tr?id=876087535537675&ev=PageView&noscript=1"
   </div>
 </header>
 
-<!-- PRÓXIMOS INGRESOS — HERO PREMIUM -->
+<!-- HERO PREMIUM — D'ZOE PERÚ -->
 <div class="hero-strip"></div>
 <section class="proximos-section" id="heroBanner">
   <div class="container">
+    <div class="hero3-grid">
 
-    <!-- NUEVO LAYOUT: dos columnas -->
-    <div class="proximos-split">
+      <!-- ══ COL 1: EDITORIAL IMAGE + TEXTO ENCIMA ══ -->
+      <div class="hero3-copy hero3-editorial">
+        <!-- Imagen de fondo editorial -->
+        <img
+          id="heroEditorialImg"
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-tN2XW43rI63kdtXwX7vLwTj1agYMKnWXvHDxvEfx0OXd6b1hxSN_f6AYwGqYCMksl2d2Il3-2zfI3Ol1qMlN0GxVMaF_luG48ldw3EmWKRWqC3xwzI2RYHcgqzt7gtZObPeM3YnIzeewXpLRzR8IEv81owro9EQsJwSVdmb0Sfn4yIF-BmbWqjf38/s16000/Gemini_Generated_Image_qmjmwpqmjmwpqmjm-Photoroom.png"
+          alt="Niña con ropa infantil premium"
+          class="hero3-editorial-img"
+          onerror="this.src='https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=900&q=80&auto=format&fit=crop'"
+        >
+  
 
-      <!-- ══ COLUMNA IZQUIERDA: Texto + Contador ══ -->
-      <div class="proximos-left">
-        <div class="proximos-eyebrow">
-          <i class="fas fa-plane-arrival"></i>
-          Próximos Ingresos 2026
-        </div>
-        <h2 class="proximos-title">
-          Lo que viene<br><span class="pt-accent">muy pronto</span>
-        </h2>
-        <p class="proximos-desc">Prendas importadas de alta gama seleccionadas especialmente para la nueva temporada. Sé la primera en enterarte cuando lleguen. 🌸</p>
+        <!-- Contenido sobre la imagen -->
+        <div class="hero3-editorial-content">
 
-        <!-- Divider decorativo -->
-        <div class="prox-divider"><span></span><i class="fas fa-clock"></i><span></span></div>
 
-        <!-- COUNTDOWN -->
-        <div class="proximos-countdown">
-          <span class="cd-label">🚚 Llegan en</span>
-          <div class="cd-unit"><span class="cd-num" id="cdDays">--</span><span class="cd-sub">días</span></div>
-          <span class="cd-sep">:</span>
-          <div class="cd-unit"><span class="cd-num" id="cdHours">--</span><span class="cd-sub">horas</span></div>
-          <span class="cd-sep">:</span>
-          <div class="cd-unit"><span class="cd-num" id="cdMins">--</span><span class="cd-sub">min</span></div>
-          <span class="cd-sep">:</span>
-          <div class="cd-unit"><span class="cd-num" id="cdSecs">--</span><span class="cd-sub">seg</span></div>
-        </div>
+          <!-- Social proof sobre imagen -->
 
-        <div class="proximos-trust">
-          <span><i class="fas fa-shield-alt"></i> Stock limitado</span>
-          <span><i class="fas fa-truck"></i> Envío a todo Perú</span>
-          <span><i class="fas fa-gem"></i> Alta gama</span>
+
         </div>
       </div>
 
-      <!-- ══ COLUMNA DERECHA: 2 Tarjetas compactas ══ -->
-      <div class="proximos-right">
-        <div class="proximos-mini-grid">
+      <!-- ══ COL 2: PRODUCTO DESTACADO + FLOATINGS ══ -->
+      <div class="hero3-incoming">
 
-          <!-- MINI TARJETA 1 -->
-          <div class="prox-mini-card">
-            <div class="prox-mini-img">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png" alt="Abrigos importados">
-              <div class="prox-card-overlay"></div>
-              <span class="prox-ribbon">🌟 Nuevo</span>
-              <div class="prox-mini-lock">🔒</div>
-              <div class="prox-card-bottom">
-                <span class="prox-badge-eta"><i class="fas fa-clock"></i> ~10 días</span>
-              </div>
-            </div>
-            <div class="prox-mini-body">
-              <div class="prox-card-cat">Abrigos · Invierno 2026</div>
-              <div class="prox-card-name">Abrigos Lana Doble Face</div>
-              <div class="prox-card-tags">
-                <span class="prox-tag t-rose">4–14 años</span>
-                <span class="prox-tag t-peach">Lana premium</span>
-              </div>
-              <button class="prox-notify-btn" onclick="notifyProximo(this, 'Abrigos Lana Doble Face')">
-                <i class="fas fa-bell"></i> Avisarme
-              </button>
-            </div>
+        <!-- Flotante: categorías rápidas -->
+        <div class="hero-float-cats">
+          <div class="hfc-item"><div class="hfc-dot" style="background:var(--rose);"></div>Vestidos niña</div>
+          <div class="hfc-item"><div class="hfc-dot" style="background:var(--lavender);"></div>Abrigos</div>
+          <div class="hfc-item"><div class="hfc-dot" style="background:var(--mint);"></div>Conjuntos bebé</div>
+          <div class="hfc-item"><div class="hfc-dot" style="background:var(--peach);"></div>Jeans infantil</div>
+        </div>
+
+        <!-- Tarjeta producto — dinámica desde mi-cuenta.html -->
+        <div class="hero3-product-card">
+          <div class="hero3-product-img hero3-product-img--clear">
+            <img id="heroProductImg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png" alt="Próximo ingreso D'Zoe Perú">
+            <span class="hero3-product-ribbon">⭐ Nuevo ingreso</span>
           </div>
-
-          <!-- MINI TARJETA 2 -->
-          <div class="prox-mini-card">
-            <div class="prox-mini-img">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9eS6mmu8sel9UCPmPDmv2vGsehtKTzbhPk72qClNQT_SlR_oBlEZYyspjSanBDdwmlKuCsyNlDaa_MTOLwf8N2e_BXv2KZzTxub3qizN76LxbNm6ezml9jhtOdfOG0Oaa0TfX0g3jQ3hOw6qMnlrBZHOTsEKcj7oVerAs4v449ZtELJ0WeBHZcvIhE-Y/s320/v2.png" alt="Cardigans niña">
-              <div class="prox-card-overlay"></div>
-              <span class="prox-ribbon">🎀 Premium</span>
-              <div class="prox-mini-lock">🔒</div>
-              <div class="prox-card-bottom">
-                <span class="prox-badge-eta"><i class="fas fa-clock"></i> ~20 días</span>
-              </div>
+          <div class="hero3-product-body">
+            <div class="hero3-product-cat" id="heroProductCat">Abrigos · Invierno 2026</div>
+            <div class="hero3-product-name" id="heroProductName">Abrigos Lana Doble Face</div>
+            <div class="hero3-product-tags" id="heroProductTags">
+              <span class="prox-tag t-rose">4–14 años</span>
+              <span class="prox-tag t-peach">Lana premium</span>
+              <span class="prox-tag t-lav">Edición limitada</span>
             </div>
-            <div class="prox-mini-body">
-              <div class="prox-card-cat">Cardigans · Nueva Temporada</div>
-              <div class="prox-card-name">Cardigans Bordados Florales</div>
-              <div class="prox-card-tags">
-                <span class="prox-tag t-rose">2–12 años</span>
-                <span class="prox-tag t-peach">Edición limitada</span>
-              </div>
-              <button class="prox-notify-btn" onclick="notifyProximo(this, 'Cardigans Bordados Florales')">
-                <i class="fas fa-bell"></i> Avisarme
-              </button>
-            </div>
+            <button class="hero3-notify-btn" id="heroNotifyBtn" onclick="heroNotify(this)">
+              <i class="fas fa-bell"></i> Avisarme cuando llegue
+            </button>
           </div>
+        </div>
 
-        </div><!-- /proximos-mini-grid -->
-      </div>
+        <!-- Flotante: reseña -->
+        <div class="hero-float-review">
+          <div class="hfr-stars">★★★★★</div>
+          <div class="hfr-text">"Le queda perfecto a mi hija, la tela es suavísima!"</div>
+          <div class="hfr-author">— Valeria M., Lima</div>
+        </div>
 
-    </div><!-- /proximos-split -->
+        <!-- Flotante: envío -->
+        <div class="hero-float-ship">
+          <div class="hfs-icon">🚚</div>
+          <div class="hfs-text">
+            <strong>Envío por Shalom</strong>
+            <span>Todos los dias</span>
+          </div>
+        </div>
 
+      </div><!-- /hero3-incoming -->
+
+    </div><!-- /hero3-grid -->
   </div>
 </section>
 
+<!-- COUNTDOWN BANNER — próximo ingreso -->
+<div class="hero-countdown-banner">
+  <div class="hcb-badge">🚨 Próximo ingreso</div>
+  <span class="hcb-label">Llega en</span>
+  <div class="hcb-unit"><span class="hcb-num" id="h3Days">--</span><span class="hcb-sub">Días</span></div>
+  <span class="hcb-sep">:</span>
+  <div class="hcb-unit"><span class="hcb-num" id="h3Hours">--</span><span class="hcb-sub">Horas</span></div>
+  <span class="hcb-sep">:</span>
+  <div class="hcb-unit"><span class="hcb-num" id="h3Mins">--</span><span class="hcb-sub">Min</span></div>
+  <span class="hcb-sep">:</span>
+  <div class="hcb-unit"><span class="hcb-num" id="h3Secs">--</span><span class="hcb-sub">Seg</span></div>
+  <button class="hcb-notify-btn" onclick="heroNotify(document.getElementById('heroNotifyBtn'))">
+    <i class="fas fa-bell"></i> Avisarme
+  </button>
+</div>
+
+<!-- BARRA CATEGORÍAS RÁPIDAS -->
+<div class="hero-cat-bar">
+  <div class="hero-cat-bar-inner">
+    <button class="hero-cat-chip active" onclick="filterByCategory('all');return false;">🌟 Todos</button>
+    <button class="hero-cat-chip" onclick="filterByCategory('vestidos');return false;">👗 Vestidos niña</button>
+    <button class="hero-cat-chip" onclick="filterByCategory('abrigos');return false;">🧥 Abrigos</button>
+    <button class="hero-cat-chip" onclick="filterByCategory('bebes');return false;">👶 Bebés 0–24m</button>
+    <button class="hero-cat-chip" onclick="filterByCategory('ninos');return false;">👦 Niños</button>
+    <button class="hero-cat-chip" onclick="filterByCategory('jeans');return false;">👖 Jeans</button>
+    <button class="hero-cat-chip" onclick="openWishlist && openWishlist();return false;">🎀 Baby Shower</button>
+  </div>
+</div>
+
 <script>
-/* ── COUNTDOWN hacia fecha de llegada del próximo ingreso ── */
+/* ── NUEVO INGRESO — carga dinámica desde mi-cuenta.html ── */
 (function() {
-  const llegada = new Date();
-  llegada.setDate(llegada.getDate() + 7);
-  function updateCountdown() {
-    const now = new Date();
-    const diff = llegada - now;
-    if (diff <= 0) {
-      ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '00');
-      return;
+  var NI_KEY = 'dzoe_nuevo_ingreso';
+  var WA_NUMBER = '51956063145';
+
+  /* Fallbacks */
+  var defaults = {
+    nombre: 'Abrigos Lana Doble Face',
+    categoria: 'Abrigos · Invierno 2026',
+    imagen: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png',
+    tags: '4–14 años,Lana premium,Edición limitada',
+    fecha: null,
+    hora: '09:00'
+  };
+
+  var tagColors = ['t-rose','t-peach','t-lav','t-mint'];
+
+  function loadNuevoIngreso() {
+    var raw = localStorage.getItem(NI_KEY);
+    var d = raw ? JSON.parse(raw) : {};
+    var ni = Object.assign({}, defaults, d);
+
+    /* — Imagen producto — */
+    var img = document.getElementById('heroProductImg');
+    if (img && ni.imagen) img.src = ni.imagen;
+
+    /* — Imagen editorial (fondo izquierdo) — */
+    var editImg = document.getElementById('heroEditorialImg');
+    if (editImg && ni.imgEditorial) editImg.src = ni.imgEditorial;
+
+    /* — Nombre — */
+    var pName = document.getElementById('heroProductName');
+    if (pName) pName.textContent = ni.nombre;
+
+    /* — Categoría — */
+    var pCat = document.getElementById('heroProductCat');
+    if (pCat) pCat.textContent = ni.categoria || defaults.categoria;
+
+    /* — Tags — */
+    var pTags = document.getElementById('heroProductTags');
+    if (pTags) {
+      var tags = ni.tags ? ni.tags.split(',').map(function(t){return t.trim();}).filter(Boolean).slice(0,3) : [];
+      pTags.innerHTML = tags.map(function(t,i){
+        return '<span class="prox-tag '+tagColors[i%tagColors.length]+'">'+t+'</span>';
+      }).join('');
     }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cdDays').textContent  = String(d).padStart(2,'0');
-    document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
-    document.getElementById('cdMins').textContent  = String(m).padStart(2,'0');
-    document.getElementById('cdSecs').textContent  = String(s).padStart(2,'0');
+
+    /* — Countdown — */
+    var llegada;
+    if (ni.fecha) {
+      llegada = new Date(ni.fecha + 'T' + (ni.hora || '09:00'));
+    } else {
+      llegada = new Date();
+      llegada.setDate(llegada.getDate() + 10);
+    }
+
+    var pad = function(n){ return String(Math.max(0,Math.floor(n))).padStart(2,'0'); };
+    var gel = function(id){ return document.getElementById(id); };
+
+    function tick() {
+      var diff = llegada - new Date();
+      if (diff <= 0) {
+        ['h3Days','h3Hours','h3Mins','h3Secs'].forEach(function(id){ var e=gel(id); if(e) e.textContent='00'; });
+        return;
+      }
+      if(gel('h3Days'))  gel('h3Days').textContent  = pad(diff/86400000);
+      if(gel('h3Hours')) gel('h3Hours').textContent = pad((diff%86400000)/3600000);
+      if(gel('h3Mins'))  gel('h3Mins').textContent  = pad((diff%3600000)/60000);
+      if(gel('h3Secs'))  gel('h3Secs').textContent  = pad((diff%60000)/1000);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* Guardar nombre para heroNotify */
+    window._dzoeNINombre = ni.nombre;
+    window._dzoeNIMsgWa  = ni.msgWa || '';
   }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+
+  document.addEventListener('DOMContentLoaded', loadNuevoIngreso);
+  if (document.readyState !== 'loading') loadNuevoIngreso();
 })();
+
+function heroNotify(btn) {
+  if (btn && btn.classList.contains('notified')) return;
+  var nombre = window._dzoeNINombre || 'Nuevo ingreso';
+  var msgCustom = window._dzoeNIMsgWa || '';
+  var msg = msgCustom
+    ? msgCustom.replace('{producto}', nombre)
+    : "Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *" + nombre + "*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕";
+  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
+  if (btn) {
+    btn.classList.add('notified');
+    btn.innerHTML = '<i class="fas fa-check-circle"></i> ¡Te avisamos pronto!';
+  }
+  /* Sincronizar botón del banner */
+  var hcbBtn = document.querySelector('.hcb-notify-btn');
+  if (hcbBtn) { hcbBtn.classList.add('notified'); hcbBtn.innerHTML='<i class="fas fa-check-circle"></i> ¡Listo!'; }
+}
 
 function notifyProximo(btn, productName) {
   if (btn.classList.contains('notified')) return;
-  const msg = encodeURIComponent(`Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *${productName}*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕`);
-  window.open('https://wa.me/51956063145?text=' + msg, '_blank');
+  var msg = "Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *" + productName + "*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕";
+  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
   btn.classList.add('notified');
   btn.innerHTML = '<i class="fas fa-check-circle"></i> ¡Te avisamos pronto!';
 }
@@ -3589,6 +4392,10 @@ function filterByCategory(cat) {
   if (cat === 'all') { currentFilter = 'all'; } else { currentFilter = cat; }
   currentPage = 1;
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === currentFilter));
+  document.querySelectorAll('.hero-cat-chip').forEach(chip => {
+    const fn = chip.getAttribute('onclick') || '';
+    chip.classList.toggle('active', fn.includes(`'${currentFilter}'`));
+  });
   renderCategoriesFromData();
   renderProducts();
   renderBreadcrumb();
@@ -3873,7 +4680,11 @@ function renderProductCard(product) {
   }).join('');
 
   const minP = sizes.length ? Math.min(...sizes.filter(s=>s.price).map(s=>s.price)) : 0;
-  const priceDisplay = minP > 0 ? `S/ ${minP}` : 'Consultar';
+  const offerPrice = product.offer_price ? parseFloat(product.offer_price) : null;
+  const hasOffer = offerPrice && offerPrice > 0 && offerPrice < minP;
+  const displayPrice = hasOffer ? offerPrice : minP;
+  const priceDisplay = displayPrice > 0 ? `S/ ${displayPrice.toFixed(2)}` : 'Consultar';
+  const discountPct = hasOffer ? Math.round((1 - offerPrice / minP) * 100) : 0;
 
   // Ribbon
   const ribbonLabel = getProductRibbonLabel(product, products);
@@ -3908,8 +4719,12 @@ function renderProductCard(product) {
       <div class="product-footer">
         <div class="product-price-row">
           <div>
-            <div class="product-price-label">Desde</div>
-            <div class="product-price">${priceDisplay}</div>
+            <div class="product-price-label">${hasOffer ? 'Precio de oferta' : 'Desde'}</div>
+            ${hasOffer ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <div class="product-price" style="color:var(--rose-dark);">${priceDisplay}</div>
+              <div style="text-decoration:line-through;font-size:12px;color:var(--text-soft);opacity:.7;">S/ ${minP.toFixed(2)}</div>
+              <div style="background:#dc2626;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:99px;">-${discountPct}%</div>
+            </div>` : `<div class="product-price">${priceDisplay}</div>`}
           </div>
         </div>
         <button class="view-product-btn" onclick="openProductPage('${product.id}')">
@@ -3997,7 +4812,12 @@ function addToCart(product, sizeIndex) {
   if (!size || size.stock <= 0) { showNotif('⚠️ Selecciona una talla disponible'); return; }
   const exist = cart.find(i => i.name === product.name && i.size === size.size);
   if (exist) { exist.qty = (exist.qty || 1) + 1; }
-  else { cart.push({ name: product.name, size: size.size, price: Number(size.price), img: product.images?.[0] || product.image || '', qty: 1 }); }
+  else {
+    const cartPrice = (product.offer_price && parseFloat(product.offer_price) > 0 && parseFloat(product.offer_price) < Number(size.price))
+      ? parseFloat(product.offer_price)
+      : Number(size.price);
+    cart.push({ name: product.name, size: size.size, price: cartPrice, img: product.images?.[0] || product.image || '', qty: 1 });
+  }
   saveCart(); updateUI(); renderCart();
   showNotif(`✨ <strong>${product.name}</strong> — Talla ${size.size} agregado`);
 }
@@ -4270,6 +5090,10 @@ function openProductPage(productId) {
   const imgs  = product.images?.length ? product.images : (product.image ? [product.image] : []);
   const hasStock = sizes.some(s => s.stock > 0);
   const minP = sizes.length ? Math.min(...sizes.filter(s=>s.price>0).map(s=>s.price)) : 0;
+  const ppOfferPrice = product.offer_price ? parseFloat(product.offer_price) : null;
+  const ppHasOffer = ppOfferPrice && ppOfferPrice > 0 && ppOfferPrice < minP;
+  const ppDisplayPrice = ppHasOffer ? ppOfferPrice : minP;
+  const ppDiscountPct = ppHasOffer ? Math.round((1 - ppOfferPrice / minP) * 100) : 0;
   const cat  = product.categories?.[0] || 'Ropa Infantil';
   const slug = buildProductSlug(product);
   const seoTitle = buildProductSeoTitle(product);
@@ -4326,8 +5150,12 @@ function openProductPage(productId) {
 
         <div class="pp-price-block">
           <div>
-            <div class="pp-price-from">Precio desde</div>
-            <div class="pp-price">${minP > 0 ? `S/ ${minP.toFixed(2)}` : 'Consultar'}</div>
+            <div class="pp-price-from">${ppHasOffer ? 'Precio de oferta' : 'Precio desde'}</div>
+            ${ppHasOffer ? `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div class="pp-price" style="color:#dc2626;">S/ ${ppDisplayPrice.toFixed(2)}</div>
+              <div style="text-decoration:line-through;font-size:14px;color:var(--text-soft);opacity:.65;">S/ ${minP.toFixed(2)}</div>
+              <div style="background:#dc2626;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;">-${ppDiscountPct}%</div>
+            </div>` : `<div class="pp-price">${ppDisplayPrice > 0 ? `S/ ${ppDisplayPrice.toFixed(2)}` : 'Consultar'}</div>`}
           </div>
           <span class="pp-stock-badge ${inStock?'in':'out'}">${inStock ? '✅ En stock' : '❌ Agotado'}</span>
         </div>
