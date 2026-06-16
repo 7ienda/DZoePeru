@@ -1,10 +1,31 @@
+---
+layout: none
+---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>D'Zoe Perú — Catálogo de Productos</title>
     <link>https://dzoeperu.com</link>
     <description>Ropa infantil importada premium para bebés y niños de 0 a 14 años. Envíos a todo el Perú.</description>
-    <lastBuildDate>Mon, 15 Jun 2026 20:49:57 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2026 03:33:23 GMT</lastBuildDate>
+
+  <item>
+    <g:id>1781572587294</g:id>
+    <g:title>Conjunto Royal Vino 3 piezas</g:title>
+    <g:description>Conjunto Royal Vino 3 piezas — ropa infantil importada premium. D'Zoe Perú.</g:description>
+    <g:link>https://dzoeperu.com/producto.html?slug=conjunto-royal-vino-3-piezas</g:link>
+    <g:image_link>https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhi2NSurqmp_wWLnIbCGlbAYAhNeVo8TbeeGyAi_JFSixpboeZWvzEG0JTYlhNWDitHFCBTpSWXRMzXJ77XXa7YeGvONyXrQulxdR1dBReWd-bJD3vH74K_S7uPAHkZ9K0mB2cqGXcDtfxh0DKS7dt-jR3FlE6_iMppKgC94HkU-E6fnWIUwx2nuEdRE3s/s16000/d1.png</g:image_link>
+    <g:additional_image_link>https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEipHIRNaZxRh3k8koOh8DPFEPlIlfTe_dyY0vOUFiP0R8o3_3Qp17uCrayg_tAdI3leV3T5dYB7opTtWxYL93_8I1UQtnIkvUhlKQvfvZkkMgIl0pSZrSmHTZqpmhQbpgQjSsJ2d4b5Ytp_4gpRa-bkbq7vucHHZblTei9xzzOyEOY15rPHfvHygTHZIKI/s16000/d2.png</g:additional_image_link>
+    <g:additional_image_link>https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLOu3Ndntk6CaqNyKOwCjTPe5tq85936Toje-XB5RT4UYTf2JI00OGlYg7oZy1a-1rQptdgwM-xhVxSx5KvKMgL1K-Y1tv3V-MzDXOT__jbzdem9sIE8WQDETYDhkLayMBH-sTlraAKLbqJG-4YYTSnzN-EibIOjGy7bZsyAnseUAoac1QKRRiqnwb-BU/s16000/d3.png</g:additional_image_link>
+    <g:availability>in stock</g:availability>
+    <g:price>62.00 PEN</g:price>
+    <g:brand>D'Zoe Perú</g:brand>
+    <g:condition>new</g:condition>
+    <g:google_product_category>5323</g:google_product_category>
+    <g:product_type>CONJUNTO FALDA &gt; NIÑA</g:product_type>
+    <g:custom_label_0>CONJUNTO FALDA, NIÑA</g:custom_label_0>
+    <g:custom_label_1>7 años</g:custom_label_1>
+  </item>
 
   <item>
     <g:id>1781540106125</g:id>
