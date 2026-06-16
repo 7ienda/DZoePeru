@@ -14,6 +14,9 @@
 <meta name="theme-color" content="#e8a4c0">
 <meta name="geo.region" content="PE">
 <meta name="geo.placename" content="Lima, Perú">
+<meta name="rating" content="safe for kids">
+<meta name="language" content="Spanish">
+<meta name="revisit-after" content="3 days">
 <link rel="canonical" href="https://dzoeperu.com/">
 
 <!-- ═══ OPEN GRAPH (Facebook / WhatsApp / LinkedIn) ═══ -->
@@ -153,7 +156,7 @@
 <!-- Fuentes -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <!-- Supabase SDK -->
@@ -2417,6 +2420,802 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 @media(max-width:480px){
   .talla-float { bottom: 70px; left: 12px; font-size: 11px; padding: 8px 12px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   D'ZOE PERÚ — PREMIUM UPGRADE CSS
+   Mejoras estéticas de alto nivel + fixes accesibilidad SEO
+═══════════════════════════════════════════════════════════ */
+
+/* ── DESIGN TOKENS EXTENDIDOS ── */
+:root {
+  --gold:         #f5c842;
+  --gold-light:   #fef7dc;
+  --glass:        rgba(255,255,255,0.7);
+  --glass-border: rgba(255,255,255,0.5);
+  --gradient-hero: linear-gradient(135deg, #fdf0f8 0%, #f4eafe 45%, #eaf8f6 100%);
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
+  --ease-bounce: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-smooth: cubic-bezier(0.22,0.9,0.36,1);
+}
+
+/* ── TOPBAR TICKER ── */
+.topbar { padding: 10px 0; }
+.topbar-container { align-items: center; }
+.topbar-ticker {
+  overflow: hidden;
+  max-width: 620px;
+  flex: 1;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.topbar-ticker-inner {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  animation: tickerScroll 18s linear infinite;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+.topbar-ticker-inner span { display: inline-flex; align-items: center; gap: 6px; }
+.topbar-ticker-inner i { font-size: 11px; opacity: 0.9; }
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.topbar-right span i { margin-right: 4px; font-size: 11px; }
+
+/* ── LOGO PREMIUM ── */
+.logo-icon {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fce8f2, #ede4ff);
+  box-shadow: 0 4px 16px rgba(232,164,192,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+  border: 1.5px solid rgba(232,164,192,0.25);
+}
+.logo-text h1 {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lavender));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.logo-text span {
+  font-size: 9px;
+  letter-spacing: 4px;
+  font-weight: 800;
+  color: var(--lavender);
+}
+
+/* ── HEADER UPGRADE ── */
+.header-wrapper { height: 76px; }
+.header.scrolled {
+  box-shadow: 0 8px 32px rgba(195,174,228,0.18), 0 1px 0 rgba(232,164,192,0.15);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── MENU PREMIUM ── */
+.menu a {
+  font-size: 13.5px;
+  letter-spacing: 0.1px;
+}
+.menu a::after { height: 2.5px; background: linear-gradient(90deg, var(--rose), var(--lavender)); }
+
+/* ── CART BTN PREMIUM ── */
+.cart-btn {
+  background: linear-gradient(135deg, #fff, var(--rose-soft)) !important;
+  border: 1.5px solid rgba(232,164,192,0.4) !important;
+  box-shadow: 0 2px 12px rgba(232,164,192,0.15) !important;
+}
+.cart-btn:hover {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light)) !important;
+  box-shadow: 0 6px 20px rgba(232,164,192,0.3) !important;
+}
+
+/* ── HERO STRIP UPGRADE ── */
+.hero-strip {
+  height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--lavender), var(--mint), var(--peach), var(--rose));
+  background-size: 300% 100%;
+  animation: heroStrip 5s ease-in-out infinite;
+}
+@keyframes heroStrip { 0%,100%{background-position:0%} 50%{background-position:100%} }
+
+/* ── PROXIMOS SECTION PREMIUM ── */
+.proximos-section {
+  padding: 64px 0 72px;
+  position: relative;
+}
+.proximos-section::before {
+  width: 600px; height: 600px;
+  opacity: 0.8;
+}
+
+/* ── HERO EYEBROW PREMIUM ── */
+.hero-prox-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 2.5px;
+  padding: 7px 22px;
+  box-shadow: 0 6px 22px rgba(232,164,192,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+  backdrop-filter: blur(4px);
+}
+
+/* ── HERO TITLE PREMIUM ── */
+.hero-prox-title {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: clamp(32px, 4vw, 54px);
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+
+/* ── PRÓXIMO INGRESO CARDS PREMIUM ── */
+.prox-ni-card {
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 40px rgba(195,174,228,0.16), 0 1px 0 rgba(255,255,255,0.8) inset;
+  border: 1.5px solid rgba(235,215,255,0.6);
+  transition: transform 0.4s var(--ease-bounce), box-shadow 0.4s var(--ease-smooth);
+}
+.prox-ni-card:hover {
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 24px 64px rgba(195,174,228,0.36), 0 0 0 1.5px rgba(232,164,192,0.4);
+}
+.prox-ni-card--featured {
+  border-color: rgba(232,164,192,0.5);
+  box-shadow: 0 12px 50px rgba(232,164,192,0.22), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+/* ── NI IMG PREMIUM ── */
+.prox-ni-img { border-radius: var(--radius-xl) var(--radius-xl) 0 0; overflow: hidden; }
+.prox-ni-img img {
+  transition: transform 0.6s var(--ease-smooth), filter 0.4s ease;
+}
+.prox-ni-card:hover .prox-ni-img img { transform: scale(1.05); }
+
+/* ── NI BODY ── */
+.prox-ni-name {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+/* ── COUNTDOWN UNITS PREMIUM ── */
+.prox-ni-cd-unit {
+  background: linear-gradient(135deg, #fff, var(--rose-soft));
+  border: 1.5px solid rgba(232,164,192,0.25);
+  box-shadow: 0 2px 8px rgba(195,174,228,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.prox-ni-cd-num {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--rose-dark);
+}
+
+/* ── TRUST PILLS PREMIUM ── */
+.hero-prox-trust-pill {
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 4px 16px rgba(195,174,228,0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+  border: 1.5px solid rgba(232,164,192,0.22);
+  font-size: 12.5px;
+  padding: 8px 18px;
+  transition: 0.25s var(--ease-bounce);
+}
+.hero-prox-trust-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(195,174,228,0.2);
+}
+
+/* ── CATEGORY BAR PREMIUM ── */
+.hero-cat-chip {
+  font-size: 12.5px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(232,164,192,0.3);
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(195,174,228,0.1);
+  transition: all 0.25s var(--ease-bounce);
+  backdrop-filter: blur(4px);
+}
+.hero-cat-chip:hover, .hero-cat-chip.active {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  border-color: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(232,164,192,0.45);
+}
+
+/* ── HUB3 PREMIUM ── */
+.hub3 {
+  background: linear-gradient(180deg, #fdf5fa 0%, #f8f2ff 100%);
+  padding: 48px 0 52px;
+}
+.hub3-panel {
+  border-radius: 24px;
+  border: 1.5px solid rgba(220,200,245,0.35);
+  box-shadow: 0 6px 28px rgba(195,174,228,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.hub3-panel-title {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+
+/* Age chips premium */
+.h3-age {
+  background: rgba(255,255,255,0.9);
+  border: 1.5px solid rgba(220,200,240,0.5);
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  padding: 9px 8px;
+  text-align: center;
+  transition: all 0.22s var(--ease-bounce);
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 1px 4px rgba(195,174,228,0.08);
+}
+.h3-age:hover {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  border-color: var(--rose-light);
+  color: var(--rose-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(232,164,192,0.2);
+}
+.h3-age.active-age, .h3-age--all.active-age {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(232,164,192,0.45);
+}
+.h3-age--all {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  color: var(--rose-dark);
+  border-color: var(--rose-light);
+  font-size: 12.5px;
+  padding: 10px 8px;
+}
+
+/* ── PROMO PANEL HUB3 ── */
+.hub3-promo-panel {
+  background: linear-gradient(145deg, #f3e8ff, #fce8f4, #e8f4ff) !important;
+  border: 1.5px solid rgba(195,174,228,0.3) !important;
+}
+
+/* ── PRODUCT SECTION TITLE PREMIUM ── */
+.products-title {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: clamp(28px, 3.5vw, 42px);
+  letter-spacing: -0.5px;
+  font-weight: 800;
+}
+
+/* ── PRODUCT GRID PREMIUM ── */
+.product-grid { gap: 24px; }
+
+/* ── PRODUCT CARD PREMIUM ── */
+.product-card {
+  border-radius: 20px;
+  border: 1.5px solid rgba(220,200,240,0.4);
+  box-shadow: 0 4px 20px rgba(195,174,228,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: transform 0.35s var(--ease-bounce), box-shadow 0.35s var(--ease-smooth), border-color 0.25s;
+  overflow: visible;
+}
+.product-card:hover {
+  transform: translateY(-8px) scale(1.005);
+  box-shadow: 0 20px 50px rgba(195,174,228,0.3), 0 0 0 1.5px rgba(232,164,192,0.35);
+  border-color: rgba(232,164,192,0.4);
+}
+.product-img-wrap {
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+}
+
+/* Image hover zoom */
+.img-slides img { transition: transform 0.5s var(--ease-smooth); }
+.product-card:hover .img-slides img { transform: scale(1.04); }
+
+/* Product body premium */
+.product-body {
+  padding: 16px 16px 12px;
+}
+.product-body h4 {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.1px;
+}
+
+/* Price styling premium */
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* Wishlist btn premium */
+.wishlist-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  transition: transform 0.25s var(--ease-bounce), color 0.2s;
+}
+.wishlist-btn:hover {
+  transform: scale(1.2);
+  color: var(--rose);
+  box-shadow: 0 6px 18px rgba(232,164,192,0.4);
+}
+
+/* Badges premium */
+.product-badge {
+  border-radius: 30px;
+  font-size: 9.5px;
+  letter-spacing: 0.6px;
+  padding: 4px 11px;
+  box-shadow: 0 3px 10px rgba(232,164,192,0.4);
+  backdrop-filter: blur(4px);
+}
+
+/* Add to cart premium */
+.add-to-cart {
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.2px;
+  transition: all 0.3s var(--ease-bounce) !important;
+  box-shadow: 0 4px 14px rgba(232,164,192,0.3) !important;
+}
+.add-to-cart:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px rgba(232,164,192,0.5) !important;
+}
+
+/* Whatsapp btn premium */
+.whatsapp-btn {
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+  transition: all 0.3s var(--ease-bounce) !important;
+}
+
+/* ── BENEFITS STRIP PREMIUM ── */
+.benefits-strip {
+  background: linear-gradient(135deg, #fef7fb 0%, #f4eeff 50%, #edfaf8 100%);
+  border-top: none;
+  border-bottom: none;
+  padding: 40px 0;
+  position: relative;
+}
+.benefits-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(232,164,192,0.05), rgba(195,174,228,0.07), rgba(126,207,200,0.05));
+  pointer-events: none;
+}
+.benefit-item {
+  border-radius: 20px;
+  border: 1.5px solid rgba(220,200,240,0.35);
+  padding: 16px 18px;
+  box-shadow: 0 4px 18px rgba(195,174,228,0.1), inset 0 1px 0 rgba(255,255,255,0.95);
+  transition: all 0.3s var(--ease-bounce);
+  background: rgba(255,255,255,0.95);
+}
+.benefit-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(195,174,228,0.22);
+  border-color: rgba(232,164,192,0.35);
+}
+.benefit-icon { font-size: 30px; }
+.benefit-text strong { font-size: 13px; font-weight: 800; }
+.benefit-text span { font-size: 11.5px; }
+
+/* ── FOOTER PREMIUM ── */
+.footer {
+  background: linear-gradient(165deg, #2a1d38 0%, #1e1430 50%, #0e1a26 100%);
+  color: rgba(255,255,255,0.85);
+  position: relative;
+  overflow: hidden;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--lavender), var(--mint));
+}
+.footer::after {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(195,174,228,0.08) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.footer-main { padding-top: 60px; padding-bottom: 40px; }
+.footer-brand {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--rose-light), var(--lav-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+}
+.footer-description { color: rgba(255,255,255,0.6); font-size: 13.5px; line-height: 1.7; }
+.footer-menu h4, .footer-contact h4 {
+  color: rgba(255,255,255,0.9);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid rgba(255,255,255,0.1);
+}
+.footer-menu ul li a, .footer-contact ul li {
+  color: rgba(255,255,255,0.6);
+  font-size: 13.5px;
+  transition: color 0.2s;
+}
+.footer-menu ul li a:hover { color: var(--rose-light); }
+.footer-copyright {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 0;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  text-align: center;
+}
+.social-btn {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.25s var(--ease-bounce);
+}
+.social-btn:hover {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(232,164,192,0.5);
+}
+
+/* ── FOOTER CLAIMS PREMIUM ── */
+.footer-claims {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 9px 18px;
+  color: rgba(255,255,255,0.7);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  transition: 0.2s;
+  margin-top: 16px;
+}
+.footer-claims:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.footer-claims i { color: var(--rose); }
+
+/* ── CART SIDEBAR PREMIUM ── */
+.cart-sidebar {
+  border-radius: 24px 0 0 24px;
+  box-shadow: -8px 0 40px rgba(74,68,96,0.18);
+}
+.cart-header {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  border-bottom: 1.5px solid var(--border);
+  padding: 20px 20px 16px;
+}
+.cart-header h3 {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 18px;
+  color: var(--text);
+}
+.checkout-btn {
+  border-radius: 16px !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 20px rgba(232,164,192,0.45) !important;
+  transition: all 0.3s var(--ease-bounce) !important;
+}
+.checkout-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(232,164,192,0.6) !important;
+}
+
+/* ── BREADCRUMB PREMIUM ── */
+.breadcrumb-bar {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1.5px solid rgba(220,200,240,0.35);
+  padding: 10px 0;
+}
+
+/* ── SEARCH BAR PREMIUM ── */
+.search-bar-inner {
+  background: rgba(255,255,255,0.95);
+  border: 1.5px solid rgba(232,164,192,0.35);
+  box-shadow: 0 4px 16px rgba(195,174,228,0.12);
+  border-radius: 60px;
+  padding: 10px 22px;
+  backdrop-filter: blur(8px);
+  max-width: 720px;
+}
+.search-bar-inner:focus-within {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(232,164,192,0.18), 0 6px 20px rgba(232,164,192,0.15);
+}
+.search-bar-inner button {
+  padding: 9px 24px;
+  font-size: 13.5px;
+  font-weight: 800;
+  box-shadow: 0 3px 12px rgba(232,164,192,0.35);
+}
+.search-bar-inner button:hover {
+  background: var(--rose-dark);
+  transform: none;
+  box-shadow: 0 5px 16px rgba(212,128,159,0.5);
+}
+
+/* ── WISHLIST MODAL PREMIUM ── */
+.wishlist-modal-content {
+  border-radius: 28px 0 0 28px !important;
+}
+
+/* ── LOGIN MODAL PREMIUM ── */
+.login-modal-content {
+  border-radius: 24px !important;
+  box-shadow: 0 24px 64px rgba(74,68,96,0.22) !important;
+  border: 1.5px solid rgba(220,200,240,0.4) !important;
+}
+.login-modal-header {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light)) !important;
+  border-radius: 22px 22px 0 0 !important;
+}
+.login-submit {
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 16px rgba(232,164,192,0.4) !important;
+  transition: all 0.3s var(--ease-bounce) !important;
+}
+.login-submit:hover { transform: translateY(-2px) !important; }
+
+/* ── INPUT GROUP PREMIUM ── */
+.input-group input {
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(220,200,240,0.5) !important;
+  padding: 11px 14px !important;
+  font-size: 13.5px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.input-group input:focus {
+  border-color: var(--rose) !important;
+  box-shadow: 0 0 0 3px rgba(232,164,192,0.15) !important;
+  outline: none !important;
+}
+
+/* ── NOTIF TOAST PREMIUM ── */
+.notif {
+  border-radius: 20px;
+  border-left: 4px solid var(--rose);
+  box-shadow: 0 12px 40px rgba(74,68,96,0.18);
+  padding: 16px 22px;
+  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.97);
+}
+
+/* ── WA FLOAT PREMIUM ── */
+.wa-float-btn {
+  width: 62px; height: 62px;
+  box-shadow: 0 6px 28px rgba(37,211,102,0.55);
+  transition: all 0.3s var(--ease-bounce);
+}
+.wa-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
+.wa-menu-item {
+  border-radius: 50px;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+  backdrop-filter: blur(4px);
+}
+
+/* ── PRODUCT PAGE MODAL PREMIUM ── */
+.pp-content {
+  border-radius: 28px 0 0 28px;
+  box-shadow: -12px 0 50px rgba(74,68,96,0.2);
+}
+
+/* ── CAT PAGE MODAL PREMIUM ── */
+.cat-page-header {
+  background: linear-gradient(135deg, var(--rose), var(--lavender), var(--mint));
+  padding: 48px 0 56px;
+}
+.cat-page-title {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  letter-spacing: -0.5px;
+}
+
+/* ── FILTERS ROW PREMIUM ── */
+.filter-btn {
+  border-radius: 60px;
+  font-size: 12.5px;
+  padding: 9px 20px;
+  letter-spacing: 0.1px;
+  transition: all 0.25s var(--ease-bounce);
+  box-shadow: 0 2px 8px rgba(195,174,228,0.08);
+}
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(232,164,192,0.3);
+}
+.filter-btn.active {
+  box-shadow: 0 6px 18px rgba(232,164,192,0.45);
+}
+
+/* ── BABY SHOWER BANNER PREMIUM ── */
+.babyshower-banner {
+  border-radius: 24px;
+  background: linear-gradient(135deg, #fff0f8 0%, #f0eafe 50%, #e8f8ff 100%);
+  border: 1.5px solid rgba(232,164,192,0.3);
+  box-shadow: 0 8px 30px rgba(195,174,228,0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: all 0.3s var(--ease-bounce);
+}
+.babyshower-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(195,174,228,0.22);
+  border-color: rgba(232,164,192,0.5);
+}
+.babyshower-banner-text h4 {
+  font-family: 'Playfair Display', 'Baloo 2', cursive;
+  font-size: 19px;
+  letter-spacing: -0.2px;
+}
+
+/* ── PAGINATION PREMIUM ── */
+.page-btn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  transition: all 0.25s var(--ease-bounce) !important;
+}
+.page-btn:hover, .page-btn.active {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(232,164,192,0.35) !important;
+}
+
+/* ── SCROLL TO TOP PREMIUM ── */
+.scroll-top-btn {
+  width: 48px; height: 48px;
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(232,164,192,0.55);
+}
+.scroll-top-btn:hover { border-radius: 14px; }
+
+/* ── DARK MODE FOOTER ── */
+body.dark-mode .footer { background: linear-gradient(165deg, #120d1c 0%, #0e0a18 50%, #08101a 100%); }
+body.dark-mode .footer-brand { color: var(--rose-light); background: none; -webkit-background-clip: unset; background-clip: unset; }
+body.dark-mode .cart-sidebar { background: #1e1830; }
+body.dark-mode .cart-header { background: linear-gradient(135deg, #2a1f30, #2a2040); }
+
+/* ── ACCESSIBILITY ── */
+*:focus-visible {
+  outline: 3px solid rgba(232,164,192,0.7);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+a, button { cursor: pointer; }
+
+/* ── SCROLL REVEAL ANIMATION ── */
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.product-card, .prox-ni-card, .benefit-item {
+  animation: fadeUpIn 0.5s var(--ease-smooth) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── SECTION SEPARATOR DECORATIVO ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(195,174,228,0.3) 20%, rgba(232,164,192,0.4) 50%, rgba(195,174,228,0.3) 80%, transparent);
+  margin: 0;
+}
+
+/* ── TYPOGRAPHY REFINEMENTS ── */
+.products-title-block .products-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--lavender);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.products-title-block .products-eyebrow::before,
+.products-title-block .products-eyebrow::after {
+  content: '';
+  display: block;
+  width: 30px; height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--lavender));
+  border-radius: 2px;
+}
+.products-title-block .products-eyebrow::after {
+  background: linear-gradient(90deg, var(--lavender), transparent);
+}
+
+/* ── MICRO-SHIMMER SKELETON ── */
+.products-loading {
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  border-radius: 24px;
+  padding: 48px;
+  text-align: center;
+  border: 1.5px dashed rgba(232,164,192,0.4);
+}
+.products-loading .load-icon { font-size: 32px; display: block; margin-bottom: 12px; animation: spin 2s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── STAR RATINGS (si aplica) ── */
+.product-stars { color: var(--gold); font-size: 11px; letter-spacing: 1px; }
+
+/* ── DROPDOWN PANEL PREMIUM ── */
+.menu-dropdown-panel {
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(74,68,96,0.18), 0 2px 0 rgba(255,255,255,0.9) inset;
+  border: 1.5px solid rgba(220,200,240,0.35);
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.97);
+}
+.menu-dropdown-panel a { border-radius: 12px; font-size: 13px; }
+
+/* ── MOBILE REFINEMENTS ── */
+@media(max-width: 768px) {
+  .hero-prox-title { letter-spacing: -0.5px; }
+  .hub3-panel { border-radius: 18px; }
+  .product-card { border-radius: 16px; }
+  .product-img-wrap { border-radius: 14px 14px 0 0; }
+}
+@media(max-width: 480px) {
+  .topbar-ticker-inner { font-size: 11px; }
+  .benefits-grid { gap: 12px; }
+}
+
+/* ── BABYSHOWER BANNER CTA PREMIUM ── */
+.babyshower-banner-cta {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 13px; font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 5px 16px rgba(232,164,192,0.45);
+  transition: all 0.28s var(--ease-bounce);
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: none; cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+}
+.babyshower-banner-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(232,164,192,0.6);
+  color: #fff;
+}
 </style>
 </head>
 <body>
@@ -2424,16 +3223,24 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 <!-- Corazones kawaii (fondo decorativo) -->
 <div id="hearts-canvas"></div>
 
+<!-- H1 semántico para SEO (visualmente oculto, estructuralmente presente) -->
+<h1 class="sr-only">D'Zoe Perú — Tienda de Ropa Infantil Importada Premium | Bebés y Niños 0 a 14 años</h1>
+
 <!-- TOP BAR -->
-<div class="topbar">
+<div class="topbar" role="banner" aria-label="Información de la tienda">
   <div class="container topbar-container">
-    <div class="topbar-left">
-      <i class="fas fa-gift"></i> <strong>OFERTAS EXCLUSIVAS</strong> &nbsp;|&nbsp; Envíos a todo el Perú 🚚
+    <div class="topbar-ticker">
+      <div class="topbar-ticker-inner" id="topbarTicker">
+        <span><i class="fas fa-truck"></i> Envíos a todo el Perú 🚚</span>
+        <span><i class="fas fa-gift"></i> Ropa importada premium</span>
+        <span><i class="fas fa-star"></i> Modelos exclusivos 0–14 años</span>
+        <span><i class="fas fa-shield-alt"></i> Compra 100% segura</span>
+      </div>
     </div>
     <div class="topbar-right">
-      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
-      <a href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
-      <span>📞 +51 956 063 145</span>
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener" aria-label="TikTok D'Zoe Perú"><i class="fab fa-tiktok"></i></a>
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener" aria-label="WhatsApp D'Zoe Perú"><i class="fab fa-whatsapp"></i></a>
+      <span><i class="fas fa-phone"></i> +51 956 063 145</span>
     </div>
   </div>
 </div>
@@ -2546,146 +3353,669 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   </div>
 </header>
 
-<!-- HERO PREMIUM — D'ZOE PERÚ | 3 PRÓXIMOS INGRESOS -->
-<div class="hero-strip"></div>
-<section class="proximos-section" id="heroBanner">
-  <div class="container">
+<!-- ═══════════════════════════════════════════════
+     HERO MAGAZINE EDITORIAL — D'ZOE PERÚ
+═══════════════════════════════════════════════ -->
+<style>
+/* ── HERO MAGAZINE EDITORIAL ── */
+.hero-mag {
+  width: 100%;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
 
-    <!-- Cabecera -->
-    <div class="hero-prox-head">
-      <div class="hero-prox-eyebrow">✨ Colección Invierno 2026</div>
-      <h2 class="hero-prox-title">Próximos <span>Ingresos</span></h2>
-      <p class="hero-prox-sub">Sé la primera en reservar. Recibe aviso directo por WhatsApp cuando lleguen.</p>
+/* ── SPLIT: izquierda oscura / derecha imagen ── */
+.hero-mag-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 540px;
+}
+
+/* ══ PANEL IZQUIERDO — Editorial oscuro ══ */
+.hero-mag-left {
+  background: linear-gradient(155deg, #1e1228 0%, #2a1640 45%, #1a1030 100%);
+  padding: 56px 52px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+/* Orbes de luz decorativos */
+.hero-mag-left::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -80px;
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(232,164,192,0.12) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-mag-left::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -40px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(195,174,228,0.10) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Eyebrow */
+.hmag-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(232,164,192,0.8);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+.hmag-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1.5px;
+  background: rgba(232,164,192,0.5);
+  border-radius: 2px;
+}
+
+/* Título principal */
+.hmag-title {
+  font-family: 'Playfair Display', 'Baloo 2', Georgia, serif;
+  font-size: clamp(30px, 3.2vw, 50px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+}
+.hmag-title .hmag-accent {
+  display: block;
+  background: linear-gradient(135deg, #e8a4c0, #c3aee4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: italic;
+}
+
+/* Descripción */
+.hmag-desc {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.52);
+  line-height: 1.75;
+  max-width: 340px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
+  font-weight: 400;
+}
+
+/* Stats row */
+.hmag-stats {
+  display: flex;
+  gap: 0;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 2;
+}
+.hmag-stat {
+  padding-right: 24px;
+  margin-right: 24px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.hmag-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hmag-stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e8a4c0;
+  line-height: 1;
+  display: block;
+  letter-spacing: -1px;
+}
+.hmag-stat-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.38);
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Botones */
+.hmag-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 32px;
+}
+.hmag-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #e8a4c0, #d4809f);
+  color: #fff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 8px 28px rgba(232,164,192,0.45);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  text-decoration: none;
+  letter-spacing: 0.2px;
+}
+.hmag-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(232,164,192,0.65);
+  color: #fff;
+}
+.hmag-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.75);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 12px 22px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
+  text-decoration: none;
+}
+.hmag-btn-secondary:hover {
+  background: rgba(255,255,255,0.13);
+  border-color: rgba(232,164,192,0.45);
+  color: #fff;
+}
+
+/* Trust micro-badges */
+.hmag-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+.hmag-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.2px;
+}
+.hmag-trust-item i { color: #e8a4c0; font-size: 10px; }
+
+/* ══ PANEL DERECHO — Imagen + tarjetas flotantes ══ */
+.hero-mag-right {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fdf0f8, #f0e8ff);
+}
+
+/* Imagen de producto principal */
+.hmag-main-img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.8s ease;
+}
+.hero-mag-right:hover .hmag-main-img { transform: scale(1.03); }
+
+/* Overlay suave sobre la imagen */
+.hmag-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(30,18,40,0.08) 0%,
+    rgba(30,18,40,0.0) 40%,
+    rgba(30,18,40,0.55) 100%
+  );
+  z-index: 1;
+}
+
+/* Ribbon PRÓXIMAMENTE */
+.hmag-ribbon {
+  position: absolute;
+  top: 20px; left: 20px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30,18,40,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(232,164,192,0.3);
+  color: #e8a4c0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 50px;
+}
+.hmag-ribbon-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #e8a4c0;
+  animation: pulseDot 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulseDot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* Tarjeta flotante — producto destacado (abajo) */
+.hmag-float-card {
+  position: absolute;
+  bottom: 20px; left: 20px; right: 20px;
+  z-index: 5;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(232,164,192,0.25);
+  border-radius: 20px;
+  padding: 16px 18px;
+  box-shadow: 0 16px 48px rgba(30,18,40,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hmag-fc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.hmag-fc-cat {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--lavender);
+  margin-bottom: 4px;
+}
+.hmag-fc-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+.hmag-fc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 4px;
+}
+.hmag-fc-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1.5px solid;
+}
+.hmag-fc-tag.tr { background: var(--rose-soft); color: var(--rose-dark); border-color: var(--rose-light); }
+.hmag-fc-tag.tp { background: var(--peach-light); color: #b86e25; border-color: #f0d0b0; }
+.hmag-fc-tag.tl { background: var(--lav-light); color: #7856b8; border-color: #d0bff0; }
+
+/* Countdown dentro de la tarjeta flotante */
+.hmag-fc-countdown {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hmag-fc-cd-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--text-soft);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+.hmag-fc-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  border: 1.5px solid rgba(232,164,192,0.3);
+  border-radius: 8px;
+  padding: 5px 8px;
+  min-width: 36px;
+}
+.hmag-fc-cd-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--rose-dark);
+  line-height: 1;
+}
+.hmag-fc-cd-sub {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: var(--text-soft);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.hmag-fc-cd-sep {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--rose-light);
+  margin-top: -4px;
+}
+
+/* Botón dentro de tarjeta */
+.hmag-fc-btn {
+  flex-shrink: 0;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 50px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 6px 20px rgba(232,164,192,0.5);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+.hmag-fc-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(232,164,192,0.7);
+}
+.hmag-fc-btn.notified {
+  background: linear-gradient(135deg, var(--mint-soft), #c8f0ec);
+  color: #2d8a82;
+  box-shadow: none;
+  cursor: default;
+  transform: none !important;
+}
+
+/* ── COUNTDOWN BANNER debajo del hero (compacto) ── */
+.hmag-countdown-bar {
+  background: linear-gradient(135deg, #1e1228, #2a1640);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 13px 20px;
+  flex-wrap: wrap;
+}
+.hmag-cb-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #e8a4c0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hmag-cb-badge i { font-size: 11px; animation: bellRing 3s ease-in-out infinite; }
+@keyframes bellRing {
+  0%,90%,100% { transform: rotate(0); }
+  93% { transform: rotate(-12deg); }
+  96% { transform: rotate(12deg); }
+}
+.hmag-cb-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hmag-cb-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.hmag-cb-sub {
+  font-size: 8px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.hmag-cb-sep {
+  font-size: 18px;
+  font-weight: 800;
+  color: rgba(232,164,192,0.4);
+  margin-top: -4px;
+}
+.hmag-cb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #e8a4c0, #d4809f);
+  color: #fff;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 4px 16px rgba(232,164,192,0.45);
+  transition: 0.3s;
+}
+.hmag-cb-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,164,192,0.6); }
+.hmag-cb-btn.notified { background: linear-gradient(135deg,#d4f5ef,#c8f0ec); color: #2d8a82; box-shadow: none; cursor: default; }
+
+/* ── BARRA CATEGORÍAS ── */
+.hmag-cat-bar {
+  background: #fff;
+  border-bottom: 1.5px solid var(--border);
+  padding: 11px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hmag-cat-bar::-webkit-scrollbar { display: none; }
+.hmag-cat-bar-inner {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── DARK MODE ── */
+body.dark-mode .hero-mag-left { background: linear-gradient(155deg, #0e0818 0%, #160c28 45%, #0a0618 100%); }
+body.dark-mode .hmag-float-card { background: rgba(36,30,52,0.95); border-color: rgba(195,174,228,0.2); }
+body.dark-mode .hmag-fc-name { color: #ede8f5; }
+body.dark-mode .hmag-countdown-bar { background: linear-gradient(135deg, #0e0818, #160c28); }
+body.dark-mode .hmag-cat-bar { background: #1e1830; border-color: #3a3050; }
+
+/* ── RESPONSIVE ── */
+@media(max-width: 900px) {
+  .hero-mag-split { grid-template-columns: 1fr; }
+  .hero-mag-right { min-height: 380px; }
+  .hero-mag-left { padding: 40px 28px 36px; }
+  .hmag-title { font-size: clamp(28px, 6vw, 40px); }
+  .hmag-stats { gap: 0; }
+  .hmag-float-card { left: 12px; right: 12px; bottom: 12px; }
+}
+@media(max-width: 580px) {
+  .hero-mag-right { min-height: 300px; }
+  .hero-mag-left { padding: 32px 20px 28px; }
+  .hmag-btns { flex-direction: column; gap: 8px; }
+  .hmag-btn-primary, .hmag-btn-secondary { justify-content: center; }
+  .hmag-stats { gap: 0; }
+  .hmag-stat { padding-right: 16px; margin-right: 16px; }
+  .hmag-stat-num { font-size: 22px; }
+  .hmag-countdown-bar { gap: 10px; padding: 12px 14px; }
+  .hmag-cb-num { font-size: 18px; }
+  .hmag-cat-bar-inner { justify-content: flex-start; flex-wrap: nowrap; }
+}
+</style>
+
+<!-- ══ HTML HERO MAGAZINE ══ -->
+<div class="hero-mag" id="heroBanner" role="banner" aria-label="Hero D'Zoe Perú">
+
+  <div class="hero-mag-split">
+
+    <!-- ═══ PANEL IZQUIERDO: Editorial oscuro ═══ -->
+    <div class="hero-mag-left">
+      <div>
+        <div class="hmag-eyebrow">Colección · Invierno 2026</div>
+
+        <h2 class="hmag-title">
+          Diseños
+          <span class="hmag-accent">exclusivos</span>
+          para los más pequeños
+        </h2>
+
+        <p class="hmag-desc">
+          Ropa infantil importada premium para bebés y niños de 0 a 14 años. Modelos únicos que no encontrarás en ningún otro lugar del Perú.
+        </p>
+
+        <div class="hmag-stats">
+          <div class="hmag-stat">
+            <span class="hmag-stat-num">+200</span>
+            <span class="hmag-stat-label">modelos</span>
+          </div>
+          <div class="hmag-stat">
+            <span class="hmag-stat-num">0–14</span>
+            <span class="hmag-stat-label">años</span>
+          </div>
+          <div class="hmag-stat">
+            <span class="hmag-stat-num">🇵🇪</span>
+            <span class="hmag-stat-label">todo Perú</span>
+          </div>
+          <div class="hmag-stat">
+            <span class="hmag-stat-num">+500</span>
+            <span class="hmag-stat-label">mamás felices</span>
+          </div>
+        </div>
+
+        <div class="hmag-btns">
+          <button class="hmag-btn-primary" onclick="document.getElementById('productGrid').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-sparkles"></i> Ver colección →
+          </button>
+          <button class="hmag-btn-secondary" id="heroNotifyBtn" onclick="heroNotify(this)">
+            <i class="fas fa-bell"></i> Avisarme del próximo ingreso
+          </button>
+        </div>
+      </div>
+
+      <div class="hmag-trust">
+        <span class="hmag-trust-item"><i class="fas fa-truck"></i> Envíos a todo el Perú</span>
+        <span class="hmag-trust-item"><i class="fas fa-shield-alt"></i> Compra 100% segura</span>
+        <span class="hmag-trust-item"><i class="fas fa-star"></i> Modelos exclusivos importados</span>
+        <span class="hmag-trust-item"><i class="fab fa-whatsapp"></i> Atención por WhatsApp</span>
+      </div>
     </div>
 
-    <!-- Grid 3 tarjetas -->
-    <div class="hero-prox-grid">
+    <!-- ═══ PANEL DERECHO: Imagen + tarjeta flotante ═══ -->
+    <div class="hero-mag-right">
 
-      <!-- ══ TARJETA 1 — DESTACADA ══ -->
-      <div class="prox-ni-card prox-ni-card--featured">
-        <div class="prox-ni-img">
-          <img id="heroProductImg"
-            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
-            alt="Próximo ingreso D'Zoe Perú">
-          <div class="prox-ni-img-overlay"></div>
-          <span class="prox-ni-ribbon prox-ni-ribbon--new">🌸 Nuevo ingreso</span>
-          <div class="prox-ni-lock">🔒</div>
+      <!-- Imagen principal del próximo ingreso -->
+      <img
+        id="heroProductImg"
+        class="hmag-main-img"
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
+        alt="Próximo ingreso ropa infantil importada D'Zoe Perú — Invierno 2026"
+        loading="eager"
+      >
+      <div class="hmag-img-overlay"></div>
+
+      <!-- Ribbon de estado -->
+      <div class="hmag-ribbon">
+        <span class="hmag-ribbon-dot"></span>
+        <i class="fas fa-lock" style="font-size:9px;"></i>
+        Próximamente
+      </div>
+
+      <!-- Tarjeta flotante inferior -->
+      <div class="hmag-float-card">
+        <div class="hmag-fc-top">
+          <div>
+            <div class="hmag-fc-cat" id="heroProductCat">Abrigos · Invierno 2026</div>
+            <div class="hmag-fc-name" id="heroProductName">Abrigos Lana Doble Face</div>
+            <div class="hmag-fc-tags" id="heroProductTags">
+              <span class="hmag-fc-tag tr">4–14 años</span>
+              <span class="hmag-fc-tag tp">Lana premium</span>
+              <span class="hmag-fc-tag tl">Edición limitada</span>
+            </div>
+          </div>
         </div>
-        <div class="prox-ni-body">
-          <div class="prox-ni-cat" id="heroProductCat">Abrigos · Invierno 2026</div>
-          <div class="prox-ni-name" id="heroProductName">Abrigos Lana Doble Face</div>
-          <div class="prox-ni-tags" id="heroProductTags">
-            <span class="prox-tag t-rose">4–14 años</span>
-            <span class="prox-tag t-peach">Lana premium</span>
-            <span class="prox-tag t-lav">Edición limitada</span>
+        <!-- Countdown -->
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+          <div class="hmag-fc-countdown">
+            <span class="hmag-fc-cd-label">Llega en</span>
+            <div class="hmag-fc-cd-unit"><span class="hmag-fc-cd-num" id="h3Days">--</span><span class="hmag-fc-cd-sub">Días</span></div>
+            <span class="hmag-fc-cd-sep">:</span>
+            <div class="hmag-fc-cd-unit"><span class="hmag-fc-cd-num" id="h3Hours">--</span><span class="hmag-fc-cd-sub">Hrs</span></div>
+            <span class="hmag-fc-cd-sep">:</span>
+            <div class="hmag-fc-cd-unit"><span class="hmag-fc-cd-num" id="h3Mins">--</span><span class="hmag-fc-cd-sub">Min</span></div>
+            <span class="hmag-fc-cd-sep">:</span>
+            <div class="hmag-fc-cd-unit"><span class="hmag-fc-cd-num" id="h3Secs">--</span><span class="hmag-fc-cd-sub">Seg</span></div>
           </div>
-          <div class="prox-ni-divider"></div>
-          <div class="prox-ni-countdown">
-            <span class="prox-ni-cd-label">Llega en</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="h3Secs">--</span><span class="prox-ni-cd-sub">Seg</span></div>
-          </div>
-          <button class="prox-ni-btn prox-ni-btn--primary" id="heroNotifyBtn" onclick="heroNotify(this)">
-            <i class="fas fa-bell"></i> Avisarme cuando llegue
+          <button class="hmag-fc-btn" onclick="heroNotify(this)">
+            <i class="fas fa-bell"></i> Avisarme
           </button>
         </div>
       </div>
 
-      <!-- ══ TARJETA 2 ══ -->
-      <div class="prox-ni-card">
-        <div class="prox-ni-img">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
-            alt="Próximo ingreso vestidos niña">
-          <div class="prox-ni-img-overlay"></div>
-          <span class="prox-ni-ribbon prox-ni-ribbon--coming">✦ Muy pronto</span>
-          <div class="prox-ni-lock">✦</div>
-        </div>
-        <div class="prox-ni-body">
-          <div class="prox-ni-cat">Vestidos · Primavera 2026</div>
-          <div class="prox-ni-name">Vestidos Floreados con Encaje</div>
-          <div class="prox-ni-tags">
-            <span class="prox-tag t-lav">2–10 años</span>
-            <span class="prox-tag t-mint">Algodón premium</span>
-          </div>
-          <div class="prox-ni-divider"></div>
-          <div class="prox-ni-countdown">
-            <span class="prox-ni-cd-label">Llega en</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni2Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
-          </div>
-          <button class="prox-ni-btn prox-ni-btn--outline" onclick="notifyProximo(this, 'Vestidos Floreados con Encaje')">
-            <i class="fas fa-bell"></i> Avisarme cuando llegue
-          </button>
-        </div>
-      </div>
-
-      <!-- ══ TARJETA 3 ══ -->
-      <div class="prox-ni-card">
-        <div class="prox-ni-img">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
-            alt="Próximo ingreso conjuntos bebé">
-          <div class="prox-ni-img-overlay"></div>
-          <span class="prox-ni-ribbon prox-ni-ribbon--exclusive">🎀 Exclusivo</span>
-          <div class="prox-ni-lock">🎀</div>
-        </div>
-        <div class="prox-ni-body">
-          <div class="prox-ni-cat">Conjuntos Bebé · 0–24 meses</div>
-          <div class="prox-ni-name">Conjuntos Recién Nacido Luxury</div>
-          <div class="prox-ni-tags">
-            <span class="prox-tag t-peach">0–24 meses</span>
-            <span class="prox-tag t-rose">Bambú suave</span>
-          </div>
-          <div class="prox-ni-divider"></div>
-          <div class="prox-ni-countdown">
-            <span class="prox-ni-cd-label">Llega en</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Days">--</span><span class="prox-ni-cd-sub">Días</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Hours">--</span><span class="prox-ni-cd-sub">Hrs</span></div>
-            <span class="prox-ni-cd-sep">:</span>
-            <div class="prox-ni-cd-unit"><span class="prox-ni-cd-num" id="ni3Mins">--</span><span class="prox-ni-cd-sub">Min</span></div>
-          </div>
-          <button class="prox-ni-btn prox-ni-btn--outline" onclick="notifyProximo(this, 'Conjuntos Recién Nacido Luxury')">
-            <i class="fas fa-bell"></i> Avisarme cuando llegue
-          </button>
-        </div>
-      </div>
-
-    </div><!-- /hero-prox-grid -->
-
-    <!-- Trust pills -->
-    <div class="hero-prox-trust">
-      <div class="hero-prox-trust-pill">🚚 Envío por Shalom todos los días</div>
-      <div class="hero-prox-trust-pill">⭐ +500 mamás satisfechas</div>
-      <div class="hero-prox-trust-pill">🌸 Modelos exclusivos importados</div>
-      <div class="hero-prox-trust-pill">💬 Aviso por WhatsApp gratis</div>
     </div>
+  </div><!-- /hero-mag-split -->
 
+  <!-- ── Countdown banner compacto ── -->
+  <div class="hmag-countdown-bar">
+    <div class="hmag-cb-badge"><i class="fas fa-bell"></i> Próximo ingreso</div>
+    <div class="hmag-cb-unit"><span class="hmag-cb-num" id="hcbDays">--</span><span class="hmag-cb-sub">Días</span></div>
+    <span class="hmag-cb-sep">:</span>
+    <div class="hmag-cb-unit"><span class="hmag-cb-num" id="hcbHours">--</span><span class="hmag-cb-sub">Horas</span></div>
+    <span class="hmag-cb-sep">:</span>
+    <div class="hmag-cb-unit"><span class="hmag-cb-num" id="hcbMins">--</span><span class="hmag-cb-sub">Min</span></div>
+    <span class="hmag-cb-sep">:</span>
+    <div class="hmag-cb-unit"><span class="hmag-cb-num" id="hcbSecs">--</span><span class="hmag-cb-sub">Seg</span></div>
+    <button class="hmag-cb-btn" id="hcbNotifyBtn" onclick="heroNotify(this)">
+      <i class="fas fa-bell"></i> Avisarme
+    </button>
   </div>
-</section>
 
-<!-- COUNTDOWN BANNER — próximo ingreso -->
-<div class="hero-countdown-banner">
-  <div class="hcb-badge">🚨 Próximo ingreso</div>
-  <span class="hcb-label">Llega en</span>
-  <div class="hcb-unit"><span class="hcb-num" id="hcbDays">--</span><span class="hcb-sub">Días</span></div>
-  <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="hcbHours">--</span><span class="hcb-sub">Horas</span></div>
-  <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="hcbMins">--</span><span class="hcb-sub">Min</span></div>
-  <span class="hcb-sep">:</span>
-  <div class="hcb-unit"><span class="hcb-num" id="hcbSecs">--</span><span class="hcb-sub">Seg</span></div>
-  <button class="hcb-notify-btn" onclick="heroNotify(document.getElementById('heroNotifyBtn'))">
-    <i class="fas fa-bell"></i> Avisarme
-  </button>
-</div>
+  <!-- ── Barra de categorías rápidas ── -->
+  <div class="hmag-cat-bar">
+    <div class="hmag-cat-bar-inner">
+      <button class="hero-cat-chip active" onclick="filterByCategory('all');return false;">🌟 Todos</button>
+      <button class="hero-cat-chip" onclick="filterByCategory('vestidos');return false;">👗 Vestidos niña</button>
+      <button class="hero-cat-chip" onclick="filterByCategory('abrigos');return false;">🧥 Abrigos</button>
+      <button class="hero-cat-chip" onclick="filterByCategory('bebes');return false;">👶 Bebés 0–24m</button>
+      <button class="hero-cat-chip" onclick="filterByCategory('ninos');return false;">👦 Niños</button>
+      <button class="hero-cat-chip" onclick="filterByCategory('jeans');return false;">👖 Jeans</button>
+      <button class="hero-cat-chip" onclick="openWishlist && openWishlist();return false;">🎀 Baby Shower</button>
+    </div>
+  </div>
+
+</div><!-- /hero-mag -->
 
 <script>
 /* ── NUEVO INGRESO — carga dinámica desde mi-cuenta.html ── */
@@ -3168,6 +4498,7 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
     <div class="products-title-block">
       <div class="products-eyebrow"><i class="fas fa-star"></i> Colección D'Zoe Perú <i class="fas fa-star"></i></div>
       <h2 class="products-title">Productos <span>Exclusivos</span></h2>
+      <p class="products-subtitle">Prendas importadas de alta gama, seleccionadas con amor para los más pequeños ✨</p>
       <div class="products-title-divider"><span></span><i class="fas fa-heart"></i><span></span></div>
     </div>
 
@@ -3198,8 +4529,9 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
     <!-- Grid de productos (dinámico desde Supabase) -->
     <div class="product-grid" id="productGrid">
       <div class="products-loading">
-        <span class="load-icon">⏳</span>
-        <p>Cargando productos desde Supabase...</p>
+        <span class="load-icon">🌸</span>
+        <p style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;color:var(--rose-dark);margin-bottom:4px;">Cargando colección...</p>
+        <p style="font-size:12px;color:var(--text-soft);">Preparando los mejores modelos para ti</p>
       </div>
     </div>
 
@@ -3209,7 +4541,8 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
 </section>
 
 <!-- FRANJA DE BENEFICIOS -->
-<section class="benefits-strip">
+<div class="section-divider"></div>
+<section class="benefits-strip" aria-label="Beneficios de comprar en D'Zoe Perú">
   <div class="container">
     <div class="benefits-grid">
       <div class="benefit-item">
@@ -3220,7 +4553,7 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
         </div>
       </div>
       <div class="benefit-item">
-        <span class="benefit-icon">🏍️</span>
+        <span class="benefit-icon">🚀</span>
         <div class="benefit-text">
           <strong>Envíos a todo el Perú</strong>
           <span>Rápido y seguro</span>
@@ -3252,43 +4585,52 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
+<footer class="footer" aria-label="Pie de página D'Zoe Perú">
   <div class="container">
-    <div class="footer-main">
+    <div class="footer-main" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding-top:60px;padding-bottom:40px;">
       <div class="footer-info">
         <h2 class="footer-brand">D'Zoe Perú 🌸</h2>
         <p class="footer-description">
-          Somos una tienda peruana especializada en ropa infantil importada premium para bebés y niños de 0 a 14 años. Seleccionamos diseños exclusivos que destacan por su calidad, comodidad y estilo para los más pequeños del hogar.
+          Somos una tienda peruana especializada en <strong style="color:rgba(255,255,255,0.8);">ropa infantil importada premium</strong> para bebés y niños de 0 a 14 años. Seleccionamos diseños exclusivos que destacan por su calidad, comodidad y estilo para los más pequeños del hogar. Envíos a todo el Perú.
         </p>
-		<a href="libro-de-reclamaciones.html" class="footer-link" target="_blank"
-   rel="noopener noreferrer">
-        <div class="footer-claims">
-          <i class="fas fa-book-open"></i>
-          <span>LIBRO DE RECLAMACIONES</span>
-        </div></a>
-        <div class="footer-social">
-          <a class="social-btn" href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
-          <a class="social-btn" href="https://wa.me/51956063145" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+        <a href="libro-de-reclamaciones.html" class="footer-link" target="_blank" rel="noopener noreferrer">
+          <div class="footer-claims">
+            <i class="fas fa-book-open"></i>
+            <span>LIBRO DE RECLAMACIONES</span>
+          </div>
+        </a>
+        <div class="footer-social" style="display:flex;gap:10px;margin-top:20px;">
+          <a class="social-btn" href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener" aria-label="TikTok D'Zoe Perú"><i class="fab fa-tiktok"></i></a>
+          <a class="social-btn" href="https://wa.me/51956063145" target="_blank" rel="noopener" aria-label="WhatsApp D'Zoe Perú"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
       <div class="footer-menu">
         <h4>Menú</h4>
-        <ul>
-          <li><a href="politica-de-envios.html" target="_blank"
-   rel="noopener noreferrer">Política de Envíos</a></li>
-          <li><a href="politica-de-privacidad.html" target="_blank"
-   rel="noopener noreferrer">Políticas de Privacidad</a></li>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="politica-de-envios.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-truck" style="color:var(--rose);font-size:12px;width:16px;"></i> Política de Envíos</a></li>
+          <li><a href="guia-de-tallas.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-ruler" style="color:var(--rose);font-size:12px;width:16px;"></i> Guía de Tallas</a></li>
+          <li><a href="preguntas-frecuentes.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-question-circle" style="color:var(--rose);font-size:12px;width:16px;"></i> Preguntas Frecuentes</a></li>
+          <li><a href="politica-de-privacidad.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-shield-alt" style="color:var(--rose);font-size:12px;width:16px;"></i> Privacidad</a></li>
+          <li><a href="blog.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-blog" style="color:var(--rose);font-size:12px;width:16px;"></i> Blog</a></li>
         </ul>
       </div>
       <div class="footer-contact">
         <h4>Contáctenos</h4>
-        <ul>
-          <li><i class="fab fa-whatsapp"></i> WhatsApp: +51 956 063 145</li>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fab fa-whatsapp" style="color:#25D366;font-size:16px;"></i> +51 956 063 145</li>
+          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fas fa-envelope" style="color:var(--rose);font-size:14px;"></i> ventas@dzoeperu.com</li>
+          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fas fa-map-marker-alt" style="color:var(--lavender);font-size:14px;"></i> Gamarra, Lima — Perú</li>
+          <li style="margin-top:6px;">
+            <div style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px 14px;">
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">Horario de atención</div>
+              <div style="font-size:12.5px;color:rgba(255,255,255,0.75);font-weight:600;">Lun – Sáb: 9:00am – 7:00pm</div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
     <div class="footer-copyright">
-      <p>© 2026 D'Zoe Perú — Todos los derechos reservados &nbsp;|&nbsp; Moda Infantil Importada de Calidad</p>
+      <p>© 2026 D'Zoe Perú — Todos los derechos reservados &nbsp;|&nbsp; Ropa Infantil Importada Premium · Lima, Perú</p>
     </div>
   </div>
 </footer>
@@ -5626,6 +6968,82 @@ init();
     </div>
   </div>
 </div>
+
+<!-- ═══ PREMIUM ENHANCEMENTS SCRIPT ═══ -->
+<script>
+/* Ticker: duplicar para loop infinito */
+(function() {
+  var ticker = document.getElementById('topbarTicker');
+  if (!ticker) return;
+  var clone = ticker.innerHTML;
+  ticker.innerHTML = clone + clone; /* Duplicar para seamless loop */
+})();
+
+/* Scroll reveal animation para productos */
+(function() {
+  if (!window.IntersectionObserver) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = (i * 0.06) + 's';
+        entry.target.classList.add('reveal-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  
+  function observeCards() {
+    document.querySelectorAll('.product-card, .benefit-item, .prox-ni-card').forEach(function(el) {
+      if (!el.classList.contains('observed')) {
+        el.classList.add('observed');
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,0.9,0.36,1)';
+        observer.observe(el);
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', observeCards);
+  /* También observar cuando se renderizan productos dinámicos */
+  var productGrid = document.getElementById('productGrid');
+  if (productGrid && window.MutationObserver) {
+    new MutationObserver(observeCards).observe(productGrid, { childList: true });
+  }
+  
+  document.addEventListener('animationend', function(e) {
+    if (e.target.classList.contains('observed')) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'none';
+    }
+  });
+  
+  /* Override: marcar visible */
+  document.addEventListener('scroll', function() {
+    document.querySelectorAll('.observed:not(.reveal-visible)').forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 40) {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.classList.add('reveal-visible');
+      }
+    });
+  }, { passive: true });
+  
+  setTimeout(observeCards, 100);
+})();
+
+/* Active nav link basado en sección visible */
+(function() {
+  var chips = document.querySelectorAll('.hero-cat-chip');
+  chips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      chips.forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
