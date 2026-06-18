@@ -3821,9 +3821,8 @@ updateClock();
 loadSettings();
 addImageInput();
 
-// Nuevo Ingreso — inicializar primer input de foto + select de tallas
+// Nuevo Ingreso — inicializar primer input de foto
 niAddImageInput();
-niInitSizeSelect();
 niRenderSizeChips();
 
 // Ribbon color picker events
@@ -5234,8 +5233,8 @@ async function niCargarForm() {
   set('ni-tags', data.tags);
   set('ni-fecha', data.fecha);
   set('ni-hora', data.hora || '09:00');
-  set('ni-img-editorial', data.imgEditorial);
-  set('ni-msg-wa', data.msgWa);
+  set('ni-img-editorial', data.img_editorial || data.imgEditorial);
+  set('ni-msg-wa', data.msg_wa || data.msgWa);
 
   // Fotos
   const imgContainer = document.getElementById('ni-images-container');
@@ -5273,18 +5272,18 @@ async function niGuardar() {
   if (!fecha)  { showAlert('⚠️ Elige la fecha de llegada', 'error'); return; }
   niSyncImages();
   const data = {
-    id:           1,
+    id:            1,
     nombre,
-    categoria:    document.getElementById('ni-categoria')?.value.trim(),
-    imagenes:     niImages,
-    imagen:       niImages[0] || '',
-    tags:         document.getElementById('ni-tags')?.value.trim(),
-    tallas:       niSizes,
+    categoria:     document.getElementById('ni-categoria')?.value.trim(),
+    imagenes:      niImages,
+    imagen:        niImages[0] || '',
+    tags:          document.getElementById('ni-tags')?.value.trim(),
+    tallas:        niSizes,
     fecha,
-    hora:         document.getElementById('ni-hora')?.value || '09:00',
-    imgEditorial: document.getElementById('ni-img-editorial')?.value.trim(),
-    msgWa:        document.getElementById('ni-msg-wa')?.value.trim(),
-    updatedAt:    new Date().toISOString()
+    hora:          document.getElementById('ni-hora')?.value || '09:00',
+    img_editorial: document.getElementById('ni-img-editorial')?.value.trim(),
+    msg_wa:        document.getElementById('ni-msg-wa')?.value.trim(),
+    updated_at:    new Date().toISOString()
   };
 
   /* 1️⃣ Guardar en Supabase */
