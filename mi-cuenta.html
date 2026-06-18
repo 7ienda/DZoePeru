@@ -3821,6 +3821,10 @@ updateClock();
 loadSettings();
 addImageInput();
 
+// Nuevo Ingreso — variables globales deben declararse ANTES de cualquier llamada
+let niImages = [];
+let niSizes  = [];
+
 // Nuevo Ingreso — inicializar primer input de foto
 niAddImageInput();
 niRenderSizeChips();
@@ -5125,8 +5129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ⭐ NUEVO INGRESO
 // ============================================
 const NI_KEY = 'dzoe_nuevo_ingreso';
-let niImages = [];   // array de URLs
-let niSizes  = [];   // array de strings de talla
+// niImages y niSizes declarados arriba (ver inicialización global)
 
 // Hook goToSection para cargar la sección
 const _origGoToSectionNI = goToSection;
