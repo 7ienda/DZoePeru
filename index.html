@@ -3520,9 +3520,7 @@ a, button { cursor: pointer; }
   function gel(id) { return document.getElementById(id); }
   function pad(n)  { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
 
-  function loadNuevoIngreso() {
-    var raw = localStorage.getItem(NI_KEY);
-    var d   = raw ? JSON.parse(raw) : {};
+  function applyNuevoIngreso(d) {
     var ni  = Object.assign({}, defaults, d);
 
     /* ── Imagen principal ── */
@@ -3638,6 +3636,31 @@ a, button { cursor: pointer; }
       thumbEl.style.border = '2px solid var(--rose,#c2617a)';
     }
   };
+
+  async function loadNuevoIngreso() {
+    /* 1️⃣ Intentar Supabase */
+    try {
+      var sbUrl = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.URL;
+      var sbKey = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.ANON_KEY;
+      if (sbUrl && sbKey) {
+        var _sb = window.supabase || window.Supabase;
+        if (_sb) {
+          var client = _sb.createClient(sbUrl, sbKey);
+          var res = await client.from('nuevo_ingreso').select('*').eq('id', 1).maybeSingle();
+          if (!res.error && res.data) {
+            /* Sincronizar localStorage como caché */
+            localStorage.setItem(NI_KEY, JSON.stringify(res.data));
+            applyNuevoIngreso(res.data);
+            return;
+          }
+        }
+      }
+    } catch(e) { console.warn('NuevoIngreso Supabase:', e); }
+
+    /* 2️⃣ Fallback: localStorage */
+    var raw = localStorage.getItem(NI_KEY);
+    applyNuevoIngreso(raw ? JSON.parse(raw) : {});
+  }
 
   document.addEventListener('DOMContentLoaded', loadNuevoIngreso);
   if (document.readyState !== 'loading') loadNuevoIngreso();
