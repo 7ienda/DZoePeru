@@ -1958,12 +1958,45 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <button class="btn btn-ghost btn-sm" onclick="niLimpiarForm()"><i class="fas fa-broom"></i> Limpiar</button>
         </div>
         <div class="section-body">
+          <!-- Fila 1: nombre + categoría -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
             <div class="form-group" style="margin:0;"><label>Nombre del producto *</label><input type="text" id="ni-nombre" placeholder="Ej: Abrigos Lana Doble Face" oninput="niUpdatePreview()"></div>
             <div class="form-group" style="margin:0;"><label>Categoría / Temporada</label><input type="text" id="ni-categoria" placeholder="Ej: Abrigos · Invierno 2026" oninput="niUpdatePreview()"></div>
           </div>
-          <div class="form-group" style="margin-bottom:18px;"><label>URL de imagen principal</label><input type="url" id="ni-imagen" placeholder="https://..." oninput="niUpdatePreview()"></div>
+
+          <!-- FOTOS MÚLTIPLES -->
+          <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;">
+            <div style="font-weight:800;font-size:13px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-images" style="color:var(--rose)"></i> Fotos del producto
+              <span style="font-weight:400;font-size:11px;color:var(--muted)">(la 1ª es la portada — se muestra en la tienda)</span>
+            </div>
+            <div id="ni-images-container"></div>
+            <button class="add-image-btn" onclick="niAddImageInput()" style="margin-top:10px;">
+              <i class="fas fa-plus"></i> Agregar foto
+            </button>
+            <div id="ni-preview-images" class="preview-images" style="margin-top:12px;"></div>
+          </div>
+
+          <!-- TALLAS -->
+          <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;">
+            <div style="font-weight:800;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-ruler" style="color:var(--lavender)"></i> Tallas disponibles
+              <span style="font-weight:400;font-size:11px;color:var(--muted)">(informativas — se muestran como chips en la tienda)</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Selecciona las tallas que tendrá este ingreso.</div>
+            <div id="ni-sizes-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <select id="ni-size-select" style="flex:1;border-radius:8px;border:1.5px solid var(--border);padding:7px 10px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);">
+                <option value="">— Selecciona una talla —</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="niAddSize()"><i class="fas fa-plus"></i> Agregar</button>
+            </div>
+          </div>
+
+          <!-- Etiquetas -->
           <div class="form-group" style="margin-bottom:18px;"><label>Etiquetas (máx. 3, separadas por coma)</label><input type="text" id="ni-tags" placeholder="Ej: 4–14 años, Lana premium, Edición limitada" oninput="niUpdatePreview()"></div>
+
+          <!-- Fecha de llegada -->
           <div style="background:linear-gradient(135deg,rgba(245,185,126,.08),rgba(232,164,192,.08));border:1.5px solid var(--peach-light,#f5d0b0);border-radius:16px;padding:20px;margin-bottom:18px;">
             <div style="font-weight:800;font-size:14px;margin-bottom:4px;"><i class="fas fa-clock" style="color:var(--peach)"></i> Fecha estimada de llegada</div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Controla la cuenta regresiva 🚨 Próximo ingreso en la tienda.</div>
@@ -1977,11 +2010,17 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
               </div>
             </div>
           </div>
+
+          <!-- Imagen editorial -->
           <div class="form-group" style="margin-bottom:18px;"><label>URL imagen editorial / fondo del hero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label><input type="url" id="ni-img-editorial" placeholder="https://..."></div>
+
+          <!-- Mensaje WA -->
           <div class="form-group" style="margin-bottom:24px;">
             <label>Mensaje WhatsApp personalizado <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
             <textarea id="ni-msg-wa" rows="2" placeholder="Usa {producto} para el nombre. Ej: Hola! Me interesa {producto} ¿cuándo llega?" style="width:100%;border-radius:10px;border:1.5px solid var(--border);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
           </div>
+
+          <!-- Botones -->
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
             <button class="btn btn-primary" onclick="niGuardar()"><i class="fas fa-floppy-disk"></i> Guardar y publicar en tienda</button>
             <button class="btn btn-ghost" onclick="window.open('index.html','_blank')"><i class="fas fa-external-link-alt"></i> Ver tienda</button>
@@ -3782,6 +3821,11 @@ updateClock();
 loadSettings();
 addImageInput();
 
+// Nuevo Ingreso — inicializar primer input de foto + select de tallas
+niAddImageInput();
+niInitSizeSelect();
+niRenderSizeChips();
+
 // Ribbon color picker events
 document.querySelectorAll('.ribbon-color-opt').forEach(el => {
   el.addEventListener('click', () => {
@@ -5082,6 +5126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ⭐ NUEVO INGRESO
 // ============================================
 const NI_KEY = 'dzoe_nuevo_ingreso';
+let niImages = [];   // array de URLs
+let niSizes  = [];   // array de strings de talla
 
 // Hook goToSection para cargar la sección
 const _origGoToSectionNI = goToSection;
@@ -5090,22 +5136,110 @@ goToSection = function(sectionId) {
   if (sectionId === 'nuevo-ingreso-section') setTimeout(niCargarForm, 80);
 };
 
+/* ── Poblar selector de tallas ── */
+function niInitSizeSelect() {
+  const sel = document.getElementById('ni-size-select');
+  if (!sel || sel.options.length > 1) return;
+  sizeOptions.forEach(s => {
+    const o = document.createElement('option');
+    o.value = o.textContent = s;
+    sel.appendChild(o);
+  });
+}
+
+/* ── Añadir talla al array ── */
+function niAddSize() {
+  const sel = document.getElementById('ni-size-select');
+  const val = sel?.value;
+  if (!val) { showAlert('Selecciona una talla', 'error'); return; }
+  if (niSizes.includes(val)) { showAlert('Esa talla ya está agregada', 'error'); return; }
+  niSizes.push(val);
+  niRenderSizeChips();
+  if (sel) sel.value = '';
+}
+
+function niRemoveSize(s) {
+  niSizes = niSizes.filter(x => x !== s);
+  niRenderSizeChips();
+}
+
+function niRenderSizeChips() {
+  const c = document.getElementById('ni-sizes-chips');
+  if (!c) return;
+  if (!niSizes.length) { c.innerHTML = '<span style="color:var(--muted);font-size:12px;">Sin tallas agregadas aún</span>'; return; }
+  c.innerHTML = niSizes.map(s => `
+    <span style="display:inline-flex;align-items:center;gap:5px;background:var(--lav-light,#ede8fb);color:var(--lavender,#7c5cbf);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;">
+      ${s}
+      <button onclick="niRemoveSize('${s}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:13px;line-height:1;padding:0;margin:0;">×</button>
+    </span>`).join('');
+}
+
+/* ── Fotos ── */
+function niAddImageInput(prefillUrl) {
+  const container = document.getElementById('ni-images-container');
+  if (!container) return;
+  const idx = container.children.length;
+  const row = document.createElement('div');
+  row.className = 'image-url-row';
+  row.style.marginBottom = '8px';
+  row.innerHTML = `<input type="url" class="image-url-input" placeholder="https://..." value="${prefillUrl||''}" oninput="niSyncImages()" style="flex:1;">
+    <button class="remove-image-btn" onclick="this.closest('.image-url-row').remove();niSyncImages();niRenderPreviews();"><i class="fas fa-times"></i></button>`;
+  container.appendChild(row);
+  niSyncImages();
+}
+
+function niSyncImages() {
+  niImages = Array.from(document.querySelectorAll('#ni-images-container .image-url-input'))
+    .map(i => i.value.trim()).filter(Boolean);
+  niRenderPreviews();
+}
+
+function niRenderPreviews() {
+  const c = document.getElementById('ni-preview-images');
+  if (!c) return;
+  const valid = Array.from(document.querySelectorAll('#ni-images-container .image-url-input'))
+    .map(i => i.value.trim()).filter(Boolean);
+  c.innerHTML = valid.map((url, i) => `
+    <div class="preview-item" style="position:relative;">
+      ${i===0 ? '<span style="position:absolute;top:4px;left:4px;background:#c2617a;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:99px;z-index:1;">PORTADA</span>' : ''}
+      <img src="${url}" onerror="this.style.opacity='.3'" alt="preview ${i+1}">
+    </div>`).join('');
+}
+
 function niCargarForm() {
   const data = JSON.parse(localStorage.getItem(NI_KEY) || '{}');
-  const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+  const set = (id, val) => { const el = document.getElementById(id); if(el && val !== undefined && val !== null) el.value = val; };
   set('ni-nombre', data.nombre);
   set('ni-categoria', data.categoria);
-  set('ni-imagen', data.imagen);
   set('ni-tags', data.tags);
   set('ni-fecha', data.fecha);
   set('ni-hora', data.hora || '09:00');
   set('ni-img-editorial', data.imgEditorial);
   set('ni-msg-wa', data.msgWa);
+
+  // Fotos
+  const imgContainer = document.getElementById('ni-images-container');
+  if (imgContainer) {
+    imgContainer.innerHTML = '';
+    const imgs = data.imagenes || (data.imagen ? [data.imagen] : []);
+    if (imgs.length) imgs.forEach(url => niAddImageInput(url));
+    else niAddImageInput();
+    niSyncImages();
+  }
+
+  // Tallas
+  niSizes = Array.isArray(data.tallas) ? [...data.tallas] : [];
+  niInitSizeSelect();
+  niRenderSizeChips();
+
+  // Info publicado
   const box = document.getElementById('ni-datos-actuales');
   if (box) {
     if (data.nombre) {
       box.style.display = 'block';
-      box.innerHTML = `<strong>Publicado actualmente:</strong> ${data.nombre} — llega el ${data.fecha||'?'} ${data.hora||''}<br><span style="color:var(--rose)">✅ Visible en la tienda</span>`;
+      const cnt = (data.imagenes||[data.imagen].filter(Boolean)).length;
+      box.innerHTML = `<strong>✅ Publicado:</strong> ${data.nombre} — llega el ${data.fecha||'?'} ${data.hora||''}<br>
+        <span style="color:var(--rose)">${cnt} foto(s) · ${(data.tallas||[]).length} talla(s) · Visible en la tienda</span>`;
     } else {
       box.style.display = 'none';
     }
@@ -5117,11 +5251,14 @@ function niGuardar() {
   const fecha  = document.getElementById('ni-fecha')?.value;
   if (!nombre) { showAlert('⚠️ Escribe el nombre del producto', 'error'); return; }
   if (!fecha)  { showAlert('⚠️ Elige la fecha de llegada', 'error'); return; }
+  niSyncImages();
   const data = {
     nombre,
     categoria:    document.getElementById('ni-categoria')?.value.trim(),
-    imagen:       document.getElementById('ni-imagen')?.value.trim(),
+    imagenes:     niImages,
+    imagen:       niImages[0] || '',          // compat con index.html
     tags:         document.getElementById('ni-tags')?.value.trim(),
+    tallas:       niSizes,
     fecha,
     hora:         document.getElementById('ni-hora')?.value || '09:00',
     imgEditorial: document.getElementById('ni-img-editorial')?.value.trim(),
@@ -5134,10 +5271,15 @@ function niGuardar() {
 }
 
 function niLimpiarForm() {
-  ['ni-nombre','ni-categoria','ni-imagen','ni-tags','ni-fecha','ni-img-editorial','ni-msg-wa'].forEach(id => {
+  ['ni-nombre','ni-categoria','ni-tags','ni-fecha','ni-img-editorial','ni-msg-wa'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   const hora = document.getElementById('ni-hora'); if(hora) hora.value = '09:00';
+  const imgContainer = document.getElementById('ni-images-container');
+  if (imgContainer) { imgContainer.innerHTML = ''; niAddImageInput(); }
+  niImages = []; niSizes = [];
+  niRenderSizeChips();
+  niRenderPreviews();
 }
 
 function niBorrarConfig() {
