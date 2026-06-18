@@ -3510,20 +3510,91 @@ a, button { cursor: pointer; }
 (function() {
   var NI_KEY = 'dzoe_nuevo_ingreso';
 
-  /* Fallbacks */
   var defaults = {
-    nombre: 'Abrigos Lana Doble Face',
-    categoria: 'Abrigos · Invierno 2026',
+    nombre: 'Próximo Ingreso',
+    categoria: 'Novedad · Próximamente',
     fecha: null,
     hora: '09:00'
   };
 
+  function gel(id) { return document.getElementById(id); }
+  function pad(n)  { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
+
   function loadNuevoIngreso() {
     var raw = localStorage.getItem(NI_KEY);
-    var d = raw ? JSON.parse(raw) : {};
-    var ni = Object.assign({}, defaults, d);
+    var d   = raw ? JSON.parse(raw) : {};
+    var ni  = Object.assign({}, defaults, d);
 
-    /* — Countdown — */
+    /* ── Imagen principal ── */
+    var imgs = ni.imagenes && ni.imagenes.length ? ni.imagenes : (ni.imagen ? [ni.imagen] : []);
+    var mainImg = gel('niMainImg');
+    if (mainImg && imgs.length) {
+      mainImg.src = imgs[0];
+      mainImg.alt = 'Nuevo ingreso ' + ni.nombre;
+    }
+
+    /* ── Miniaturas extra ── */
+    var thumbsRow = gel('niThumbsRow');
+    if (thumbsRow) {
+      if (imgs.length > 1) {
+        thumbsRow.style.display = 'flex';
+        thumbsRow.innerHTML = imgs.map(function(url, i) {
+          return '<img src="' + url + '" onclick="niSetMain(this,\'' + url + '\')" ' +
+            'style="width:44px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ' +
+            (i === 0 ? 'var(--rose,#c2617a)' : 'var(--border,#e0d0f0)') + ';transition:border .2s;" ' +
+            'onerror="this.style.display=\'none\'" alt="foto ' + (i+1) + '">';
+        }).join('');
+      } else {
+        thumbsRow.style.display = 'none';
+        thumbsRow.innerHTML = '';
+      }
+    }
+
+    /* ── Nombre ── */
+    var nomEl = gel('niNombreDisplay');
+    if (nomEl) {
+      if (ni.nombre && raw) { nomEl.style.display = 'block'; nomEl.textContent = ni.nombre; }
+      else nomEl.style.display = 'none';
+    }
+
+    /* ── Categoría ── */
+    var catEl = gel('niCategoriaDisplay');
+    if (catEl) {
+      if (ni.categoria && raw) { catEl.style.display = 'block'; catEl.textContent = ni.categoria; }
+      else catEl.style.display = 'none';
+    }
+
+    /* ── Tallas ── */
+    var tallasRow = gel('niTallasRow');
+    if (tallasRow) {
+      var tallas = Array.isArray(ni.tallas) ? ni.tallas : [];
+      if (tallas.length) {
+        tallasRow.style.display = 'flex';
+        tallasRow.innerHTML = tallas.map(function(t) {
+          return '<span style="background:var(--lav-light,#ede8fb);color:var(--lavender,#7c5cbf);' +
+            'padding:3px 10px;border-radius:99px;font-size:10px;font-weight:800;">' + t + '</span>';
+        }).join('');
+      } else {
+        tallasRow.style.display = 'none';
+      }
+    }
+
+    /* ── Tags ── */
+    var tagsRow = gel('niTagsRow');
+    if (tagsRow) {
+      var tags = ni.tags ? ni.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean).slice(0,3) : [];
+      if (tags.length) {
+        tagsRow.style.display = 'flex';
+        tagsRow.innerHTML = tags.map(function(t) {
+          return '<span style="background:var(--rose-light,#fde8ef);color:var(--rose,#c2617a);' +
+            'padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;">✦ ' + t + '</span>';
+        }).join('');
+      } else {
+        tagsRow.style.display = 'none';
+      }
+    }
+
+    /* ── Countdown ── */
     var llegada;
     if (ni.fecha) {
       llegada = new Date(ni.fecha + 'T' + (ni.hora || '09:00'));
@@ -3532,11 +3603,8 @@ a, button { cursor: pointer; }
       llegada.setDate(llegada.getDate() + 10);
     }
 
-    var pad = function(n){ return String(Math.max(0,Math.floor(n))).padStart(2,'0'); };
-    var gel = function(id){ return document.getElementById(id); };
-
     function tick() {
-      var now = new Date();
+      var now  = new Date();
       var diff = llegada - now;
       if (diff <= 0) {
         if(gel('hcbDays'))  gel('hcbDays').textContent  = '00';
@@ -3544,19 +3612,32 @@ a, button { cursor: pointer; }
         if(gel('hcbMins'))  gel('hcbMins').textContent  = '00';
         if(gel('hcbSecs'))  gel('hcbSecs').textContent  = '00';
       } else {
-        if(gel('hcbDays'))  gel('hcbDays').textContent  = pad(diff/86400000);
-        if(gel('hcbHours')) gel('hcbHours').textContent = pad((diff%86400000)/3600000);
-        if(gel('hcbMins'))  gel('hcbMins').textContent  = pad((diff%3600000)/60000);
-        if(gel('hcbSecs'))  gel('hcbSecs').textContent  = pad((diff%60000)/1000);
+        if(gel('hcbDays'))  gel('hcbDays').textContent  = pad(diff / 86400000);
+        if(gel('hcbHours')) gel('hcbHours').textContent = pad((diff % 86400000) / 3600000);
+        if(gel('hcbMins'))  gel('hcbMins').textContent  = pad((diff % 3600000) / 60000);
+        if(gel('hcbSecs'))  gel('hcbSecs').textContent  = pad((diff % 60000) / 1000);
       }
     }
     tick();
     setInterval(tick, 1000);
 
-    /* Guardar nombre para heroNotify */
+    /* Guardar para heroNotify */
     window._dzoeNINombre = ni.nombre;
     window._dzoeNIMsgWa  = ni.msgWa || '';
   }
+
+  /* Función global para cambiar miniatura activa */
+  window.niSetMain = function(thumbEl, url) {
+    var mainImg = gel('niMainImg');
+    if (mainImg) mainImg.src = url;
+    var thumbsRow = gel('niThumbsRow');
+    if (thumbsRow) {
+      thumbsRow.querySelectorAll('img').forEach(function(img) {
+        img.style.border = '2px solid var(--border,#e0d0f0)';
+      });
+      thumbEl.style.border = '2px solid var(--rose,#c2617a)';
+    }
+  };
 
   document.addEventListener('DOMContentLoaded', loadNuevoIngreso);
   if (document.readyState !== 'loading') loadNuevoIngreso();
@@ -3656,8 +3737,10 @@ function notifyProximo(btn, productName) {
 
         <div class="h3p-badge">🌸 NUEVO INGRESO 🌸</div>
 
-        <div class="h3p-img-frame h3p-img-frame--lock">
+        <!-- Galería de fotos: portada + miniaturas -->
+        <div class="h3p-img-frame h3p-img-frame--lock" id="niImgFrame">
           <img
+            id="niMainImg"
             src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpm1V7jQZ81Cq_mkY552q5sgYZjIy_fnv7te81Y5HaQdf_3uzTab5t-jKjR443uDLnlyToRQ24ZybTH-cY78thqx5-Ehb96N5iWbTq-fc1isTccf51HdkwlsaKKfD5yLZJOEH-9WYXxYD8bagTim9B9e6jGJXwzFbTHZlxFSu6AVYZHsK8dAlZBVEliHk/s320/v1.png"
             alt="Nuevo ingreso ropa infantil D'Zoe Perú — próximas prendas"
             style="filter:blur(0.3px) brightness(0.85); transition: filter 0.4s;"
@@ -3667,6 +3750,18 @@ function notifyProximo(btn, productName) {
             <span class="h3p-coming-label">Próximamente</span>
           </div>
         </div>
+        <!-- Miniaturas extra -->
+        <div id="niThumbsRow" style="display:none;flex-direction:row;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px;"></div>
+
+        <!-- Nombre y categoría dinámicos -->
+        <div id="niNombreDisplay" style="display:none;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--text);text-align:center;margin-top:8px;line-height:1.3;"></div>
+        <div id="niCategoriaDisplay" style="display:none;font-size:11px;font-weight:700;color:var(--text-soft);text-align:center;margin-top:2px;text-transform:uppercase;letter-spacing:.04em;"></div>
+
+        <!-- Tallas disponibles -->
+        <div id="niTallasRow" style="display:none;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:8px;"></div>
+
+        <!-- Tags -->
+        <div id="niTagsRow" style="display:none;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:6px;"></div>
 
         <button class="h3p-cta" onclick="heroNotify(this)" aria-label="Avisarme del próximo ingreso por WhatsApp">
           <i class="fas fa-bell" aria-hidden="true"></i> Avisarme cuando llegue
@@ -3895,6 +3990,10 @@ function notifyProximo(btn, productName) {
   display: block;
   object-fit: cover;
 }
+
+/* Miniaturas del nuevo ingreso */
+#niThumbsRow img { transition: border .2s, transform .15s; }
+#niThumbsRow img:hover { border-color: var(--rose, #c2617a) !important; transform: scale(1.08); }
 
 /* CTA */
 .h3p-cta {
