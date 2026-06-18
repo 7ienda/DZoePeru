@@ -3522,6 +3522,8 @@ a, button { cursor: pointer; }
 
   function applyNuevoIngreso(d) {
     var ni  = Object.assign({}, defaults, d);
+    /* tieneData = true cuando viene de Supabase o localStorage con datos reales */
+    var tieneData = !!(d && d.nombre);
 
     /* ── Imagen principal ── */
     var imgs = ni.imagenes && ni.imagenes.length ? ni.imagenes : (ni.imagen ? [ni.imagen] : []);
@@ -3551,22 +3553,35 @@ a, button { cursor: pointer; }
     /* ── Nombre ── */
     var nomEl = gel('niNombreDisplay');
     if (nomEl) {
-      if (ni.nombre && raw) { nomEl.style.display = 'block'; nomEl.textContent = ni.nombre; }
+      if (tieneData && ni.nombre) { nomEl.style.display = 'block'; nomEl.textContent = ni.nombre; }
       else nomEl.style.display = 'none';
     }
 
     /* ── Categoría ── */
     var catEl = gel('niCategoriaDisplay');
     if (catEl) {
-      if (ni.categoria && raw) { catEl.style.display = 'block'; catEl.textContent = ni.categoria; }
+      if (tieneData && ni.categoria) { catEl.style.display = 'block'; catEl.textContent = ni.categoria; }
       else catEl.style.display = 'none';
     }
 
-    /* ── Tallas ── */
+    /* ── Tallas: reemplaza el label "Próximamente" de la overlay ── */
+    var tallas = Array.isArray(ni.tallas) ? ni.tallas : [];
+    var comingLabel = gel('niComingLabel');
+    if (comingLabel) {
+      if (tieneData && tallas.length) {
+        comingLabel.innerHTML = tallas.map(function(t) {
+          return '<span style="display:inline-block;background:rgba(255,255,255,0.92);color:#7c5cbf;' +
+            'padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;margin:2px 3px;">' + t + '</span>';
+        }).join('');
+      } else {
+        comingLabel.textContent = 'Próximamente';
+      }
+    }
+
+    /* ── Tallas row (debajo de la imagen) ── */
     var tallasRow = gel('niTallasRow');
     if (tallasRow) {
-      var tallas = Array.isArray(ni.tallas) ? ni.tallas : [];
-      if (tallas.length) {
+      if (tieneData && tallas.length) {
         tallasRow.style.display = 'flex';
         tallasRow.innerHTML = tallas.map(function(t) {
           return '<span style="background:var(--lav-light,#ede8fb);color:var(--lavender,#7c5cbf);' +
@@ -3601,6 +3616,9 @@ a, button { cursor: pointer; }
       llegada.setDate(llegada.getDate() + 10);
     }
 
+    /* Limpiar interval anterior para evitar timers duplicados */
+    if (window._niCountdownTimer) clearInterval(window._niCountdownTimer);
+
     function tick() {
       var now  = new Date();
       var diff = llegada - now;
@@ -3617,7 +3635,7 @@ a, button { cursor: pointer; }
       }
     }
     tick();
-    setInterval(tick, 1000);
+    window._niCountdownTimer = setInterval(tick, 1000);
 
     /* Guardar para heroNotify */
     window._dzoeNINombre = ni.nombre;
@@ -3770,7 +3788,7 @@ function notifyProximo(btn, productName) {
           >
           <div class="h3p-coming-overlay">
             <span class="h3p-lock-icon">🔒</span>
-            <span class="h3p-coming-label">Próximamente</span>
+            <span class="h3p-coming-label" id="niComingLabel">Próximamente</span>
           </div>
         </div>
         <!-- Miniaturas extra -->
@@ -3994,8 +4012,13 @@ function notifyProximo(btn, productName) {
   text-transform: uppercase;
   text-shadow: 0 1px 6px rgba(0,0,0,0.35);
   background: rgba(232,164,192,0.75);
-  padding: 3px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  max-width: 90%;
 }
 
 /* Imagen */
