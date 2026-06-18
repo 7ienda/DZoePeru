@@ -5206,8 +5206,28 @@ function niRenderPreviews() {
     </div>`).join('');
 }
 
-function niCargarForm() {
-  const data = JSON.parse(localStorage.getItem(NI_KEY) || '{}');
+async function niCargarForm() {
+  let data = {};
+
+  /* 1️⃣ Intentar Supabase */
+  if (supabaseClient) {
+    try {
+      const { data: sbData, error } = await supabaseClient
+        .from('nuevo_ingreso')
+        .select('*')
+        .eq('id', 1)
+        .maybeSingle();
+      if (!error && sbData) {
+        data = sbData;
+        localStorage.setItem(NI_KEY, JSON.stringify(data));
+      }
+    } catch(e) { console.warn('niCargarForm Supabase:', e); }
+  }
+
+  /* 2️⃣ Fallback localStorage */
+  if (!data.nombre) {
+    data = JSON.parse(localStorage.getItem(NI_KEY) || '{}');
+  }
   const set = (id, val) => { const el = document.getElementById(id); if(el && val !== undefined && val !== null) el.value = val; };
   set('ni-nombre', data.nombre);
   set('ni-categoria', data.categoria);
@@ -5246,17 +5266,18 @@ function niCargarForm() {
   }
 }
 
-function niGuardar() {
+async function niGuardar() {
   const nombre = document.getElementById('ni-nombre')?.value.trim();
   const fecha  = document.getElementById('ni-fecha')?.value;
   if (!nombre) { showAlert('⚠️ Escribe el nombre del producto', 'error'); return; }
   if (!fecha)  { showAlert('⚠️ Elige la fecha de llegada', 'error'); return; }
   niSyncImages();
   const data = {
+    id:           1,
     nombre,
     categoria:    document.getElementById('ni-categoria')?.value.trim(),
     imagenes:     niImages,
-    imagen:       niImages[0] || '',          // compat con index.html
+    imagen:       niImages[0] || '',
     tags:         document.getElementById('ni-tags')?.value.trim(),
     tallas:       niSizes,
     fecha,
@@ -5265,6 +5286,19 @@ function niGuardar() {
     msgWa:        document.getElementById('ni-msg-wa')?.value.trim(),
     updatedAt:    new Date().toISOString()
   };
+
+  /* 1️⃣ Guardar en Supabase */
+  if (supabaseClient) {
+    const { error } = await supabaseClient
+      .from('nuevo_ingreso')
+      .upsert(data, { onConflict: 'id' });
+    if (error) {
+      showAlert('❌ Error al guardar en Supabase: ' + error.message, 'error');
+      return;
+    }
+  }
+
+  /* 2️⃣ Caché en localStorage */
   localStorage.setItem(NI_KEY, JSON.stringify(data));
   niCargarForm();
   showAlert('✅ ¡Nuevo ingreso publicado en la tienda!');
@@ -5282,8 +5316,19 @@ function niLimpiarForm() {
   niRenderPreviews();
 }
 
-function niBorrarConfig() {
+async function niBorrarConfig() {
   if (!confirm('¿Borrar la configuración del Nuevo Ingreso?')) return;
+
+  /* 1️⃣ Borrar en Supabase */
+  if (supabaseClient) {
+    const { error } = await supabaseClient
+      .from('nuevo_ingreso')
+      .delete()
+      .eq('id', 1);
+    if (error) { showAlert('❌ Error al borrar en Supabase: ' + error.message, 'error'); return; }
+  }
+
+  /* 2️⃣ Limpiar localStorage */
   localStorage.removeItem(NI_KEY);
   niLimpiarForm();
   const box = document.getElementById('ni-datos-actuales'); if(box) box.style.display='none';
