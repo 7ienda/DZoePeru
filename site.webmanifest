@@ -1,0 +1,27 @@
+{
+  "name": "D'Zoe Perú — Ropa Infantil Importada Premium",
+  "short_name": "D'Zoe Perú",
+  "description": "Tienda N°1 de ropa infantil importada premium en Perú. Bebés y niños de 0 a 14 años.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fef0f5",
+  "theme_color": "#e8a4c0",
+  "lang": "es-PE",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
