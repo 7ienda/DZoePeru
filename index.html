@@ -23,7 +23,8 @@
 <meta name="distribution" content="global">
 <meta name="target" content="padres, mamás, bebés, niños">
 <!-- Preload fuentes críticas para mejorar LCP -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800&display=swap" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap"></noscript>
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -250,10 +251,30 @@
 <!-- Schema Product dinámico — se inyecta cuando cargan los productos desde Supabase -->
 <script id="schema-products-placeholder" type="application/ld+json">[]</script>
 
+<!-- Schema SiteNavigationElement para SEO del menú -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Menú de navegación D'Zoe Perú",
+  "itemListElement": [
+    {"@type":"SiteNavigationElement","position":1,"name":"Tienda D'Zoe Perú","description":"Colección completa de ropa infantil importada premium","url":"https://dzoeperu.com/index.html"},
+    {"@type":"SiteNavigationElement","position":2,"name":"Vestidos niña","description":"Vestidos infantiles importados exclusivos","url":"https://dzoeperu.com/#vestidos"},
+    {"@type":"SiteNavigationElement","position":3,"name":"Abrigos infantiles","description":"Abrigos premium para niños importados","url":"https://dzoeperu.com/#abrigos"},
+    {"@type":"SiteNavigationElement","position":4,"name":"Bebés 0-24 meses","description":"Ropa de bebé premium desde recién nacido","url":"https://dzoeperu.com/#bebes"},
+    {"@type":"SiteNavigationElement","position":5,"name":"Niños","description":"Ropa infantil casual y formal importada","url":"https://dzoeperu.com/#ninos"},
+    {"@type":"SiteNavigationElement","position":6,"name":"Lista de Deseos Baby Shower","description":"Crea y comparte tu lista de deseos para baby shower","url":"https://dzoeperu.com/#lista-de-deseos"},
+    {"@type":"SiteNavigationElement","position":7,"name":"Guía de Tallas","description":"Convierte tallas chinas a tallas peruanas","url":"https://dzoeperu.com/guia-de-tallas.html"},
+    {"@type":"SiteNavigationElement","position":8,"name":"Preguntas Frecuentes","description":"Dudas sobre pedidos, envíos y tallas","url":"https://dzoeperu.com/preguntas-frecuentes.html"},
+    {"@type":"SiteNavigationElement","position":9,"name":"Blog","description":"Tips de moda infantil y novedades D'Zoe Perú","url":"https://dzoeperu.com/blog.html"}
+  ]
+}
+</script>
+
 <!-- Fuentes -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<!-- El preload de arriba ya carga las fuentes con onload; este link es fallback para navegadores sin JS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <!-- Iconos y Manifest PWA -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://dzoeperu.com/apple-touch-icon.png">
@@ -3322,6 +3343,431 @@ a, button { cursor: pointer; }
   box-shadow: 0 10px 26px rgba(232,164,192,0.6);
   color: #fff;
 }
+
+/* ═══════════════════════════════════════════════════════
+   MENÚ PREMIUM D'ZOE PERÚ — REDISEÑO COMPLETO 2026
+   Overrides de header, nav y botones flotantes
+═══════════════════════════════════════════════════════ */
+
+/* ── HEADER ── */
+.header {
+  background: rgba(255,255,255,0.97) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s, background 0.3s;
+}
+.header.scrolled {
+  box-shadow: 0 2px 28px rgba(195,174,228,0.22) !important;
+  background: rgba(255,255,255,0.99) !important;
+}
+.header-wrapper {
+  height: 70px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ── LOGO: cambiar h1 por span para SEO (solo un h1 en la página) ── */
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.logo-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-light), var(--lav-light));
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 14px rgba(232,164,192,0.3);
+  transition: transform 0.35s var(--ease-bounce);
+  flex-shrink: 0;
+}
+.logo:hover .logo-icon { transform: rotate(-10deg) scale(1.1); }
+.logo-text h1, .logo-text .logo-brand-text {
+  font-family: 'Baloo 2', cursive !important;
+  color: var(--rose) !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+}
+.logo-text span { color: var(--text-soft); letter-spacing: 3px; font-size: 10px; font-weight: 700; }
+
+/* ── NAV DESKTOP ── */
+.menu {
+  display: flex !important;
+  align-items: center;
+  gap: 2px !important;
+  flex: 1;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Links del menú */
+.menu > .menu-link, .menu > a {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px !important;
+  border-radius: 10px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  text-decoration: none !important;
+  border: 1.5px solid transparent !important;
+  transition: background 0.18s, color 0.18s, border-color 0.18s !important;
+  white-space: nowrap;
+  position: relative;
+}
+.menu > .menu-link i, .menu > a > i { font-size: 13px; color: var(--rose); flex-shrink: 0; }
+.menu > .menu-link:hover, .menu > a:hover {
+  background: var(--rose-soft) !important;
+  color: var(--rose-dark) !important;
+  border-color: var(--rose-light) !important;
+}
+.menu > .menu-link.menu-active, .menu > a.menu-active {
+  background: var(--rose-soft) !important;
+  color: var(--rose-dark) !important;
+  font-weight: 800 !important;
+  border-color: var(--rose-light) !important;
+}
+/* Quitar el pseudo-elemento underline anterior */
+.menu > a::after { display: none !important; }
+
+/* Pill Baby Shower */
+.menu-pill {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+/* ── DROPDOWN BTN (desktop) ── */
+.menu-dropdown-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  border: 1.5px solid transparent !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s !important;
+  white-space: nowrap;
+}
+.menu-dropdown-btn > i:first-child { font-size: 13px; color: var(--rose); }
+.menu-dropdown-btn:hover,
+.menu-dropdown.open .menu-dropdown-btn {
+  background: var(--rose-soft) !important;
+  color: var(--rose-dark) !important;
+  border-color: var(--rose-light) !important;
+}
+.menu-arrow { font-size: 10px !important; color: var(--text-soft) !important; transition: transform 0.25s; }
+.menu-dropdown.open .menu-arrow { transform: rotate(180deg); }
+
+/* ── PANEL DEL DROPDOWN ── */
+.menu-dropdown-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 12px 48px rgba(195,174,228,0.35) !important;
+  border: 1.5px solid var(--border) !important;
+  min-width: 260px;
+  padding: 8px;
+  z-index: 600;
+  flex-direction: column;
+  gap: 2px;
+  animation: dzDropIn 0.2s ease;
+}
+.menu-dropdown.open .menu-dropdown-panel { display: flex !important; }
+.menu-dropdown-panel--cats { min-width: 290px; }
+@keyframes dzDropIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* ── ITEMS DEL PANEL ── */
+.mdp-item {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px !important;
+  border-radius: 14px !important;
+  text-decoration: none !important;
+  color: var(--text) !important;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+.mdp-item:hover { background: var(--rose-soft) !important; transform: translateX(3px); }
+.mdp-item--all {
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 4px;
+  padding-bottom: 12px !important;
+  border-radius: 14px 14px 4px 4px !important;
+}
+.mdp-emoji { font-size: 22px; flex-shrink: 0; width: 30px; text-align: center; }
+.mdp-icon { font-size: 15px; color: var(--rose); width: 18px; text-align: center; flex-shrink: 0; }
+.mdp-text { display: flex; flex-direction: column; gap: 1px; }
+.mdp-text strong { font-size: 13px; font-weight: 700; color: var(--text); display: block; }
+.mdp-text span { font-size: 11px; color: var(--text-soft); font-weight: 600; display: block; }
+
+/* ── CABECERA DRAWER (solo mobile) ── */
+.menu-drawer-head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 16px 14px;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+.menu-drawer-brand { display: flex; flex-direction: column; gap: 1px; }
+.menu-drawer-brand span {
+  font-family: 'Baloo 2', cursive;
+  font-size: 19px; font-weight: 800;
+  color: var(--rose);
+}
+.menu-drawer-brand small { font-size: 10.5px; color: var(--text-soft); font-weight: 600; }
+
+/* ── CTA mobile (al fondo del drawer) ── */
+.menu-mobile-cta {
+  display: none;
+  padding: 16px;
+  margin-top: 8px;
+  border-top: 1.5px solid var(--border);
+  flex-shrink: 0;
+}
+.menu-wa-cta {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #25D366;
+  color: #fff !important;
+  border-radius: 40px;
+  padding: 12px 20px;
+  font-weight: 800; font-size: 14px;
+  text-decoration: none !important;
+  transition: background 0.2s, transform 0.2s;
+}
+.menu-wa-cta:hover { background: #1da354; transform: scale(1.02); }
+.menu-wa-cta i { font-size: 18px; }
+
+/* ── OVERLAY MOBILE ── */
+.menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30,20,50,0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 998;
+  transition: opacity 0.3s;
+}
+.menu-overlay.active { display: block; }
+
+/* ── HEADER ICONS ── */
+.header-icons { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* ── HAMBURGER ── */
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text);
+  transition: 0.2s;
+  order: 10;
+}
+.hamburger-btn:hover { background: var(--rose-soft) !important; border-color: var(--rose) !important; }
+
+/* ── DARK MODE HEADER ── */
+body.dark-mode .header { background: rgba(26,22,37,0.97) !important; }
+body.dark-mode .menu-dropdown-panel { background: #241e34 !important; border-color: #3a3050 !important; }
+body.dark-mode .mdp-item:hover { background: #2a2040 !important; }
+body.dark-mode .mdp-text strong { color: #ede8f5 !important; }
+body.dark-mode .mdp-item--all { border-color: #3a3050; }
+body.dark-mode .menu-dropdown-btn { color: #ede8f5 !important; }
+body.dark-mode .menu-dropdown-btn:hover,
+body.dark-mode .menu-dropdown.open .menu-dropdown-btn { background: #2a2040 !important; color: var(--rose) !important; }
+body.dark-mode .menu > .menu-link,
+body.dark-mode .menu > a { color: #ede8f5 !important; }
+body.dark-mode .menu > .menu-link:hover,
+body.dark-mode .menu > a:hover,
+body.dark-mode .menu > .menu-link.menu-active,
+body.dark-mode .menu > a.menu-active { background: #2a2040 !important; color: var(--rose) !important; border-color: #4a3060 !important; }
+body.dark-mode .menu-drawer-brand span { color: var(--rose); }
+body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE MOBILE — MENÚ DRAWER LATERAL
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .header-wrapper { height: 62px !important; }
+  .hamburger-btn { display: flex !important; }
+  .cart-label { display: none !important; }
+  .cart-btn { padding: 6px 10px !important; }
+  .login-btn span { display: none !important; }
+  .login-btn { padding: 7px 10px !important; }
+  .dark-mode-btn { width: 34px !important; height: 34px !important; font-size: 13px !important; }
+
+  /* DRAWER desde la izquierda */
+  .menu {
+    position: fixed !important;
+    top: 0 !important; left: -100% !important; bottom: 0 !important; right: auto !important;
+    width: min(300px, 86vw) !important;
+    background: var(--white) !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 3px !important;
+    padding: 0 10px 16px !important;
+    z-index: 999 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    transition: left 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+    box-shadow: 6px 0 36px rgba(195,174,228,0.3) !important;
+    backdrop-filter: none !important;
+  }
+  .menu.open { left: 0 !important; }
+
+  /* Mostrar cabecera y CTA del drawer */
+  .menu-drawer-head { display: flex !important; }
+  .menu-mobile-cta { display: block !important; }
+
+  /* Links en mobile */
+  .menu > .menu-link, .menu > a {
+    font-size: 14.5px !important;
+    padding: 11px 14px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Dropdown mobile: estático dentro del drawer */
+  .menu-dropdown { width: 100% !important; }
+  .menu-dropdown-btn {
+    width: 100% !important;
+    font-size: 14.5px !important;
+    padding: 11px 14px !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    border: 1.5px solid var(--border) !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+  .menu-dropdown-btn > i:last-child { margin-left: auto !important; }
+  .menu-dropdown.open .menu-dropdown-btn { background: var(--rose-soft) !important; border-color: var(--rose-light) !important; }
+  .menu-dropdown-panel {
+    position: static !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 14px !important;
+    margin-top: 4px !important;
+    animation: none !important;
+    background: var(--rose-soft) !important;
+    display: none !important;
+    min-width: 0 !important;
+  }
+  .menu-dropdown.open .menu-dropdown-panel { display: flex !important; }
+  .menu-dropdown-panel--cats { min-width: 0 !important; }
+  .mdp-item { padding: 9px 12px !important; }
+  .mdp-text span { display: none !important; }
+
+  /* Dark mode drawer mobile */
+  body.dark-mode .menu { background: #1a1625 !important; }
+  body.dark-mode .menu-drawer-head { border-color: #3a3050; }
+  body.dark-mode .menu-dropdown-btn { border-color: #3a3050 !important; color: #ede8f5 !important; }
+  body.dark-mode .menu-dropdown.open .menu-dropdown-btn { background: #2a2040 !important; border-color: var(--rose) !important; }
+  body.dark-mode .menu-dropdown-panel { background: #2a2040 !important; border-color: #3a3050 !important; }
+  body.dark-mode .mdp-item:hover { background: #3a2040 !important; }
+}
+
+@media (max-width: 480px) {
+  .header-wrapper { height: 58px !important; }
+  .logo-text h1, .logo-text .logo-brand-text { font-size: 23px !important; }
+  .header-icons { gap: 5px !important; }
+  .dark-mode-btn { width: 30px !important; height: 30px !important; font-size: 12px !important; }
+  .cart-btn { padding: 5px 8px !important; }
+}
+
+/* ═══════════════════════════════════════════
+   FIX FABs FLOTANTES — SIN SOLAPAMIENTO
+   
+   WA float: bottom:24px right:24px, botón 58px alto
+   → scroll-top va ENCIMA del WA: right:24px bottom:96px
+   
+   Mobile: igual — derecha arriba del WA
+            wishlist IZQUIERDA abajo
+            talla    IZQUIERDA arriba del wishlist
+═══════════════════════════════════════════ */
+
+/* ── Desktop y base ── */
+.scroll-top-btn {
+  position: fixed !important;
+  bottom: 96px !important;      /* encima del WA (58px alto + 24px bottom + 14px gap) */
+  right: 24px !important;       /* alineado con el WA */
+  left: auto !important;
+  z-index: 890;
+  background: var(--rose);
+  color: white;
+  border: none;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(232,164,192,0.5);
+  transition: opacity 0.3s, transform 0.3s, box-shadow 0.3s;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transform: translateY(10px);
+}
+.scroll-top-btn.visible { opacity: 1 !important; pointer-events: auto !important; transform: translateY(0) !important; }
+.scroll-top-btn:hover { background: var(--rose-dark) !important; transform: translateY(-3px) !important; box-shadow: 0 8px 24px rgba(232,164,192,0.6) !important; }
+
+/* ── Mobile 768px ── */
+@media (max-width: 768px) {
+  /* scroll-top: DERECHA encima del WA */
+  .scroll-top-btn {
+    right: 24px !important;
+    left: auto !important;
+    bottom: 96px !important;
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 14px !important;
+  }
+  /* wishlist: izquierda abajo */
+  .wishlist-fab { bottom: 20px !important; left: 20px !important; width: 52px !important; height: 52px !important; font-size: 20px !important; }
+  /* talla: izquierda encima del wishlist */
+  .talla-float { bottom: 88px !important; left: 20px !important; }
+  .talla-float-btn { width: 52px !important; height: 52px !important; font-size: 9.5px !important; }
+  .talla-float-btn i { font-size: 17px !important; }
+}
+
+/* ── Mobile 480px ── */
+@media (max-width: 480px) {
+  .scroll-top-btn { right: 16px !important; left: auto !important; bottom: 92px !important; width: 38px !important; height: 38px !important; font-size: 13px !important; }
+  .wishlist-fab  { bottom: 16px !important; left: 14px !important; width: 46px !important; height: 46px !important; font-size: 17px !important; }
+  .talla-float   { bottom: 74px !important; left: 12px !important; }
+  .talla-float-btn { width: 48px !important; height: 48px !important; font-size: 9px !important; }
+  .talla-float-btn i { font-size: 15px !important; }
+}
 </style>
 </head>
 <body>
@@ -3354,112 +3800,257 @@ a, button { cursor: pointer; }
 </div>
 
 <!-- HEADER -->
-<header class="header" id="main-header">
+<header class="header" id="main-header" role="banner" itemscope itemtype="https://schema.org/WPHeader">
   <div class="container header-wrapper">
-    <a class="logo" href="#">
-      <div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="80" height="100">
-  <defs>
-    <style>
-      .st-rosa-frontal { fill: #ea79b0; }
-      .st-rosa-lateral { fill: #ca5790; }
-      .st-rosa-interior { fill: #f7bcdc; }
-      .st-asa { fill: none; stroke: #f094c4; stroke-width: 7; stroke-linecap: round; }
-      .st-asa-sombra { fill: none; stroke: #ca5790; stroke-width: 3; opacity: 0.3; }
-      .st-corazon-fondo { fill: #be92cb; stroke: #ffffff; stroke-width: 6; stroke-linejoin: round; }
-    </style>
-  </defs>
 
-  <path class="st-asa-sombra" d="M145,130 C145,30 235,30 235,130" />
-  
-  <path class="st-asa" d="M135,120 C135,15 225,15 225,120" />
-
-  <polygon class="st-rosa-lateral" points="290,135 365,150 365,435 285,475" />
-  <polygon class="st-rosa-interior" points="285,475 365,435 295,415" />
-
-  <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
-
-  <circle cx="135" cy="125" r="5" fill="#ca5790" />
-  <circle cx="225" cy="129" r="5" fill="#ca5790" />
-
-  <g transform="translate(125, 275) scale(0.9)">
-    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
-  </g>
-
-  <g transform="translate(210, 280) scale(0.9)">
-    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
-  </g>
-
-  <g transform="translate(168, 355) scale(0.9)">
-    <path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" />
-  </g>
-</svg></div>
+    <!-- ── LOGO ── -->
+    <a class="logo" href="index.html" aria-label="D'Zoe Perú – Inicio" itemprop="url">
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="80" height="100">
+          <defs>
+            <style>
+              .st-rosa-frontal { fill: #ea79b0; }
+              .st-rosa-lateral { fill: #ca5790; }
+              .st-rosa-interior { fill: #f7bcdc; }
+              .st-asa { fill: none; stroke: #f094c4; stroke-width: 7; stroke-linecap: round; }
+              .st-asa-sombra { fill: none; stroke: #ca5790; stroke-width: 3; opacity: 0.3; }
+              .st-corazon-fondo { fill: #be92cb; stroke: #ffffff; stroke-width: 6; stroke-linejoin: round; }
+            </style>
+          </defs>
+          <path class="st-asa-sombra" d="M145,130 C145,30 235,30 235,130" />
+          <path class="st-asa" d="M135,120 C135,15 225,15 225,120" />
+          <polygon class="st-rosa-lateral" points="290,135 365,150 365,435 285,475" />
+          <polygon class="st-rosa-interior" points="285,475 365,435 295,415" />
+          <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
+          <circle cx="135" cy="125" r="5" fill="#ca5790" />
+          <circle cx="225" cy="129" r="5" fill="#ca5790" />
+          <g transform="translate(125, 275) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(210, 280) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+        </svg>
+      </div>
       <div class="logo-text">
-        <h1>D'Zoe</h1>
+        <h2 class="logo-brand-text" style="font-family:'Baloo 2',cursive;color:var(--rose);font-size:28px;line-height:1;font-weight:800;margin:0;" itemprop="name">D'Zoe</h2>
         <span>PERÚ</span>
       </div>
     </a>
 
-    <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
-    <nav class="menu" id="mainMenu">
-      <!-- Botón cerrar solo visible en móvil -->
-      <button class="menu-mobile-close" id="menuCloseBtn" aria-label="Cerrar menú">
-        <i class="fas fa-times"></i>
-      </button>
+    <!-- ── NAVEGACIÓN PRINCIPAL ── -->
+    <nav class="menu" id="mainMenu" aria-label="Menú principal"
+         itemscope itemtype="https://schema.org/SiteNavigationElement">
 
-      <a href="index.html" class="menu-active">🏡 Tienda</a>
-      <a href="#" onclick="openWishlist();closeMobileMenu();return false;">🎀 Lista de Deseos</a>
-      <a href="mi-cuenta.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer">🪪 Mi Cuenta</a>
-      <a href="carrito.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer">🛒 Mi Carrito</a>
-      <a href="blog.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer">🌐 Blog</a>
+      <!-- Cabecera del drawer (solo visible en mobile) -->
+      <div class="menu-drawer-head">
+        <div class="menu-drawer-brand">
+          <span>D'Zoe Perú</span>
+          <small>Ropa infantil importada premium</small>
+        </div>
+        <button class="menu-mobile-close" id="menuCloseBtn" aria-label="Cerrar menú">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
 
-      <!-- Dropdown Información -->
-      <div class="menu-dropdown">
-        <button class="menu-dropdown-btn">🎁 Bonus<i class="fas fa-chevron-down"></i></button>
-        <div class="menu-dropdown-panel">
-          <a href="probador-de-tallas.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-ruler"></i> Probador de Tallas</a>
-		  <a href="productos-digitales.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-newspaper"></i> Productos Digitales</a>
+      <!-- Tienda -->
+      <a href="index.html" class="menu-link menu-active" aria-current="page" itemprop="url">
+        <i class="fas fa-store" aria-hidden="true"></i>
+        <span itemprop="name">Tienda</span>
+      </a>
+
+      <!-- CATEGORÍAS (dropdown con mega-menú) -->
+      <div class="menu-dropdown" id="ddCategorias">
+        <button class="menu-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-controls="panelCategorias">
+          <i class="fas fa-layer-group" aria-hidden="true"></i>
+          <span>Categorías</span>
+          <i class="fas fa-chevron-down menu-arrow" aria-hidden="true"></i>
+        </button>
+        <div class="menu-dropdown-panel menu-dropdown-panel--cats" id="panelCategorias" role="menu">
+          <a role="menuitem" href="#productos" class="mdp-item mdp-item--all"
+             onclick="filterByCategory('all');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">🌟</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Todos los productos</strong>
+              <span>Colección completa importada</span>
+            </div>
+          </a>
+          <a role="menuitem" href="#vestidos" class="mdp-item"
+             onclick="filterByCategory('vestidos');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">👗</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Vestidos niña</strong>
+              <span>Modelos exclusivos importados</span>
+            </div>
+          </a>
+          <a role="menuitem" href="#abrigos" class="mdp-item"
+             onclick="filterByCategory('abrigos');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">🧥</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Abrigos infantiles</strong>
+              <span>Temporada frío, premium</span>
+            </div>
+          </a>
+          <a role="menuitem" href="#bebes" class="mdp-item"
+             onclick="filterByCategory('bebes');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">👶</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Bebés 0–24 meses</strong>
+              <span>Ropa delicada para bebés</span>
+            </div>
+          </a>
+          <a role="menuitem" href="#ninos" class="mdp-item"
+             onclick="filterByCategory('ninos');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">👦</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Niños</strong>
+              <span>Casual y formal importado</span>
+            </div>
+          </a>
+          <a role="menuitem" href="#jeans" class="mdp-item"
+             onclick="filterByCategory('jeans');closeMobileMenu();return false;" itemprop="url">
+            <span class="mdp-emoji">👖</span>
+            <div class="mdp-text">
+              <strong itemprop="name">Jeans infantiles</strong>
+              <span>Denim premium para niños</span>
+            </div>
+          </a>
         </div>
       </div>
-      <!-- Dropdown Información -->
-      <div class="menu-dropdown">
-        <button class="menu-dropdown-btn">📋 Info<i class="fas fa-chevron-down"></i></button>
-        <div class="menu-dropdown-panel">
-          <a href="guia-de-tallas.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-table"></i> Guía de Tallas</a>
-          <a href="preguntas-frecuentes.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a>
-		  <a href="politica-de-envios.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-table"></i>Envíos</a>
-          <a href="politica-de-privacidad.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-shield-alt"></i> Política de Privacidad</a>
-          <a href="libro-de-reclamaciones.html" onclick="closeMobileMenu()" target="_blank"
-   rel="noopener noreferrer"><i class="fas fa-book"></i> Libro de Reclamaciones</a>
+
+      <!-- Lista de Deseos -->
+      <a href="#lista-de-deseos" class="menu-link menu-link--wish"
+         onclick="openWishlist();closeMobileMenu();return false;" itemprop="url">
+        <i class="fas fa-heart" aria-hidden="true"></i>
+        <span itemprop="name">Lista de Deseos</span>
+        <span class="menu-pill">Baby Shower</span>
+      </a>
+
+      <!-- Mi Cuenta -->
+      <a href="mi-cuenta.html" class="menu-link" onclick="closeMobileMenu()"
+         target="_blank" rel="noopener noreferrer" itemprop="url">
+        <i class="fas fa-user" aria-hidden="true"></i>
+        <span itemprop="name">Mi Cuenta</span>
+      </a>
+
+      <!-- Blog -->
+      <a href="blog.html" class="menu-link" onclick="closeMobileMenu()"
+         target="_blank" rel="noopener noreferrer" itemprop="url">
+        <i class="fas fa-globe" aria-hidden="true"></i>
+        <span itemprop="name">Blog</span>
+      </a>
+
+      <!-- INFO (dropdown) -->
+      <div class="menu-dropdown" id="ddInfo">
+        <button class="menu-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-controls="panelInfo">
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          <span>Info</span>
+          <i class="fas fa-chevron-down menu-arrow" aria-hidden="true"></i>
+        </button>
+        <div class="menu-dropdown-panel" id="panelInfo" role="menu">
+          <a role="menuitem" href="guia-de-tallas.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-ruler-combined mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Guía de Tallas</strong>
+              <span>CN → PE conversión de tallas</span>
+            </div>
+          </a>
+          <a role="menuitem" href="preguntas-frecuentes.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-question-circle mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Preguntas Frecuentes</strong>
+              <span>Pedidos, envíos y tallas</span>
+            </div>
+          </a>
+          <a role="menuitem" href="politica-de-envios.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-truck mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Política de Envíos</strong>
+              <span>Shalom · todo el Perú</span>
+            </div>
+          </a>
+          <a role="menuitem" href="politica-de-privacidad.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-shield-alt mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Política de Privacidad</strong>
+              <span>Protección de datos</span>
+            </div>
+          </a>
+          <a role="menuitem" href="libro-de-reclamaciones.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-book mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Libro de Reclamaciones</strong>
+              <span>Portal oficial peruano</span>
+            </div>
+          </a>
         </div>
+      </div>
+
+      <!-- BONUS (dropdown) -->
+      <div class="menu-dropdown" id="ddBonus">
+        <button class="menu-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-controls="panelBonus">
+          <i class="fas fa-gift" aria-hidden="true"></i>
+          <span>Bonus</span>
+          <i class="fas fa-chevron-down menu-arrow" aria-hidden="true"></i>
+        </button>
+        <div class="menu-dropdown-panel" id="panelBonus" role="menu">
+          <a role="menuitem" href="probador-de-tallas.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-ruler mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Probador de Tallas</strong>
+              <span>Encuentra tu talla ideal</span>
+            </div>
+          </a>
+          <a role="menuitem" href="productos-digitales.html" class="mdp-item"
+             onclick="closeMobileMenu()" target="_blank" rel="noopener noreferrer" itemprop="url">
+            <i class="fas fa-newspaper mdp-icon" aria-hidden="true"></i>
+            <div class="mdp-text">
+              <strong itemprop="name">Productos Digitales</strong>
+              <span>Descargables exclusivos</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- CTA móvil al fondo del drawer -->
+      <div class="menu-mobile-cta">
+        <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
+           class="menu-wa-cta" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i> Pedir por WhatsApp
+        </a>
       </div>
     </nav>
 
+    <!-- ── ACCIONES DEL HEADER ── -->
     <div class="header-icons">
-      <button class="dark-mode-btn" id="darkModeBtn" title="Modo oscuro"><i class="fas fa-moon"></i></button>
-      <button class="login-btn" id="loginBtn">
-        <i class="fas fa-user"></i>
+      <button class="dark-mode-btn" id="darkModeBtn" title="Modo oscuro" aria-label="Activar modo oscuro">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+      </button>
+      <button class="login-btn" id="loginBtn" aria-label="Iniciar sesión o ver mi cuenta">
+        <i class="fas fa-user" aria-hidden="true"></i>
         <span>Iniciar sesión</span>
       </button>
-      <button class="cart-btn" id="cartIconBtn">
-        <i class="fas fa-shopping-bag"></i>
+      <button class="cart-btn" id="cartIconBtn" aria-label="Ver carrito de compras">
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
         <div class="cart-info">
           <span class="cart-label">CARRITO</span>
           <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
         </div>
         <span class="cart-count-badge" id="cartCountBadge" style="display:none;">0</span>
       </button>
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
     </div>
+
   </div>
 </header>
+
+<!-- Overlay menú mobile (posición fixed sobre toda la página) -->
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
 <!-- HERO STRIP DECORATIVO -->
 <div class="hero-strip" role="presentation" aria-hidden="true"></div>
@@ -3656,21 +4247,30 @@ a, button { cursor: pointer; }
   };
 
   async function loadNuevoIngreso() {
-    /* 1️⃣ Intentar Supabase */
+    /* 1️⃣ Intentar Supabase — reusar instancia global para evitar múltiples GoTrueClient */
     try {
-      var sbUrl = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.URL;
-      var sbKey = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.ANON_KEY;
-      if (sbUrl && sbKey) {
-        var _sb = window.supabase || window.Supabase;
-        if (_sb) {
-          var client = _sb.createClient(sbUrl, sbKey);
-          var res = await client.from('nuevo_ingreso').select('*').eq('id', 1).maybeSingle();
-          if (!res.error && res.data) {
-            /* Sincronizar localStorage como caché */
-            localStorage.setItem(NI_KEY, JSON.stringify(res.data));
-            applyNuevoIngreso(res.data);
-            return;
+      /* Esperar hasta 2s a que supabaseClient esté disponible */
+      let client = window._dzoeSupabaseClient || null;
+      if (!client) {
+        var sbUrl = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.URL;
+        var sbKey = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.ANON_KEY;
+        if (sbUrl && sbKey) {
+          var _sb = window.supabase || window.Supabase;
+          if (_sb) {
+            /* Reutilizar instancia existente si ya fue creada */
+            client = window._dzoeSupabaseClient = _sb.createClient(sbUrl, sbKey, {
+              auth: { storageKey: 'dzoeperu-auth' }
+            });
           }
+        }
+      }
+      if (client) {
+        var res = await client.from('nuevo_ingreso').select('*').eq('id', 1).maybeSingle();
+        if (!res.error && res.data) {
+          /* Sincronizar localStorage como caché */
+          localStorage.setItem(NI_KEY, JSON.stringify(res.data));
+          applyNuevoIngreso(res.data);
+          return;
         }
       }
     } catch(e) { console.warn('NuevoIngreso Supabase:', e); }
@@ -4453,7 +5053,7 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  SUPABASE — inicialización segura (igual que index original)
+//  SUPABASE — inicialización segura, instancia única global
 // ═══════════════════════════════════════════════════════
 const supabaseUrl = window.SUPABASE_CONFIG?.URL;
 const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
@@ -4462,7 +5062,15 @@ let supabaseClient = null;
 try {
   const _sb = window.supabase || window.Supabase;
   if (_sb && supabaseUrl && supabaseKey) {
-    supabaseClient = _sb.createClient(supabaseUrl, supabaseKey);
+    // Reutilizar instancia creada por el banner de nuevo ingreso (si existe)
+    // para evitar "Multiple GoTrueClient instances" warning
+    if (window._dzoeSupabaseClient) {
+      supabaseClient = window._dzoeSupabaseClient;
+    } else {
+      supabaseClient = window._dzoeSupabaseClient = _sb.createClient(supabaseUrl, supabaseKey, {
+        auth: { storageKey: 'dzoeperu-auth' }
+      });
+    }
     console.log('✅ Supabase cliente inicializado');
   } else {
     console.error('❌ SDK Supabase no disponible');
@@ -6282,6 +6890,7 @@ window.addEventListener('DOMContentLoaded', () => {
     btn.classList.toggle('visible', y > 400);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // ← evaluar posición inicial en caso de carga con scroll
   btn.addEventListener('click', () => {
     const scrollEl = document.scrollingElement || document.documentElement || document.body;
     if ('scrollBehavior' in document.documentElement.style) {
@@ -6322,33 +6931,58 @@ document.querySelectorAll('.menu-dropdown').forEach(dd => {
   btn?.addEventListener('click', e => {
     e.stopPropagation();
     const isOpen = dd.classList.contains('open');
-    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('open'));
-    if (!isOpen) dd.classList.add('open');
+    document.querySelectorAll('.menu-dropdown').forEach(d => {
+      d.classList.remove('open');
+      d.querySelector('.menu-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      dd.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
   });
 });
 document.addEventListener('click', () => {
-  document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.menu-dropdown').forEach(d => {
+    d.classList.remove('open');
+    d.querySelector('.menu-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+  });
 });
 
-// ═══ MENÚ HAMBURGUESA ═══
+// ═══ MENÚ HAMBURGUESA — DRAWER LATERAL ═══
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const mainMenu = document.getElementById('mainMenu');
+const menuOverlay = document.getElementById('menuOverlay');
 
 function closeMobileMenu() {
   mainMenu?.classList.remove('open');
-  if (hamburgerBtn) hamburgerBtn.querySelector('i').className = 'fas fa-bars';
+  menuOverlay?.classList.remove('active');
+  if (hamburgerBtn) {
+    hamburgerBtn.querySelector('i').className = 'fas fa-bars';
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  }
+  document.body.style.overflow = '';
 }
 
 hamburgerBtn?.addEventListener('click', () => {
   const isOpen = mainMenu.classList.toggle('open');
+  menuOverlay?.classList.toggle('active', isOpen);
   hamburgerBtn.querySelector('i').className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+  hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
 });
 
 document.getElementById('menuCloseBtn')?.addEventListener('click', closeMobileMenu);
+menuOverlay?.addEventListener('click', closeMobileMenu);
 
-// Cerrar menú al tocar el overlay (fuera del nav)
-mainMenu?.addEventListener('click', e => {
-  if (e.target === mainMenu) closeMobileMenu();
+// Actualizar aria-expanded en dropdowns
+document.querySelectorAll('.menu-dropdown').forEach(dd => {
+  const btn = dd.querySelector('.menu-dropdown-btn');
+  if (btn) {
+    const observer = new MutationObserver(() => {
+      btn.setAttribute('aria-expanded', dd.classList.contains('open') ? 'true' : 'false');
+    });
+    observer.observe(dd, { attributes: true, attributeFilter: ['class'] });
+  }
 });
 
 // ═══════════════════════════════════════════════════════
