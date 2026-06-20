@@ -4701,6 +4701,51 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
   .hub3-cats-wrap { grid-template-columns: repeat(2, 1fr); }
   .hub3-ages-table { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── MEJORA MOBILE: chips en fila horizontal con scroll (mucha menos altura) ── */
+@media (max-width: 768px) {
+  .hub3 { padding: 24px 0 28px; }
+  .hub3-panel { padding: 16px 14px; }
+  .hub3-panel-head { margin-bottom: 12px; padding-bottom: 8px; }
+  .hub3-panel-title { font-size: 16px; }
+  .hub3-ages-table {
+    display: flex;
+    flex-wrap: nowrap;
+    grid-template-columns: unset;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    padding-bottom: 2px;
+    margin: 0 -14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .hub3-ages-table::-webkit-scrollbar { display: none; }
+  .hub3-ages-table .h3-age,
+  .hub3-ages-table .h3-age--all {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    grid-column: auto;
+  }
+  /* Panel promo: fila compacta en vez de bloque alto */
+  .hub3-promo-panel {
+    flex-direction: row;
+    min-height: unset;
+    gap: 14px;
+    padding: 16px 14px;
+    text-align: left;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .h3p-img-frame { width: 110px; flex-shrink: 0; }
+  .h3p-badge, .h3p-cta { width: auto; }
+}
+@media (max-width: 420px) {
+  .hub3-promo-panel { flex-direction: column; text-align: center; justify-content: center; }
+  .h3p-img-frame { width: 100%; }
+  .h3p-badge, .h3p-cta { width: 100%; }
+}
 </style>
 
 <!-- PRODUCTOS -->
