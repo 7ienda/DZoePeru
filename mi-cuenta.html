@@ -2952,13 +2952,14 @@ async function saveProduct() {
   syncProductImagesFromDOM();
   const validImages = productImages.filter(img => img && img.trim() !== '');
   const finalSizes = productSizes.filter(s => s.size && (s.price>0||s.stock>0));
+  const existingProduct = editingProductId ? products.find(p=>p.id===editingProductId) : null;
   const productData = {
     id: editingProductId || Date.now(),
     name, description: desc, images: validImages,
     image: validImages[0]||'', featured: featuredValue, status: statusValue,
     categories: [...selectedCategories],
     sizes: finalSizes.map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock })),
-    created_at: new Date().toISOString()
+    created_at: existingProduct?.created_at || new Date().toISOString()
   };
   if (editingProductId) { const idx = products.findIndex(p=>p.id===editingProductId); if(idx!==-1) products[idx]=productData; }
   else products.unshift(productData);
