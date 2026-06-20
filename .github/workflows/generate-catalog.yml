@@ -46,3 +46,4 @@ jobs:
           git commit -m "chore: regenerar catalog.xml y páginas de producto [skip ci]" || echo "No changes"
           git pull --rebase origin main
           git push origin main
+          
