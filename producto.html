@@ -520,10 +520,13 @@ let wishlist       = [];
 
 // ── Supabase init ──
 (function(){
-  const {createClient} = window.supabase;
+  const {createClient} = window.supabase || {};
   const cfg = window.SUPABASE_CONFIG;
-  if(createClient && cfg?.URL && cfg?.ANON_KEY)
+  if(createClient && cfg?.URL && cfg?.ANON_KEY){
     supabaseClient = createClient(cfg.URL, cfg.ANON_KEY);
+  } else {
+    console.error('❌ No se pudo inicializar Supabase. window.supabase:', !!window.supabase, 'config:', cfg);
+  }
 })();
 
 // ── Dark mode ──
@@ -545,11 +548,9 @@ function buildSlug(p){
 // ── Cargar producto ──
 async function loadProduct(slug){
   if(!supabaseClient){showError();return;}
-  let {data,error} = await supabaseClient.from('products').select('*').eq('slug',slug).single();
-  if(error||!data){
-    const {data:all} = await supabaseClient.from('products').select('*');
-    data = all ? all.find(p=>buildSlug(p)===slug)||null : null;
-  }
+  const {data:all,error} = await supabaseClient.from('products').select('*');
+  if(error){ console.error('❌ Error Supabase:', error.message); showError(); return; }
+  const data = all ? all.find(p=>buildSlug(p)===slug)||null : null;
   if(!data){showError();return;}
   currentProduct = data;
   renderProduct(data);
