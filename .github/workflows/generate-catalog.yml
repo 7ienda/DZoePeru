@@ -32,11 +32,17 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: node generate-catalog.js
 
+      - name: Generate product pages + sitemap + products.json
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node generate-products.js
+
       - name: Commit and push catalog
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add catalog.xml
-          git commit -m "chore: regenerar catalog.xml [skip ci]" || echo "No changes"
+          git add catalog.xml sitemap.xml products.json productos
+          git commit -m "chore: regenerar catalog.xml y páginas de producto [skip ci]" || echo "No changes"
           git pull --rebase origin main
           git push origin main
