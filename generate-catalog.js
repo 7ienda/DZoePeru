@@ -89,12 +89,9 @@ ${extraLines ? extraLines + '\n' : ''}    <g:availability>${hasStock ? 'in stock
   </item>`;
   });
 
-  // IMPORTANTE: las dos líneas de guiones al inicio hacen que Jekyll
-  // no procese este archivo y lo sirva tal cual.
-  return `---
-layout: none
----
-<?xml version="1.0" encoding="UTF-8"?>
+  // Nota: el repo usa .nojekyll, así que GitHub Pages sirve los archivos
+  // tal cual (sin pasar por Jekyll). NO se debe agregar front matter aquí.
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>${esc(BRAND)} — Catálogo de Productos</title>
