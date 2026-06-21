@@ -3768,16 +3768,145 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
   .talla-float-btn { width: 48px !important; height: 48px !important; font-size: 9px !important; }
   .talla-float-btn i { font-size: 15px !important; }
 }
-</style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8R3YQCL0B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-Z8R3YQCL0B');
-</script>
+/* ═══════════════════════════════════════════════════════
+   📱 OPTIMIZACIONES MOBILE — D'ZOE PERÚ
+   - 1 columna productos
+   - Etiquetas reubicadas (no tapan imagen)
+   - Ocultar sección próximo ingreso
+   - Mejor rendimiento
+═══════════════════════════════════════════════════════ */
+
+/* ── Ocultar sección Próximo Ingreso completamente en mobile ── */
+@media (max-width: 768px) {
+  .proximos-section { display: none !important; }
+  .hero-countdown-banner { display: none !important; }
+  .hero-prox-trust { display: none !important; }
+  .hero-cat-bar { display: none !important; }
+}
+
+/* ── Etiquetas de producto: mover DEBAJO de la imagen (no encima) ── */
+/* Reposicionar .product-ribbons de absoluta sobre imagen a relativa debajo */
+@media (max-width: 768px) {
+  /* Quitar posición absoluta, colocar debajo de la imagen dentro del body */
+  .product-ribbons {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 6px 10px 2px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+    background: transparent !important;
+    order: -1;
+  }
+  .product-ribbons .product-badge,
+  .product-ribbons .product-ribbon {
+    position: static !important;
+    font-size: 9px !important;
+    padding: 2px 8px !important;
+    border-radius: 20px !important;
+  }
+  /* El body de la card pasa a tener las etiquetas al inicio */
+  .product-body {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* ── 1 columna de productos en mobile ── */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Imagen más alta en columna única para lucir mejor */
+  .product-img-wrap {
+    aspect-ratio: 4/3 !important;
+  }
+  .product-card {
+    border-radius: 18px !important;
+  }
+  /* Body con más padding al tener más espacio */
+  .product-body {
+    padding: 12px 14px 10px !important;
+  }
+  .product-body h4 {
+    font-size: 14px !important;
+  }
+}
+
+/* ── Contenedor de productos centrado en mobile ── */
+@media (max-width: 768px) {
+  .products { padding: 20px 0 60px !important; }
+  .products > .container {
+    padding: 0 12px !important;
+  }
+  /* Ocultar animaciones pesadas en mobile para mejorar rendimiento */
+  .product-card { animation: none !important; }
+  .benefit-item { animation: none !important; }
+  .prox-ni-card { animation: none !important; }
+  /* Deshabilitar hover effects pesados en mobile (touch no los usa igual) */
+  .product-card:hover { transform: none !important; }
+  /* Reducir blur effects costosos */
+  .header.scrolled { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  /* Ocultar corazones decorativos en mobile (carga JS innecesaria visualmente) */
+  #hearts-canvas { display: none !important; }
+}
+
+/* ── Categorías en mobile: scroll horizontal compacto ── */
+@media (max-width: 768px) {
+  .category-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 8px !important;
+    gap: 10px !important;
+    scroll-snap-type: x mandatory;
+  }
+  .category-card {
+    flex-shrink: 0 !important;
+    width: 90px !important;
+    scroll-snap-align: start;
+  }
+  .cat-img-wrap { padding: 6px !important; }
+  .cat-label { font-size: 9.5px !important; padding: 6px 4px 8px !important; }
+}
+
+/* ── Topbar: ocultar teléfono en pantallas muy pequeñas ── */
+@media (max-width: 380px) {
+  .topbar-right span { display: none !important; }
+}
+
+/* ── Quitar hover card shadow en touch para performance ── */
+@media (hover: none) {
+  .product-card:hover { transform: none !important; box-shadow: var(--shadow-sm) !important; }
+  .product-card:hover .img-slides img { transform: none !important; }
+  .category-card:hover { transform: none !important; }
+  .wishlist-btn:hover { transform: none !important; }
+}
+
+/* ── Etiquetas compactas dentro del body (mobile) ── */
+.product-ribbons-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.product-ribbons-inline .product-badge,
+.product-ribbons-inline .product-ribbon {
+  position: static !important;
+  font-size: 9px !important;
+  padding: 2px 9px !important;
+  border-radius: 20px !important;
+  letter-spacing: 0.4px !important;
+}
+</style>
 </head>
 <body>
 
@@ -6229,8 +6358,13 @@ function renderProductCard(product) {
   const waMsg = encodeURIComponent(`Hola D'Zoe Perú, me interesa el producto: ${product.name}. ¿Tienen disponibilidad?`);
   const waUrl = `https://wa.me/51956063145?text=${waMsg}`;
 
+  const isMobile = window.innerWidth <= 768;
+  // En mobile, las etiquetas van dentro del body (no sobre la imagen)
+  const ribbonsInImage  = !isMobile && ribbonsHtml ? `<div class="product-ribbons">${ribbonsHtml}</div>` : '';
+  const ribbonsInBody   =  isMobile && ribbonsHtml ? `<div class="product-ribbons-inline">${ribbonsHtml}</div>` : '';
+
   return `<div class="product-card" data-product-id="${product.id}" data-id="${product.id}" data-name="${product.name}" data-price="${minP||0}">
-    ${ribbonsHtml ? `<div class="product-ribbons">${ribbonsHtml}</div>` : ''}
+    ${ribbonsInImage}
     <div class="product-img-wrap">
       ${imgHtml}
       ${isAgotado ? `<div class="agotado-overlay"><img src="https://www.psycolab.com/wp-content/uploads/agotado-chincheta.png" alt="Agotado"></div>` : ''}
@@ -6243,6 +6377,7 @@ function renderProductCard(product) {
       </div>
     </div>
     <div class="product-body">
+      ${ribbonsInBody}
       ${buildTagsHtml(product)}
       <h4 onclick="openProductPage('${product.id}')" style="cursor:pointer;">${product.name}</h4>
       <div class="product-desc">${product.description||'Alta calidad para los más pequeños'}</div>
