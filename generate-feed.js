@@ -46,7 +46,7 @@ function fetchProducts() {
   return new Promise((resolve, reject) => {
     // Join con categorías usando el select de Supabase
     const query = encodeURIComponent(
-    "id,name,description,price,image_url,slug,created_at,brand,categories"
+   "id,name,description,price,image,slug,created_at,brand,categories"
     );
     const url = `${SUPABASE_URL}/rest/v1/products?select=${query}&order=created_at.desc&limit=${MAX_ITEMS}`;
 
@@ -80,7 +80,7 @@ function buildFeed(products) {
     const url      = productUrl(p);
     const title    = escapeXml(p.name || "Producto D'Zoe Perú");
    const catName  = p.categories || "Ropa Infantil";
-    const imgUrl   = escapeXml(p.image_url || `${SITE_URL}/og-image.jpg`);
+const imgUrl   = escapeXml(p.image || `${SITE_URL}/og-image.jpg`);
     const brand    = p.brand    ? `<strong>Marca:</strong> ${escapeXml(p.brand)}<br>` : "";
     const price    = p.price    ? `<strong>Precio:</strong> S/ ${Number(p.price).toFixed(2)}<br>` : "";
     const desc     = escapeXml(p.description || `Producto importado premium de la categoría ${catName}.`);
