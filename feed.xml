@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+
+  <channel>
+    <title>D'Zoe Perú — Ropa Infantil Importada Premium</title>
+    <link>https://dzoeperu.com/</link>
+    <description>Tienda N°1 de ropa infantil importada premium en Perú. Vestidos, abrigos, conjuntos y bodies para bebés y niños de 0 a 14 años. Envíos a todo el Perú por Shalom.</description>
+    <language>es-pe</language>
+    <copyright>Copyright 2026 D'Zoe Perú</copyright>
+    <managingEditor>ventas@dzoeperu.com (D'Zoe Perú)</managingEditor>
+    <webMaster>ventas@dzoeperu.com (D'Zoe Perú)</webMaster>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 -0500</pubDate>
+    <lastBuildDate>Sun, 21 Jun 2026 00:00:00 -0500</lastBuildDate>
+    <category>Ropa Infantil</category>
+    <category>Moda Niños Perú</category>
+    <ttl>1440</ttl>
+    <image>
+      <url>https://dzoeperu.com/og-image.jpg</url>
+      <title>D'Zoe Perú — Ropa Infantil Importada Premium</title>
+      <link>https://dzoeperu.com/</link>
+      <width>144</width>
+      <height>144</height>
+      <description>Logo D'Zoe Perú</description>
+    </image>
+    <atom:link href="https://dzoeperu.com/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <!-- ═══ NOVEDADES / ÍTEMS ═══ -->
+
+    <item>
+      <title>Nueva Colección Invierno 2026 — Abrigos Infantiles Premium</title>
+      <link>https://dzoeperu.com/#abrigos</link>
+      <guid isPermaLink="false">dzoeperu-abrigos-invierno-2026</guid>
+      <pubDate>Sun, 21 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Abrigos Infantiles</category>
+      <description><![CDATA[
+        <p>¡Llegan los abrigos de invierno 2026! Modelos importados de lana doble face y materiales premium para niños de 4 a 14 años.</p>
+        <p>Tallas disponibles: 4 — 14 años | Precio desde S/ 89</p>
+        <p>Envíos a todo el Perú por Shalom 🚚</p>
+        <a href="https://dzoeperu.com/#abrigos">Ver colección completa</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Vestidos para Niñas — Modelos Exclusivos Importados 2026</title>
+      <link>https://dzoeperu.com/#vestidos</link>
+      <guid isPermaLink="false">dzoeperu-vestidos-ninas-2026</guid>
+      <pubDate>Fri, 19 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Vestidos para Niñas</category>
+      <description><![CDATA[
+        <p>Vestidos floreados, de fiesta y casuales para niñas de 2 a 14 años. Modelos exclusivos importados con telas de alta gama.</p>
+        <p>Perfectos para cumpleaños, reuniones y uso diario.</p>
+        <p>Precio desde S/ 45 | Tallas 2 — 14 años</p>
+        <a href="https://dzoeperu.com/#vestidos">Ver vestidos</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Conjuntos y Bodies para Bebés — Algodón y Bambú Premium</title>
+      <link>https://dzoeperu.com/#bebes</link>
+      <guid isPermaLink="false">dzoeperu-conjuntos-bebes-2026</guid>
+      <pubDate>Wed, 17 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Ropa para Bebés</category>
+      <description><![CDATA[
+        <p>Conjuntos y bodies de algodón y bambú para bebés de 0 a 24 meses. Suaves, hipoalergénicos y perfectos para la piel delicada de tu bebé.</p>
+        <p>Ideal para Lista de Deseos Baby Shower 🎀</p>
+        <p>Precio desde S/ 30 | Tallas 0 — 24 meses</p>
+        <a href="https://dzoeperu.com/#bebes">Ver conjuntos bebé</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Vestidos de Bautizo y Ocasión Especial — Bebés y Niñas</title>
+      <link>https://dzoeperu.com/#bautizo</link>
+      <guid isPermaLink="false">dzoeperu-vestidos-bautizo-2026</guid>
+      <pubDate>Mon, 15 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Vestidos de Bautizo</category>
+      <description><![CDATA[
+        <p>Vestidos blancos y de colores para bautizos, primeras comuniones y ocasiones especiales. Modelos importados únicos para bebés y niñas.</p>
+        <p>Envíos a Lima, Arequipa, Cusco, Trujillo, Huancayo y todo el Perú 🚚</p>
+        <a href="https://dzoeperu.com/#bautizo">Ver vestidos de bautizo</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Jeans Infantiles y Pantalones de Moda — Niños y Niñas</title>
+      <link>https://dzoeperu.com/#jeans</link>
+      <guid isPermaLink="false">dzoeperu-jeans-infantiles-2026</guid>
+      <pubDate>Sat, 13 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Jeans Infantiles</category>
+      <description><![CDATA[
+        <p>Jeans y pantalones de moda para niños y niñas. Modelos actuales importados con telas de calidad premium.</p>
+        <p>Tallas disponibles: 2 — 14 años | Precio desde S/ 55</p>
+        <a href="https://dzoeperu.com/#jeans">Ver jeans infantiles</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Overoles y Bodies — Moda Infantil Importada</title>
+      <link>https://dzoeperu.com/#overoles</link>
+      <guid isPermaLink="false">dzoeperu-overoles-bodies-2026</guid>
+      <pubDate>Thu, 11 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Overoles y Bodies</category>
+      <description><![CDATA[
+        <p>Overoles y bodies importados para bebés y niños pequeños. Diseños modernos y telas cómodas para el día a día.</p>
+        <a href="https://dzoeperu.com/#overoles">Ver overoles y bodies</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Cardigans y Buzos Infantiles — Abrigo Ligero para Niños</title>
+      <link>https://dzoeperu.com/#cardigans</link>
+      <guid isPermaLink="false">dzoeperu-cardigans-buzos-2026</guid>
+      <pubDate>Tue, 09 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Cardigans y Buzos</category>
+      <description><![CDATA[
+        <p>Cardigans y buzos infantiles importados. Abrigo ligero ideal para el día a día, perfectos para Lima, sierra y selva.</p>
+        <p>Tallas: bebés hasta 14 años | Precio desde S/ 40</p>
+        <a href="https://dzoeperu.com/#cardigans">Ver cardigans y buzos</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+    <item>
+      <title>Lista de Deseos Baby Shower — Regala Ropa Premium D'Zoe Perú</title>
+      <link>https://dzoeperu.com/#wishlist</link>
+      <guid isPermaLink="false">dzoeperu-lista-deseos-baby-shower</guid>
+      <pubDate>Sun, 07 Jun 2026 08:00:00 -0500</pubDate>
+      <dc:creator>D'Zoe Perú</dc:creator>
+      <category>Baby Shower</category>
+      <description><![CDATA[
+        <p>Crea tu Lista de Deseos para Baby Shower con los productos favoritos de D'Zoe Perú. Comparte el enlace con familiares y amigos para recibir exactamente lo que necesitas para tu bebé 🎀</p>
+        <p>Ropa premium para recién nacidos, bebés de 0 a 24 meses. ¡El regalo perfecto!</p>
+        <a href="https://dzoeperu.com/#wishlist">Crear mi lista de deseos</a>
+      ]]></description>
+      <media:content url="https://dzoeperu.com/og-image.jpg" medium="image" width="1200" height="630"/>
+    </item>
+
+  </channel>
+</rss>
