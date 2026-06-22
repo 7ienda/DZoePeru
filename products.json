@@ -1803,6 +1803,19 @@
     "url": "/productos/abrigo-osita-de-nieve.html"
   },
   {
+    "id": 1782070013307,
+    "slug": "conjunto-3-piezas-oso-amarillo",
+    "name": "Conjunto 3 piezas Oso amarillo",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8u_2TN3PKUajU9SUuxMEUaA7KG1RXCLXNxe9U2u2cSv3h57UesulUYX6m30TW_WpdsLkbwLpK-bbwJ2xF5KjXEIHwifjrJAMIPdv2KghwQZHUJrAk3cF5PhiztD20t7bHkEpfxTjyCz0FL_6r5OTlUgFc2XyZpkAfTDMcYjV9ZanpUQ-LMyaopxP7Yk4/s16000/gf2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-3-piezas-oso-amarillo.html"
+  },
+  {
     "id": 1780261783874,
     "slug": "conjunto-primavera-falda-tutu",
     "name": "Conjunto  Primavera Falda Tutú",
@@ -1830,6 +1843,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-fresh-fresita.html"
+  },
+  {
+    "id": 1782070490307,
+    "slug": "casaca-pink-forrito-osito-bear",
+    "name": "Casaca Pink forrito Osito bear",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRuplV9CenhJpuu1FsD85CknNU02x0cTH-sareW-Ul80hcbHMoqOc6ycBwSuSiQNiZ67hT-iZCokhyphenhyphenL4DMq7TNCYqjl4qmHUA9LFNEFFSG2JstwbAjSWVwbPa_f3lhC1BaNwrKBn-XIH4_8kLiAHW2tqBLhqCuKRelc6xoCwZPRemEf8xWNORyjpb3kpM/s16000/dfd2.png",
+    "categories": [
+      "Casacas",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-pink-forrito-osito-bear.html"
   },
   {
     "id": 1780368375888,
@@ -1924,6 +1950,32 @@
     ],
     "inStock": true,
     "url": "/productos/baby-corazon-brown.html"
+  },
+  {
+    "id": 1782071148179,
+    "slug": "vestido-valentina",
+    "name": "Vestido Valentina",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjizDpAfRaGMT9Hvd-p2Zr9fOTXH1i7tpuuZC3Bum_l1G22Pz7aP-iJ_kWoDSA4ogFLtsYQCucNXnGVLH4ZQTNjnXG_axDiEAodh3LfII0dfBS-Fr9nDnfuqfi6mLrDpB3lVZL-KT6tFcel8wimaAHb2rHFRUqKtukQOcJmr7RRNojpwG-sy0Dc8s0DSs8/s16000/t2.png",
+    "categories": [
+      "Vestidos",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-valentina.html"
+  },
+  {
+    "id": 1782071753299,
+    "slug": "conjunto-bunny-caramelo",
+    "name": "Conjunto bunny Caramelo",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXy6-M2spO7Tk8QjBoAycxSiJCyIinvCkL1sb-vIvm3xjkiVdoptnk0BjS1JQNCjuaU3vmibMfnWAip_rQ5o9txW1WxTYjASVrXyPJTNc-3v4Evkf_vRJxicW2rnH40-lis2uQNm9b94GP72GcpRRg0GpQ968gyjsXSlSRmDIcGiHZCXhQ05Hq_rknLhk/s16000/GD2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-bunny-caramelo.html"
   },
   {
     "id": 1780105156748,
