@@ -1616,7 +1616,7 @@ body.dark-mode .product-price{color:#e8a0c0;}
 
 /* Mobile */
 @media(max-width:768px){
-  .product-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .product-grid{grid-template-columns:1fr;gap:14px;}
   .product-body{padding:11px 12px 14px;}
   .product-body h4{font-size:13.5px;}
   .product-price{font-size:22px;}
@@ -2042,6 +2042,7 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 /* ===================== RESPONSIVE ===================== */
 @media(max-width:1100px){.product-grid{grid-template-columns:repeat(3,1fr);}.age-grid-modern-full{grid-template-columns:repeat(4,1fr);}.container{width:100%;padding:0 16px;}}
 @media(max-width:900px){.category-grid{grid-template-columns:repeat(4,1fr);gap:12px;}.age-grid-modern-full{grid-template-columns:repeat(3,1fr);}.footer-main{grid-template-columns:1fr 1fr;gap:30px;}.product-grid{grid-template-columns:repeat(2,1fr);gap:14px;}}
+@media(max-width:768px){.product-grid{grid-template-columns:1fr !important;gap:14px !important;}}
 /* ── Botón cerrar menú móvil ── */
 .menu-mobile-close{display:none;}
 @media(max-width:768px){
@@ -2101,7 +2102,7 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   .login-btn span{display:none;}
   .cart-label{display:none;}
   .dark-mode-btn{width:34px;height:34px;font-size:13px;}
-  .product-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .product-grid{grid-template-columns:1fr !important;gap:14px !important;}
   .age-grid-modern-full{grid-template-columns:repeat(3,1fr);}
   .footer-main{grid-template-columns:1fr;gap:28px;}
   .section-title h3{font-size:26px;}
@@ -2241,16 +2242,17 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   .dark-mode-btn { width: 30px; height: 30px; font-size: 12px; }
 }
 
-/* ── Tarjetas de producto en grilla ── */
+/* ── Tarjetas de producto ≤ 400px ── */
 @media(max-width:400px){
-  .product-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
-  .product-img-wrap { border-radius: 12px 12px 0 0; }
-  .product-body { padding: 8px 8px 6px; }
-  .product-body h4 { font-size: 11px; line-height: 1.3; }
-  .product-price { font-size: 13px; }
-  .size-btn,.size-option { font-size: 9.5px; padding: 2px 5px; border-radius: 5px; }
-  .add-to-cart { font-size: 10.5px; padding: 7px 6px; border-radius: 10px; }
-  .whatsapp-btn { font-size: 10px; padding: 6px 6px; }
+  .product-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .product-card { grid-template-columns: 110px 1fr !important; min-height: 130px !important; }
+  .product-img-wrap { width: 110px !important; min-height: 130px !important; }
+  .product-body { padding: 10px 10px 8px !important; }
+  .product-body h4 { font-size: 12px !important; line-height: 1.3 !important; }
+  .product-price { font-size: 14px !important; }
+  .size-btn,.size-option { font-size: 9.5px !important; padding: 2px 5px !important; border-radius: 5px !important; }
+  .add-to-cart { font-size: 11px !important; padding: 7px 8px !important; border-radius: 9px !important; }
+  .whatsapp-btn { font-size: 10.5px !important; padding: 6px 8px !important; }
 }
 
 /* ── Footer ── */
@@ -3500,96 +3502,131 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
   .hero-cat-bar { display: none !important; }
 }
 
-/* ── PRODUCTOS: 2 columnas compactas en mobile (mejor densidad) ── */
+/* ── PRODUCTOS: 1 columna en mobile ── */
 @media (max-width: 768px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 480px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .product-card {
+    display: grid !important;
+    grid-template-columns: 140px 1fr !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    min-height: 160px !important;
   }
   .product-img-wrap {
     aspect-ratio: 3/4 !important;
+    width: 140px !important;
+    height: 100% !important;
+    min-height: 160px !important;
+    flex-shrink: 0 !important;
+    border-radius: 0 !important;
   }
-  .product-card {
-    border-radius: 16px !important;
-    overflow: hidden !important;
+  .product-img-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .product-ribbons {
+    position: absolute !important;
+    top: 6px !important;
+    left: 6px !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    padding: 0 !important;
+    z-index: 2 !important;
+  }
+  .wishlist-btn {
+    top: 6px !important;
+    right: 6px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 13px !important;
   }
   .product-body {
-    padding: 10px 10px 8px !important;
+    padding: 12px 14px 12px !important;
     display: flex !important;
     flex-direction: column !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
   }
   .product-body h4 {
-    font-size: 12.5px !important;
-    line-height: 1.3 !important;
-    margin-bottom: 4px !important;
+    font-size: 13.5px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 2px !important;
   }
   .product-price {
-    font-size: 16px !important;
+    font-size: 17px !important;
   }
-  .product-desc { display: none !important; }
-  /* Botones más compactos */
-  .add-to-cart {
+  .product-desc {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
     font-size: 11.5px !important;
-    padding: 9px 8px !important;
+    color: var(--text-soft) !important;
+  }
+  /* Botones full-width */
+  .add-to-cart {
+    font-size: 12px !important;
+    padding: 9px 10px !important;
     border-radius: 10px !important;
     gap: 5px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
-  .add-to-cart .btn-price { font-size: 10.5px !important; }
+  .add-to-cart .btn-price { font-size: 11px !important; }
   .whatsapp-btn {
-    font-size: 11px !important;
-    padding: 7px 8px !important;
+    font-size: 11.5px !important;
+    padding: 8px 10px !important;
     border-radius: 10px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
-  /* Tallas compactas */
+  /* Tallas */
   .size-btn, .size-option {
-    font-size: 9.5px !important;
-    padding: 3px 6px !important;
-    min-width: 38px !important;
+    font-size: 10px !important;
+    padding: 3px 7px !important;
+    min-width: 36px !important;
     border-radius: 8px !important;
+  }
+  .product-sizes {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
   }
 }
 
-/* ── 1 columna en pantallas muy pequeñas ── */
+/* ── Pantallas muy pequeñas ≤ 380px ── */
 @media (max-width: 380px) {
   .product-grid {
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    max-width: 340px !important;
+    gap: 12px !important;
+    max-width: 100% !important;
     margin: 0 auto !important;
   }
-  .product-img-wrap { aspect-ratio: 4/3 !important; }
-  .product-body h4 { font-size: 13px !important; }
+  .product-card {
+    grid-template-columns: 120px 1fr !important;
+    min-height: 140px !important;
+  }
+  .product-img-wrap {
+    width: 120px !important;
+    min-height: 140px !important;
+  }
+  .product-body h4 { font-size: 12.5px !important; }
+  .product-price { font-size: 15px !important; }
 }
 
-/* ── Etiquetas de producto: reposicionar en mobile ── */
+/* ── Etiquetas de producto en mobile ── */
 @media (max-width: 768px) {
-  .product-ribbons {
-    position: static !important;
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 3px !important;
-    padding: 5px 8px 2px !important;
-    top: auto !important; left: auto !important;
-    z-index: auto !important;
-    background: transparent !important;
-    order: -1;
-  }
   .product-ribbons .product-badge,
   .product-ribbons .product-ribbon {
-    position: static !important;
     font-size: 8.5px !important;
     padding: 2px 7px !important;
     border-radius: 20px !important;
-  }
-  /* Wishlist btn: más pequeño en mobile */
-  .wishlist-btn {
-    width: 28px !important; height: 28px !important;
-    font-size: 13px !important;
-    top: 6px !important; right: 6px !important;
   }
 }
 
@@ -6195,15 +6232,19 @@ function renderProductCard(product) {
     imgHtml = `<img src="${productImages[0] || 'https://placehold.co/400x300'}" alt="${product.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
   }
 
-  // Tallas
+  // Tallas con edad + estado de stock
   const sizesHtml = sizes.map((sz, idx) => {
     let cls = 'size-option';
     if (sz.stock <= 0) cls += ' out-stock';
     else if (sz.stock < 5) cls += ' low-stock';
     if (selectedSizes[product.id] === idx) cls += ' selected';
+    let stockBadge = '';
+    if (sz.stock <= 0)      stockBadge = '\u274c Agotado';
+    else if (sz.stock < 5)  stockBadge = `\u26a0\ufe0f ${sz.stock} \u00faltima${sz.stock===1?'':'s'}`;
+    else                    stockBadge = `\u2713 ${sz.stock} disp.`;
     return `<button class="${cls}" onclick="selectSize('${product.id}',${idx})">
-      <span>${sz.size}</span>
-      <span class="size-stock-badge">${sz.stock > 0 ? `📦 ${sz.stock} stock` : '❌'}</span>
+      <span class="size-age">${sz.size}</span>
+      <span class="size-stock-badge">${stockBadge}</span>
     </button>`;
   }).join('');
 
@@ -6214,64 +6255,78 @@ function renderProductCard(product) {
   const priceDisplay = displayPrice > 0 ? `S/ ${displayPrice.toFixed(2)}` : 'Consultar';
   const discountPct = hasOffer ? Math.round((1 - offerPrice / minP) * 100) : 0;
 
-  // Ribbon
+  // Stock global
+  const totalStock = sizes.reduce((s,sz) => s + (sz.stock||0), 0);
+  let stockInfoHtml = '';
+  if (!hasStock)         stockInfoHtml = `<span class="pc-stock-info pc-stock-out"><i class="fas fa-ban" style="font-size:9px"></i> Agotado</span>`;
+  else if (totalStock<8) stockInfoHtml = `<span class="pc-stock-info pc-stock-low"><i class="fas fa-fire" style="font-size:9px"></i> Pocas unidades</span>`;
+  else                   stockInfoHtml = `<span class="pc-stock-info pc-stock-ok"><i class="fas fa-check-circle" style="font-size:9px"></i> En stock</span>`;
+
+  // Ribbons
   const ribbonLabel = getProductRibbonLabel(product, products);
   const ribbonStyle = getProductRibbonStyle(ribbonLabel);
   const isAgotado = ribbonLabel === 'Agotado';
 
   let ribbonsHtml = '';
-  if (product.featured && !isAgotado) ribbonsHtml += '<div class="product-badge">⭐ Destacado</div>';
+  if (product.featured && !isAgotado) ribbonsHtml += '<div class="product-badge">\u2728 Nuevo</div>';
   if (ribbonLabel && ribbonLabel !== 'Agotado') ribbonsHtml += `<div class="product-ribbon" style="${ribbonStyle}">${ribbonLabel}</div>`;
 
-  const waMsg = encodeURIComponent(`Hola D'Zoe Perú, me interesa el producto: ${product.name}. ¿Tienen disponibilidad?`);
+  const waMsg = encodeURIComponent(`Hola D'Zoe Per\u00fa, me interesa: ${product.name}. \u00bfTienen disponibilidad?`);
   const waUrl = `https://wa.me/51956063145?text=${waMsg}`;
 
   const isMobile = window.innerWidth <= 768;
-  // En mobile, las etiquetas van dentro del body (no sobre la imagen)
-  const ribbonsInImage  = !isMobile && ribbonsHtml ? `<div class="product-ribbons">${ribbonsHtml}</div>` : '';
-  const ribbonsInBody   =  isMobile && ribbonsHtml ? `<div class="product-ribbons-inline">${ribbonsHtml}</div>` : '';
+  const ribbonsInImage = !isMobile && ribbonsHtml ? `<div class="product-ribbons">${ribbonsHtml}</div>` : '';
+  const ribbonsInBody  =  isMobile && ribbonsHtml ? `<div class="product-ribbons-inline">${ribbonsHtml}</div>` : '';
+
+  const priceBlock = hasOffer
+    ? `<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+         <div class="product-price">${priceDisplay}</div>
+         <div style="text-decoration:line-through;font-size:13px;color:var(--text-soft);opacity:.6;font-family:'Nunito',sans-serif;">S/ ${minP.toFixed(2)}</div>
+         <div style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;">\u2212${discountPct}%</div>
+       </div>`
+    : `<div class="product-price">${priceDisplay}</div>`;
 
   return `<div class="product-card" data-product-id="${product.id}" data-id="${product.id}" data-name="${product.name}" data-price="${minP||0}">
     ${ribbonsInImage}
     <div class="product-img-wrap">
       ${imgHtml}
       ${isAgotado ? `<div class="agotado-overlay"><img src="https://www.psycolab.com/wp-content/uploads/agotado-chincheta.png" alt="Agotado"></div>` : ''}
-      ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Agregar a lista de deseos">
+      ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
       </button>` : ''}
       <div class="product-quick">
-        <button class="btn-sm btn-sm-primary" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}>🛒 Agregar</button>
-        <button class="btn-sm btn-sm-ghost" onclick="openProductPage('${product.id}')">👁️ Ver</button>
+        <button class="btn-sm btn-sm-ghost" onclick="openProductPage('${product.id}')"><i class="fas fa-eye"></i> Ver</button>
+        <button class="btn-sm btn-sm-primary" onclick="addToCartById('${product.id}')" ${!hasStock?'disabled':''}><i class="fas fa-bag-shopping"></i> Agregar</button>
       </div>
     </div>
+
     <div class="product-body">
       ${ribbonsInBody}
       ${buildTagsHtml(product)}
-      <h4 onclick="openProductPage('${product.id}')" style="cursor:pointer;">${product.name}</h4>
-      <div class="product-desc">${product.description||'Alta calidad para los más pequeños'}</div>
-      <div class="sizes-container">${sizesHtml}</div>
+      <h4 onclick="openProductPage('${product.id}')">${product.name}</h4>
+
+      ${sizes.length ? `
+      <div class="pc-ages-label"><i class="fas fa-child-reaching"></i> Edades disponibles</div>
+      <div class="sizes-container">${sizesHtml}</div>` : ''}
+
       <div class="product-footer">
-        <div class="product-price-row">
-          <div>
-            <div class="product-price-label">${hasOffer ? 'Precio de oferta' : 'Desde'}</div>
-            ${hasOffer ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <div class="product-price" style="color:var(--rose-dark);">${priceDisplay}</div>
-              <div style="text-decoration:line-through;font-size:12px;color:var(--text-soft);opacity:.7;">S/ ${minP.toFixed(2)}</div>
-              <div style="background:#dc2626;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:99px;">-${discountPct}%</div>
-            </div>` : `<div class="product-price">${priceDisplay}</div>`}
-          </div>
+        <div>
+          <div class="product-price-label">${hasOffer ? '\u2728 Precio especial' : 'Precio'}</div>
+          ${priceBlock}
+          ${stockInfoHtml}
         </div>
-        <button class="view-product-btn" onclick="openProductPage('${product.id}')">
-          <i class="fas fa-eye"></i> Ver producto
-        </button>
+
         ${hasStock
           ? `<button class="add-to-cart" onclick="addToCartById('${product.id}')">
-              <i class="fas fa-shopping-bag"></i> Agregar al carrito
+               <i class="fas fa-shopping-bag"></i> Agregar al carrito
              </button>`
           : `<button class="reingreso-btn" onclick="pedirReingreso('${product.id}')">
-              <i class="fas fa-bell"></i> Pedir Reingreso
+               <i class="fas fa-bell"></i> Avisar cuando llegue
              </button>`
         }
+        <button class="view-product-btn" onclick="openProductPage('${product.id}')">
+          Ver detalles
+        </button>
         <a href="${waUrl}" target="_blank" rel="noopener" class="whatsapp-btn">
           <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
         </a>
