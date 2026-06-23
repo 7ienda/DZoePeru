@@ -3871,12 +3871,12 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
     <!-- Ticker central (mobile: oculto) -->
     <div class="topbar-ticker" aria-hidden="true">
       <div class="topbar-ticker-inner" id="topbarTicker">
-        <span>🎀 Modelos exclusivos importados 2026</span>
-        <span>✨ Telas premium · 0 a 14 años</span>
+        <span>🎀 Colección 2026 — modelos únicos importados</span>
+        <span>✨ Telas premium · bebés 0 meses a 14 años</span>
         <span>💳 Yape · Plin · Efectivo · Tarjeta</span>
-        <span>🏪 También en Gamarra, La Victoria</span>
-        <span>🎁 Lista de Deseos Baby Shower</span>
-        <span>🚚 Lima 1–2 días · Provincias 2–5 días</span>
+        <span>🏪 También en Gamarra, La Victoria, Lima</span>
+        <span>🎁 Lista de Deseos para Baby Shower</span>
+        <span>🚚 Lima 1–2 días hábiles · Provincias 2–5 días</span>
       </div>
     </div>
     <!-- Acciones rápidas (derecha) -->
@@ -4265,218 +4265,762 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
 <!-- HERO STRIP DECORATIVO -->
 <div class="hero-strip" role="presentation" aria-hidden="true"></div>
 
+<!-- ═══════════════════════════════════════════════════════
+     BUSCADOR INTELIGENTE BAJO EL HEADER
+═══════════════════════════════════════════════════════ -->
+<style>
+/* ═══════════════════════════════════════════════════════
+   BUSCADOR PREMIUM — D'ZOE PERÚ 2026
+═══════════════════════════════════════════════════════ */
+.prem-search-section {
+  background: linear-gradient(160deg, #fce8f3 0%, #f8f0fd 50%, #ede9ff 100%);
+  padding: 28px 0 22px;
+  border-bottom: 1px solid rgba(195,174,228,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.prem-search-section::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(232,164,192,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.prem-search-section::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(195,174,228,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.prem-search-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Label superior ── */
+.prem-search-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.prem-search-label-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose-dark);
+  opacity: 0.7;
+}
+.prem-search-label-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--rose);
+  opacity: 0.5;
+}
+
+/* ── Caja principal ── */
+.prem-search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.92);
+  border: 2px solid rgba(232,164,192,0.35);
+  border-radius: 22px;
+  padding: 6px 6px 6px 22px;
+  box-shadow:
+    0 4px 24px rgba(195,174,228,0.18),
+    0 1px 0 rgba(255,255,255,0.9) inset;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.prem-search-box:focus-within {
+  border-color: var(--rose);
+  box-shadow:
+    0 0 0 5px rgba(232,164,192,0.14),
+    0 8px 32px rgba(195,174,228,0.28),
+    0 1px 0 rgba(255,255,255,0.9) inset;
+}
+
+/* Icono lupa izquierda */
+.prem-search-icon {
+  color: var(--rose);
+  font-size: 17px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.prem-search-box:focus-within .prem-search-icon { opacity: 1; }
+
+/* Input */
+.prem-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15.5px;
+  color: var(--text);
+  outline: none;
+  font-weight: 600;
+  padding: 10px 14px;
+  min-width: 0;
+}
+.prem-search-input::placeholder { color: var(--text-soft); font-weight: 500; }
+
+/* Separador vertical */
+.prem-search-sep {
+  width: 1px;
+  height: 28px;
+  background: rgba(195,174,228,0.35);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* Selector de categoría inline */
+.prem-search-cat-select {
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-soft);
+  cursor: pointer;
+  outline: none;
+  padding: 8px 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a85a0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 26px;
+  min-width: 120px;
+  white-space: nowrap;
+  transition: color 0.18s;
+}
+.prem-search-cat-select:focus { color: var(--rose-dark); }
+/* Contenedor inline de filtro (Edad / Categoría) */
+.prem-inline-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.prem-inline-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-soft);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.prem-inline-label i { color: var(--rose); font-size: 11px; }
+
+@media (max-width: 768px) {
+  .prem-inline-filter { display: none; }
+  .prem-search-sep { display: none; }
+}
+@media (max-width: 600px) {
+  .prem-search-cat-select { display: none; }
+}
+
+/* Botón Buscar */
+.prem-search-btn {
+  background: linear-gradient(135deg, #e8799f 0%, #c86fa0 50%, #a87cd4 100%);
+  border: none;
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.22s cubic-bezier(0.22,0.9,0.36,1);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 18px rgba(200,111,160,0.35);
+}
+.prem-search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(200,111,160,0.5);
+  background: linear-gradient(135deg, #e06898 0%, #c060a0 50%, #9870d0 100%);
+}
+.prem-search-btn:active { transform: scale(0.98); }
+.prem-search-btn i { font-size: 13px; }
+
+/* Botón limpiar */
+.prem-search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 13px;
+  padding: 6px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s, background 0.18s;
+  flex-shrink: 0;
+}
+.prem-search-clear:hover { color: var(--rose); background: var(--rose-soft); }
+.prem-search-clear.visible { display: flex; }
+
+/* ── Panel de sugerencias ── */
+.prem-search-suggestions {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0; right: 0;
+  background: rgba(255,255,255,0.98);
+  border-radius: 18px;
+  box-shadow:
+    0 16px 48px rgba(195,174,228,0.32),
+    0 2px 0 rgba(255,255,255,0.9) inset;
+  border: 1.5px solid rgba(220,200,240,0.5);
+  z-index: 600;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  animation: suggDropIn 0.18s cubic-bezier(0.22,0.9,0.36,1);
+}
+@keyframes suggDropIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.prem-search-box:focus-within .prem-search-suggestions.has-results { display: block; }
+
+.pss-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  border-bottom: 1px solid rgba(220,200,240,0.4);
+}
+.pss-header i { color: var(--rose); font-size: 11px; }
+
+.pss-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  transition: background 0.14s;
+  border-bottom: 1px solid rgba(220,200,240,0.2);
+}
+.pss-item:last-child { border-bottom: none; }
+.pss-item:hover { background: var(--rose-soft); }
+.pss-item-icon {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.pss-item-icon i { color: var(--rose); font-size: 12px; }
+.pss-item-text { flex: 1; }
+.pss-item-text strong { display: block; font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.pss-item-text span { font-size: 11px; color: var(--text-soft); font-weight: 600; }
+.pss-item-arrow { color: var(--text-soft); font-size: 10px; opacity: 0.5; }
+
+/* ── Panel filtros avanzados ── */
+.prem-adv-panel {
+  display: none;
+  background: rgba(255,255,255,0.92);
+  border-radius: 18px;
+  border: 1.5px solid rgba(220,200,240,0.5);
+  padding: 18px 20px;
+  margin-top: 10px;
+  box-shadow: 0 6px 24px rgba(195,174,228,0.16);
+  gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  backdrop-filter: blur(12px);
+}
+.prem-adv-panel.open { display: grid; animation: advPanelIn 0.2s ease; }
+@keyframes advPanelIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pafp-group label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.pafp-group label i { color: var(--rose); font-size: 11px; }
+.pafp-group select {
+  width: 100%;
+  background: var(--rose-soft);
+  border: 1.5px solid rgba(232,164,192,0.4);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23d4809f'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 30px;
+}
+.pafp-group select:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(232,164,192,0.18);
+}
+
+/* ── Chips de búsqueda rápida ── */
+.prem-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.prem-chip {
+  background: rgba(255,255,255,0.85);
+  border: 1.5px solid rgba(195,174,228,0.4);
+  border-radius: 22px;
+  padding: 6px 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.2s cubic-bezier(0.22,0.9,0.36,1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+.prem-chip:hover {
+  background: rgba(255,255,255,0.98);
+  border-color: var(--rose-light);
+  color: var(--rose-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(232,164,192,0.25);
+}
+.prem-chip.chip-active {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(200,111,160,0.35);
+}
+
+/* ── Botón abrir filtros avanzados ── */
+.prem-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,0.8);
+  border: 1.5px solid rgba(195,174,228,0.4);
+  border-radius: 22px;
+  padding: 6px 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.prem-filter-toggle:hover { background: rgba(255,255,255,0.98); color: var(--rose-dark); border-color: var(--rose-light); }
+.prem-filter-toggle.active { background: var(--rose-soft); color: var(--rose-dark); border-color: var(--rose-light); }
+.prem-filter-toggle i { font-size: 11px; transition: transform 0.25s; }
+.prem-filter-toggle.active i.fa-chevron-down { transform: rotate(180deg); }
+
+/* ── Dark mode ── */
+body.dark-mode .prem-search-section { background: linear-gradient(160deg,#1e1628,#1a1a2e,#1e1628); }
+body.dark-mode .prem-search-box { background: rgba(36,30,52,0.95); border-color: #4a3060; }
+body.dark-mode .prem-search-input { color: #ede8f5; }
+body.dark-mode .prem-search-input::placeholder { color: #6a6080; }
+body.dark-mode .prem-search-sep { background: rgba(195,174,228,0.2); }
+body.dark-mode .prem-search-cat-select { color: #a89ec0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a89ec0'/%3E%3C/svg%3E"); }
+body.dark-mode .prem-search-suggestions { background: rgba(36,30,52,0.98); border-color: #3a3050; }
+body.dark-mode .pss-item:hover { background: #2a2040; }
+body.dark-mode .pss-item { color: #ede8f5; border-color: rgba(195,174,228,0.1); }
+body.dark-mode .pss-item-text strong { color: #ede8f5; }
+body.dark-mode .pss-header { border-color: rgba(195,174,228,0.15); }
+body.dark-mode .prem-adv-panel { background: rgba(36,30,52,0.92); border-color: #3a3050; }
+body.dark-mode .pafp-group label { color: #a89ec0; }
+body.dark-mode .pafp-group select { background: #2a2040; border-color: #4a3060; color: #ede8f5; }
+body.dark-mode .prem-chip { background: rgba(36,30,52,0.9); border-color: #4a3060; color: #ede8f5; }
+body.dark-mode .prem-chip:hover { background: #2a2040; border-color: var(--lavender); }
+body.dark-mode .prem-filter-toggle { background: rgba(36,30,52,0.8); border-color: #4a3060; color: #a89ec0; }
+body.dark-mode .prem-filter-toggle:hover { background: #2a2040; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .prem-search-section { padding: 18px 0 16px; }
+  .prem-search-box { padding: 5px 5px 5px 16px; border-radius: 18px; }
+  .prem-search-input { font-size: 14.5px; padding: 10px 10px; }
+  .prem-search-btn { padding: 11px 18px; font-size: 13px; border-radius: 13px; }
+  .prem-search-btn span { display: none; }
+  .prem-search-label { margin-bottom: 10px; }
+  .prem-chips-row { gap: 6px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; scrollbar-width: none; margin-top: 12px; }
+  .prem-chips-row::-webkit-scrollbar { display: none; }
+  .prem-adv-panel { grid-template-columns: 1fr; padding: 14px 14px; }
+}
+@media (max-width: 480px) {
+  .prem-search-btn { padding: 10px 14px; }
+}
+</style>
+
+<section class="prem-search-section" aria-label="Buscador de productos D'Zoe Perú">
+  <div class="container">
+    <div class="prem-search-wrap">
+
+
+    <div class="products-title-block">
+
+	      <div class="products-title-divider"><span></span><i class="fas fa-heart"></i><span></span></div>
+    </div>
+      <!-- Caja principal -->
+      <div class="prem-search-box" id="smartSearchBox">
+        <i class="fas fa-search prem-search-icon" aria-hidden="true"></i>
+
+        <input
+          type="search"
+          class="prem-search-input"
+          id="searchInput"
+          placeholder="Buscar vestidos, abrigos, conjuntos bebé…"
+          aria-label="Buscar productos en D'Zoe Perú"
+          autocomplete="off"
+          oninput="smartSearchHandle(this.value)"
+          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
+        >
+
+        <!-- Limpiar -->
+        <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Separador + Edad -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-baby"></i></span>
+          <select class="prem-search-cat-select" id="afpEdad" onchange="applyAdvancedFilter()" aria-label="Filtrar por edad">
+            <option value="">Todas las edades</option>
+            <optgroup label="— Bebés —">
+              <option value="Recién nacido">Recién nacido</option>
+              <option value="3-6 meses">3-6 meses</option>
+              <option value="6-9 meses">6-9 meses</option>
+              <option value="9-12 meses">9-12 meses</option>
+              <option value="12-18 meses">12-18 meses</option>
+              <option value="18-24 meses">18-24 meses</option>
+              <option value="1 años">1 año</option>
+              <option value="2 años">2 años</option>
+            </optgroup>
+            <optgroup label="— Niños —">
+              <option value="3 años">3 años</option>
+              <option value="4 años">4 años</option>
+              <option value="5 años">5 años</option>
+              <option value="6 años">6 años</option>
+              <option value="7 años">7 años</option>
+              <option value="8 años">8 años</option>
+            </optgroup>
+            <optgroup label="— Mayores —">
+              <option value="9 años">9 años</option>
+              <option value="10 años">10 años</option>
+              <option value="11 años">11 años</option>
+              <option value="12 años">12 años</option>
+              <option value="13 años">13 años</option>
+              <option value="14 años">14 años</option>
+              <option value="15 años">15 años</option>
+              <option value="16 años">16 años</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Separador + Categorías -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-tags"></i></span>
+          <select class="prem-search-cat-select" id="premCatSelect" onchange="premCatSelectChange()" aria-label="Filtrar por categoría">
+            <option value="">Todas</option>
+          </select>
+        </div>
+
+        <!-- Botón buscar -->
+        <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
+          <i class="fas fa-search"></i>
+          <span>Buscar</span>
+        </button>
+
+        <!-- Sugerencias -->
+        <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
+      </div>
+
+      <!-- Chips rápidos -->
+      <div class="prem-chips-row" id="quickChipsRow" aria-label="Filtros rápidos">
+        <button class="prem-chip" onclick="quickChipSearch(this,'bautizo')">🕊️ Bautizo</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'cumpleaños')">🎂 Cumpleaños</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'recién nacido')">👶 Recién nacido</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'abrigo')">🧥 Abrigos</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'conjunto')">✨ Conjuntos</button>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <script>
-/* ── NUEVO INGRESO — carga dinámica desde mi-cuenta.html ── */
-(function() {
-  var NI_KEY = 'dzoe_nuevo_ingreso';
+/* ── BUSCADOR PREMIUM ── */
+const QUICK_SUGGESTIONS = [
+  { text: 'Vestido floreado niña', sub: 'Modelos exclusivos importados', icon: '🌸' },
+  { text: 'Abrigo de lana bebé', sub: 'Temporada frío · premium', icon: '🧥' },
+  { text: 'Conjunto bebé recién nacido', sub: 'Algodón premium 0–24 meses', icon: '👶' },
+  { text: 'Jeans niño 4 años', sub: 'Denim infantil importado', icon: '👖' },
+  { text: 'Vestido bautizo', sub: 'Ocasión especial · encaje fino', icon: '🕊️' },
+  { text: 'Body algodón bebé', sub: 'Suave y cómodo · recién nacido', icon: '✨' },
+  { text: 'Abrigo invierno niña', sub: 'Abrigador y con estilo', icon: '❄️' },
+  { text: 'Conjunto cumpleaños', sub: 'Brillante y especial', icon: '🎂' },
+  { text: 'Overol bebé', sub: 'Estilo y comodidad', icon: '🎀' },
+  { text: 'Cardigan niño', sub: 'Tejido premium importado', icon: '🧶' }
+];
 
-  var defaults = {
-    nombre: 'Próximo Ingreso',
-    categoria: 'Novedad · Próximamente',
-    fecha: null,
-    hora: '09:00'
-  };
+function smartSearchHandle(val) {
+  const sug = document.getElementById('smartSearchSuggestions');
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
 
-  function gel(id) { return document.getElementById(id); }
-  function pad(n)  { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
-
-  function applyNuevoIngreso(d) {
-    var ni  = Object.assign({}, defaults, d);
-    /* tieneData = true cuando viene de Supabase o localStorage con datos reales */
-    var tieneData = !!(d && d.nombre);
-
-    /* ── Imagen principal ── */
-    var imgs = ni.imagenes && ni.imagenes.length ? ni.imagenes : (ni.imagen ? [ni.imagen] : []);
-    var mainImg = gel('niMainImg');
-    if (mainImg && imgs.length) {
-      mainImg.src = imgs[0];
-      mainImg.alt = 'Nuevo ingreso ' + ni.nombre;
-    }
-
-    /* ── Miniaturas extra ── */
-    var thumbsRow = gel('niThumbsRow');
-    if (thumbsRow) {
-      if (imgs.length > 1) {
-        thumbsRow.style.display = 'flex';
-        thumbsRow.innerHTML = imgs.map(function(url, i) {
-          return '<img src="' + url + '" onclick="niSetMain(this,\'' + url + '\')" ' +
-            'style="width:44px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ' +
-            (i === 0 ? 'var(--rose,#c2617a)' : 'var(--border,#e0d0f0)') + ';transition:border .2s;" ' +
-            'onerror="this.style.display=\'none\'" alt="foto ' + (i+1) + '">';
-        }).join('');
-      } else {
-        thumbsRow.style.display = 'none';
-        thumbsRow.innerHTML = '';
-      }
-    }
-
-    /* ── Nombre ── */
-    var nomEl = gel('niNombreDisplay');
-    if (nomEl) {
-      if (tieneData && ni.nombre) { nomEl.style.display = 'block'; nomEl.textContent = ni.nombre; }
-      else nomEl.style.display = 'none';
-    }
-
-    /* ── Categoría ── */
-    var catEl = gel('niCategoriaDisplay');
-    if (catEl) {
-      if (tieneData && ni.categoria) { catEl.style.display = 'block'; catEl.textContent = ni.categoria; }
-      else catEl.style.display = 'none';
-    }
-
-    /* ── Tallas: reemplaza el label "Próximamente" de la overlay ── */
-    var tallas = Array.isArray(ni.tallas) ? ni.tallas : [];
-    var comingLabel = gel('niComingLabel');
-    if (comingLabel) {
-      if (tieneData && tallas.length) {
-        comingLabel.innerHTML = tallas.map(function(t) {
-          return '<span style="display:inline-block;background:rgba(255,255,255,0.92);color:#7c5cbf;' +
-            'padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;margin:2px 3px;">' + t + '</span>';
-        }).join('');
-      } else {
-        comingLabel.textContent = 'Próximamente';
-      }
-    }
-
-    /* ── Tallas row (debajo de la imagen) ── */
-    var tallasRow = gel('niTallasRow');
-    if (tallasRow) {
-      if (tieneData && tallas.length) {
-        tallasRow.style.display = 'flex';
-        tallasRow.innerHTML = tallas.map(function(t) {
-          return '<span style="background:var(--lav-light,#ede8fb);color:var(--lavender,#7c5cbf);' +
-            'padding:3px 10px;border-radius:99px;font-size:10px;font-weight:800;">' + t + '</span>';
-        }).join('');
-      } else {
-        tallasRow.style.display = 'none';
-      }
-    }
-
-    /* ── Tags ── */
-    var tagsRow = gel('niTagsRow');
-    if (tagsRow) {
-      var tags = ni.tags ? ni.tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean).slice(0,3) : [];
-      if (tags.length) {
-        tagsRow.style.display = 'flex';
-        tagsRow.innerHTML = tags.map(function(t) {
-          return '<span style="background:var(--rose-light,#fde8ef);color:var(--rose,#c2617a);' +
-            'padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;">✦ ' + t + '</span>';
-        }).join('');
-      } else {
-        tagsRow.style.display = 'none';
-      }
-    }
-
-    /* ── Countdown ── */
-    var llegada;
-    if (ni.fecha) {
-      llegada = new Date(ni.fecha + 'T' + (ni.hora || '09:00'));
-    } else {
-      llegada = new Date();
-      llegada.setDate(llegada.getDate() + 10);
-    }
-
-    /* Limpiar interval anterior para evitar timers duplicados */
-    if (window._niCountdownTimer) clearInterval(window._niCountdownTimer);
-
-    function tick() {
-      var now  = new Date();
-      var diff = llegada - now;
-      if (diff <= 0) {
-        if(gel('hcbDays'))  gel('hcbDays').textContent  = '00';
-        if(gel('hcbHours')) gel('hcbHours').textContent = '00';
-        if(gel('hcbMins'))  gel('hcbMins').textContent  = '00';
-        if(gel('hcbSecs'))  gel('hcbSecs').textContent  = '00';
-      } else {
-        if(gel('hcbDays'))  gel('hcbDays').textContent  = pad(diff / 86400000);
-        if(gel('hcbHours')) gel('hcbHours').textContent = pad((diff % 86400000) / 3600000);
-        if(gel('hcbMins'))  gel('hcbMins').textContent  = pad((diff % 3600000) / 60000);
-        if(gel('hcbSecs'))  gel('hcbSecs').textContent  = pad((diff % 60000) / 1000);
-      }
-    }
-    tick();
-    window._niCountdownTimer = setInterval(tick, 1000);
-
-    /* Guardar para heroNotify */
-    window._dzoeNINombre = ni.nombre;
-    window._dzoeNIMsgWa  = ni.msgWa || '';
+  if (!val || val.length < 2) {
+    sug.innerHTML = ''; sug.classList.remove('has-results');
+    if (typeof searchProducts === 'function') searchProducts();
+    return;
   }
 
-  /* Función global para cambiar miniatura activa */
-  window.niSetMain = function(thumbEl, url) {
-    var mainImg = gel('niMainImg');
-    if (mainImg) mainImg.src = url;
-    var thumbsRow = gel('niThumbsRow');
-    if (thumbsRow) {
-      thumbsRow.querySelectorAll('img').forEach(function(img) {
-        img.style.border = '2px solid var(--border,#e0d0f0)';
-      });
-      thumbEl.style.border = '2px solid var(--rose,#c2617a)';
-    }
-  };
+  const q = val.toLowerCase();
 
-  async function loadNuevoIngreso() {
-    /* 1️⃣ Intentar Supabase — reusar instancia global para evitar múltiples GoTrueClient */
-    try {
-      /* Esperar hasta 2s a que supabaseClient esté disponible */
-      let client = window._dzoeSupabaseClient || null;
-      if (!client) {
-        var sbUrl = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.URL;
-        var sbKey = window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.ANON_KEY;
-        if (sbUrl && sbKey) {
-          var _sb = window.supabase || window.Supabase;
-          if (_sb) {
-            /* Reutilizar instancia existente si ya fue creada */
-            client = window._dzoeSupabaseClient = _sb.createClient(sbUrl, sbKey, {
-              auth: { storageKey: 'dzoeperu-auth' }
-            });
-          }
-        }
-      }
-      if (client) {
-        var res = await client.from('nuevo_ingreso').select('*').eq('id', 1).maybeSingle();
-        if (!res.error && res.data) {
-          /* Sincronizar localStorage como caché */
-          localStorage.setItem(NI_KEY, JSON.stringify(res.data));
-          applyNuevoIngreso(res.data);
-          return;
-        }
-      }
-    } catch(e) { console.warn('NuevoIngreso Supabase:', e); }
+  // 1. Sugerencias de productos reales (nombre + categorías)
+  const productMatches = (typeof products !== 'undefined' ? products : [])
+    .filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
+      (p.tags||[]).some(t => String(t).toLowerCase().includes(q))
+    )
+    .slice(0, 4)
+    .map(p => {
+      const cat = (p.categories||[])[0] || '';
+      return { text: p.name, sub: cat || 'D\'Zoe Perú', icon: '🌸', isProduct: true };
+    });
 
-    /* 2️⃣ Fallback: localStorage */
-    var raw = localStorage.getItem(NI_KEY);
-    applyNuevoIngreso(raw ? JSON.parse(raw) : {});
+  // 2. Sugerencias rápidas estáticas como fallback/complemento
+  const staticMatches = QUICK_SUGGESTIONS
+    .filter(s => s.text.toLowerCase().includes(q))
+    .slice(0, 3 - Math.min(productMatches.length, 3));
+
+  const matches = [...productMatches, ...staticMatches].slice(0, 5);
+
+  if (matches.length === 0) {
+    sug.innerHTML = ''; sug.classList.remove('has-results');
+    if (typeof searchProducts === 'function') searchProducts();
+    return;
   }
 
-  document.addEventListener('DOMContentLoaded', loadNuevoIngreso);
-  if (document.readyState !== 'loading') loadNuevoIngreso();
-})();
+  sug.innerHTML =
+    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias</div>` +
+    matches.map(m =>
+      `<div class="pss-item" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
+        <div class="pss-item-icon">${m.icon}</div>
+        <div class="pss-item-text">
+          <strong>${m.text}</strong>
+          <span>${m.sub}</span>
+        </div>
+        <i class="fas fa-arrow-right pss-item-arrow"></i>
+      </div>`
+    ).join('');
+  sug.classList.add('has-results');
+  if (typeof searchProducts === 'function') searchProducts();
+}
 
-function heroNotify(btn) {
-  if (btn && btn.classList.contains('notified')) return;
-  var nombre = window._dzoeNINombre || 'Nuevo ingreso';
-  var msgCustom = window._dzoeNIMsgWa || '';
-  var msg = msgCustom
-    ? msgCustom.replace('{producto}', nombre)
-    : "Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *" + nombre + "*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕";
-  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
-  if (btn) {
-    btn.classList.add('notified');
-    btn.innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i> ¡Lo quiero!';
+function selectSuggestion(val) {
+  document.getElementById('searchInput').value = val;
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.add('visible');
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function smartSearchGo() {
+  const val = document.getElementById('searchInput').value;
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function smartSearchClear() {
+  document.getElementById('searchInput').value = '';
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.remove('visible');
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  const catSel = document.getElementById('premCatSelect');
+  if (catSel) catSel.value = '';
+  if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
+  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+}
+
+function premCatSelectChange() {
+  const cat = document.getElementById('premCatSelect')?.value || '';
+  if (typeof filterByCategory === 'function') {
+    filterByCategory(cat || 'all');
+    if (cat) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
   }
 }
 
-function notifyProximo(btn, productName) {
-  if (btn.classList.contains('notified')) return;
-  var msg = "Hola D'Zoe Perú 🌸 Me interesa el próximo ingreso: *" + productName + "*. ¿Pueden avisarme cuando llegue? ¡Gracias! 💕";
-  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
-  btn.classList.add('notified');
-  btn.innerHTML = '<i class="fas fa-check-circle"></i> ¡Lo quiero!';
+// Rellena dinámicamente los selects de categoría con los datos reales de Supabase
+function populateCategorySelects() {
+  const cats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
+  const selects = ['premCatSelect'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Todas las categorías</option>' +
+      cats.map(c => `<option value="${c}">${c}</option>`).join('');
+    // Restaurar valor si sigue siendo válido
+    if (current && cats.includes(current)) sel.value = current;
+  });
 }
+
+function quickChipSearch(el, term) {
+  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+  el.classList.add('chip-active');
+  document.getElementById('searchInput').value = term;
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.add('visible');
+  if (typeof searchProducts === 'function') { currentSearch = term; renderProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleAdvancedFilters() {
+  const panel = document.getElementById('advancedFiltersPanel');
+  const toggle = document.getElementById('premFilterToggle');
+  panel.classList.toggle('open');
+  toggle?.classList.toggle('active', panel.classList.contains('open'));
+}
+
+function applyAdvancedFilter() {
+  const talla = document.getElementById('afpTalla')?.value || '';
+  const edad  = document.getElementById('afpEdad')?.value  || '';
+  const cat   = document.getElementById('afpCategoria')?.value || '';
+
+  // Mapa de expansión: cada edad "simple" del select incluye también los rangos solapados de la BD
+  const EDAD_EXPANSION = {
+    'Recién nacido': ['Recién nacido'],
+    '3-6 meses':  ['3-6 meses'],
+    '6-9 meses':  ['6-9 meses','6-12 meses'],
+    '9-12 meses': ['9-12 meses','9-18 meses','6-12 meses'],
+    '12-18 meses':['12-18 meses','12-24 meses','9-18 meses'],
+    '18-24 meses':['18-24 meses','12-24 meses'],
+    '1 años':  ['1 años','1-2 años'],
+    '2 años':  ['2 años','1-2 años','2-3 años'],
+    '3 años':  ['3 años','2-3 años','3-4 años'],
+    '4 años':  ['4 años','3-4 años','4-5 años'],
+    '5 años':  ['5 años','4-5 años','5-6 años'],
+    '6 años':  ['6 años','5-6 años','6-7 años'],
+    '7 años':  ['7 años','6-7 años','7-8 años'],
+    '8 años':  ['8 años','7-8 años','8-9 años'],
+    '9 años':  ['9 años','8-9 años','9-10 años'],
+    '10 años': ['10 años','9-10 años','10-11 años'],
+    '11 años': ['11 años','10-11 años','11-12 años'],
+    '12 años': ['12 años','11-12 años','12-13 años'],
+    '13 años': ['13 años','12-13 años'],
+    '14 años': ['14 años'],
+    '15 años': ['15 años'],
+    '16 años': ['16 años'],
+  };
+
+  // Categoría
+  if (typeof filterByCategory === 'function') {
+    filterByCategory(cat || 'all');
+  }
+
+  // Sin edad → mostrar todo (limpiar filtro)
+  if (!edad) {
+    currentAgeGroup = null;
+    currentAgeFilter = null;
+    currentAgeFilterSet = null;
+    currentPage = 1;
+    if (typeof renderAgeChips === 'function') renderAgeChips();
+    if (typeof renderProducts === 'function') renderProducts();
+    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+    if (!talla) {
+      document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+      return;
+    }
+  }
+
+  // Edad seleccionada → expandir a todos los rangos solapados
+  if (edad) {
+    currentAgeGroup = null;
+    currentAgeFilter = edad;
+    currentAgeFilterSet = EDAD_EXPANSION[edad] || [edad];
+    currentPage = 1;
+    if (typeof renderAgeChips === 'function') renderAgeChips();
+    if (typeof renderProducts === 'function') renderProducts();
+    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+    document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  // Talla exacta del otro select
+  if (talla) {
+    currentAgeGroup = null;
+    currentAgeFilter = talla;
+    currentAgeFilterSet = [talla];
+    currentPage = 1;
+    if (typeof renderAgeChips === 'function') renderAgeChips();
+    if (typeof renderProducts === 'function') renderProducts();
+    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  }
+
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Cerrar sugerencias al hacer click fuera
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('smartSearchBox')?.contains(e.target)) {
+    const sug = document.getElementById('smartSearchSuggestions');
+    if (sug) { sug.innerHTML = ''; sug.classList.remove('has-results'); }
+  }
+});
 </script>
-
 <!-- ══════════════════════════════════════════════════════════
      SECCIÓN UNIFICADA v3 — CATEGORÍAS + EDADES + ANUNCIO
 ══════════════════════════════════════════════════════════ -->
@@ -4847,11 +5391,6 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
 <!-- PRODUCTOS -->
 <section class="products" id="productos">
   <div class="container">
-    <div class="products-title-block">
-    
-      <h2 class="products-title">Productos <span>Exclusivos</span></h2>
-	      <div class="products-title-divider"><span></span><i class="fas fa-heart"></i><span></span></div>
-    </div>
 
     <!-- Banner Baby Shower -->
     <div class="babyshower-banner" onclick="openWishlist()">
@@ -4890,49 +5429,1323 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
   </div>
 </section>
 
-<!-- FRANJA DE BENEFICIOS -->
-<div class="section-divider"></div>
-<section class="benefits-strip" aria-label="Beneficios de comprar en D'Zoe Perú">
+
+<!-- ═══════════════════════════════════════════════════════
+     SECCIÓN PREMIUM DE CONFIANZA / BENEFICIOS
+═══════════════════════════════════════════════════════ -->
+<style>
+/* ── TRUST SECTION ── */
+.trust-section {
+  padding: 56px 0 60px;
+  background: linear-gradient(135deg, #2a1f3d 0%, #3d2a5a 40%, #1a3a3a 100%);
+  position: relative;
+  overflow: hidden;
+}
+.trust-section::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(232,164,192,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.trust-section::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  right: -60px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(126,207,200,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.trust-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 2; }
+.trust-eyebrow {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.trust-eyebrow::before, .trust-eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--rose);
+  opacity: 0.5;
+}
+.trust-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.trust-title em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.trust-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grid de beneficios premium */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+.trust-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 22px;
+  padding: 28px 24px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  backdrop-filter: blur(6px);
+}
+.trust-card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(232,164,192,0.35);
+  transform: translateY(-4px);
+}
+.trust-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.ti-rose { background: rgba(232,164,192,0.18); border: 1.5px solid rgba(232,164,192,0.3); }
+.ti-mint { background: rgba(126,207,200,0.15); border: 1.5px solid rgba(126,207,200,0.3); }
+.ti-lav  { background: rgba(195,174,228,0.18); border: 1.5px solid rgba(195,174,228,0.3); }
+.ti-peach { background: rgba(245,185,126,0.15); border: 1.5px solid rgba(245,185,126,0.3); }
+.ti-sky  { background: rgba(142,200,240,0.15); border: 1.5px solid rgba(142,200,240,0.3); }
+.ti-green { background: rgba(37,211,102,0.12); border: 1.5px solid rgba(37,211,102,0.25); }
+
+.trust-card-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.trust-card-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  line-height: 1.6;
+}
+.trust-card-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--rose);
+  background: rgba(232,164,192,0.12);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(232,164,192,0.2);
+}
+.trust-card-stat i { font-size: 9px; }
+
+/* Barra de stats inferior */
+.trust-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  border: 1.5px solid rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 2;
+}
+.trust-stat {
+  text-align: center;
+}
+.trust-stat-number {
+  font-family: 'Baloo 2', cursive;
+  font-size: 30px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  line-height: 1.1;
+}
+.trust-stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .trust-grid { grid-template-columns: 1fr 1fr; }
+  .trust-stats-row { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (max-width: 540px) {
+  .trust-grid { grid-template-columns: 1fr; }
+  .trust-stats-row { grid-template-columns: 1fr 1fr; }
+  .trust-title { font-size: 24px; }
+  .trust-section { padding: 40px 0 44px; }
+}
+</style>
+
+<section class="trust-section" aria-label="Por qué elegir D'Zoe Perú">
   <div class="container">
-    <div class="benefits-grid">
-      <div class="benefit-item">
-        <span class="benefit-icon">👗</span>
-        <div class="benefit-text">
-          <strong>Diseños exclusivos</strong>
-          <span>Modelos únicos importados</span>
+    <div class="trust-header">
+      <div class="trust-eyebrow">Por qué elegirnos</div>
+      <h2 class="trust-title">La tienda N°1 en ropa infantil <em>importada premium</em> del Perú</h2>
+      <p class="trust-sub">Más de 500 familias en todo el país confían en D'Zoe para vestir a sus pequeños con calidad y estilo</p>
+    </div>
+
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-rose">🌟</div>
+        <div class="trust-card-title">Diseños exclusivos importados</div>
+        <p class="trust-card-desc">Modelos únicos que no encontrarás en ninguna otra tienda. Selección cuidadosa de las mejores tendencias internacionales.</p>
+        <span class="trust-card-stat"><i class="fas fa-star"></i> Solo en D'Zoe Perú</span>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-mint">🧵</div>
+        <div class="trust-card-title">Telas premium certificadas</div>
+        <p class="trust-card-desc">Algodón suave, bambú orgánico, lana doble face. Materiales de alta gama que cuidan la piel delicada de tu bebé.</p>
+        <span class="trust-card-stat"><i class="fas fa-leaf"></i> Skin-friendly · 0 alérgenos</span>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-lav">🚀</div>
+        <div class="trust-card-title">Envíos a todo el Perú</div>
+        <p class="trust-card-desc">Lima en 1-2 días. Provincias en 2-5 días por Shalom y Olva Courier. Seguimiento por WhatsApp en todo momento.</p>
+        <span class="trust-card-stat"><i class="fas fa-truck"></i> Lima · Provincias · 24/7</span>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-peach">📏</div>
+        <div class="trust-card-title">Guía de tallas detallada</div>
+        <p class="trust-card-desc">Convertimos tallas chinas a peruanas para que nunca te equivoques. Ropa desde recién nacido hasta 14 años.</p>
+        <span class="trust-card-stat"><i class="fas fa-ruler"></i> 0 a 14 años cubiertos</span>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-green">💚</div>
+        <div class="trust-card-title">Pago 100% seguro</div>
+        <p class="trust-card-desc">Yape, Plin, efectivo, tarjeta y transferencia bancaria. Todas las transacciones son seguras y protegidas.</p>
+        <span class="trust-card-stat"><i class="fas fa-shield-alt"></i> Compra garantizada</span>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon-wrap ti-sky">💬</div>
+        <div class="trust-card-title">Atención personalizada</div>
+        <p class="trust-card-desc">Un equipo real te atiende por WhatsApp, TikTok y en tienda. Te asesoramos en tallas, colores y disponibilidad.</p>
+        <span class="trust-card-stat"><i class="fas fa-clock"></i> Lun–Sáb 9am–7pm</span>
+      </div>
+    </div>
+
+    <div class="trust-stats-row">
+      <div class="trust-stat">
+        <div class="trust-stat-number">500+</div>
+        <div class="trust-stat-label">Familias satisfechas</div>
+      </div>
+      <div class="trust-stat">
+        <div class="trust-stat-number">4.9★</div>
+        <div class="trust-stat-label">Calificación promedio</div>
+      </div>
+      <div class="trust-stat">
+        <div class="trust-stat-number">2022</div>
+        <div class="trust-stat-label">Desde el año</div>
+      </div>
+      <div class="trust-stat">
+        <div class="trust-stat-number">25+</div>
+        <div class="trust-stat-label">Ciudades con envío</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     BLOQUE: NUEVOS INGRESOS / MÁS VENDIDOS
+═══════════════════════════════════════════════════════ -->
+<style>
+/* ── NUEVOS / MÁS VENDIDOS ── */
+.highlights-section {
+  padding: 50px 0 54px;
+  background: linear-gradient(180deg, #fff 0%, #fdf5fa 100%);
+}
+.highlights-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.highlights-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.15;
+}
+.highlights-title span {
+  background: linear-gradient(90deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.highlights-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--rose-soft);
+  padding: 4px;
+  border-radius: 30px;
+  border: 1.5px solid var(--rose-light);
+}
+.hl-tab {
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text-soft);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.22s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.hl-tab.active {
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(232,164,192,0.4);
+}
+.hl-tab i { font-size: 11px; }
+
+/* Grilla de 2 highlights */
+.highlights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.highlight-panel {
+  background: #fff;
+  border-radius: 22px;
+  border: 1.5px solid rgba(220,200,240,0.4);
+  box-shadow: 0 4px 24px rgba(195,174,228,0.14);
+  overflow: hidden;
+}
+.highlight-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  border-bottom: 1.5px solid var(--border);
+  background: linear-gradient(135deg, var(--rose-soft), var(--lav-light));
+}
+.hlp-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hlp-title .hlp-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--rose);
+  color: #fff;
+}
+.hlp-title .hlp-badge--hot {
+  background: linear-gradient(135deg, #ff6b6b, #f06292);
+}
+.hlp-ver-mas {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.7);
+  border: 1.5px solid var(--border);
+  transition: 0.18s;
+}
+.hlp-ver-mas:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
+
+/* Card de highlight (compacta, horizontal) */
+.highlight-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(220,200,240,0.25);
+  transition: background 0.16s;
+  cursor: pointer;
+}
+.highlight-card:last-child { border-bottom: none; }
+.highlight-card:hover { background: var(--rose-soft); }
+.hlc-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--lav-light);
+  border: 1.5px solid rgba(220,200,240,0.35);
+  transition: transform 0.22s;
+}
+.highlight-card:hover .hlc-img { transform: scale(1.05); }
+.hlc-info { flex: 1; min-width: 0; }
+.hlc-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+.highlight-card:hover .hlc-name { color: var(--rose-dark); }
+.hlc-meta {
+  font-size: 11.5px;
+  color: var(--text-soft);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.hlc-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--rose-dark);
+}
+.hlc-add {
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.hlc-add:hover { background: var(--rose-dark); transform: scale(1.1); }
+
+/* Loading state */
+.hlp-loading {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+.hlp-loading i { display: block; font-size: 28px; color: var(--rose); margin-bottom: 8px; animation: spin 1.2s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Dark mode */
+body.dark-mode .highlights-section { background: linear-gradient(180deg,#1a1625,#1e1a2e); }
+body.dark-mode .highlight-panel { background: #241e34; border-color: #3a3050; }
+body.dark-mode .highlight-panel-head { background: linear-gradient(135deg,#2a1d36,#231c34); border-color: #3a3050; }
+body.dark-mode .hlp-title { color: #ede8f5; }
+body.dark-mode .highlight-card { border-color: #3a3050; }
+body.dark-mode .highlight-card:hover { background: #2a2040; }
+body.dark-mode .hlc-name { color: #ede8f5; }
+body.dark-mode .highlights-tabs { background: #2a2040; border-color: #4a3060; }
+body.dark-mode .hl-tab { color: #a89ec0; }
+body.dark-mode .hlp-ver-mas { background: #2a2040; border-color: #4a3060; color: #a89ec0; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .highlights-section { padding: 36px 0 38px; }
+  .highlights-grid { grid-template-columns: 1fr; }
+  .highlights-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .highlights-title { font-size: 22px; }
+}
+
+/* ── SECCIÓN POR OCASIÓN ── */
+.ocasion-section {
+  padding: 50px 0 54px;
+  background: #fef0f5;
+}
+.ocasion-header { text-align: center; margin-bottom: 32px; }
+.ocasion-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.ocasion-title span {
+  background: linear-gradient(90deg, var(--rose), var(--mint));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ocasion-sub {
+  font-size: 14px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+.ocasion-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.ocasion-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid rgba(220,200,240,0.35);
+  box-shadow: 0 4px 20px rgba(195,174,228,0.13);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22,0.9,0.36,1), box-shadow 0.25s;
+  text-decoration: none;
+  display: block;
+}
+.ocasion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 38px rgba(195,174,228,0.25);
+}
+.ocasion-img-wrap {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+.ocasion-emoji-bg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  transition: transform 0.3s;
+}
+.ocasion-card:hover .ocasion-emoji-bg { transform: scale(1.1); }
+.oc-1 .ocasion-emoji-bg { background: linear-gradient(135deg, #fce8f3, #f7d4e9); }
+.oc-2 .ocasion-emoji-bg { background: linear-gradient(135deg, #ddf0ee, #cce8f8); }
+.oc-3 .ocasion-emoji-bg { background: linear-gradient(135deg, #ede4f9, #e0d0f8); }
+.oc-4 .ocasion-emoji-bg { background: linear-gradient(135deg, #fde9d4, #fce8c0); }
+.ocasion-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(74,68,96,0.7) 0%, transparent 100%);
+  padding: 12px 14px 10px;
+}
+.ocasion-tag {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  display: block;
+  margin-bottom: 2px;
+}
+.ocasion-name-overlay {
+  font-family: 'Baloo 2', cursive;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+.ocasion-body {
+  padding: 12px 14px 14px;
+}
+.ocasion-desc {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.ocasion-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--rose-dark);
+}
+.ocasion-cta i { font-size: 10px; color: var(--rose); }
+
+/* Dark mode */
+body.dark-mode .ocasion-section { background: #1e1a2e; }
+body.dark-mode .ocasion-card { background: #241e34; border-color: #3a3050; }
+body.dark-mode .ocasion-desc { color: #7a7590; }
+body.dark-mode .ocasion-cta { color: var(--rose-light); }
+
+/* Responsive */
+@media (max-width: 900px) { .ocasion-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .ocasion-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .ocasion-title { font-size: 22px; } }
+
+/* ── TESTIMONIOS ── */
+.testimonios-section {
+  padding: 56px 0 60px;
+  background: #fff;
+}
+.testimonios-header { text-align: center; margin-bottom: 36px; }
+.testimonios-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.testimonios-title span {
+  background: linear-gradient(90deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.testimonios-stars-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.testimonios-stars-summary .stars { color: #f5a623; font-size: 16px; letter-spacing: 2px; }
+.testimonios-stars-summary strong { color: var(--text); font-size: 17px; }
+
+.testimonios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.testimonio-card {
+  background: var(--rose-soft);
+  border-radius: 20px;
+  padding: 22px 20px;
+  border: 1.5px solid rgba(232,164,192,0.25);
+  position: relative;
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+.testimonio-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(232,164,192,0.22);
+}
+.testimonio-card:nth-child(2) { background: var(--lav-light); border-color: rgba(195,174,228,0.3); }
+.testimonio-card:nth-child(3) { background: var(--mint-soft); border-color: rgba(126,207,200,0.3); }
+.testimonio-card:nth-child(4) { background: var(--peach-light); border-color: rgba(245,185,126,0.3); }
+.testimonio-card:nth-child(5) { background: var(--sky-light); border-color: rgba(142,200,240,0.3); }
+.testimonio-card:nth-child(6) { background: #f5f0ff; border-color: rgba(195,174,228,0.3); }
+.testimonio-quote {
+  font-size: 32px;
+  color: var(--rose);
+  line-height: 1;
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+  opacity: 0.5;
+}
+.testimonio-text {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+.testimonio-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testimonio-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(255,255,255,0.7);
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.9);
+}
+.testimonio-info { flex: 1; }
+.testimonio-name { font-size: 12.5px; font-weight: 800; color: var(--text); }
+.testimonio-meta { font-size: 11px; color: var(--text-soft); font-weight: 600; }
+.testimonio-stars { color: #f5a623; font-size: 11px; letter-spacing: 1px; margin-top: 1px; }
+.testimonio-verified {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--mint);
+  background: rgba(126,207,200,0.15);
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  width: fit-content;
+}
+.testimonio-verified i { font-size: 8px; }
+
+/* CTA testimonios */
+.testimonios-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+.testimonios-tiktok-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  border-radius: 40px;
+  padding: 11px 24px;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.testimonios-tiktok-cta:hover { background: #222; transform: translateY(-2px); color: #fff; }
+.testimonios-tiktok-cta i { font-size: 15px; }
+.testimonios-wa-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 40px;
+  padding: 11px 24px;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.testimonios-wa-cta:hover { background: #1da354; transform: translateY(-2px); color: #fff; }
+
+/* Dark mode */
+body.dark-mode .testimonios-section { background: #1a1625; }
+body.dark-mode .testimonio-card { background: #241e34 !important; border-color: #3a3050 !important; }
+body.dark-mode .testimonio-text { color: #c4bedd; }
+body.dark-mode .testimonio-name { color: #ede8f5; }
+body.dark-mode .testimonio-avatar { background: #2a2040; }
+
+/* Responsive */
+@media (max-width: 900px) { .testimonios-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .testimonios-grid { grid-template-columns: 1fr; } .testimonios-title { font-size: 22px; } .testimonios-cta-row { flex-direction: column; align-items: stretch; } .testimonios-tiktok-cta, .testimonios-wa-cta { justify-content: center; } }
+
+/* ── AVÍSAME CUANDO LLEGUE ── */
+.avisame-section {
+  padding: 56px 0 60px;
+  background: linear-gradient(135deg, #fce8f5 0%, #ede4f9 50%, #d4f5ef 100%);
+}
+.avisame-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.avisame-content {}
+.avisame-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--rose);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.avisame-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.avisame-title span {
+  background: linear-gradient(90deg, var(--rose), var(--lavender));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.avisame-desc {
+  font-size: 14px;
+  color: var(--text-soft);
+  font-weight: 600;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+.avisame-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.avisame-input-row {
+  display: flex;
+  gap: 10px;
+}
+.avisame-input {
+  flex: 1;
+  background: #fff;
+  border: 2px solid rgba(232,164,192,0.4);
+  border-radius: 40px;
+  padding: 12px 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-weight: 600;
+}
+.avisame-input:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(232,164,192,0.15);
+}
+.avisame-input::placeholder { color: var(--text-soft); font-weight: 500; }
+.avisame-select {
+  background: #fff;
+  border: 2px solid rgba(232,164,192,0.4);
+  border-radius: 40px;
+  padding: 12px 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+.avisame-select:focus { border-color: var(--rose); }
+.avisame-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 6px 24px rgba(232,164,192,0.4);
+  width: 100%;
+}
+.avisame-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(232,164,192,0.55);
+}
+.avisame-submit i { font-size: 16px; }
+.avisame-note {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.avisame-note i { color: var(--mint); font-size: 11px; }
+
+/* Visual del lado derecho */
+.avisame-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.avisame-card-preview {
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px 20px;
+  border: 1.5px solid rgba(220,200,240,0.4);
+  box-shadow: 0 6px 24px rgba(195,174,228,0.18);
+}
+.avisame-card-preview h4 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.avisame-card-preview h4 i { color: var(--rose); }
+.avisame-notify-list { display: flex; flex-direction: column; gap: 10px; }
+.anl-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--rose-soft);
+  border-radius: 12px;
+  border: 1.5px solid rgba(232,164,192,0.2);
+}
+.anl-emoji { font-size: 22px; flex-shrink: 0; }
+.anl-info { flex: 1; min-width: 0; }
+.anl-name { font-size: 12.5px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.anl-meta { font-size: 11px; color: var(--text-soft); font-weight: 600; }
+.anl-notify-btn {
+  background: transparent;
+  border: 1.5px solid var(--rose-light);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--rose-dark);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.anl-notify-btn:hover {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+  transform: scale(1.05);
+}
+.anl-notify-btn.notified {
+  background: var(--mint);
+  border-color: var(--mint);
+  color: #fff;
+}
+.anl-notify-btn i { font-size: 10px; }
+
+/* Dark mode */
+body.dark-mode .avisame-section { background: linear-gradient(135deg,#1e1628,#211a2e,#182828); }
+body.dark-mode .avisame-title { color: #ede8f5; }
+body.dark-mode .avisame-input, body.dark-mode .avisame-select { background: #2a2040; border-color: #4a3060; color: #ede8f5; }
+body.dark-mode .avisame-card-preview { background: #241e34; border-color: #3a3050; }
+body.dark-mode .anl-item { background: #2a2040; border-color: #3a3050; }
+body.dark-mode .anl-name { color: #ede8f5; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .avisame-inner { grid-template-columns: 1fr; gap: 28px; }
+  .avisame-visual { display: none; }
+  .avisame-title { font-size: 24px; }
+}
+</style>
+
+<!-- BLOQUE: NUEVOS INGRESOS / MÁS VENDIDOS -->
+<section class="highlights-section" id="destacados" aria-label="Nuevos ingresos y más vendidos">
+  <div class="container">
+    <div class="highlights-header">
+      <h2 class="highlights-title">Lo más <span>destacado</span></h2>
+      <div class="highlights-tabs">
+        <button class="hl-tab active" id="hlTabNuevos" onclick="switchHighlightTab('nuevos')">
+          <i class="fas fa-star"></i> Nuevos
+        </button>
+        <button class="hl-tab" id="hlTabVendidos" onclick="switchHighlightTab('vendidos')">
+          <i class="fas fa-fire"></i> Más vendidos
+        </button>
+      </div>
+    </div>
+
+    <div class="highlights-grid">
+      <!-- Panel Nuevos Ingresos -->
+      <div class="highlight-panel">
+        <div class="highlight-panel-head">
+          <div class="hlp-title">
+            ✨ Nuevos Ingresos
+            <span class="hlp-badge">NUEVO</span>
+          </div>
+          <a href="#productos" class="hlp-ver-mas" onclick="filterByCategory('all');return true;">Ver todos</a>
+        </div>
+        <div id="nuevosIngresosList">
+          <div class="hlp-loading"><i class="fas fa-spinner"></i> Cargando...</div>
         </div>
       </div>
-      <div class="benefit-item">
-        <span class="benefit-icon">🚀</span>
-        <div class="benefit-text">
-          <strong>Envíos a todo el Perú</strong>
-          <span>Rápido y seguro</span>
+
+      <!-- Panel Más Vendidos -->
+      <div class="highlight-panel">
+        <div class="highlight-panel-head">
+          <div class="hlp-title">
+            🔥 Más Vendidos
+            <span class="hlp-badge hlp-badge--hot">TOP</span>
+          </div>
+          <a href="#productos" class="hlp-ver-mas" onclick="filterByCategory('all');return true;">Ver todos</a>
         </div>
-      </div>
-      <div class="benefit-item">
-        <span class="benefit-icon">✨</span>
-        <div class="benefit-text">
-          <strong>Calidad premium</strong>
-          <span>Materiales de alta gama</span>
-        </div>
-      </div>
-      <div class="benefit-item">
-        <span class="benefit-icon">🔒</span>
-        <div class="benefit-text">
-          <strong>Compra segura</strong>
-          <span>100% garantizado</span>
-        </div>
-      </div>
-      <div class="benefit-item">
-        <span class="benefit-icon">💬</span>
-        <div class="benefit-text">
-          <strong>Atención por WhatsApp</strong>
-          <span>Respuesta rápida</span>
+        <div id="masVendidosList">
+          <div class="hlp-loading"><i class="fas fa-spinner"></i> Cargando...</div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+/* ── Highlights: Nuevos Ingresos / Más Vendidos ── */
+function renderHighlights() {
+  if (!window.products || window.products.length === 0) {
+    setTimeout(renderHighlights, 800);
+    return;
+  }
+  // Nuevos: los primeros 3 por created_at
+  const nuevos = window.products.slice(0, 3);
+  // Más vendidos: los siguientes 3 (simulamos con orden inverso)
+  const vendidos = window.products.slice().reverse().slice(0, 3);
+
+  renderHighlightList('nuevosIngresosList', nuevos);
+  renderHighlightList('masVendidosList', vendidos);
+}
+
+function renderHighlightList(containerId, items) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!items || items.length === 0) {
+    el.innerHTML = '<div class="hlp-loading">No hay productos disponibles</div>';
+    return;
+  }
+  el.innerHTML = items.map(p => {
+    const img = (p.imagenes && p.imagenes[0]) || p.imagen || '';
+    const precio = p.precio ? 'S/ ' + parseFloat(p.precio).toFixed(2) : '';
+    const cat = p.categoria || p.category || '';
+    return `
+      <div class="highlight-card" onclick="openProductPage(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+        ${img ? `<img class="hlc-img" src="${img}" alt="${p.nombre}" onerror="this.style.display='none'">` : '<div class="hlc-img" style="display:flex;align-items:center;justify-content:center;font-size:28px;">👗</div>'}
+        <div class="hlc-info">
+          <div class="hlc-name">${p.nombre || 'Producto'}</div>
+          <div class="hlc-meta">${cat}</div>
+          <div class="hlc-price">${precio}</div>
+        </div>
+        <button class="hlc-add" onclick="event.stopPropagation();addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')})" title="Agregar al carrito">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>`;
+  }).join('');
+}
+
+function switchHighlightTab(tab) {
+  document.getElementById('hlTabNuevos')?.classList.toggle('active', tab === 'nuevos');
+  document.getElementById('hlTabVendidos')?.classList.toggle('active', tab === 'vendidos');
+}
+
+// Disparar cuando los productos estén listos
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(renderHighlights, 1200);
+});
+</script>
+
+<!-- SECCIÓN POR OCASIÓN -->
+<section class="ocasion-section" id="ocasiones" aria-label="Ropa infantil por ocasión">
+  <div class="container">
+    <div class="ocasion-header">
+      <h2 class="ocasion-title">Ropa para cada <span>ocasión</span> 🌸</h2>
+      <p class="ocasion-sub">Encuentra el outfit perfecto para el momento especial de tu bebé o niño</p>
+    </div>
+    <div class="ocasion-grid">
+      <a class="ocasion-card oc-1" href="#productos" onclick="quickChipSearch(document.createElement('span'),'bautizo');return false;">
+        <div class="ocasion-img-wrap">
+          <div class="ocasion-emoji-bg">🕊️</div>
+          <div class="ocasion-overlay">
+            <span class="ocasion-tag">Ceremonia religiosa</span>
+            <div class="ocasion-name-overlay">Bautizo &amp; Primera Comunión</div>
+          </div>
+        </div>
+        <div class="ocasion-body">
+          <p class="ocasion-desc">Vestidos blancos, trajes elegantes y accesorios para el día más especial</p>
+          <div class="ocasion-cta">
+            Ver colección <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <a class="ocasion-card oc-2" href="#productos" onclick="quickChipSearch(document.createElement('span'),'cumpleaños');return false;">
+        <div class="ocasion-img-wrap">
+          <div class="ocasion-emoji-bg">🎂</div>
+          <div class="ocasion-overlay">
+            <span class="ocasion-tag">Fiesta</span>
+            <div class="ocasion-name-overlay">Cumpleaños</div>
+          </div>
+        </div>
+        <div class="ocasion-body">
+          <p class="ocasion-desc">Outfits brillantes y coloridos para que tu niño sea la estrella del party</p>
+          <div class="ocasion-cta">
+            Ver colección <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <a class="ocasion-card oc-3" href="#productos" onclick="quickChipSearch(document.createElement('span'),'escolar');return false;">
+        <div class="ocasion-img-wrap">
+          <div class="ocasion-emoji-bg">🎒</div>
+          <div class="ocasion-overlay">
+            <span class="ocasion-tag">Día a día</span>
+            <div class="ocasion-name-overlay">Escolar &amp; Casual</div>
+          </div>
+        </div>
+        <div class="ocasion-body">
+          <p class="ocasion-desc">Ropa cómoda, resistente y con estilo para el colegio y el juego diario</p>
+          <div class="ocasion-cta">
+            Ver colección <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <a class="ocasion-card oc-4" href="#productos" onclick="quickChipSearch(document.createElement('span'),'bebé');return false;">
+        <div class="ocasion-img-wrap">
+          <div class="ocasion-emoji-bg">🎀</div>
+          <div class="ocasion-overlay">
+            <span class="ocasion-tag">Recién nacido</span>
+            <div class="ocasion-name-overlay">Baby Shower</div>
+          </div>
+        </div>
+        <div class="ocasion-body">
+          <p class="ocasion-desc">Los regalos más tiernos y prácticos para dar la bienvenida al nuevo bebé</p>
+          <div class="ocasion-cta">
+            Ver colección <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN TESTIMONIOS -->
+<section class="testimonios-section" id="testimonios" aria-label="Opiniones de clientes D'Zoe Perú">
+  <div class="container">
+    <div class="testimonios-header">
+      <h2 class="testimonios-title">Lo que dicen nuestras <span>mamás</span> 💕</h2>
+      <div class="testimonios-stars-summary">
+        <span class="stars">★★★★★</span>
+        <strong>4.9</strong>
+        <span>· Más de 500 familias felices en todo el Perú</span>
+      </div>
+    </div>
+
+    <div class="testimonios-grid">
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">Compré un vestido para el bautizo de mi hija y quedó hermoso. La tela es súper suave y el acabado es de primera calidad. ¡Llegó en perfectas condiciones a Arequipa!</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">👩</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Gabriela R.</div>
+            <div class="testimonio-meta">Arequipa · Vestido de bautizo</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">Pedí 3 conjuntos para mi bebé de 6 meses y los colores son exactamente iguales a las fotos. El algodón es premium, nada de pica ni molesta. 100% recomendada 🌸</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">👧</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Milagros P.</div>
+            <div class="testimonio-meta">Lima · Conjuntos bebé</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">El abrigo que compré para mi niña de 4 años es precioso. Super abrigador y los detalles son de otra categoría. El envío llegó rapidísimo a Cusco por Shalom.</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">🧑</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Carmen L.</div>
+            <div class="testimonio-meta">Cusco · Abrigo infantil</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">Ya llevo 5 pedidos con D'Zoe y nunca me han fallado. Siempre me avisan cuando llega algo nuevo que le puede gustar a mi niña. ¡Son lo mejor!</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">👩‍🦱</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Lorena M.</div>
+            <div class="testimonio-meta">Trujillo · Cliente frecuente</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">El vestido floreado que compré para el cumple de mi hija fue un éxito total. Todas las invitadas preguntaron dónde lo conseguí. Los precios son muy justos para la calidad.</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">🙋‍♀️</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Valeria C.</div>
+            <div class="testimonio-meta">Piura · Vestido fiesta</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonio-card">
+        <div class="testimonio-quote">"</div>
+        <p class="testimonio-text">Hice mi lista de deseos para el baby shower por D'Zoe y fue súper fácil. Mi familia pudo comprar exactamente lo que elegí. Una experiencia increíble 💕</p>
+        <div class="testimonio-footer">
+          <div class="testimonio-avatar">🤰</div>
+          <div class="testimonio-info">
+            <div class="testimonio-name">Daniela V.</div>
+            <div class="testimonio-meta">Huancayo · Lista Baby Shower</div>
+            <div class="testimonio-stars">★★★★★</div>
+            <div class="testimonio-verified"><i class="fas fa-check-circle"></i> Compra verificada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonios-cta-row">
+      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener" class="testimonios-tiktok-cta">
+        <i class="fab fa-tiktok"></i> Ver reseñas en TikTok
+      </a>
+      <a href="https://wa.me/51956063145?text=Hola%20D%27Zoe%20Per%C3%BA%21%20Quiero%20hacer%20mi%20primer%20pedido%20%F0%9F%8C%B8" target="_blank" rel="noopener" class="testimonios-wa-cta">
+        <i class="fab fa-whatsapp"></i> ¡Quiero ser la próxima!
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AVÍSAME CUANDO LLEGUE -->
+<section class="avisame-section" id="avisame" aria-label="Recibe avisos de nuevos productos D'Zoe Perú">
+  <div class="container">
+    <div class="avisame-inner">
+      <div class="avisame-content">
+        <div class="avisame-badge">
+          <i class="fas fa-bell"></i> Alertas de nuevos ingresos
+        </div>
+        <h2 class="avisame-title">¿No encontraste lo que buscabas? <span>¡Te avisamos!</span></h2>
+        <p class="avisame-desc">Déjanos tu número y cuéntanos qué necesitas. Te avisamos por WhatsApp en cuanto llegue el modelo que buscas. ¡Sin costo, sin compromiso!</p>
+        <div class="avisame-form">
+          <div class="avisame-input-row">
+            <input class="avisame-input" type="text" id="avisameNombre" placeholder="Tu nombre" autocomplete="given-name">
+            <input class="avisame-input" type="tel" id="avisameWa" placeholder="Tu WhatsApp" autocomplete="tel" style="max-width:160px;">
+          </div>
+          <select class="avisame-select" id="avisameCategoria">
+            <option value="">¿Qué necesitas? (opcional)</option>
+            <option value="vestidos">Vestidos para niña</option>
+            <option value="abrigos">Abrigos infantiles</option>
+            <option value="bebes">Ropa de bebé 0-24m</option>
+            <option value="conjuntos">Conjuntos</option>
+            <option value="jeans">Jeans y pantalones</option>
+            <option value="bautizo">Ropa para bautizo</option>
+            <option value="cumple">Outfits de cumpleaños</option>
+          </select>
+          <button class="avisame-submit" onclick="sendAvisame()">
+            <i class="fas fa-bell"></i> Avísame cuando llegue
+          </button>
+          <div class="avisame-note">
+            <i class="fas fa-shield-alt"></i> Solo te contactamos por WhatsApp. Nunca spam.
+          </div>
+        </div>
+      </div>
+
+      <div class="avisame-visual">
+        <div class="avisame-card-preview">
+          <h4><i class="fas fa-clock"></i> Próximos ingresos</h4>
+          <div class="avisame-notify-list">
+            <div class="anl-item">
+              <span class="anl-emoji">👗</span>
+              <div class="anl-info">
+                <div class="anl-name">Vestidos de Primavera 2026</div>
+                <div class="anl-meta">Llegada estimada: próxima semana</div>
+              </div>
+              <button class="anl-notify-btn" onclick="notifyProximoItem(this,'Vestidos de Primavera 2026')">
+                <i class="fas fa-bell"></i> Avisar
+              </button>
+            </div>
+            <div class="anl-item">
+              <span class="anl-emoji">🧥</span>
+              <div class="anl-info">
+                <div class="anl-name">Colección Abrigos Invierno</div>
+                <div class="anl-meta">Llegada estimada: 2 semanas</div>
+              </div>
+              <button class="anl-notify-btn" onclick="notifyProximoItem(this,'Colección Abrigos Invierno')">
+                <i class="fas fa-bell"></i> Avisar
+              </button>
+            </div>
+            <div class="anl-item">
+              <span class="anl-emoji">👶</span>
+              <div class="anl-info">
+                <div class="anl-name">Línea Bebé Algodón Premium</div>
+                <div class="anl-meta">Llegada estimada: 10 días</div>
+              </div>
+              <button class="anl-notify-btn" onclick="notifyProximoItem(this,'Línea Bebé Algodón Premium')">
+                <i class="fas fa-bell"></i> Avisar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ── Avísame cuando llegue ── */
+function sendAvisame() {
+  var nombre = document.getElementById('avisameNombre')?.value?.trim() || '';
+  var wa = document.getElementById('avisameWa')?.value?.trim() || '';
+  var cat = document.getElementById('avisameCategoria')?.value || '';
+  if (!nombre) { alert('Por favor ingresa tu nombre 🌸'); return; }
+  var catLabels = {vestidos:'Vestidos para niña',abrigos:'Abrigos infantiles',bebes:'Ropa de bebé',conjuntos:'Conjuntos',jeans:'Jeans y pantalones',bautizo:'Ropa para bautizo',cumple:'Outfits de cumpleaños'};
+  var catText = cat ? catLabels[cat] || cat : 'cualquier novedad';
+  var msg = "Hola D'Zoe Perú 🌸 Soy " + nombre + (wa ? ' (WA: ' + wa + ')' : '') + '. Me interesa recibir aviso cuando llegue: *' + catText + '*. ¡Gracias! 💕';
+  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function notifyProximoItem(btn, productName) {
+  if (btn.classList.contains('notified')) return;
+  var msg = "Hola D'Zoe Perú 🌸 Quiero que me avisen cuando llegue: *" + productName + "*. ¡Gracias! 💕";
+  window.open('https://wa.me/51956063145?text=' + encodeURIComponent(msg), '_blank');
+  btn.classList.add('notified');
+  btn.innerHTML = '<i class="fas fa-check-circle"></i> ¡Anotado!';
+}
+</script>
+<!-- FRANJA DE BENEFICIOS -->
+<div class="section-divider"></div>
 
 <!-- FOOTER -->
 <footer class="footer" aria-label="Pie de página D'Zoe Perú">
@@ -5178,7 +6991,7 @@ let currentPage = 1;
 const PRODUCTS_PER_PAGE = 12;
 let selectedSizes = {};
 
-const ALL_SIZES = ["Recién nacido","3-6 meses","6-12 meses","12-18 meses","18-24 meses","1 años","1-2 años","2 años","2-3 años","3 años","3-4 años","4 años","4-5 años","5 años","5-6 años","6 años","6-7 años","7 años","7-8 años","8 años","8-9 años","9 años","9-10 años","10 años","10-11 años","11 años","11-12 años","12 años","12-13 años","13 años","13-14 años","14 años"];
+const ALL_SIZES = ["Recién nacido","3-6 meses","6-9 meses","6-12 meses","9-12 meses","9-18 meses","12-18 meses","12-24 meses","18-24 meses","1 años","1-2 años","2 años","2-3 años","3 años","3-4 años","4 años","4-5 años","5 años","5-6 años","6 años","6-7 años","7 años","7-8 años","8 años","8-9 años","9 años","9-10 años","10 años","10-11 años","11 años","11-12 años","12 años","12-13 años","13 años"];
 
 
 // ═══════════════════════════════════════════════════════
@@ -5219,6 +7032,7 @@ async function loadAllData() {
   renderFilters();
   renderAgeChips();
   renderCategoriesFromData();
+  populateCategorySelects();
   renderProducts();
   renderCart();
   updateUI();
@@ -5985,7 +7799,10 @@ function renderAgeChips() {
 
 function setAgeFilter(age) {
   currentAgeFilter = (currentAgeFilter === age) ? null : age;
+  currentAgeFilterSet = null; // chips usan talla exacta, sin expansión
   currentPage = 1;
+  const sel = document.getElementById('afpEdad');
+  if (sel && !currentAgeFilter) sel.value = '';
   renderAgeChips();
   renderProducts();
   renderBreadcrumb();
@@ -5995,9 +7812,37 @@ function setAgeFilter(age) {
 
 function clearAgeFilter() {
   currentAgeFilter = null;
+  currentAgeGroup = null;
+  currentAgeFilterSet = null;
+  const sel = document.getElementById('afpEdad');
+  if (sel) sel.value = '';
   renderAgeChips();
   renderProducts();
   renderBreadcrumb();
+}
+
+// ═══════════════════════════════════════════════════════
+//  FILTRO POR GRUPO DE EDAD (bebe / ninos / mayores)
+// ═══════════════════════════════════════════════════════
+let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
+let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
+
+const AGE_GROUP_SIZES = {
+  bebe:    ['Recién nacido','3-6 meses','6-9 meses','6-12 meses','9-12 meses','9-18 meses','12-18 meses','12-24 meses','18-24 meses','1 años','1-2 años','2 años'],
+  ninos:   ['2-3 años','3 años','3-4 años','4 años','4-5 años','5 años','5-6 años','6 años','6-7 años','7 años','7-8 años','8 años'],
+  mayores: ['8-9 años','9 años','9-10 años','10 años','10-11 años','11 años','11-12 años','12 años','12-13 años','13 años']
+};
+
+function filterByAge(group) {
+  currentAgeGroup = (currentAgeGroup === group) ? null : group;
+  currentAgeFilter = null;
+  currentAgeFilterSet = null;
+  currentPage = 1;
+  renderAgeChips();
+  renderProducts();
+  renderBreadcrumb();
+  const sec = document.getElementById('productos');
+  if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ═══════════════════════════════════════════════════════
@@ -6014,9 +7859,33 @@ function searchProducts() {
 //  FILTRADO
 // ═══════════════════════════════════════════════════════
 function filterProducts() {
-  let filtered = currentFilter === 'all' ? [...products] : products.filter(p => p.categories && p.categories.includes(currentFilter));
-  if (currentSearch) filtered = filtered.filter(p => p.name.toLowerCase().includes(currentSearch) || (p.description||'').toLowerCase().includes(currentSearch));
-  if (currentAgeFilter) filtered = filtered.filter(p => (p.sizes||[]).some(s => s.size === currentAgeFilter && s.stock > 0));
+  let filtered = currentFilter === 'all'
+    ? [...products]
+    : products.filter(p => p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase()));
+  // Búsqueda por texto (nombre, descripción, tallas)
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      (p.description||'').toLowerCase().includes(q) ||
+      (p.sizes||[]).some(s => s.size && s.size.toLowerCase().includes(q)) ||
+      (p.categories||[]).some(c => c.toLowerCase().includes(q))
+    );
+  }
+  // Filtro por talla individual (chips de edad) — soporta set expandido desde el buscador
+  if (currentAgeFilter) {
+    if (currentAgeFilterSet && currentAgeFilterSet.length > 1) {
+      // Vino del select de edad: incluir todos los rangos solapados
+      filtered = filtered.filter(p => (p.sizes||[]).some(s => currentAgeFilterSet.includes(s.size) && s.stock > 0));
+    } else {
+      filtered = filtered.filter(p => (p.sizes||[]).some(s => s.size === currentAgeFilter && s.stock > 0));
+    }
+  }
+  // Filtro por grupo de edad (bebe/ninos/mayores)
+  if (currentAgeGroup && AGE_GROUP_SIZES[currentAgeGroup]) {
+    const allowed = AGE_GROUP_SIZES[currentAgeGroup];
+    filtered = filtered.filter(p => (p.sizes||[]).some(s => allowed.includes(s.size)));
+  }
   return filtered;
 }
 
@@ -6172,7 +8041,7 @@ function renderProducts() {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);">
       <div style="font-size:52px;margin-bottom:16px;">🔍</div>
       <p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>
-      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();"
+      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();"
         style="margin-top:16px;background:var(--rose);color:white;border:none;padding:10px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:14px;">
         Ver todos los productos
       </button>
