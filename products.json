@@ -14,6 +14,19 @@
     "url": "/productos/sueter-mia-amore-blanco.html"
   },
   {
+    "id": 1782188999171,
+    "slug": "pequena-dalia-choc",
+    "name": "Pequeña Dalia Choc",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHERc9Y0HoPX-VV9xaPHGY8rpAWiuF10ipbmcPSNYdNtnnAvT0BpEXl1lObbpWE0toxG_a-rr_Ar36YfvCAioweNvOvL9Y4kP6sP6Xe1uBi7_zzFzzMZr104OINdv9q1kiF91EBoFmOpB8vtKDeEyogqU7HEaX0nztT7QiwcT9ieenYf4urtZa4oA8NP0/s16000/vv2.png",
+    "categories": [
+      "Vestidos",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/pequena-dalia-choc.html"
+  },
+  {
     "id": 1780261057484,
     "slug": "conjunto-mini-diva-4-piezas",
     "name": "Conjunto Mini Diva 4 piezas",
