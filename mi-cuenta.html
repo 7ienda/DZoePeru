@@ -1952,83 +1952,168 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== ⭐ NUEVO INGRESO ====== -->
     <div id="nuevo-ingreso-section" class="page-section" style="display:none;">
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-star" style="color:var(--peach)"></i> Configurar Nuevo Ingreso</div>
-          <button class="btn btn-ghost btn-sm" onclick="niLimpiarForm()"><i class="fas fa-broom"></i> Limpiar</button>
+
+      <!-- Layout: formulario + preview en paralelo -->
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;">
+
+        <!-- ── FORMULARIO ── -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-star" style="color:var(--peach)"></i> Configurar Nuevo Ingreso</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-ghost btn-sm" onclick="niLimpiarForm()"><i class="fas fa-broom"></i> Limpiar</button>
+            </div>
+          </div>
+          <div class="section-body">
+
+            <!-- Fila 1: nombre + categoría -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+              <div class="form-group" style="margin:0;">
+                <label>Nombre del producto *</label>
+                <input type="text" id="ni-nombre" placeholder="Ej: Abrigos Lana Doble Face" oninput="niUpdatePreview()">
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Categoría / Temporada</label>
+                <input type="text" id="ni-categoria" placeholder="Ej: Abrigos · Invierno 2026" oninput="niUpdatePreview()">
+              </div>
+            </div>
+
+            <!-- FOTOS MÚLTIPLES -->
+            <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;">
+              <div style="font-weight:800;font-size:13px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-images" style="color:var(--rose)"></i> Fotos del producto
+                <span style="font-weight:400;font-size:11px;color:var(--muted)">(la 1ª es la portada)</span>
+              </div>
+              <div id="ni-images-container"></div>
+              <button class="add-image-btn" onclick="niAddImageInput()" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Agregar foto
+              </button>
+              <div id="ni-preview-images" class="preview-images" style="margin-top:10px;"></div>
+            </div>
+
+            <!-- TALLAS -->
+            <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;">
+              <div style="font-weight:800;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-ruler" style="color:var(--lavender)"></i> Tallas disponibles
+                <span style="font-weight:400;font-size:11px;color:var(--muted)">(chips informativos en la tienda)</span>
+              </div>
+              <div id="ni-sizes-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <select id="ni-size-select" style="flex:1;border-radius:8px;border:1.5px solid var(--border);padding:7px 10px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);">
+                  <option value="">— Selecciona una talla —</option>
+                </select>
+                <button class="btn btn-ghost btn-sm" onclick="niAddSize();niUpdatePreview()"><i class="fas fa-plus"></i> Agregar</button>
+              </div>
+            </div>
+
+            <!-- Etiquetas -->
+            <div class="form-group" style="margin-bottom:16px;">
+              <label>Etiquetas <span style="font-weight:400;color:var(--muted)">(máx. 3, separadas por coma)</span></label>
+              <input type="text" id="ni-tags" placeholder="Ej: 4–14 años, Lana premium, Edición limitada" oninput="niUpdatePreview()">
+            </div>
+
+            <!-- Fecha de llegada -->
+            <div style="background:linear-gradient(135deg,rgba(245,185,126,.08),rgba(232,164,192,.08));border:1.5px solid var(--peach-light,#f5d0b0);border-radius:16px;padding:18px;margin-bottom:16px;">
+              <div style="font-weight:800;font-size:14px;margin-bottom:4px;"><i class="fas fa-clock" style="color:var(--peach)"></i> Fecha estimada de llegada</div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Activa la cuenta regresiva 🚨 en la tienda.</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:flex-end;">
+                <div class="form-group" style="margin:0;"><label>Fecha *</label><input type="date" id="ni-fecha" oninput="niUpdatePreview()"></div>
+                <div class="form-group" style="margin:0;"><label>Hora</label><input type="time" id="ni-hora" value="09:00" oninput="niUpdatePreview()"></div>
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(7)">+7 d</button>
+                  <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(14)">+14 d</button>
+                  <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(30)">+30 d</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imagen editorial -->
+            <div class="form-group" style="margin-bottom:14px;">
+              <label>URL imagen editorial / fondo del hero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+              <input type="url" id="ni-img-editorial" placeholder="https://..." oninput="niUpdatePreview()">
+            </div>
+
+            <!-- Mensaje WA -->
+            <div class="form-group" style="margin-bottom:20px;">
+              <label>Mensaje WhatsApp personalizado <span style="font-weight:400;color:var(--muted)">(opcional — usa {producto})</span></label>
+              <textarea id="ni-msg-wa" rows="2" placeholder="Ej: Hola! Me interesa {producto} 🛍️ ¿cuándo llega?" style="width:100%;border-radius:10px;border:1.5px solid var(--border);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
+            </div>
+
+            <!-- Botones de acción -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn btn-primary" onclick="niGuardar()">
+                <i class="fas fa-floppy-disk"></i> Guardar y publicar
+              </button>
+              <button class="btn btn-ghost" onclick="window.open('index.html','_blank')">
+                <i class="fas fa-external-link-alt"></i> Ver tienda
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="niBorrarConfig()" style="color:#e53e3e;border-color:#fed7d7;margin-left:auto;">
+                <i class="fas fa-trash-alt"></i> Borrar
+              </button>
+            </div>
+
+            <!-- Estado publicado -->
+            <div id="ni-datos-actuales" style="margin-top:16px;padding:12px 16px;background:var(--bg2,#f8f4fc);border-radius:12px;font-size:12px;color:var(--muted);display:none;border-left:3px solid var(--green,#2e9c6b);"></div>
+          </div>
         </div>
-        <div class="section-body">
-          <!-- Fila 1: nombre + categoría -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
-            <div class="form-group" style="margin:0;"><label>Nombre del producto *</label><input type="text" id="ni-nombre" placeholder="Ej: Abrigos Lana Doble Face" oninput="niUpdatePreview()"></div>
-            <div class="form-group" style="margin:0;"><label>Categoría / Temporada</label><input type="text" id="ni-categoria" placeholder="Ej: Abrigos · Invierno 2026" oninput="niUpdatePreview()"></div>
+
+        <!-- ── PREVIEW CARD ── -->
+        <div style="position:sticky;top:80px;">
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+            <i class="fas fa-eye"></i> Vista previa en la tienda
           </div>
 
-          <!-- FOTOS MÚLTIPLES -->
-          <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;">
-            <div style="font-weight:800;font-size:13px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-              <i class="fas fa-images" style="color:var(--rose)"></i> Fotos del producto
-              <span style="font-weight:400;font-size:11px;color:var(--muted)">(la 1ª es la portada — se muestra en la tienda)</span>
+          <!-- Card preview estilo highlight-card -->
+          <div id="ni-preview-card" style="background:var(--card);border-radius:18px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07);">
+            <!-- Cover image -->
+            <div id="ni-prev-cover" style="width:100%;height:180px;background:linear-gradient(135deg,#fde8f0,#ede8fb);display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden;">
+              <span id="ni-prev-cover-emoji">👗</span>
+              <img id="ni-prev-cover-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+              <span style="position:absolute;top:10px;left:10px;background:linear-gradient(90deg,#f5a623,#e8539a);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:99px;">✨ NUEVO INGRESO</span>
             </div>
-            <div id="ni-images-container"></div>
-            <button class="add-image-btn" onclick="niAddImageInput()" style="margin-top:10px;">
-              <i class="fas fa-plus"></i> Agregar foto
-            </button>
-            <div id="ni-preview-images" class="preview-images" style="margin-top:12px;"></div>
-          </div>
 
-          <!-- TALLAS -->
-          <div style="background:var(--bg2,#f8f4fc);border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;">
-            <div style="font-weight:800;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
-              <i class="fas fa-ruler" style="color:var(--lavender)"></i> Tallas disponibles
-              <span style="font-weight:400;font-size:11px;color:var(--muted)">(informativas — se muestran como chips en la tienda)</span>
-            </div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Selecciona las tallas que tendrá este ingreso.</div>
-            <div id="ni-sizes-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;"></div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <select id="ni-size-select" style="flex:1;border-radius:8px;border:1.5px solid var(--border);padding:7px 10px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);">
-                <option value="">— Selecciona una talla —</option>
-              </select>
-              <button class="btn btn-ghost btn-sm" onclick="niAddSize()"><i class="fas fa-plus"></i> Agregar</button>
-            </div>
-          </div>
+            <!-- Info -->
+            <div style="padding:14px 16px;">
+              <div id="ni-prev-nombre" style="font-weight:800;font-size:15px;color:var(--text);margin-bottom:3px;">Nombre del producto</div>
+              <div id="ni-prev-categoria" style="font-size:11px;color:var(--muted);margin-bottom:8px;">Categoría · Temporada</div>
 
-          <!-- Etiquetas -->
-          <div class="form-group" style="margin-bottom:18px;"><label>Etiquetas (máx. 3, separadas por coma)</label><input type="text" id="ni-tags" placeholder="Ej: 4–14 años, Lana premium, Edición limitada" oninput="niUpdatePreview()"></div>
+              <!-- Tallas -->
+              <div id="ni-prev-tallas-wrap" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;"></div>
 
-          <!-- Fecha de llegada -->
-          <div style="background:linear-gradient(135deg,rgba(245,185,126,.08),rgba(232,164,192,.08));border:1.5px solid var(--peach-light,#f5d0b0);border-radius:16px;padding:20px;margin-bottom:18px;">
-            <div style="font-weight:800;font-size:14px;margin-bottom:4px;"><i class="fas fa-clock" style="color:var(--peach)"></i> Fecha estimada de llegada</div>
-            <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Controla la cuenta regresiva 🚨 Próximo ingreso en la tienda.</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:flex-end;">
-              <div class="form-group" style="margin:0;"><label>Fecha *</label><input type="date" id="ni-fecha" oninput="niUpdatePreview()"></div>
-              <div class="form-group" style="margin:0;"><label>Hora</label><input type="time" id="ni-hora" value="09:00" oninput="niUpdatePreview()"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;">
-                <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(7)">+7 días</button>
-                <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(14)">+14 días</button>
-                <button class="btn btn-ghost btn-sm" onclick="niFechaRapida(30)">+30 días</button>
+              <!-- Tags -->
+              <div id="ni-prev-tags-wrap" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;"></div>
+
+              <!-- Cuenta regresiva -->
+              <div id="ni-prev-countdown-wrap" style="background:linear-gradient(135deg,rgba(245,185,126,.12),rgba(232,164,192,.12));border:1px solid var(--peach-light,#f5d0b0);border-radius:12px;padding:10px 12px;margin-bottom:12px;display:none;">
+                <div style="font-size:10px;font-weight:700;color:var(--peach);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;"><i class="fas fa-clock"></i> Llega en</div>
+                <div id="ni-prev-countdown" style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--peach);"></div>
+                <div id="ni-prev-fecha-str" style="font-size:10px;color:var(--muted);margin-top:2px;"></div>
+              </div>
+
+              <!-- Botón WA -->
+              <div style="background:#25D366;color:#fff;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:default;">
+                <i class="fab fa-whatsapp" style="font-size:16px;"></i>
+                <span id="ni-prev-wa-msg">Me interesa este producto</span>
               </div>
             </div>
           </div>
 
-          <!-- Imagen editorial -->
-          <div class="form-group" style="margin-bottom:18px;"><label>URL imagen editorial / fondo del hero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label><input type="url" id="ni-img-editorial" placeholder="https://..."></div>
-
-          <!-- Mensaje WA -->
-          <div class="form-group" style="margin-bottom:24px;">
-            <label>Mensaje WhatsApp personalizado <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
-            <textarea id="ni-msg-wa" rows="2" placeholder="Usa {producto} para el nombre. Ej: Hola! Me interesa {producto} ¿cuándo llega?" style="width:100%;border-radius:10px;border:1.5px solid var(--border);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;background:var(--card);color:var(--text);resize:vertical;"></textarea>
+          <!-- Countdown live -->
+          <div style="margin-top:12px;padding:10px 14px;background:var(--bg2,#f8f4fc);border-radius:12px;font-size:11px;color:var(--muted);text-align:center;">
+            <i class="fas fa-info-circle"></i> El preview se actualiza en tiempo real
           </div>
-
-          <!-- Botones -->
-          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-            <button class="btn btn-primary" onclick="niGuardar()"><i class="fas fa-floppy-disk"></i> Guardar y publicar en tienda</button>
-            <button class="btn btn-ghost" onclick="window.open('index.html','_blank')"><i class="fas fa-external-link-alt"></i> Ver tienda</button>
-            <button class="btn btn-ghost btn-sm" onclick="niBorrarConfig()" style="color:#e53e3e;border-color:#fed7d7;margin-left:auto;"><i class="fas fa-trash-alt"></i> Borrar</button>
-          </div>
-          <div id="ni-datos-actuales" style="margin-top:20px;padding:14px 16px;background:var(--bg2,#f8f4fc);border-radius:12px;font-size:12px;color:var(--muted);display:none;"></div>
         </div>
-      </div>
+
+      </div><!-- end grid -->
+
+      <!-- Estilos extras para esta sección -->
+      <style>
+        @media (max-width: 900px) {
+          #nuevo-ingreso-section > div { grid-template-columns: 1fr !important; }
+          #nuevo-ingreso-section > div > div:last-child { position: static !important; }
+        }
+      </style>
+
     </div>
 
   </div><!-- end page-content -->
@@ -5195,6 +5280,7 @@ function niSyncImages() {
   niImages = Array.from(document.querySelectorAll('#ni-images-container .image-url-input'))
     .map(i => i.value.trim()).filter(Boolean);
   niRenderPreviews();
+  niUpdatePreview();
 }
 
 function niRenderPreviews() {
@@ -5255,14 +5341,19 @@ async function niCargarForm() {
   niInitSizeSelect();
   niRenderSizeChips();
 
+  // Actualizar preview
+  setTimeout(niUpdatePreview, 50);
+
   // Info publicado
   const box = document.getElementById('ni-datos-actuales');
   if (box) {
     if (data.nombre) {
       box.style.display = 'block';
       const cnt = (data.imagenes||[data.imagen].filter(Boolean)).length;
-      box.innerHTML = `<strong>✅ Publicado:</strong> ${data.nombre} — llega el ${data.fecha||'?'} ${data.hora||''}<br>
-        <span style="color:var(--rose)">${cnt} foto(s) · ${(data.tallas||[]).length} talla(s) · Visible en la tienda</span>`;
+      box.innerHTML = `<strong style="color:var(--green,#2e9c6b);">✅ Publicado en tienda:</strong> <strong>${data.nombre}</strong><br>
+        📅 Llega el <strong>${data.fecha||'?'}</strong> a las ${data.hora||'09:00'} &nbsp;·&nbsp;
+        📸 ${cnt} foto(s) &nbsp;·&nbsp; 👗 ${(data.tallas||[]).length} talla(s)<br>
+        <span style="color:var(--rose);">👀 Visible en la sección "Lo más destacado" de la tienda</span>`;
     } else {
       box.style.display = 'none';
     }
@@ -5343,7 +5434,87 @@ function niFechaRapida(dias) {
   const el = document.getElementById('ni-fecha'); if(el) el.value = d.toISOString().slice(0,10);
 }
 
-function niUpdatePreview() {} // placeholder
+function niUpdatePreview() {
+  const nombre   = document.getElementById('ni-nombre')?.value.trim()   || '';
+  const cat      = document.getElementById('ni-categoria')?.value.trim() || '';
+  const fecha    = document.getElementById('ni-fecha')?.value            || '';
+  const hora     = document.getElementById('ni-hora')?.value             || '09:00';
+  const tags     = document.getElementById('ni-tags')?.value.trim()      || '';
+  const editorial= document.getElementById('ni-img-editorial')?.value.trim() || '';
+  const waMsg    = document.getElementById('ni-msg-wa')?.value.trim()    || '';
+
+  // Nombre
+  const elNombre = document.getElementById('ni-prev-nombre');
+  if (elNombre) elNombre.textContent = nombre || 'Nombre del producto';
+
+  // Categoría
+  const elCat = document.getElementById('ni-prev-categoria');
+  if (elCat) elCat.textContent = cat || 'Categoría · Temporada';
+
+  // Cover image: usa la primera foto del producto si hay, o la editorial
+  const coverImg  = document.getElementById('ni-prev-cover-img');
+  const coverEmoji = document.getElementById('ni-prev-cover-emoji');
+  const firstImgInput = document.querySelector('#ni-images-container .image-url-input');
+  const imgSrc = (firstImgInput?.value.trim()) || editorial;
+  if (coverImg && coverEmoji) {
+    if (imgSrc) {
+      coverImg.src = imgSrc;
+      coverImg.style.display = 'block';
+      coverEmoji.style.display = 'none';
+    } else {
+      coverImg.style.display = 'none';
+      coverEmoji.style.display = '';
+    }
+  }
+
+  // Tallas
+  const tallasWrap = document.getElementById('ni-prev-tallas-wrap');
+  if (tallasWrap) {
+    tallasWrap.innerHTML = niSizes.length
+      ? niSizes.map(s => `<span style="background:var(--lav-light,#ede8fb);color:var(--lavender,#7c5cbf);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${s}</span>`).join('')
+      : '';
+  }
+
+  // Tags
+  const tagsWrap = document.getElementById('ni-prev-tags-wrap');
+  if (tagsWrap) {
+    const tagList = tags.split(',').map(t=>t.trim()).filter(Boolean).slice(0,3);
+    tagsWrap.innerHTML = tagList.map(t =>
+      `<span style="background:var(--rose-soft,#fdf0f4);color:var(--rose,#c2617a);padding:2px 10px;border-radius:99px;font-size:10px;font-weight:700;">🏷️ ${t}</span>`
+    ).join('');
+  }
+
+  // Cuenta regresiva
+  const cWrap   = document.getElementById('ni-prev-countdown-wrap');
+  const cEl     = document.getElementById('ni-prev-countdown');
+  const cFecha  = document.getElementById('ni-prev-fecha-str');
+  if (cWrap && cEl && fecha) {
+    const target = new Date(`${fecha}T${hora}:00`);
+    const diff   = target - new Date();
+    cWrap.style.display = 'block';
+    if (diff > 0) {
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      cEl.textContent = `${d}d ${h}h ${m}m`;
+      if (cFecha) cFecha.textContent = target.toLocaleDateString('es-PE', {weekday:'long', day:'numeric', month:'long'}) + ' a las ' + hora;
+    } else {
+      cEl.textContent = '¡Ya llegó! 🎉';
+      if (cFecha) cFecha.textContent = '';
+    }
+  } else if (cWrap) {
+    cWrap.style.display = 'none';
+  }
+
+  // Mensaje WA
+  const waEl = document.getElementById('ni-prev-wa-msg');
+  if (waEl) {
+    const msg = waMsg
+      ? waMsg.replace('{producto}', nombre || 'este producto').slice(0, 60)
+      : `Me interesa ${nombre || 'este producto'}`;
+    waEl.textContent = msg;
+  }
+}
 
 // Agregar al iconMap/nameMap si existen
 if (typeof iconMap !== 'undefined') iconMap['nuevo-ingreso-section'] = 'fa-star';
