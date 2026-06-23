@@ -6413,21 +6413,66 @@ body.dark-mode .anl-name { color: #ede8f5; }
 
 <script>
 /* ── Highlights: Nuevos Ingresos / Más Vendidos ── */
+
+/**
+ * Selecciona los 2 mejores productos para "Nuevos Ingresos":
+ *  1. featured === true  (marcados en el admin como destacado)
+ *  2. is_new === true
+ *  3. Fallback: los 2 más recientes por created_at (ya vienen ordenados desc)
+ */
+function getNewProducts(all) {
+  const active = all.filter(p => (p.status || 'active') === 'active');
+  const featuredNew = active.filter(p => p.featured || p.is_new);
+  if (featuredNew.length >= 2) return featuredNew.slice(0, 2);
+  // completar con los más recientes si no hay suficientes
+  const rest = active.filter(p => !p.featured && !p.is_new);
+  return [...featuredNew, ...rest].slice(0, 2);
+}
+
+/**
+ * Selecciona los 2 mejores productos para "Más Vendidos":
+ *  1. ventas_count / sold_count / sales_count (campo de ventas si existe)
+ *  2. Fallback: los 2 más caros (proxy de popularidad)
+ */
+function getBestSellers(all) {
+  const active = all.filter(p => (p.status || 'active') === 'active');
+  // intentar usar campo de ventas real
+  const hasSalesField = active.some(p =>
+    p.ventas_count != null || p.sold_count != null || p.sales_count != null
+  );
+  if (hasSalesField) {
+    return active
+      .slice()
+      .sort((a, b) => {
+        const va = a.ventas_count ?? a.sold_count ?? a.sales_count ?? 0;
+        const vb = b.ventas_count ?? b.sold_count ?? b.sales_count ?? 0;
+        return vb - va;
+      })
+      .slice(0, 2);
+  }
+  // fallback: productos diferentes a los nuevos, ordenados por precio desc
+  const newIds = new Set(getNewProducts(all).map(p => p.id));
+  const candidates = active.filter(p => !newIds.has(p.id));
+  return (candidates.length >= 2 ? candidates : active)
+    .slice()
+    .sort((a, b) => {
+      const pa = parseFloat(a.precio) || 0;
+      const pb = parseFloat(b.precio) || 0;
+      return pb - pa;
+    })
+    .slice(0, 2);
+}
+
 function renderHighlights() {
   if (!window.products || window.products.length === 0) {
     setTimeout(renderHighlights, 800);
     return;
   }
-  // Nuevos: los primeros 3 por created_at
-  const nuevos = window.products.slice(0, 3);
-  // Más vendidos: los siguientes 3 (simulamos con orden inverso)
-  const vendidos = window.products.slice().reverse().slice(0, 3);
-
-  renderHighlightList('nuevosIngresosList', nuevos);
-  renderHighlightList('masVendidosList', vendidos);
+  renderHighlightList('nuevosIngresosList', getNewProducts(window.products), 'nuevo');
+  renderHighlightList('masVendidosList',    getBestSellers(window.products),  'vendido');
 }
 
-function renderHighlightList(containerId, items) {
+function renderHighlightList(containerId, items, tipo) {
   const el = document.getElementById(containerId);
   if (!el) return;
   if (!items || items.length === 0) {
@@ -6435,19 +6480,29 @@ function renderHighlightList(containerId, items) {
     return;
   }
   el.innerHTML = items.map(p => {
-    const img = (p.imagenes && p.imagenes[0]) || p.imagen || '';
+    const img    = (p.imagenes && p.imagenes[0]) || p.imagen || '';
     const precio = p.precio ? 'S/ ' + parseFloat(p.precio).toFixed(2) : '';
-    const cat = p.categoria || p.category || '';
+    const cat    = p.categoria || p.category || '';
+    // badge contextual
+    const badge  = tipo === 'nuevo'
+      ? '<span class="hlc-badge hlc-badge--new">✨ Nuevo</span>'
+      : '<span class="hlc-badge hlc-badge--hot">🔥 Top</span>';
+    const pJson  = JSON.stringify(p).replace(/"/g,'&quot;');
     return `
-      <div class="highlight-card" onclick="openProductPage(${JSON.stringify(p).replace(/"/g,'&quot;')})">
-        ${img ? `<img class="hlc-img" src="${img}" alt="${p.nombre}" onerror="this.style.display='none'">` : '<div class="hlc-img" style="display:flex;align-items:center;justify-content:center;font-size:28px;">👗</div>'}
+      <div class="highlight-card" onclick="openProductPage(${pJson})">
+        <div class="hlc-img-wrap">
+          ${img
+            ? `<img class="hlc-img" src="${img}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=hlc-img-fallback>👗</div>'">`
+            : '<div class="hlc-img-fallback">👗</div>'}
+          ${badge}
+        </div>
         <div class="hlc-info">
           <div class="hlc-name">${p.nombre || 'Producto'}</div>
           <div class="hlc-meta">${cat}</div>
           <div class="hlc-price">${precio}</div>
         </div>
-        <button class="hlc-add" onclick="event.stopPropagation();addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')})" title="Agregar al carrito">
-          <i class="fas fa-plus"></i>
+        <button class="hlc-add" onclick="event.stopPropagation();addToCart(${pJson})" title="Agregar al carrito">
+          <i class="fas fa-cart-plus"></i>
         </button>
       </div>`;
   }).join('');
@@ -6458,11 +6513,61 @@ function switchHighlightTab(tab) {
   document.getElementById('hlTabVendidos')?.classList.toggle('active', tab === 'vendidos');
 }
 
-// Disparar cuando los productos estén listos
+// Disparar cuando los productos estén listos (hook en loadAllData también)
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(renderHighlights, 1200);
 });
+
+// Re-render si loadAllData termina después
+const _origRenderProducts = window.renderProducts;
+if (typeof renderProducts === 'function') {
+  const __orig = renderProducts;
+  renderProducts = function() { __orig.apply(this, arguments); renderHighlights(); };
+}
 </script>
+
+<style>
+/* ── Mejoras visuales para los highlight-cards ── */
+.hlc-img-wrap {
+  position: relative;
+  width: 72px;
+  min-width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--rose-soft, #fdf0f4);
+  flex-shrink: 0;
+}
+.hlc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+.hlc-img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.highlight-card:hover .hlc-img { transform: scale(1.07); }
+.hlc-badge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 99px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.hlc-badge--new { background: #d1fae5; color: #065f46; }
+.hlc-badge--hot { background: #fef3c7; color: #b45309; }
+.hlc-add i.fa-cart-plus { font-size: 13px; }
+</style>
 
 <!-- SECCIÓN POR OCASIÓN -->
 <section class="ocasion-section" id="ocasiones" aria-label="Ropa infantil por ocasión">
