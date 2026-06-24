@@ -8135,18 +8135,19 @@ function goToPage(page) {
 //  SEO — SCHEMA.ORG PRODUCT DINÁMICO + TÍTULOS ÚNICOS
 // ═══════════════════════════════════════════════════════
 function buildProductSeoTitle(product) {
-  // Genera título único tipo: "Vestido Princesa Rosa para Niña | D'Zoe Perú"
+  // Genera título único tipo: "Pequeña Dalia Choc | D'Zoe Perú"
   const name = product.name || '';
-  const cat  = product.categories?.[0] || '';
-  const size = (product.sizes||[]).find(s=>s.stock>0)?.size || '';
-  // Enriquecer nombre con categoría si no está incluida
-  let title = name;
-  if (cat && !name.toLowerCase().includes(cat.toLowerCase())) {
-    title = `${cat} ${name}`;
+  // Detectar género desde las categorías del producto
+  const cats = (product.categories || []).map(c => c.toLowerCase());
+  let generoCtx = '';
+  if (cats.some(c => c.includes('niña') || c.includes('nina') || c.includes('girl'))) {
+    generoCtx = ' para Niña';
+  } else if (cats.some(c => c.includes('niño') || c.includes('nino') || c.includes('boy'))) {
+    generoCtx = ' para Niño';
+  } else if (cats.some(c => c.includes('bebé') || c.includes('bebe') || c.includes('baby'))) {
+    generoCtx = ' para Bebé';
   }
-  // Añadir contexto de talla/edad si está disponible
-  const ageCtx = size ? ` Talla ${size}` : '';
-  return `${title}${ageCtx} para Niña | D'Zoe Perú`;
+  return `${name}${generoCtx} | D'Zoe Perú`;
 }
 
 function buildProductSlug(product) {
