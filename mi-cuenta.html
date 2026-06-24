@@ -5539,6 +5539,27 @@ if (typeof nameMap !== 'undefined') nameMap['nuevo-ingreso-section'] = '⭐ Nuev
 </div>
 
 <script type="module" src="admin-feed.js"></script>
-  
+
+  <div class="meta-integrations">
+  <h2>Integraciones Meta</h2>
+
+  <label>Meta Catalog Feed URL</label>
+  <input id="meta-feed-url" type="text" value="https://dzoeperu.com/catalog.xml">
+
+  <label>Facebook Page ID</label>
+  <input id="facebook-page-id" type="text">
+
+  <label>Instagram Business ID</label>
+  <input id="instagram-business-id" type="text">
+
+  <label>WhatsApp Business ID</label>
+  <input id="whatsapp-business-id" type="text">
+
+  <label>Meta Access Token</label>
+  <input id="meta-access-token" type="password">
+
+  <button onclick="saveMetaConfig()">Guardar configuración</button>
+  <button onclick="connectMetaCatalog()">Conectar catálogo</button>
+</div>
 </body>
 </html>
