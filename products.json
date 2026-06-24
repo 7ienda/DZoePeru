@@ -1280,6 +1280,19 @@
     "url": "/productos/conjunto-paris-rosado.html"
   },
   {
+    "id": 1782315951506,
+    "slug": "conjunto-lenadorcito",
+    "name": "Conjunto Leñadorcito",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYkPm18nESFcjmruPcZyeU50ZbKfiTGMUO56OE9QGS4RRvETNlESu2LEV_TcAX3GijCh4KsjEm3udhB4Atq6ejJsYJhA33FS7Ws6HsCxKTyYvUUDVdiXqStDFcOtgC1Cu2rEJBsRjUnnwvhc79J6rs1TVtEyBowoJEZdhQY4_OyOeOLvzyIyDfzXxZ1Ec/s16000/l1.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-lenadorcito.html"
+  },
+  {
     "id": 1780415883954,
     "slug": "sueter-baby-dino-beige",
     "name": "Sueter Baby Dino Beige",
@@ -1371,6 +1384,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-3-piezas-mickey-plomo.html"
+  },
+  {
+    "id": 1782317642455,
+    "slug": "conjunto-brillo-de-chanel",
+    "name": "Conjunto Brillo de Chanel",
+    "price": 60,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhBTdozK7lpp32gs8ElCf21ksngeoQAitsknDGYiJhNQqJpNrYSV6pC5WgaSAWb3gbt2VrnhJR2-rlNrMafgje4vV4AaJSSoX__x03r93uXvr09V8VDBOcs79WymVaY40gZBHZrTs29anYAoVJApGiKA5AspLjeQvJ9Rp1B3k5oq0mY6ZpLxDFfbeFyhjo/s16000/ch2.png",
+    "categories": [
+      "Conjunto Falda",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-brillo-de-chanel.html"
   },
   {
     "id": 1780413708269,
