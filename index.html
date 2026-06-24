@@ -2273,8 +2273,8 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 /* ── Tarjetas de producto ≤ 400px ── */
 @media(max-width:400px){
   .product-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .product-card { grid-template-columns: 50vw 1fr !important; min-height: 150px !important; }
-  .product-img-wrap { width: 50vw !important; min-height: 150px !important; }
+  .product-card { display: flex !important; flex-direction: column !important; min-height: unset !important; }
+  .product-img-wrap { width: 100% !important; min-height: unset !important; }
   .product-body { padding: 10px 10px 8px !important; }
   .product-body h4 { font-size: 12px !important; line-height: 1.3 !important; }
   .product-price { font-size: 14px !important; }
@@ -6780,40 +6780,71 @@ const ALL_SIZES = ["Recién nacido","3-6 meses","6-9 meses","6-12 meses","9-12 m
 
 
 // ═══════════════════════════════════════════════════════
+//  CACHÉ LOCAL — evita recargar en cada visita
+// ═══════════════════════════════════════════════════════
+const CACHE_KEY     = 'dzoe_products_cache';
+const CACHE_CAT_KEY = 'dzoe_categories_cache';
+const CACHE_TTL     = 5 * 60 * 1000; // 5 minutos
+
+function getCachedData(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(key); return null; }
+    return data;
+  } catch(e) { return null; }
+}
+
+function setCachedData(key, data) {
+  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════
 //  CARGA DESDE SUPABASE
 // ═══════════════════════════════════════════════════════
 async function loadProductsFromSupabase() {
-  if (!supabaseClient) { console.error('❌ Supabase no inicializado'); return []; }
+  // 1. Mostrar caché inmediatamente si existe
+  const cached = getCachedData(CACHE_KEY);
+  if (cached && cached.length > 0) {
+    products = cached;
+    window.products = products;
+    renderFilters(); renderAgeChips(); renderCategoriesFromData();
+    populateCategorySelects(); renderProducts(); renderCart(); updateUI();
+  }
+
+  if (!supabaseClient) { console.error('❌ Supabase no inicializado'); return cached || []; }
   try {
-    console.log('🔄 Conectando a Supabase...');
     const { data, error } = await supabaseClient
       .from('products')
-      .select('*')
+      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,created_at')
       .order('created_at', { ascending: false });
-    if (error) { console.error('❌ Error Supabase:', error.message); showNotif('❌ Error al cargar productos: ' + error.message); return []; }
+    if (error) { console.error('❌ Error Supabase:', error.message); return cached || []; }
     console.log('✅ Productos:', data?.length);
+    if (data && data.length > 0) setCachedData(CACHE_KEY, data);
     return data || [];
-  } catch(e) { console.error('❌ Error cargando productos:', e); showNotif('❌ Error de conexión: ' + e.message); return []; }
+  } catch(e) { console.error('❌ Error cargando productos:', e); return cached || []; }
 }
 
 async function loadCategoriesFromSupabase() {
+  const cached = getCachedData(CACHE_CAT_KEY);
+  if (cached) return cached;
   if (!supabaseClient) return [];
   try {
     const { data, error } = await supabaseClient.from('categories').select('*').order('name');
     if (error) throw error;
+    if (data) setCachedData(CACHE_CAT_KEY, data);
     return data || [];
   } catch(e) { console.error('Error cargando categorías:', e); return []; }
 }
 
 async function loadAllData() {
-  showNotif('🔄 Cargando productos...');
   const [productsData, categoriesData] = await Promise.all([
     loadProductsFromSupabase(),
     loadCategoriesFromSupabase()
   ]);
   products = productsData;
-  window.products = products; // exponer globalmente para highlights
-
+  window.products = products;
   categories = categoriesData;
 
   renderFilters();
@@ -6823,14 +6854,13 @@ async function loadAllData() {
   renderProducts();
   renderCart();
   updateUI();
-  injectProductSchema(products);
-  showNotif(`✨ ${products.length} productos disponibles`);
+  injectProductSchema(products.slice(0, 20)); // solo primeros 20 para SEO
 
   // Renderizar highlights ahora que los datos reales están listos
   renderHighlights();
 
-  // Cargar estadísticas reales desde orders
-  loadTrustStats();
+  // Estadísticas en segundo plano sin bloquear la UI
+  setTimeout(loadTrustStats, 1500);
 }
 
 
