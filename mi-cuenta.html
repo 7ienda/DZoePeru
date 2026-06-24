@@ -5522,5 +5522,23 @@ if (typeof nameMap !== 'undefined') nameMap['nuevo-ingreso-section'] = '⭐ Nuev
 
 </script>
 
+<div id="feed-engine" class="feed-panel">
+  <h2>Feed Engine D'Zoe</h2>
+
+  <div class="feed-stats">
+    <div>Total: <span id="total-products">0</span></div>
+    <div>Válidos: <span id="valid-products">0</span></div>
+    <div>Errores: <span id="error-products">0</span></div>
+    <div>Precio 0: <span id="zero-price">0</span></div>
+  </div>
+
+  <button onclick="syncCatalog()">Sincronizar catálogo</button>
+  <button onclick="exportMetaFeed()">Exportar Meta</button>
+
+  <div id="feed-errors"></div>
+</div>
+
+<script type="module" src="admin-feed.js"></script>
+  
 </body>
 </html>
