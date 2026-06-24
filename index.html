@@ -4483,9 +4483,37 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
 @media (max-width: 768px) {
   .prem-inline-filter { display: none; }
   .prem-search-sep { display: none; }
+
+  /* Fila de filtros debajo del buscador en mobile */
+  .prem-mobile-filters {
+    display: flex !important;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+  }
+  .prem-mobile-filters select {
+    flex: 1;
+    font-size: 12px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--text);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: auto;
+  }
+  .prem-mobile-filters select:focus {
+    outline: none;
+    border-color: var(--rose);
+  }
 }
 @media (max-width: 600px) {
   .prem-search-cat-select { display: none; }
+}
+@media (min-width: 769px) {
+  .prem-mobile-filters { display: none; }
 }
 
 /* Botón Buscar */
@@ -4720,6 +4748,7 @@ body.dark-mode .menu-mobile-cta { border-color: #3a3050; }
 body.dark-mode .prem-search-section { background: linear-gradient(160deg,#1e1628,#1a1a2e,#1e1628); }
 body.dark-mode .prem-search-box { background: rgba(36,30,52,0.95); border-color: #4a3060; }
 body.dark-mode .prem-search-input { color: #ede8f5; }
+body.dark-mode .prem-mobile-filters select { background: #2a2040; border-color: #4a3060; color: #ede8f5; }
 body.dark-mode .prem-search-input::placeholder { color: #6a6080; }
 body.dark-mode .prem-search-sep { background: rgba(195,174,228,0.2); }
 body.dark-mode .prem-search-cat-select { color: #a89ec0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a89ec0'/%3E%3C/svg%3E"); }
@@ -4836,6 +4865,44 @@ body.dark-mode .prem-filter-toggle:hover { background: #2a2040; }
 
         <!-- Sugerencias -->
         <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
+      </div>
+
+      <!-- Filtros mobile (debajo del buscador) -->
+      <div class="prem-mobile-filters">
+        <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
+          <option value="">🍼 Todas las edades</option>
+          <optgroup label="— Bebés —">
+            <option value="Recién nacido">Recién nacido</option>
+            <option value="3-6 meses">3-6 meses</option>
+            <option value="6-9 meses">6-9 meses</option>
+            <option value="9-12 meses">9-12 meses</option>
+            <option value="12-18 meses">12-18 meses</option>
+            <option value="18-24 meses">18-24 meses</option>
+            <option value="1 años">1 año</option>
+            <option value="2 años">2 años</option>
+          </optgroup>
+          <optgroup label="— Niños —">
+            <option value="3 años">3 años</option>
+            <option value="4 años">4 años</option>
+            <option value="5 años">5 años</option>
+            <option value="6 años">6 años</option>
+            <option value="7 años">7 años</option>
+            <option value="8 años">8 años</option>
+          </optgroup>
+          <optgroup label="— Mayores —">
+            <option value="9 años">9 años</option>
+            <option value="10 años">10 años</option>
+            <option value="11 años">11 años</option>
+            <option value="12 años">12 años</option>
+            <option value="13 años">13 años</option>
+            <option value="14 años">14 años</option>
+            <option value="15 años">15 años</option>
+            <option value="16 años">16 años</option>
+          </optgroup>
+        </select>
+        <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
+          <option value="">🏷️ Todas</option>
+        </select>
       </div>
 
       <!-- Chips rápidos -->
@@ -4962,7 +5029,7 @@ function premCatSelectChange() {
 // Rellena dinámicamente los selects de categoría con los datos reales de Supabase
 function populateCategorySelects() {
   const cats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
-  const selects = ['premCatSelect'];
+  const selects = ['premCatSelect', 'premCatSelectMobile'];
   selects.forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
