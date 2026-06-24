@@ -1426,8 +1426,10 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .product-ribbons .product-badge,.product-ribbons .product-ribbon{position:relative;top:auto;left:auto;}
 
 /* Agotado */
-.agotado-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.48);z-index:4;backdrop-filter:blur(1px);}
-.agotado-overlay img{max-width:80%;max-height:80%;object-fit:contain;}
+.agotado-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,0.72);z-index:4;backdrop-filter:blur(2px);}
+.agotado-overlay .ago-icon{font-size:26px;color:#9b3060;}
+.agotado-overlay .ago-text{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a2050;}
+.agotado-overlay .ago-sub{font-size:9.5px;color:#b06080;font-weight:500;}
 
 /* Wishlist */
 .wishlist-btn{
@@ -5515,15 +5517,221 @@ body.dark-mode .h3p-cta { background: #2a2040; border-color: #4a3060; color: var
 <section class="products" id="productos">
   <div class="container">
 
-    <!-- Banner Baby Shower -->
-    <div class="babyshower-banner" onclick="openWishlist()">
-      <div class="babyshower-banner-icon">🎀</div>
-      <div class="babyshower-banner-text">
-        <h4>Lista de Deseos de Mami 💕</h4>
-        <p>Agrega tus productos favoritos y comparte tu lista con familia y amigos</p>
+    <!-- Banner Baby Shower + Asistente de Talla -->
+    <style>
+    .split-banner{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-radius:24px;overflow:hidden;border:2px solid #f9dde9;margin:0 0 30px;font-family:'Nunito',sans-serif;}
+    .side-wish{background:linear-gradient(160deg,#fff5f9 0%,#fef0f5 60%,#f9eef8 100%);padding:30px 26px;display:flex;flex-direction:column;gap:16px;border-right:2px solid #f9dde9;position:relative;overflow:hidden;cursor:pointer;transition:background 0.2s;}
+    .side-wish:hover{background:linear-gradient(160deg,#fdeef6 0%,#fae8f3 60%,#f5e6f6 100%);}
+    .side-wish::before{content:'🎀';position:absolute;right:-10px;top:-10px;font-size:90px;opacity:0.07;line-height:1;pointer-events:none;}
+    .sw-tag{display:inline-flex;align-items:center;gap:5px;background:#fde6f1;color:#d4809f;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:30px;border:1px solid #f9dde9;width:fit-content;}
+    .sw-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#4a4460;line-height:1.25;}
+    .sw-title span{color:#d4809f;}
+    .sw-desc{font-size:12.5px;color:#8a85a0;line-height:1.65;}
+    .sw-features{display:flex;flex-direction:column;gap:8px;}
+    .sw-feat{display:flex;align-items:center;gap:9px;font-size:12px;color:#6a6080;}
+    .sw-feat-dot{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#e8a4c0,#c3aee4);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+    .sw-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#e8a4c0,#c3aee4);color:#fff;border:none;border-radius:14px;padding:13px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:0.3px;transition:opacity 0.2s;width:100%;margin-top:4px;}
+    .sw-cta:hover{opacity:0.88;}
+    .sw-social{display:flex;gap:8px;margin-top:2px;flex-wrap:wrap;}
+    .sw-social-pill{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid #f9dde9;color:#8a85a0;font-size:10.5px;font-weight:700;padding:5px 12px;border-radius:30px;}
+    .sw-social-pill i{color:#e8a4c0;font-size:12px;}
+    .side-talla{background:linear-gradient(160deg,#f8f5ff 0%,#f3effe 60%,#fdf5ff 100%);padding:30px 26px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;}
+    .side-talla::before{content:'✨';position:absolute;right:-8px;top:-8px;font-size:90px;opacity:0.06;line-height:1;pointer-events:none;}
+    .st-tag{display:inline-flex;align-items:center;gap:5px;background:#ede4f9;color:#a090d0;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:30px;border:1px solid #e0d4f5;width:fit-content;}
+    .st-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#4a4460;line-height:1.25;}
+    .st-title span{color:#c3aee4;}
+    .gen-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .gen-btn{height:38px;border:1.5px solid #e0d4f5;border-radius:12px;background:#fff;color:#8a85a0;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+    .gen-btn.on{background:linear-gradient(135deg,#c3aee4,#e8a4c0);color:#fff;border-color:transparent;}
+    .inp-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+    .inp-lbl{font-size:10px;font-weight:800;color:#a090b0;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
+    .inp-f{width:100%;height:40px;padding:0 12px;border:1.5px solid #e0d4f5;border-radius:12px;font-size:13px;font-weight:700;background:#fff;color:#4a4460;outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.15s;}
+    .inp-f:focus{border-color:#c3aee4;background:#fdfaff;}
+    .inp-f::placeholder{color:#ccc8d8;font-weight:600;}
+    .go-btn{width:100%;height:44px;border:none;border-radius:14px;background:linear-gradient(135deg,#c3aee4,#e8a4c0);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:0.3px;transition:opacity 0.15s;}
+    .go-btn:hover{opacity:0.87;}
+    .go-btn:disabled{opacity:0.5;cursor:not-allowed;}
+    .res-zone{display:none;flex-direction:column;gap:10px;}
+    .res-zone.on{display:flex;}
+    .res-flags{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .res-flag-card{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden;}
+    .rfc-pe{background:linear-gradient(135deg,#e8a4c0,#d4809f);}
+    .rfc-cn{background:linear-gradient(135deg,#c3aee4,#a090c8);}
+    .rfc-country{font-size:10px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,0.75);text-transform:uppercase;}
+    .rfc-num{font-size:30px;font-weight:800;color:#fff;line-height:1;margin-top:2px;}
+    .rfc-label{font-size:10px;color:rgba(255,255,255,0.75);}
+    .rfc-emoji{position:absolute;right:10px;bottom:8px;font-size:26px;opacity:0.3;}
+    .conf-bar-t{height:3px;background:rgba(255,255,255,0.25);border-radius:2px;margin-top:6px;overflow:hidden;}
+    .conf-fill-t{height:100%;background:rgba(255,255,255,0.9);border-radius:2px;width:0;transition:width 0.9s ease;}
+    .cmp-table{width:100%;border-collapse:collapse;font-size:11px;background:#fff;border-radius:14px;overflow:hidden;border:1.5px solid #ede4f9;}
+    .cmp-table th{background:#f5f0fe;color:#a090c0;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;padding:7px 10px;text-align:left;font-size:10px;}
+    .cmp-table td{padding:7px 10px;color:#6a6080;border-bottom:1px solid #f3effe;}
+    .cmp-table tr:last-child td{border-bottom:none;}
+    .cmp-table .cv{font-weight:800;color:#4a4460;}
+    .cmp-table .fl{font-size:15px;}
+    .cmp-hi{background:#fdf5ff;}
+    .tip-talla{background:#fff;border:1.5px solid #ede4f9;border-radius:12px;padding:10px 13px;font-size:11.5px;color:#8a85a0;line-height:1.6;}
+    .tip-talla i{color:#e8a4c0;font-size:13px;vertical-align:-2px;margin-right:4px;}
+    .reset-talla{font-size:11px;color:#c3aee4;background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;text-decoration:underline;padding:0;}
+    .dot-t{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.8);animation:blt 1.2s infinite;display:inline-block;margin:0 2px;}
+    .dot-t:nth-child(2){animation-delay:.2s;}.dot-t:nth-child(3){animation-delay:.4s;}
+    @keyframes blt{0%,80%,100%{opacity:0.25}40%{opacity:1}}
+    @media(max-width:600px){.side-wish{border-right:none;border-bottom:2px solid #f9dde9;}}
+    </style>
+
+    <div class="split-banner">
+      <!-- LISTA DE DESEOS -->
+      <div class="side-wish" onclick="openWishlist()">
+        <div class="sw-tag">🎁 Baby Shower</div>
+        <div class="sw-title">Lista de Deseos<br><span>de Mami 💕</span></div>
+        <div class="sw-desc">Guarda tus prendas favoritas y comparte la lista con tu familia y amigos antes del baby shower.</div>
+        <div class="sw-features">
+          <div class="sw-feat"><div class="sw-feat-dot">💖</div><span>Agrega productos con un clic desde la tienda</span></div>
+          <div class="sw-feat"><div class="sw-feat-dot">📲</div><span>Comparte por WhatsApp en segundos</span></div>
+          <div class="sw-feat"><div class="sw-feat-dot">🎀</div><span>Tu familia elige el regalo perfecto</span></div>
+        </div>
+        <button class="sw-cta" onclick="event.stopPropagation();openWishlist()">
+          <i class="fas fa-heart"></i> Crear mi lista de deseos
+        </button>
+        <div class="sw-social">
+          <div class="sw-social-pill"><i class="fab fa-whatsapp"></i> WhatsApp</div>
+          <div class="sw-social-pill"><i class="fas fa-share-alt"></i> Compartir</div>
+        </div>
       </div>
-      <div class="babyshower-banner-arrow">💖</div>
+
+      <!-- ASISTENTE DE TALLA -->
+      <div class="side-talla">
+        <div class="st-tag">✨ Asistente D'Zoe</div>
+        <div class="st-title">¿Qué talla le queda<br><span>perfecta?</span></div>
+
+        <div id="tallaFormZone" style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <div class="inp-lbl">Género</div>
+            <div class="gen-row">
+              <button class="gen-btn on" id="tallaBtnNina" onclick="tallaSetGen('nina')">👧 Niña</button>
+              <button class="gen-btn" id="tallaBtnNino" onclick="tallaSetGen('nino')">👦 Niño</button>
+            </div>
+          </div>
+          <div class="inp-group">
+            <div><div class="inp-lbl">Edad</div><input class="inp-f" type="number" id="tallaEdad" placeholder="años" min="0" max="14"></div>
+            <div><div class="inp-lbl">Peso kg</div><input class="inp-f" type="number" id="tallaPeso" placeholder="kg"></div>
+            <div><div class="inp-lbl">Altura cm</div><input class="inp-f" type="number" id="tallaAltura" placeholder="cm"></div>
+          </div>
+          <button class="go-btn" id="tallaGoBtn" onclick="tallaCalc()">
+            <i class="fas fa-magic"></i> Calcular talla ideal
+          </button>
+        </div>
+
+        <div class="res-zone" id="tallaResZone">
+          <div class="res-flags">
+            <div class="res-flag-card rfc-pe">
+              <div class="rfc-country">🇵🇪 Perú</div>
+              <div class="rfc-num" id="tallaPE">—</div>
+              <div class="rfc-label">Talla peruana</div>
+              <div class="conf-bar-t"><div class="conf-fill-t" id="tallaConfPE"></div></div>
+              <div class="rfc-emoji">🌺</div>
+            </div>
+            <div class="res-flag-card rfc-cn">
+              <div class="rfc-country">🇨🇳 China</div>
+              <div class="rfc-num" id="tallaCN">—</div>
+              <div class="rfc-label">Talla china (cm)</div>
+              <div class="conf-bar-t"><div class="conf-fill-t" id="tallaConfCN"></div></div>
+              <div class="rfc-emoji">🏮</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr><th></th><th>Talla</th><th>Peso ref.</th><th>Altura ref.</th></tr>
+            <tr class="cmp-hi">
+              <td class="fl">🇵🇪</td><td class="cv" id="cmpPE">—</td><td id="cmpPEp">—</td><td id="cmpPEa">—</td>
+            </tr>
+            <tr>
+              <td class="fl">🇨🇳</td><td class="cv" id="cmpCN">—</td><td id="cmpCNp">—</td><td id="cmpCNa">—</td>
+            </tr>
+          </table>
+          <div class="tip-talla"><i class="fas fa-sparkles"></i><span id="tallaTip"></span></div>
+          <button class="reset-talla" onclick="tallaReset()">← Consultar otra talla</button>
+        </div>
+      </div>
     </div>
+
+    <script>
+    (function(){
+      var tallaGen='nina';
+      var TALLAS=[
+        {pe:'RN', cn:'52', eMin:0,   eMax:0.25,pMin:2,  pMax:4,  aMin:45,aMax:56, pp:'2–4 kg',  pa:'45–56 cm', cp:'2–4 kg',  ca:'45–52 cm'},
+        {pe:'3M', cn:'59', eMin:0.25,eMax:0.5, pMin:4,  pMax:6,  aMin:56,aMax:62, pp:'4–6 kg',  pa:'56–62 cm', cp:'4–6 kg',  ca:'53–59 cm'},
+        {pe:'6M', cn:'66', eMin:0.5, eMax:0.8, pMin:6,  pMax:7.5,aMin:62,aMax:68, pp:'6–7.5 kg',pa:'62–68 cm', cp:'6–7.5 kg',ca:'60–66 cm'},
+        {pe:'9M', cn:'73', eMin:0.8, eMax:1,   pMin:7.5,pMax:9,  aMin:68,aMax:74, pp:'7.5–9 kg',pa:'68–74 cm', cp:'7.5–9 kg',ca:'67–73 cm'},
+        {pe:'12M',cn:'80', eMin:1,   eMax:1.5, pMin:9,  pMax:11, aMin:74,aMax:80, pp:'9–11 kg', pa:'74–80 cm', cp:'9–11 kg', ca:'74–80 cm'},
+        {pe:'18M',cn:'90', eMin:1.5, eMax:2,   pMin:11, pMax:13, aMin:80,aMax:86, pp:'11–13 kg',pa:'80–86 cm', cp:'11–14 kg',ca:'81–90 cm'},
+        {pe:'2',  cn:'95', eMin:2,   eMax:2.5, pMin:13, pMax:15, aMin:86,aMax:92, pp:'13–15 kg',pa:'86–92 cm', cp:'13–16 kg',ca:'91–95 cm'},
+        {pe:'3',  cn:'100',eMin:2.5, eMax:3.5, pMin:15, pMax:17, aMin:92,aMax:98, pp:'15–17 kg',pa:'92–98 cm', cp:'15–18 kg',ca:'96–100 cm'},
+        {pe:'4',  cn:'110',eMin:3.5, eMax:4.5, pMin:17, pMax:19, aMin:98,aMax:104,pp:'17–19 kg',pa:'98–104 cm',cp:'17–20 kg',ca:'101–110 cm'},
+        {pe:'5',  cn:'115',eMin:4.5, eMax:5.5, pMin:19, pMax:21, aMin:104,aMax:110,pp:'19–21 kg',pa:'104–110 cm',cp:'20–22 kg',ca:'111–115 cm'},
+        {pe:'6',  cn:'120',eMin:5.5, eMax:6.5, pMin:21, pMax:23, aMin:110,aMax:116,pp:'21–23 kg',pa:'110–116 cm',cp:'22–25 kg',ca:'116–120 cm'},
+        {pe:'7',  cn:'125',eMin:6.5, eMax:7.5, pMin:23, pMax:25, aMin:116,aMax:122,pp:'23–25 kg',pa:'116–122 cm',cp:'25–28 kg',ca:'121–125 cm'},
+        {pe:'8',  cn:'130',eMin:7.5, eMax:8.5, pMin:25, pMax:28, aMin:122,aMax:128,pp:'25–28 kg',pa:'122–128 cm',cp:'28–32 kg',ca:'126–130 cm'},
+        {pe:'10', cn:'140',eMin:8.5, eMax:10,  pMin:28, pMax:33, aMin:128,aMax:138,pp:'28–33 kg',pa:'128–138 cm',cp:'32–38 kg',ca:'131–140 cm'},
+        {pe:'12', cn:'150',eMin:10,  eMax:12,  pMin:33, pMax:40, aMin:138,aMax:150,pp:'33–40 kg',pa:'138–150 cm',cp:'38–46 kg',ca:'141–150 cm'},
+        {pe:'14', cn:'160',eMin:12,  eMax:15,  pMin:40, pMax:55, aMin:150,aMax:165,pp:'40–55 kg',pa:'150–165 cm',cp:'46–58 kg',ca:'151–160 cm'}
+      ];
+      var TIPS={
+        nina:["Las prendas D'Zoe para niña tienen corte ligeramente ajustado. Si tu niña está en el límite, sube una talla para más comodidad.","Para vestidos con volumen usa la talla actual. Para abrigos, sube una talla."],
+        nino:["Los conjuntos D'Zoe para niño tienen corte estándar. Si es delgado, guíate por la altura.","Para abrigos y busos, sube una talla si prefiere corte holgado."]
+      };
+      window.tallaSetGen=function(g){
+        tallaGen=g;
+        document.getElementById('tallaBtnNina').classList.toggle('on',g==='nina');
+        document.getElementById('tallaBtnNino').classList.toggle('on',g==='nino');
+      };
+      window.tallaCalc=function(){
+        var e=parseFloat(document.getElementById('tallaEdad').value)||0;
+        var p=parseFloat(document.getElementById('tallaPeso').value);
+        var a=parseFloat(document.getElementById('tallaAltura').value);
+        if(!e&&!p&&!a){document.getElementById('tallaEdad').focus();return;}
+        var btn=document.getElementById('tallaGoBtn');
+        btn.disabled=true;
+        btn.innerHTML='<span class="dot-t"></span><span class="dot-t"></span><span class="dot-t"></span>';
+        setTimeout(function(){
+          var best=null,bs=-1;
+          for(var i=0;i<TALLAS.length;i++){
+            var t=TALLAS[i],s=0;
+            if(e>=t.eMin&&e<t.eMax)s+=3;else if(e>=t.eMin-.3&&e<t.eMax+.3)s+=1;
+            if(p&&p>=t.pMin&&p<t.pMax)s+=3;else if(p&&p>=t.pMin-1&&p<t.pMax+1)s+=1;
+            if(a&&a>=t.aMin&&a<t.aMax)s+=3;else if(a&&a>=t.aMin-2&&a<t.aMax+2)s+=1;
+            if(s>bs){bs=s;best=t;}
+          }
+          if(!best)return;
+          var conf=Math.min(94,58+bs*4);
+          document.getElementById('tallaPE').textContent=best.pe;
+          document.getElementById('tallaCN').textContent=best.cn;
+          document.getElementById('cmpPE').textContent='Talla '+best.pe;
+          document.getElementById('cmpCN').textContent=best.cn+' cm';
+          document.getElementById('cmpPEp').textContent=best.pp;
+          document.getElementById('cmpPEa').textContent=best.pa;
+          document.getElementById('cmpCNp').textContent=best.cp;
+          document.getElementById('cmpCNa').textContent=best.ca;
+          var arr=TIPS[tallaGen];
+          document.getElementById('tallaTip').textContent=arr[Math.floor(Math.random()*arr.length)];
+          document.getElementById('tallaFormZone').style.display='none';
+          document.getElementById('tallaResZone').classList.add('on');
+          setTimeout(function(){
+            document.getElementById('tallaConfPE').style.width=conf+'%';
+            document.getElementById('tallaConfCN').style.width=conf+'%';
+          },120);
+        },1500);
+      };
+      window.tallaReset=function(){
+        document.getElementById('tallaResZone').classList.remove('on');
+        ['tallaConfPE','tallaConfCN'].forEach(function(id){document.getElementById(id).style.width='0';});
+        document.getElementById('tallaFormZone').style.display='flex';
+        var btn=document.getElementById('tallaGoBtn');
+        btn.disabled=false;
+        btn.innerHTML='<i class="fas fa-magic"></i> Calcular talla ideal';
+        ['tallaEdad','tallaPeso','tallaAltura'].forEach(function(id){document.getElementById(id).value='';});
+      };
+    })();
+    </script>
 
 <!-- BREADCRUMBS — Schema.org BreadcrumbList -->
 <script type="application/ld+json" id="breadcrumbSchema">
@@ -8132,7 +8340,7 @@ function renderProductCard(product) {
     ${ribbonsInImage}
     <div class="product-img-wrap">
       ${imgHtml}
-      ${isAgotado ? `<div class="agotado-overlay"><img src="https://www.psycolab.com/wp-content/uploads/agotado-chincheta.png" alt="Agotado"></div>` : ''}
+      ${isAgotado ? `<div class="agotado-overlay"><i class="fas fa-clock ago-icon"></i><span class="ago-text">Agotado</span><span class="ago-sub">Avísame cuando llegue</span></div>` : ''}
       ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
       </button>` : ''}
@@ -8145,7 +8353,7 @@ function renderProductCard(product) {
     <div class="product-body">
       ${ribbonsInBody}
       ${buildTagsHtml(product)}
-      <h4 onclick="openProductPage('${product.id}')">${(()=>{const c=product.categories?.[0];return c&&!product.name.toLowerCase().includes(c.toLowerCase())?`${c} ${product.name}`:product.name;})()}</h4>
+      <h4 onclick="openProductPage('${product.id}')">${product.name}</h4>
 
       ${sizes.length ? `
       <div class="pc-ages-label"><i class="fas fa-child-reaching"></i> Edades disponibles</div>
