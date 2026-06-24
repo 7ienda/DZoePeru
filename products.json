@@ -153,6 +153,19 @@
     "url": "/productos/destello-de-mariposa.html"
   },
   {
+    "id": 1782071148179,
+    "slug": "vestido-valentina",
+    "name": "Vestido Valentina",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjizDpAfRaGMT9Hvd-p2Zr9fOTXH1i7tpuuZC3Bum_l1G22Pz7aP-iJ_kWoDSA4ogFLtsYQCucNXnGVLH4ZQTNjnXG_axDiEAodh3LfII0dfBS-Fr9nDnfuqfi6mLrDpB3lVZL-KT6tFcel8wimaAHb2rHFRUqKtukQOcJmr7RRNojpwG-sy0Dc8s0DSs8/s16000/t2.png",
+    "categories": [
+      "Vestidos",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-valentina.html"
+  },
+  {
     "id": 1780258224617,
     "slug": "conjunto-peluchito-conejito",
     "name": "Conjunto & peluchito conejito",
@@ -165,6 +178,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-peluchito-conejito.html"
+  },
+  {
+    "id": 1781882776830,
+    "slug": "conjunto-carmin-3-piezas",
+    "name": "Conjunto Carmin 3 Piezas",
+    "price": 62,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhE9JY_SLW_CrihLwjzIcYFcPEDzk4-QQ-P-5WT9Qg-csTe84hLjnCgwu3oynl7c4b-zFSJbjkFNH6d93WFJ-7a4vG_GwuPdDm58JOHAywaJUSYQX1EVVQGDOvF4oVTLLxClc3u9Lz4qHatuJLLsLFh3JGAfghPLIl3NmFxXNknWPRP3eg0gjkXxwUbpgc/s16000/xx2.png",
+    "categories": [
+      "Vestidos",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-carmin-3-piezas.html"
   },
   {
     "id": 1780258953744,
@@ -290,6 +316,19 @@
     ],
     "inStock": true,
     "url": "/productos/casaca-flor-bordada.html"
+  },
+  {
+    "id": 1782277783918,
+    "slug": "conjunto-americano-ny",
+    "name": "Conjunto Americano NY",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggRsIgYwDrJeSMfkfFX-H0n9FO8UBTqwPwOl-yYafgPSq3w5dVFy770jRgLIB4q2xOVTD7D9jAVh7p8F3Qp7dCHxQ8NOBpn9E97JIJ_6jI0P9PwN9mNK7ypc78a4SMRpPCoNF902uEqnySR_zagVVq2BNU07IYyOmQBN3pk_FJ5uXZ-jiKpB3jOlXJ8cs/s16000/ny2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-americano-ny.html"
   },
   {
     "id": 1780411704231,
@@ -761,6 +800,19 @@
     "url": "/productos/conjunto-boy-urban-b.html"
   },
   {
+    "id": 1782278385623,
+    "slug": "conjunto-3-piezas-osito-ted",
+    "name": "Conjunto 3 piezas Osito TED",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyo_7ac5Ay42tK6W2ZJIvrJRismrMMxOWgRySoDBnNpKyMl_pyzhxn_PaMnTNJ20_fvkbGAsoWcgakppb9_qUZPRd4LuIBc9g4owAcLpk6FmCHrCykTqs20Z5bayJavUUDL6cclrdyBOdUbjDlRR6RI795Wf7sEdMllkE0CxRwyB6ej-6nf_n5p8y3sH8/s16000/osito3p2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-3-piezas-osito-ted.html"
+  },
+  {
     "id": 1780364710097,
     "slug": "jumper-dino-bebe",
     "name": "Jumper dino bebe",
@@ -910,19 +962,6 @@
     "url": "/productos/conjunto-mallita-fresa.html"
   },
   {
-    "id": 1780350233775,
-    "slug": "casaca-conejita",
-    "name": "Casaca conejita",
-    "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiI0gf8zoJ7rKtjkFftuXpQq6etHlw2oy9KRx8QkeJDUKoINdF0EGUp-iT-ZY1eJTdfhZ3UAAV-S63cJm19RK9ALT9LkNHvzenAwLWjAN5jd8qRA4_FaRt382cLd6553L0wvHPCyDIIEGB0Jg4UUUQPjVipJj-ltUhIgojaZSrfRs67khq_MX1d8QFs-8Y/s16000/sa1.png",
-    "categories": [
-      "Casacas",
-      "Ninas"
-    ],
-    "inStock": true,
-    "url": "/productos/casaca-conejita.html"
-  },
-  {
     "id": 1780155748446,
     "slug": "sueter-mia-amore-uva",
     "name": "Suéter Mia Amore uva",
@@ -951,6 +990,19 @@
     "url": "/productos/conjunto-vehiculos-kids.html"
   },
   {
+    "id": 1780409705394,
+    "slug": "modelo-osito-cargo",
+    "name": "Modelo Osito Cargo",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvUGsu2zd5jlrQpZfUkvS5tgWxhd-NQ4sKqYAzWzt8_ZkSFUR2rDxDg9NXUlu3F5wr2nDF5dluETgwfqh1zgztRC8H3HfXw8DFF5H22vyldE8QOnbVVFpPnafnCieDbwlROqkn2uhtyAWBeC9TtOE96HY51rG6kqvizNQ5pQPgyXh6PW7yPLZmpW2U2rI/s16000/cargo1.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/modelo-osito-cargo.html"
+  },
+  {
     "id": 1780371122256,
     "slug": "conjunto-osito-rayado",
     "name": "Conjunto Osito rayado",
@@ -963,6 +1015,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-osito-rayado.html"
+  },
+  {
+    "id": 1780350233775,
+    "slug": "abrigo-conejita",
+    "name": "Abrigo conejita",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhQUudFFeD0ploJshTThAjY8dUSK0iPwQp4j857_4maTKkXbNp5sOMFf2sxWEVM7ldQ2c6BNpHdc2CX9iZObCDzZIyoy_gRpwjhwIz4PwieBbhrmgqKM8u7nH0SJ2yAfSYN_wRR9snDyunO6mu7erVOOgSRWylFI1gzqPIHi14QPKwOzLktVlHiGSntWQg/s16000/abrigo1.png",
+    "categories": [
+      "Ninas",
+      "Abrigos"
+    ],
+    "inStock": true,
+    "url": "/productos/abrigo-conejita.html"
   },
   {
     "id": 1780371484080,
@@ -1054,19 +1119,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-gris-rosa.html"
-  },
-  {
-    "id": 1780409705394,
-    "slug": "modelo-osito-cargo",
-    "name": "Modelo Osito Cargo",
-    "price": 48,
-    "image": "https://scontent.fjau2-1.fna.fbcdn.net/v/t39.30808-6/667806620_941387188888108_3095092487179666951_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=1ORRnwrXYOMQ7kNvwGGFWIS&_nc_oc=AdoRziK3sQkMU9TmcqrpyCX6Pq_wcbfFRMGUzNvBaa4MO6rWJkhFxzVKS9GVCltoNWwfDrsG2DYhj1FzL1nxrN1c&_nc_zt=23&_nc_ht=scontent.fjau2-1.fna&_nc_gid=3ufkcphYCP3cXxfAhwNeHg&_nc_ss=7c2a8&oh=00_Af8_uaqtp3Yep-TK4W3IEG9Y7-F6gEhhKuIx9IbBbQEIEQ&oe=6A24A745",
-    "categories": [
-      "Conjunto Pantalon",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/modelo-osito-cargo.html"
   },
   {
     "id": 1780410708945,
@@ -1539,19 +1591,6 @@
     "url": "/productos/conjunto-corazon-de-celim.html"
   },
   {
-    "id": 1781882056013,
-    "slug": "conjunto-osito-acuarel",
-    "name": "Conjunto osito Acuarel",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4UEelMnnHFC60MZCPCVsIBPlvwjGey_9XYIvLSQh2ZBGYWIGnR89EvNSJrPtoHpbFLlgTpyTMpk2GdaVj3QdhGmoTQ1vXEDlo0VjR9ONjKZohnAn6V0s-vaAvmctald2p_WK_uQp8ohsQwLfU8BOcrxu09eM80H9yrbbm7VBTRUb5AoZWE1UqnndIYNI/s16000/vvv2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-osito-acuarel.html"
-  },
-  {
     "id": 1780350912927,
     "slug": "chaqueta-jeans-forro-oso-polar",
     "name": "Chaqueta Jeans Forro Oso Polar",
@@ -1604,19 +1643,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-3-conejitos-peludito-beige.html"
-  },
-  {
-    "id": 1781882447070,
-    "slug": "conjunto-ted-3-piezas",
-    "name": "Conjunto Ted 3 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggH3egJZ4wyOcnDEkIhL-9VEUNx1A6WfADLw5IPO1W_8MwnpwmUIFcdYePze2W8qXp217u_RuaOSOTzJG6UKhSxfpw5Y3I1nuq7NCP6o7jtyKHHrB7Xv0FXOtWnqTfgXgzyfJarj5Qs__kYVYMDDUO7q4L4OXvPhy4lwl0gvZ0SGv2SZ2ROReT7sWmQxY/s16000/ccc3.png",
-    "categories": [
-      "Ninos",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-ted-3-piezas.html"
   },
   {
     "id": 1781713293651,
@@ -1695,19 +1721,6 @@
     ],
     "inStock": true,
     "url": "/productos/traje-de-primavera-elegante.html"
-  },
-  {
-    "id": 1781882776830,
-    "slug": "conjunto-carmin-3-piezas",
-    "name": "Conjunto Carmin 3 Piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhE9JY_SLW_CrihLwjzIcYFcPEDzk4-QQ-P-5WT9Qg-csTe84hLjnCgwu3oynl7c4b-zFSJbjkFNH6d93WFJ-7a4vG_GwuPdDm58JOHAywaJUSYQX1EVVQGDOvF4oVTLLxClc3u9Lz4qHatuJLLsLFh3JGAfghPLIl3NmFxXNknWPRP3eg0gjkXxwUbpgc/s16000/xx2.png",
-    "categories": [
-      "Vestidos",
-      "Ninas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-carmin-3-piezas.html"
   },
   {
     "id": 1780432781815,
@@ -1819,7 +1832,7 @@
     "id": 1782070013307,
     "slug": "conjunto-3-piezas-oso-amarillo",
     "name": "Conjunto 3 piezas Oso amarillo",
-    "price": 0,
+    "price": 48,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8u_2TN3PKUajU9SUuxMEUaA7KG1RXCLXNxe9U2u2cSv3h57UesulUYX6m30TW_WpdsLkbwLpK-bbwJ2xF5KjXEIHwifjrJAMIPdv2KghwQZHUJrAk3cF5PhiztD20t7bHkEpfxTjyCz0FL_6r5OTlUgFc2XyZpkAfTDMcYjV9ZanpUQ-LMyaopxP7Yk4/s16000/gf2.png",
     "categories": [
       "Conjunto Pantalon",
@@ -1861,7 +1874,7 @@
     "id": 1782070490307,
     "slug": "casaca-pink-forrito-osito-bear",
     "name": "Casaca Pink forrito Osito bear",
-    "price": 0,
+    "price": 48,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRuplV9CenhJpuu1FsD85CknNU02x0cTH-sareW-Ul80hcbHMoqOc6ycBwSuSiQNiZ67hT-iZCokhyphenhyphenL4DMq7TNCYqjl4qmHUA9LFNEFFSG2JstwbAjSWVwbPa_f3lhC1BaNwrKBn-XIH4_8kLiAHW2tqBLhqCuKRelc6xoCwZPRemEf8xWNORyjpb3kpM/s16000/dfd2.png",
     "categories": [
       "Casacas",
@@ -1965,23 +1978,10 @@
     "url": "/productos/baby-corazon-brown.html"
   },
   {
-    "id": 1782071148179,
-    "slug": "vestido-valentina",
-    "name": "Vestido Valentina",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjizDpAfRaGMT9Hvd-p2Zr9fOTXH1i7tpuuZC3Bum_l1G22Pz7aP-iJ_kWoDSA4ogFLtsYQCucNXnGVLH4ZQTNjnXG_axDiEAodh3LfII0dfBS-Fr9nDnfuqfi6mLrDpB3lVZL-KT6tFcel8wimaAHb2rHFRUqKtukQOcJmr7RRNojpwG-sy0Dc8s0DSs8/s16000/t2.png",
-    "categories": [
-      "Vestidos",
-      "Ninas"
-    ],
-    "inStock": true,
-    "url": "/productos/vestido-valentina.html"
-  },
-  {
     "id": 1782071753299,
     "slug": "conjunto-bunny-caramelo",
     "name": "Conjunto bunny Caramelo",
-    "price": 0,
+    "price": 48,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXy6-M2spO7Tk8QjBoAycxSiJCyIinvCkL1sb-vIvm3xjkiVdoptnk0BjS1JQNCjuaU3vmibMfnWAip_rQ5o9txW1WxTYjASVrXyPJTNc-3v4Evkf_vRJxicW2rnH40-lis2uQNm9b94GP72GcpRRg0GpQ968gyjsXSlSRmDIcGiHZCXhQ05Hq_rknLhk/s16000/GD2.png",
     "categories": [
       "Conjunto Pantalon",
