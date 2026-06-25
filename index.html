@@ -7996,7 +7996,7 @@ function renderFilters() {
 function buildTagsHtml(product) {
   const pills = [];
   if (product.categories?.length) {
-    product.categories.forEach(c => pills.push(`<span class="product-tag-pill tag-cat">${esc(c)}</span>`));
+    product.categories.forEach(c => pills.push(`<span class="product-tag-pill tag-cat" style="cursor:pointer;" onclick="filterByCategory('${esc(c)}')">${esc(c)}</span>`));
   }
   if (product.tags) {
     const tagList = Array.isArray(product.tags) ? product.tags
@@ -8156,11 +8156,13 @@ function getProductRibbonLabel(product, allProducts) {
   const sizes = product.sizes || [];
   const totalStock = sizes.reduce((s, sz) => s + (sz.stock || 0), 0);
   if (totalStock === 0) return 'Agotado';
-  if (product.is_new) return 'Nuevo';
   if (product.on_sale) return '🔥 Oferta';
-  const now = Date.now();
-  const created = product.created_at ? new Date(product.created_at).getTime() : 0;
-  if (now - created < 7 * 24 * 60 * 60 * 1000) return '✨ Nuevo';
+  // Mostrar "Nuevo" solo en los 4 productos más recientes por created_at
+  const sorted = [...allProducts]
+    .filter(p => p.created_at)
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const top4Ids = new Set(sorted.slice(0, 4).map(p => p.id));
+  if (top4Ids.has(product.id)) return '✨ Nuevo';
   return null;
 }
 
@@ -8392,7 +8394,6 @@ function renderProductCard(product) {
   const isAgotado = ribbonLabel === 'Agotado';
 
   let ribbonsHtml = '';
-  if (product.featured && !isAgotado) ribbonsHtml += '<div class="product-badge">\u2728 Nuevo</div>';
   if (ribbonLabel && ribbonLabel !== 'Agotado') ribbonsHtml += `<div class="product-ribbon" style="${ribbonStyle}">${ribbonLabel}</div>`;
 
   const waMsg = encodeURIComponent(`Hola D'Zoe Per\u00fa, me interesa: ${product.name}. \u00bfTienen disponibilidad?`);
@@ -8807,7 +8808,8 @@ function openProductPage(productId) {
   const ppHasOffer = ppOfferPrice && ppOfferPrice > 0 && ppOfferPrice < minP;
   const ppDisplayPrice = ppHasOffer ? ppOfferPrice : minP;
   const ppDiscountPct = ppHasOffer ? Math.round((1 - ppOfferPrice / minP) * 100) : 0;
-  const cat  = product.categories?.[0] || 'Ropa Infantil';
+  const allCats = product.categories?.length ? product.categories : ['Ropa Infantil'];
+  const cat  = allCats[0];
   const slug = buildProductSlug(product);
   const seoTitle = buildProductSeoTitle(product);
   const desc = product.description || `${product.name} — ropa infantil importada premium de alta gama. D'Zoe Perú.`;
@@ -8857,7 +8859,9 @@ function openProductPage(productId) {
       </div>
 
       <div class="pp-info">
-        <div class="pp-cat-badge">${esc(cat)}</div>
+        <div class="pp-cat-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+          ${allCats.map(c => `<a href="#" class="pp-cat-badge" style="cursor:pointer;text-decoration:none;" onclick="closePP();filterByCategory('${esc(c)}');return false;">${esc(c)}</a>`).join('')}
+        </div>
         <h1 class="pp-name">${esc(seoTitle.replace(" | D'Zoe Perú", ''))}</h1>
         <p class="pp-desc">${esc(desc)}</p>
 
