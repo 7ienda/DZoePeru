@@ -77,6 +77,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SUPABASE_CONFIG = {
+  URL: 'https://uxwmodnadidlsfwtshcq.supabase.co',
+  ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4d21vZG5hZGlkbHNmd3RzaGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzY0MjAsImV4cCI6MjA5NTY1MjQyMH0.V3tNuv2iT9J2WbZbs7bzxf9j9RwF2r-Li4KO_1qQWRo'
+};
+</script>
 
 <style>
 /* ===== D'ZOE PERÚ — BLOG — PASTEL EDITION (matches index.html) ===== */
@@ -926,7 +933,7 @@ footer::before{
           <div class="blog-meta">
             <span class="blog-meta-item"><i class="far fa-calendar-alt"></i> 20 Mayo, 2026</span>
             <span class="blog-meta-item"><i class="far fa-clock"></i> 5 min de lectura</span>
-            <span class="blog-meta-item"><i class="far fa-eye"></i> 1,240 vistas</span>
+            <span class="blog-meta-item"><i class="far fa-eye"></i> <span id="views-tallas">…</span> vistas</span>
           </div>
           <p>¿Siempre tienes dudas sobre qué talla comprarle a tu pequeña? En esta guía te explicamos cómo elegir la talla correcta según la edad, el peso y la altura — para que nunca más te quedes corta ni larga con la ropa importada.</p>
           <span class="btn-blog">Leer artículo <i class="fas fa-arrow-right"></i></span>
@@ -1064,21 +1071,21 @@ footer::before{
             <div class="popular-num">01</div>
             <div>
               <h4>Guía de tallas infantiles por edad</h4>
-              <span><i class="far fa-eye" aria-hidden="true"></i> 1,240 vistas</span>
+              <span><i class="far fa-eye" aria-hidden="true"></i> <span id="sidebar-views-tallas">…</span> vistas</span>
             </div>
           </div>
           <div class="popular-item" onclick="openArticle('tendencias')" role="button" tabindex="0" aria-label="Leer tendencias 2026">
             <div class="popular-num">02</div>
             <div>
               <h4>Tendencias moda infantil 2026</h4>
-              <span><i class="far fa-eye" aria-hidden="true"></i> 890 vistas</span>
+              <span><i class="far fa-eye" aria-hidden="true"></i> <span id="sidebar-views-tendencias">…</span> vistas</span>
             </div>
           </div>
           <div class="popular-item" onclick="openArticle('vuelta')" role="button" tabindex="0" aria-label="Leer outfits vuelta al colegio">
             <div class="popular-num">03</div>
             <div>
               <h4>Outfits de vuelta al colegio 2026</h4>
-              <span><i class="far fa-eye" aria-hidden="true"></i> 642 vistas</span>
+              <span><i class="far fa-eye" aria-hidden="true"></i> <span id="sidebar-views-vuelta">…</span> vistas</span>
             </div>
           </div>
         </div>
@@ -1479,38 +1486,91 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ===== FILTROS DEL BLOG ===== */
 function filterBlog(cat, btn){
-  // Actualizar botones activos
   document.querySelectorAll('.blog-filter-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
-
   const featured = document.querySelector('.blog-featured');
   const cards = document.querySelectorAll('.blog-card');
-
   if(cat === 'all'){
     featured.style.display = '';
     cards.forEach(c => c.style.display = '');
     return;
   }
-  // Featured
   featured.style.display = featured.dataset.cat === cat ? '' : 'none';
-  // Cards
-  cards.forEach(c => {
-    c.style.display = c.dataset.cat === cat ? '' : 'none';
+  cards.forEach(c => { c.style.display = c.dataset.cat === cat ? '' : 'none'; });
+}
+
+/* ===== SUPABASE — VISTAS REALES ===== */
+let _sb = null;
+function getSupabase() {
+  if (_sb) return _sb;
+  const cfg = window.SUPABASE_CONFIG;
+  const lib = window.supabase || window.Supabase;
+  if (lib && cfg?.URL && cfg?.ANON_KEY) {
+    _sb = lib.createClient(cfg.URL, cfg.ANON_KEY);
+  }
+  return _sb;
+}
+
+// Formatea número: 1240 → "1,240"
+function formatViews(n) {
+  return Number(n).toLocaleString('es-PE');
+}
+
+// Actualiza los spans de vistas en la página con los datos recibidos
+function renderViews(rows) {
+  rows.forEach(row => {
+    const id = row.article_id;
+    const v = formatViews(row.views);
+    const main = document.getElementById('views-' + id);
+    const sidebar = document.getElementById('sidebar-views-' + id);
+    if (main)    main.textContent    = v;
+    if (sidebar) sidebar.textContent = v;
   });
+  // Artículos sin fila aún → mostrar 0
+  document.querySelectorAll('[id^="views-"],[id^="sidebar-views-"]').forEach(el => {
+    if (el.textContent === '…') el.textContent = '0';
+  });
+}
+
+// Carga todas las vistas de una vez al arrancar la página
+async function loadAllViews() {
+  const sb = getSupabase();
+  if (!sb) return;
+  try {
+    const { data, error } = await sb.from('blog_views').select('article_id, views');
+    if (!error && data) renderViews(data);
+  } catch(e) { console.warn('blog_views load error', e); }
+}
+
+// Incrementa el contador en Supabase y actualiza la UI
+async function incrementView(articleId) {
+  const sb = getSupabase();
+  if (!sb) return;
+  try {
+    // Llama a la función RPC que creamos en Supabase
+    const { data, error } = await sb.rpc('increment_blog_view', { p_article_id: articleId });
+    if (!error && data != null) {
+      const v = formatViews(data);
+      const main    = document.getElementById('views-' + articleId);
+      const sidebar = document.getElementById('sidebar-views-' + articleId);
+      if (main)    main.textContent    = v;
+      if (sidebar) sidebar.textContent = v;
+    }
+  } catch(e) { console.warn('increment_blog_view error', e); }
 }
 
 /* ===== ABRIR / CERRAR ARTÍCULO ===== */
 function openArticle(id){
   const overlay = document.getElementById('modal-overlay');
-  // Ocultar todos los artículos
   document.querySelectorAll('.article-modal').forEach(m => m.style.display = 'none');
   const target = document.getElementById('article-' + id);
   if(!target) return;
   target.style.display = 'block';
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  // Scroll al top del modal
   overlay.scrollTop = 0;
+  // Registrar vista real
+  incrementView(id);
 }
 
 function closeArticle(){
@@ -1522,10 +1582,8 @@ function closeArticleOnOverlay(e){
   if(e.target === document.getElementById('modal-overlay')) closeArticle();
 }
 
-// Cerrar con ESC
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeArticle(); });
 
-// Teclado para cards (accesibilidad)
 document.querySelectorAll('[role="button"]').forEach(el => {
   el.addEventListener('keydown', e => {
     if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); el.click(); }
@@ -1549,6 +1607,9 @@ function showNotif(msg){
   document.body.appendChild(n);
   setTimeout(() => n.remove(), 3500);
 }
+
+/* ===== INIT ===== */
+document.addEventListener('DOMContentLoaded', loadAllViews);
 </script>
 </body>
 </html>
