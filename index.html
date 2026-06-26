@@ -4525,8 +4525,152 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
 <!-- Overlay menú mobile (posición fixed sobre toda la página) -->
 <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
-<!-- HERO STRIP DECORATIVO -->
-<div class="hero-strip" role="presentation" aria-hidden="true"></div>
+<!-- ═══════════════════════════════════════════════════════
+     HERO SLIDER — ESTILO MUNDO PIJAMA
+═══════════════════════════════════════════════════════ -->
+<style>
+.hero-slider-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #f3eef8;
+  max-height: 580px;
+}
+.hero-slider-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.hero-slide {
+  min-width: 100%;
+  position: relative;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  max-height: 580px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(0,0,0,0.18) 100%);
+  pointer-events: none;
+}
+.hero-arr {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(6px);
+  border: none;
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #7c5fa0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.hero-arr:hover { background: var(--rose, #d4587a); color: #fff; transform: translateY(-50%) scale(1.08); }
+.hero-arr.left  { left: 16px; }
+.hero-arr.right { right: 16px; }
+.hero-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.hero-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.hero-dot.active { background: #fff; transform: scale(1.35); }
+@media(max-width: 600px) {
+  .hero-slider-wrap { max-height: 260px; }
+  .hero-slide img { max-height: 260px; }
+  .hero-arr { width: 34px; height: 34px; font-size: 14px; }
+}
+</style>
+
+<div class="hero-slider-wrap" id="heroSliderWrap">
+  <div class="hero-slider-track" id="heroTrack">
+    <div class="hero-slide">
+      <img
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi4NA6Uv9X5QB0Hoqko5Vw47_lZHjwgLk68c89IoXWBGl0XB_Rq64V55RxJkHXHEtfej3yhizOt1GFkur4TjIm5v8Vv7MWJGdRKuO3RNBfr4of9tcZqi44hETPmZNeZ9f1QRdcDczymUfv8KMZnYNGq1Wjb0Bz_QEgBy0cmQkbhX0GZQd3MVCkgdPvkhyphenhyphenx/s16000/dzoe-peru-coleccion-premium.webp"
+        alt="Banner principal"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <div class="hero-slide-overlay"></div>
+    </div>
+    <!-- Duplicá este bloque para agregar más slides:
+    <div class="hero-slide">
+      <img src="URL_IMAGEN_2" alt="Banner 2" loading="lazy">
+      <div class="hero-slide-overlay"></div>
+    </div>
+    -->
+  </div>
+  <button class="hero-arr left"  id="heroPrev" aria-label="Anterior">&#8249;</button>
+  <button class="hero-arr right" id="heroNext" aria-label="Siguiente">&#8250;</button>
+  <div class="hero-dots" id="heroDots"></div>
+</div>
+
+<script>
+(function(){
+  const track    = document.getElementById('heroTrack');
+  const dotsWrap = document.getElementById('heroDots');
+  const btnPrev  = document.getElementById('heroPrev');
+  const btnNext  = document.getElementById('heroNext');
+  if(!track) return;
+  const slides = track.querySelectorAll('.hero-slide');
+  const total  = slides.length;
+  let current  = 0, timer;
+
+  if(total <= 1){ btnPrev.style.display='none'; btnNext.style.display='none'; }
+
+  slides.forEach((_,i) => {
+    const d = document.createElement('button');
+    d.className = 'hero-dot' + (i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  if(total <= 1) dotsWrap.style.display='none';
+
+  function goTo(n){
+    current = (n + total) % total;
+    track.style.transform = 'translateX(-' + current*100 + '%)';
+    dotsWrap.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+    restartTimer();
+  }
+  function restartTimer(){
+    clearInterval(timer);
+    if(total > 1) timer = setInterval(() => goTo(current+1), 5000);
+  }
+  btnPrev.addEventListener('click', () => goTo(current-1));
+  btnNext.addEventListener('click', () => goTo(current+1));
+  let sx = 0;
+  track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 40) goTo(current + (dx<0?1:-1));
+  }, {passive:true});
+  restartTimer();
+})();
+</script>
 
 <!-- ═══════════════════════════════════════════════════════
      BUSCADOR INTELIGENTE BAJO EL HEADER
