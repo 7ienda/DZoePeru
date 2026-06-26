@@ -84,6 +84,20 @@
     "url": "/productos/vestido-de-princesa-navideno.html"
   },
   {
+    "id": 1782451522791,
+    "slug": "conjunto-lazo-de-luna",
+    "name": "Conjunto lazo de Luna",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhns_Zp3z1L7VISPiR3KTKLWkwsxc5Kc_wQEev7slhy0d-iNSSC9N5bCSIGKtXFXfVdw8pQhB9oFX4f58yktZPuVbD7TmBK3WFf_Luodyzv36IwopClyKTiUcCdQpVxFLz6he_CUriFnnmBkAGkdTIfZxEt0ugmXi1Neqdnu3H_nxasyGrACf5L5te8uAvH/s16000/d21.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninas",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-lazo-de-luna.html"
+  },
+  {
     "id": 1780351237888,
     "slug": "chaqueta-jeans-forro-oso-polar-rosado",
     "name": "Chaqueta Jeans Forro Oso Polar rosado",
