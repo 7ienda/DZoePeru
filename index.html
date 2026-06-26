@@ -8038,6 +8038,18 @@ function filterByCategory(cat) {
   renderCategoriesFromData();
   renderProducts();
   renderBreadcrumb();
+  // Actualizar URL para SEO
+  const catSlug = cat === 'all' ? '' : cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-');
+  const newUrl = catSlug ? '/categoria/' + catSlug : '/';
+  history.pushState({ categoria: cat }, '', newUrl);
+  // Actualizar title y meta description
+  if (cat === 'all') {
+    document.title = "D'Zoe Per\u00fa | Ropa Infantil Importada Premium";
+    document.querySelector('meta[name="description"]')?.setAttribute('content', "D'Zoe Per\u00fa: tienda de ropa infantil importada premium para beb\u00e9s y ni\u00f1os de 0 a 14 a\u00f1os. Env\u00edos a todo el Per\u00fa.");
+  } else {
+    document.title = cat + ' Infantil Importado | D\'Zo\u00e9 Per\u00fa';
+    document.querySelector('meta[name="description"]')?.setAttribute('content', 'Compra ' + cat.toLowerCase() + ' infantil importado premium en D\'Zoe Per\u00fa. Modelos exclusivos para beb\u00e9s y ni\u00f1os de 0 a 14 a\u00f1os. Env\u00edos a todo el Per\u00fa.');
+  }
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
@@ -8928,10 +8940,17 @@ function openProductPage(productId) {
 function closePP() {
   document.getElementById('productPageModal')?.classList.remove('open');
   document.body.style.overflow = '';
-  history.pushState({}, '', window.location.pathname);
-  document.title = "D'Zoe Perú | Ropa Infantil Importada Premium — Modelos Exclusivos de Alta Gama";
-  document.querySelector('meta[name="description"]')?.setAttribute('content',
-    "D'Zoe Perú: tienda de ropa infantil importada premium con diseños exclusivos de alta gama para bebés y niños de 0 a 14 años. Envíos a todo el Perú 🚚");
+  // Restaurar URL: si hay categoría activa, volver a /?categoria=X, si no a /
+  if (currentFilter && currentFilter !== 'all') {
+    const catSlug = currentFilter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-');
+    history.pushState({}, '', '/categoria/' + catSlug);
+    document.title = currentFilter + ' Infantil Importado | D\'Zoe Per\u00fa';
+  } else {
+    history.pushState({}, '', window.location.pathname);
+    document.title = "D'Zoe Per\u00fa | Ropa Infantil Importada Premium — Modelos Exclusivos de Alta Gama";
+    document.querySelector('meta[name="description"]')?.setAttribute('content',
+      "D'Zoe Per\u00fa: tienda de ropa infantil importada premium con dise\u00f1os exclusivos de alta gama para beb\u00e9s y ni\u00f1os de 0 a 14 a\u00f1os. Env\u00edos a todo el Per\u00fa.");
+  }
   document.querySelectorAll('script[data-single-product]').forEach(el => el.remove());
 }
 
@@ -8991,7 +9010,8 @@ function openCatPage(catName) {
       : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-soft);font-size:15px;font-weight:600;">🔍 No hay productos en esta categoría aún.</div>`;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  history.pushState({ cat: catName }, '', `?categoria=${encodeURIComponent(catName.toLowerCase())}`);
+  const _catSlug = catName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-');
+  history.pushState({ cat: catName }, '', '/categoria/' + _catSlug);
   document.title = `${catName} Infantil Importado | D'Zoe Perú`;
   injectCategorySchema(catName, catProducts);
 }
@@ -9062,7 +9082,7 @@ function injectCategorySchema(catName, catProducts) {
     "@type": "CollectionPage",
     "name": `${catName} Infantil Importado | D'Zoe Perú`,
     "description": `Colección de ${catName.toLowerCase()} infantil importada premium. ${catProducts.length} modelos exclusivos de alta gama. D'Zoe Perú.`,
-    "url": `https://dzoeperu.com/?categoria=${encodeURIComponent(catName.toLowerCase())}`,
+    "url": `https://dzoeperu.com/categoria/${catName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-')}`,
     "mainEntity": {
       "@type": "ItemList",
       "numberOfItems": catProducts.length,
@@ -9095,11 +9115,28 @@ window.addEventListener('popstate', () => {
 });
 // ── Leer URL al cargar (deep link) ──
 window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const productSlug = params.get('slug') || params.get('producto'); // soporta ambos
-  const catSlug = params.get('categoria');
+  // ── GitHub Pages SPA: recuperar ruta real desde ?_path=/categoria/jeans ──
+  const _rawParams = new URLSearchParams(window.location.search);
+  const _redirectedPath = _rawParams.get('_path');
+  if (_redirectedPath) {
+    // Restaurar la URL real sin el ?_path= en la barra del navegador
+    history.replaceState(null, '', _redirectedPath);
+  }
+
+  const params = new URLSearchParams(
+    _redirectedPath ? _redirectedPath.split('?')[1] || '' : window.location.search
+  );
+  const effectivePath = _redirectedPath ? _redirectedPath.split('?')[0] : window.location.pathname;
+
+  const productSlug = params.get('slug') || params.get('producto');
+
+  // Soporte para /categoria/jeans (ruta real o redirigida desde 404.html)
+  const slugNorm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[-\s]+/g,'-');
+  const _pathParts = effectivePath.split('/').filter(Boolean);
+  const _catFromPath = _pathParts[0] === 'categoria' ? _pathParts[1] : null;
+  const catSlug = _catFromPath || params.get('categoria');
+
   if (productSlug) {
-    // Esperar a que carguen los productos
     const tryOpen = setInterval(() => {
       if (products.length) {
         clearInterval(tryOpen);
@@ -9111,9 +9148,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const tryOpen = setInterval(() => {
       if (products.length) {
         clearInterval(tryOpen);
-        const catName = decodeURIComponent(catSlug);
-        const match = products.flatMap(p => p.categories||[]).find(c => c.toLowerCase() === catName);
-        if (match) openCatPage(match);
+        const urlSlug = slugNorm(decodeURIComponent(catSlug));
+        const match = products.flatMap(p => p.categories||[]).find(c => slugNorm(c) === urlSlug);
+        if (match) filterByCategory(match);
       }
     }, 300);
   }
@@ -9424,6 +9461,18 @@ document.getElementById('searchInput')?.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════════
+
+// ═══ SEO: actualizar links de categorías dinámicamente tras cargar productos ═══
+function renderSeoCatLinks() {
+  const cats = getUniqueCategories();
+  const nav = document.querySelector('#seo-cat-links nav');
+  if (!nav || !cats.length) return;
+  nav.innerHTML = cats.map(c => {
+    const slug = c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-');
+    return `<a href="/categoria/${slug}">${c} Infantil Importado | D'Zoe Per\u00fa</a>`;
+  }).join('\n    ');
+}
+
 async function init() {
   loadCart();
   updateUI();
@@ -9431,6 +9480,7 @@ async function init() {
   renderWishlist();
   renderBreadcrumb();
   await loadAllData();
+  renderSeoCatLinks();
 }
 
 init();
@@ -9573,6 +9623,24 @@ init();
   });
 })();
 </script>
+
+<!-- ═══ SEO: LINKS DE CATEGORÍAS PARA INDEXACIÓN ═══ -->
+<!-- Este bloque permite a Google descubrir y rastrear las URLs de categoría -->
+<div id="seo-cat-links" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+  <nav>
+    <a href="/categoria/vestidos">Vestidos Infantil Importado</a>
+    <a href="/categoria/abrigos">Abrigos Infantil Importado</a>
+    <a href="/categoria/conjuntos">Conjuntos Infantil Importado</a>
+    <a href="/categoria/jeans">Jeans Infantil Importado</a>
+    <a href="/categoria/bodies">Bodies Infantil Importado</a>
+    <a href="/categoria/overoles">Overoles Infantil Importado</a>
+    <a href="/categoria/cardigans">Cardigans Infantil Importado</a>
+    <a href="/categoria/buzos">Buzos Infantil Importado</a>
+    <a href="/categoria/blusas">Blusas Infantil Importado</a>
+    <a href="/categoria/faldas">Faldas Infantil Importado</a>
+    <a href="/categoria/ropa-de-bebe">Ropa de Bebé Importada</a>
+  </nav>
+</div>
 
 </body>
 </html>
