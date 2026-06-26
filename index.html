@@ -2006,25 +2006,43 @@ body.dark-mode .menu-dropdown-btn{color:#a09080;}
 body.dark-mode .clear-cart-btn{border-color:#6A3828;color:#E8A888;}
 
 /* ═══ WHATSAPP FLOTANTE INTELIGENTE ═══ */
+/* ═══ WHATSAPP FLOTANTE — SMART 2026 ═══ */
 .wa-float{position:fixed;bottom:24px;right:24px;z-index:980;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.wa-float-btn-wrap{position:relative;display:flex;align-items:center;}
 .wa-float-btn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;cursor:pointer;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 22px rgba(37,211,102,0.5);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;flex-shrink:0;}
-.wa-float-btn:hover{transform:scale(1.1);}
-.wa-pulse{position:absolute;top:2px;right:2px;width:13px;height:13px;background:#A8C898;border-radius:50%;border:2px solid white;animation:waPulse 2s infinite;}
+.wa-float-btn:hover{transform:scale(1.12) rotate(-5deg);box-shadow:0 8px 30px rgba(37,211,102,0.6);}
+.wa-float-btn.is-open{transform:scale(1.05);background:linear-gradient(135deg,#128C7E,#075E54);}
+.wa-pulse{position:absolute;top:2px;right:2px;width:13px;height:13px;background:#4bdb82;border-radius:50%;border:2px solid white;animation:waPulse 2s infinite;}
 @keyframes waPulse{0%,100%{box-shadow:0 0 0 0 rgba(76,250,138,0.6);}60%{box-shadow:0 0 0 8px rgba(76,250,138,0);}}
-.wa-menu{display:flex;flex-direction:column;gap:8px;opacity:0;pointer-events:none;transform:translateY(14px) scale(0.95);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+/* Badge de notificación */
+.wa-badge{position:absolute;top:-3px;left:-3px;width:18px;height:18px;background:#FF4D4D;border-radius:50%;border:2px solid white;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;color:white;animation:waBadgePop 0.4s cubic-bezier(0.34,1.56,0.64,1) 2s both;font-family:'Nunito',sans-serif;}
+@keyframes waBadgePop{from{transform:scale(0);}to{transform:scale(1);}}
+.wa-badge.hidden{display:none;}
+/* Tooltip */
+.wa-tooltip{position:absolute;right:70px;bottom:50%;transform:translateY(50%);background:#fff;color:#1a1a2e;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:11px 17px;border-radius:22px;white-space:nowrap;box-shadow:0 6px 28px rgba(0,0,0,0.18);border:1.5px solid rgba(37,211,102,0.3);pointer-events:none;opacity:0;transition:opacity 0.3s ease, transform 0.3s ease;line-height:1.4;transform:translateY(50%) translateX(6px);}
+.wa-tooltip::after{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);border:6px solid transparent;border-left-color:#fff;filter:drop-shadow(2px 0 1px rgba(0,0,0,0.06));}
+.wa-tooltip.visible{opacity:1;transform:translateY(50%) translateX(0);}
+.wa-tooltip strong{color:#25D366;display:block;font-size:10.5px;font-weight:900;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:3px;}
+body.dark-mode .wa-tooltip{background:#1e2d20;color:#e4f0e6;border-color:rgba(37,211,102,0.25);}
+body.dark-mode .wa-tooltip::after{border-left-color:#1e2d20;}
+/* Menú */
+.wa-menu{display:flex;flex-direction:column;gap:8px;opacity:0;pointer-events:none;transform:translateY(14px) scale(0.95);transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);}
 .wa-menu.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
-.wa-tooltip{position:absolute;right:70px;bottom:50%;transform:translateY(50%);background:#fff;color:#1a1a2e;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 16px;border-radius:22px;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,0.15);border:1.5px solid rgba(37,211,102,0.25);pointer-events:none;opacity:0;transition:opacity 0.3s ease;line-height:1.3;}
-.wa-tooltip::after{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:#fff;filter:drop-shadow(2px 0 1px rgba(0,0,0,0.06));}
-.wa-tooltip.visible{opacity:1;}
-.wa-tooltip strong{color:#25D366;display:block;font-size:11px;font-weight:800;letter-spacing:0.3px;text-transform:uppercase;margin-bottom:2px;}
-body.dark-mode .wa-tooltip{background:#3a2c20;color:#e4d4c0;border-color:rgba(37,211,102,0.2);}
-body.dark-mode .wa-tooltip::after{border-left-color:#3a2c20;}
-.wa-menu-item{display:flex;align-items:center;gap:10px;background:#fff;border-radius:40px;padding:10px 18px 10px 14px;box-shadow:0 4px 18px rgba(0,0,0,0.13);cursor:pointer;text-decoration:none;color:var(--text);font-size:12px;font-weight:700;transition:all 0.2s;border:1.5px solid rgba(37,211,102,0.2);white-space:nowrap;font-family:'Nunito',sans-serif;}
-.wa-menu-item:hover{background:#F0FAF0;border-color:#25D366;transform:translateX(-4px);}
+/* Header del menú */
+.wa-menu-header{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#25D366,#128C7E);border-radius:20px;padding:12px 18px;color:#fff;box-shadow:0 4px 18px rgba(37,211,102,0.35);}
+.wa-menu-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.wa-menu-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;}
+.wa-menu-status{font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;opacity:0.9;}
+.wa-online-dot{width:8px;height:8px;background:#fff;border-radius:50%;display:inline-block;animation:onlineBlink 2s ease-in-out infinite;}
+@keyframes onlineBlink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+/* Items */
+.wa-menu-item{display:flex;align-items:center;gap:10px;background:#fff;border-radius:40px;padding:10px 18px 10px 14px;box-shadow:0 4px 18px rgba(0,0,0,0.11);cursor:pointer;text-decoration:none;color:var(--text);font-size:12px;font-weight:700;transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);border:1.5px solid rgba(37,211,102,0.2);white-space:nowrap;font-family:'Nunito',sans-serif;}
+.wa-menu-item:hover{background:#F0FAF0;border-color:#25D366;transform:translateX(-5px) scale(1.02);}
 .wa-menu-item i{color:#25D366;font-size:15px;width:20px;text-align:center;flex-shrink:0;}
 .wa-item-sub{font-size:10px;color:var(--text-soft);font-weight:500;display:block;line-height:1.2;}
-body.dark-mode .wa-menu-item{background:#3a2c20;color:#e4d4c0;border-color:rgba(37,211,102,0.15);}
-body.dark-mode .wa-menu-item:hover{background:#2A1E14;}
+body.dark-mode .wa-menu-header{background:linear-gradient(135deg,#1a7a42,#0d6b5e);}
+body.dark-mode .wa-menu-item{background:#1e2d20;color:#e4f0e6;border-color:rgba(37,211,102,0.15);}
+body.dark-mode .wa-menu-item:hover{background:#243228;}
 
 /* ═══ WISHLIST: ETIQUETAS, BOTÓN COMPRAR, BOTÓN COMPRAR TODO ═══ */
 .wishlist-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--rose-soft);border-radius:16px;margin-bottom:10px;border:1.5px solid var(--rose-light);transition:0.2s;flex-wrap:wrap;}
@@ -2938,7 +2956,7 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   box-shadow: 0 6px 28px rgba(37,211,102,0.55);
   transition: all 0.3s var(--ease-bounce);
 }
-.wa-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
+.wa-float-btn:hover { transform: scale(1.1) rotate(-5deg); }
 .wa-menu-item {
   border-radius: 50px;
   box-shadow: 0 6px 22px rgba(0,0,0,0.12);
@@ -3924,12 +3942,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
 
 <!-- H1 semántico para SEO (visualmente oculto, estructuralmente presente) -->
 <h1 class="sr-only">D'Zoe Perú — Tienda N°1 de Ropa Infantil Importada Premium | Bebés y Niños 0 a 14 años, Perú</h1>
-<div class="hero-visible-headline" role="banner">
-  <div class="hero-vhl-inner">
-    <span class="hero-vhl-badge">👑 Marca Infantil Premium</span>
-    <p class="hero-vhl-text">Diseños exclusivos importados que <strong style="color:#fff;">no encuentras en ningún otro lado</strong> · Bebés y niños 0–14 años</p>
-  </div>
-</div>
+
 <!-- Texto SEO adicional oculto para rastreadores -->
 <p class="sr-only">D'Zoe Perú es la tienda líder de ropa infantil importada en Perú. Ofrecemos vestidos para niña, abrigos infantiles, conjuntos bebé, ropa de bebé recién nacido, overoles, jeans y más. Modelos exclusivos de alta gama con telas premium. Envíos a todo el Perú por Shalom. Ubicados en Gamarra, La Victoria, Lima. Contáctanos por WhatsApp al +51 956 063 145.</p>
 
@@ -7089,11 +7102,20 @@ body.dark-mode .anl-name { color: #e4d4c0; }
 <!-- WHATSAPP FLOTANTE INTELIGENTE -->
 <div class="wa-float" id="waFloat">
   <div class="wa-menu" id="waMenu">
-    <a class="wa-menu-item" href="https://wa.me/51956063145?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F" target="_blank" rel="noopener">
+    <div class="wa-menu-header">
+      <div class="wa-menu-avatar">
+        <i class="fab fa-whatsapp"></i>
+      </div>
+      <div>
+        <div class="wa-menu-title">D'Zoe Perú</div>
+        <div class="wa-menu-status"><span class="wa-online-dot"></span> En línea ahora</div>
+      </div>
+    </div>
+    <a class="wa-menu-item" id="waItemPedido" href="https://wa.me/51956063145?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F" target="_blank" rel="noopener">
       <i class="fas fa-shopping-bag"></i>
       <div><span>Hacer un pedido</span><span class="wa-item-sub">Compra directa por WhatsApp</span></div>
     </a>
-    <a class="wa-menu-item" href="https://wa.me/51956063145?text=Hola!%20Tengo%20una%20consulta%20sobre%20un%20producto%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%8C%B8" target="_blank" rel="noopener">
+    <a class="wa-menu-item" id="waItemConsulta" href="https://wa.me/51956063145?text=Hola!%20Tengo%20una%20consulta%20sobre%20un%20producto%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%8C%B8" target="_blank" rel="noopener">
       <i class="fas fa-question-circle"></i>
       <div><span>Consultar un producto</span><span class="wa-item-sub">Tallas, colores, disponibilidad</span></div>
     </a>
@@ -7106,11 +7128,18 @@ body.dark-mode .anl-name { color: #e4d4c0; }
       <div><span>Rastrear mi pedido</span><span class="wa-item-sub">Estado de envío</span></div>
     </a>
   </div>
-  <button class="wa-float-btn" id="waFloatBtn" title="Contactar por WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-    <span class="wa-pulse"></span>
-    <div class="wa-tooltip" id="waTooltip"><strong>¿Buscas talla o modelo?</strong>Escríbenos, te ayudamos 🌸</div>
-  </button>
+  <div class="wa-float-btn-wrap">
+    <button class="wa-float-btn" id="waFloatBtn" title="Contactar por WhatsApp" aria-label="Abrir menú de WhatsApp">
+      <i class="fab fa-whatsapp" id="waIcon"></i>
+      <i class="fas fa-times" id="waClose" style="display:none;"></i>
+      <span class="wa-pulse"></span>
+      <span class="wa-badge" id="waBadge">1</span>
+    </button>
+    <div class="wa-tooltip" id="waTooltip">
+      <strong id="waTooltipTitle">¿Buscas talla o modelo?</strong>
+      <span id="waTooltipSub">Escríbenos, te ayudamos 🌸</span>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -9344,44 +9373,154 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   goToCheckout();
 });
 
-// ═══ WHATSAPP FLOTANTE — toggle menú ═══
-const waFloatBtn = document.getElementById('waFloatBtn');
-const waMenu = document.getElementById('waMenu');
-const waTooltip = document.getElementById('waTooltip');
+// ═══ WHATSAPP FLOTANTE — SMART 2026 ═══
+(function() {
+  const waFloatBtn = document.getElementById('waFloatBtn');
+  const waMenu     = document.getElementById('waMenu');
+  const waTooltip  = document.getElementById('waTooltip');
+  const waBadge    = document.getElementById('waBadge');
+  const waIcon     = document.getElementById('waIcon');
+  const waClose    = document.getElementById('waClose');
+  const waItemPedido  = document.getElementById('waItemPedido');
+  const waItemConsulta = document.getElementById('waItemConsulta');
+  const WA_BASE    = 'https://wa.me/51956063145?text=';
+  const WA_NUM     = '51956063145';
 
-// Mostrar tooltip automáticamente a los 4 segundos
-let tooltipTimer = setTimeout(() => {
-  waTooltip?.classList.add('visible');
-}, 4000);
+  // ── Mensajes contextuales rotativos según tiempo de visita ──
+  const tooltipMessages = [
+    { title: '¡Hola! ¿Te ayudamos?', sub: 'Escríbenos, te atendemos 🌸' },
+    { title: '¿Buscas talla o modelo?', sub: 'Respuesta inmediata 💬' },
+    { title: '¿Es para bebé o niño/a?', sub: 'Tenemos para 0 a 14 años 🎀' },
+    { title: '¿Primera vez aquí?', sub: '¡Pide tu catálogo gratis! 📦' },
+  ];
+  let tooltipIdx = 0;
 
-// Ocultar tooltip al hacer click en el botón o al abrir el menú
-waFloatBtn?.addEventListener('click', e => {
-  e.stopPropagation();
-  waTooltip?.classList.remove('visible');
-  clearTimeout(tooltipTimer);
-  waMenu.classList.toggle('open');
-});
-
-// Ocultar tooltip si el usuario interactúa con la página
-['scroll', 'mousemove', 'touchstart'].forEach(evt => {
-  window.addEventListener(evt, () => {
-    clearTimeout(tooltipTimer);
-    // Solo mostrar si aún no fue visto (una vez por sesión)
-    if (!sessionStorage.getItem('waTooltipSeen')) {
-      tooltipTimer = setTimeout(() => {
-        waTooltip?.classList.add('visible');
-        sessionStorage.setItem('waTooltipSeen', '1');
-      }, 8000);
-    }
-  }, { once: true });
-});
-
-document.addEventListener('click', e => {
-  if (!document.getElementById('waFloat')?.contains(e.target)) {
-    waMenu?.classList.remove('open');
-    waTooltip?.classList.remove('visible');
+  function rotateTooltip() {
+    const msg = tooltipMessages[tooltipIdx % tooltipMessages.length];
+    document.getElementById('waTooltipTitle').textContent = msg.title;
+    document.getElementById('waTooltipSub').textContent   = msg.sub;
+    tooltipIdx++;
   }
-});
+
+  // ── Contexto: detectar qué sección está mirando el usuario ──
+  function getContextMsg() {
+    // Si hay carrito con items, ofrecer pedido directo
+    try {
+      const cart = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (cart.length > 0) {
+        const names = cart.map(i => i.name || i.nombre || '').filter(Boolean).slice(0,2).join(', ');
+        return encodeURIComponent(`Hola! Quiero confirmar mi pedido en D'Zoe Perú 🛍️${names ? ': ' + names : ''}`);
+      }
+    } catch(e) {}
+    // Si hay wishlist, ofrecer compartir
+    try {
+      const wl = JSON.parse(localStorage.getItem('dzoeWishlist') || '[]');
+      if (wl.length > 0) {
+        return encodeURIComponent(`Hola! Quiero consultar sobre mi lista de deseos en D'Zoe Perú 🎀`);
+      }
+    } catch(e) {}
+    // Sección visible
+    const sections = [
+      { id: 'lista-de-deseos', msg: `Hola! Quiero crear mi Lista de Deseos para Baby Shower en D'Zoe Perú 🎀` },
+      { id: 'bebes',   msg: `Hola! Busco ropa para bebé en D'Zoe Perú 👶` },
+      { id: 'abrigos', msg: `Hola! Me interesan los abrigos infantiles de D'Zoe Perú 🧥` },
+      { id: 'vestidos',msg: `Hola! Me interesan los vestidos para niña de D'Zoe Perú 👗` },
+    ];
+    for (const s of sections) {
+      const el = document.getElementById(s.id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          return encodeURIComponent(s.msg);
+        }
+      }
+    }
+    return encodeURIComponent(`Hola! Quiero ver los productos de D'Zoe Perú 🛍️`);
+  }
+
+  // ── Actualizar link del primer item según contexto ──
+  function updateContextLink() {
+    if (waItemPedido) {
+      waItemPedido.href = WA_BASE + getContextMsg();
+    }
+  }
+
+  // ── Toggle menú ──
+  let isOpen = false;
+  function openMenu() {
+    isOpen = true;
+    waMenu.classList.add('open');
+    waFloatBtn.classList.add('is-open');
+    waIcon.style.display  = 'none';
+    waClose.style.display = '';
+    waTooltip.classList.remove('visible');
+    waBadge?.classList.add('hidden');
+    updateContextLink();
+  }
+  function closeMenu() {
+    isOpen = false;
+    waMenu.classList.remove('open');
+    waFloatBtn.classList.remove('is-open');
+    waIcon.style.display  = '';
+    waClose.style.display = 'none';
+  }
+
+  waFloatBtn?.addEventListener('click', e => {
+    e.stopPropagation();
+    clearTimeout(tooltipTimer);
+    waTooltip.classList.remove('visible');
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('waFloat')?.contains(e.target)) {
+      closeMenu();
+      waTooltip.classList.remove('visible');
+    }
+  });
+
+  // ── Tooltip rotativo inteligente ──
+  let tooltipTimer;
+  function scheduleTooltip(delay) {
+    clearTimeout(tooltipTimer);
+    tooltipTimer = setTimeout(() => {
+      if (!isOpen && !sessionStorage.getItem('waTooltipDone')) {
+        rotateTooltip();
+        waTooltip.classList.add('visible');
+        setTimeout(() => waTooltip.classList.remove('visible'), 4500);
+        // Rotar de nuevo en 25s si no abrió el menú
+        tooltipTimer = setTimeout(() => {
+          if (!isOpen) {
+            rotateTooltip();
+            waTooltip.classList.add('visible');
+            setTimeout(() => waTooltip.classList.remove('visible'), 4500);
+            sessionStorage.setItem('waTooltipDone', '1');
+          }
+        }, 25000);
+      }
+    }, delay);
+  }
+
+  scheduleTooltip(5000);
+
+  // Mostrar de nuevo si el usuario scrollea mucho (señal de interés)
+  let lastScrollY = 0;
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    if (sy > lastScrollY + 600 && !isOpen && !sessionStorage.getItem('waScrollTip')) {
+      rotateTooltip();
+      waTooltip.classList.add('visible');
+      setTimeout(() => waTooltip.classList.remove('visible'), 4000);
+      sessionStorage.setItem('waScrollTip', '1');
+    }
+    lastScrollY = sy;
+  }, { passive: true });
+
+  // ── Ocultar badge al primer hover ──
+  waFloatBtn?.addEventListener('mouseenter', () => {
+    setTimeout(() => waBadge?.classList.add('hidden'), 600);
+  });
+})();
 
 // ═══════════════════════════════════════════════════════
 //  MODAL LOGIN — SUPABASE AUTH
