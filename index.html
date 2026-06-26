@@ -7459,7 +7459,7 @@ function paintHighlights(tab) {
       ? Math.min(...p.sizes.filter(s => s.stock > 0).map(s => Number(s.price) || 0))
       : 0;
     const price = minP ? 'S/ ' + minP.toFixed(0) : '';
-    return '<div class="highlight-card" onclick="openProductPage('' + p.id + '')" style="cursor:pointer;">' +
+    return '<div class="highlight-card" onclick="openProductPage(\'' + p.id + '\')" style="cursor:pointer;">' +
       (img ? '<img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">' : '') +
       '<div style="padding:12px 14px 14px;">' +
       '<div style="font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px;">' + esc(p.name) + '</div>' +
