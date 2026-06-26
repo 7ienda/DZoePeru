@@ -8044,9 +8044,7 @@ function renderFilters() {
 // ═══════════════════════════════════════════════════════
 function buildTagsHtml(product) {
   const pills = [];
-  if (product.categories?.length) {
-    product.categories.forEach(c => pills.push(`<span class="product-tag-pill tag-cat" style="cursor:pointer;" onclick="filterByCategory('${esc(c)}')">${esc(c)}</span>`));
-  }
+  // Categorías solo se muestran dentro del detalle del producto, no en la tarjeta
   if (product.tags) {
     const tagList = Array.isArray(product.tags) ? product.tags
       : String(product.tags).split(',').map(t => t.trim()).filter(Boolean);
@@ -8054,8 +8052,7 @@ function buildTagsHtml(product) {
   }
   if (product.is_new)  pills.push(`<span class="product-tag-pill tag-mint">✨ Nuevo</span>`);
   if (product.on_sale) pills.push(`<span class="product-tag-pill tag-label">🔥 Oferta</span>`);
-  if (!pills.length)   pills.push(`<span class="product-tag-pill tag-cat">Premium</span>`);
-  return `<div class="product-tags">${pills.join('')}</div>`;
+  return pills.length ? `<div class="product-tags">${pills.join('')}</div>` : '';
 }
 
 // ═══════════════════════════════════════════════════════
@@ -8508,7 +8505,7 @@ function renderProductCard(product) {
       <h4 onclick="openProductPage('${product.id}')">${product.name}</h4>
 
       ${sizes.length ? `
-      <div class="pc-ages-label"><i class="fas fa-child-reaching"></i> Edades disponibles</div>
+      
       <div class="sizes-container">${sizesHtml}</div>` : ''}
 
       <div class="product-footer">
@@ -9014,7 +9011,7 @@ function closePP() {
     history.pushState({}, '', '/categoria/' + catSlug);
     document.title = currentFilter + ' Infantil Importado | D\'Zoe Per\u00fa';
   } else {
-    history.pushState({}, '', window.location.pathname);
+    history.pushState({}, '', '/');
     document.title = "D'Zoe Per\u00fa | Ropa Infantil Importada Premium — Modelos Exclusivos de Alta Gama";
     document.querySelector('meta[name="description"]')?.setAttribute('content',
       "D'Zoe Per\u00fa: tienda de ropa infantil importada premium con dise\u00f1os exclusivos de alta gama para beb\u00e9s y ni\u00f1os de 0 a 14 a\u00f1os. Env\u00edos a todo el Per\u00fa.");
