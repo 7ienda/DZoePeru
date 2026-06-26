@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="UTF-8">
+  <title>D'Zoe Perú — Ropa Infantil Importada Premium</title>
+  <meta name="description" content="Ropa infantil importada premium para bebés y niños de 0 a 14 años. D'Zoe Perú.">
+  <!-- GitHub Pages SPA Redirect — técnica spa-github-pages -->
+  <script>
+    // Captura la ruta actual (ej: /categoria/jeans) y redirige a index.html
+    // preservando la ruta como parámetro para que el JS la lea al cargar
+    (function() {
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+
+      // Construir URL de destino: / + ?_path=/categoria/jeans
+      var redirectUrl = '/?_path=' + encodeURIComponent(path + search + hash);
+      window.location.replace(redirectUrl);
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/">
+  </noscript>
+</head>
+<body>
+  <p>Redirigiendo...</p>
+</body>
+</html>
