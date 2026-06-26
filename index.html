@@ -8237,6 +8237,22 @@ function buildProductSeoTitle(product) {
   return `${name} | D'Zoe Perú`;
 }
 
+function buildProductAltText(product, imageIndex) {
+  const name = product.name || '';
+  const sizes = product.sizes || [];
+  // Determine age range from available sizes
+  const availableSizes = sizes.filter(s => s.stock > 0).map(s => s.size);
+  const allSizes = sizes.map(s => s.size);
+  const sizeList = (availableSizes.length ? availableSizes : allSizes).slice(0, 3);
+  const sizeStr = sizeList.length ? ` talla ${sizeList.join('/')}` : '';
+  // Get primary category
+  const cats = product.categories || [];
+  const cat = cats[0] || '';
+  const catStr = cat ? ` ${cat}` : '';
+  const suffix = imageIndex > 0 ? ` foto ${imageIndex + 1}` : '';
+  return `${name}${catStr}${sizeStr} importado D'Zoe Perú${suffix}`.trim();
+}
+
 function buildProductSlug(product) {
   return (product.name || product.id)
     .toLowerCase()
@@ -8353,7 +8369,7 @@ function renderProductCard(product) {
   let imgHtml = '';
   if (tieneMultiplesImagenes) {
     const slidesHtml = productImages.map((img, idx) =>
-      `<img src="${img}" alt="${product.name} - imagen ${idx+1}" loading="lazy">`
+      `<img src="${img}" alt="${buildProductAltText(product, idx)}" loading="lazy">`
     ).join('');
     const dotsHtml = productImages.map((_, idx) =>
       `<span class="dot${idx===0?' active':''}" onclick="slideProductTo('${product.id}',${idx})"></span>`
@@ -8367,7 +8383,7 @@ function renderProductCard(product) {
         <div class="photo-counter" id="counter-${product.id}"><i class="fas fa-camera"></i> 1/${productImages.length}</div>
       </div>`;
   } else {
-    imgHtml = `<img src="${productImages[0] || 'https://placehold.co/400x300'}" alt="${product.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+    imgHtml = `<img src="${productImages[0] || 'https://placehold.co/400x300'}" alt="${buildProductAltText(product, 0)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
   }
 
   // Tallas con edad + estado de stock
@@ -8833,11 +8849,11 @@ function openProductPage(productId) {
 
   // Galería
   const mainImgHtml = imgs.length
-    ? `<img src="${imgs[0]}" alt="${esc(product.name)}" class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'">`
+    ? `<img src="${imgs[0]}" alt="${buildProductAltText(product, 0)}" class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'">`
     : `<div class="pp-img-placeholder">🌸</div>`;
 
   const thumbsHtml = imgs.length > 1 ? imgs.map((img, i) =>
-    `<img src="${img}" class="pp-thumb${i===0?' active':''}" alt="Foto ${i+1}" onclick="ppSwitchImg(this,'${img}')">`
+    `<img src="${img}" class="pp-thumb${i===0?' active':''}" alt="${buildProductAltText(product, i)}" onclick="ppSwitchImg(this,'${img}')">`
   ).join('') : '';
 
   // Tallas
