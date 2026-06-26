@@ -7415,6 +7415,59 @@ async function loadCategoriesFromSupabase() {
   } catch(e) { console.error('Error cargando categorías:', e); return []; }
 }
 
+
+// ═══════════════════════════════════════════════════════
+//  HIGHLIGHTS — sección de productos destacados
+// ═══════════════════════════════════════════════════════
+function renderHighlights() {
+  // Busca la sección de highlights en el DOM y la puebla con los productos más vendidos/nuevos
+  const section = document.querySelector('.highlights-section');
+  if (!section || !products || !products.length) return;
+
+  // Tabs de highlights
+  const tabs = section.querySelectorAll('.hl-tab');
+  let activeTab = 'nuevo';
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeTab = tab.dataset.tab || 'nuevo';
+      paintHighlights(activeTab);
+    });
+  });
+  paintHighlights(activeTab);
+}
+
+function paintHighlights(tab) {
+  const grid = document.querySelector('.highlights-grid');
+  if (!grid || !products.length) return;
+
+  let filtered = [];
+  if (tab === 'nuevo') {
+    filtered = products.filter(p => p.is_new).slice(0, 4);
+    if (!filtered.length) filtered = products.slice(0, 4);
+  } else if (tab === 'oferta') {
+    filtered = products.filter(p => p.on_sale || p.offer_price).slice(0, 4);
+    if (!filtered.length) filtered = products.slice(0, 4);
+  } else {
+    filtered = products.slice(0, 4);
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const img = (p.images && p.images[0]) || p.image || '';
+    const minP = p.sizes && p.sizes.length
+      ? Math.min(...p.sizes.filter(s => s.stock > 0).map(s => Number(s.price) || 0))
+      : 0;
+    const price = minP ? 'S/ ' + minP.toFixed(0) : '';
+    return '<div class="highlight-card" onclick="openProductPage('' + p.id + '')" style="cursor:pointer;">' +
+      (img ? '<img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">' : '') +
+      '<div style="padding:12px 14px 14px;">' +
+      '<div style="font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px;">' + esc(p.name) + '</div>' +
+      (price ? '<div style="font-weight:900;font-size:15px;color:var(--rose-dark);">' + price + '</div>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
 async function loadAllData() {
   const [productsData, categoriesData] = await Promise.all([
     loadProductsFromSupabase(),
@@ -10149,24 +10202,16 @@ document.getElementById('hdLightbox').addEventListener('touchend', e => {
   /* ── Construir mensaje WhatsApp detallado ── */
   function buildWaMsg(cartItems) {
     const total = cartItems.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
-    let lines = cartItems.map(i => {
+    const lines = cartItems.map(i => {
       const qty = i.qty || 1;
       const subtotal = ((i.price || 0) * qty).toFixed(2);
-      return `• *${i.name}*${i.size ? ' — Talla ' + i.size : ''}${qty > 1 ? ' x' + qty : ''} → S/ ${subtotal}`;
-    }).join('
-');
+      return '• *' + i.name + '*' + (i.size ? ' — Talla ' + i.size : '') + (qty > 1 ? ' x' + qty : '') + ' -> S/ ' + subtotal;
+    }).join('\n');
     const msg =
-      `Hola D'Zoe Perú 💜 ¡Me quedé con ganas de comprar!
-
-` +
-      `Tenía estos productos en mi carrito:
-${lines}
-
-` +
-      `*Total: S/ ${total.toFixed(2)}*
-
-` +
-      `¿Me pueden ayudar a confirmar el pedido? 🛍️`;
+      "Hola D'Zoe Per\u00fa \uD83D\uDC9C \u00a1Me qued\u00e9 con ganas de comprar!\n\n" +
+      "Ten\u00eda estos productos en mi carrito:\n" + lines + "\n\n" +
+      "*Total: S/ " + total.toFixed(2) + "*\n\n" +
+      "\u00bfMe pueden ayudar a confirmar el pedido? \uD83D\uDECD\uFE0F";
     return encodeURIComponent(msg);
   }
 
