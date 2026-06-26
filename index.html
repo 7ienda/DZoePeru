@@ -3929,6 +3929,176 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
     .menu { padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   CARRITO ABANDONADO — TOAST WHATSAPP
+═══════════════════════════════════════════════════════ */
+.abandoned-toast {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  z-index: 1500;
+  width: 320px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(45,37,69,0.22), 0 2px 8px rgba(0,0,0,0.08);
+  border: 1.5px solid var(--rose-light);
+  padding: 0;
+  transform: translateX(360px);
+  transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.abandoned-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.abandoned-toast-header {
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  padding: 13px 16px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.abandoned-toast-header-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.abandoned-toast-emoji {
+  font-size: 22px;
+  line-height: 1;
+}
+.abandoned-toast-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+.abandoned-toast-sub {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.82);
+  font-weight: 600;
+}
+.abandoned-toast-close {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.abandoned-toast-close:hover { background: rgba(255,255,255,0.35); }
+.abandoned-toast-body { padding: 12px 16px 14px; }
+.abandoned-toast-items {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 12px;
+  max-height: 110px;
+  overflow-y: auto;
+}
+.abandoned-toast-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--rose-soft);
+  border-radius: 12px;
+  padding: 7px 10px;
+  border: 1px solid var(--rose-light);
+}
+.abandoned-toast-item img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--lav-light);
+}
+.abandoned-toast-item-info { flex: 1; min-width: 0; }
+.abandoned-toast-item-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.abandoned-toast-item-detail {
+  font-size: 10px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+.abandoned-toast-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+.abandoned-toast-total strong {
+  font-size: 15px;
+  color: var(--rose-dark);
+  font-weight: 900;
+}
+.abandoned-toast-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 12px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 4px 18px rgba(37,211,102,0.4);
+  letter-spacing: 0.2px;
+}
+.abandoned-toast-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(37,211,102,0.55);
+}
+.abandoned-toast-btn i { font-size: 16px; }
+.abandoned-toast-nudge {
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-soft);
+  margin-top: 8px;
+  font-weight: 600;
+}
+/* Animación de pulso en el icono del carrito cuando hay toast */
+@keyframes cartPulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(179,157,200,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(179,157,200,0); }
+}
+.cart-pulse-hint { animation: cartPulseGlow 2s ease-in-out 3; }
+@media (max-width: 480px) {
+  .abandoned-toast {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 90px;
+  }
+}
 </style>
   <link rel="alternate" type="application/rss+xml"
   title="D'Zoe Perú — Novedades"
@@ -9850,6 +10020,35 @@ init();
     <a href="/categoria/ropa-de-bebe">Ropa de Bebé Importada</a>
   </nav>
 </div>
+
+<!-- ═══ CARRITO ABANDONADO — TOAST WHATSAPP ═══ -->
+<div class="abandoned-toast" id="abandonedToast" role="dialog" aria-live="polite" aria-label="Recordatorio de carrito">
+  <div class="abandoned-toast-header">
+    <div class="abandoned-toast-header-left">
+      <span class="abandoned-toast-emoji">🛍️</span>
+      <div>
+        <div class="abandoned-toast-title">¡Olvidaste algo!</div>
+        <div class="abandoned-toast-sub">Tu carrito te está esperando</div>
+      </div>
+    </div>
+    <button class="abandoned-toast-close" id="abandonedToastClose" aria-label="Cerrar">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="abandoned-toast-body">
+    <div class="abandoned-toast-items" id="abandonedToastItems"></div>
+    <div class="abandoned-toast-total">
+      <span>Total de tu carrito</span>
+      <strong id="abandonedToastTotal">S/ 0.00</strong>
+    </div>
+    <button class="abandoned-toast-btn" id="abandonedToastBtn">
+      <i class="fab fa-whatsapp"></i>
+      Completar pedido por WhatsApp
+    </button>
+    <div class="abandoned-toast-nudge">⚡ Te respondemos en menos de 5 minutos</div>
+  </div>
+</div>
+
 <!-- LIGHTBOX ZOOM HD -->
 <div class="hd-lightbox" id="hdLightbox" onclick="hdCloseLightbox(event)">
   <button class="hd-lightbox-close" onclick="hdClose()"><i class="fas fa-times"></i></button>
@@ -9931,6 +10130,210 @@ document.getElementById('hdLightbox').addEventListener('touchend', e => {
   if (Math.abs(diff) > 40) { hdIndex = (hdIndex + (diff > 0 ? 1 : -1) + hdImages.length) % hdImages.length; hdRender(); }
   hdTouchX = null;
 });
+
+
+// ═══════════════════════════════════════════════════════
+//  CARRITO ABANDONADO — WHATSAPP RECOVERY 🥇
+// ═══════════════════════════════════════════════════════
+(function() {
+  const WA_NUM     = '51956063145';
+  const DELAY_MS   = 12 * 60 * 1000;  // 12 min sin comprar → disparar toast
+  const RETURN_MS  = 15 * 60 * 1000;  // si regresa con carrito > 15 min de antigüedad → toast inmediato
+  const SNOOZE_MS  = 4  * 60 * 60 * 1000; // no molestar de nuevo por 4h si cerró el toast
+  const LS_LAST_ADD    = 'dzoe_cart_last_add';    // timestamp última vez que agregó
+  const LS_LAST_SHOW   = 'dzoe_abandoned_shown';  // timestamp última vez que se mostró toast
+  const LS_DISMISSED   = 'dzoe_abandoned_dismiss';// timestamp que cerró el toast sin comprar
+
+  let abandonTimer = null;
+
+  /* ── Construir mensaje WhatsApp detallado ── */
+  function buildWaMsg(cartItems) {
+    const total = cartItems.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+    let lines = cartItems.map(i => {
+      const qty = i.qty || 1;
+      const subtotal = ((i.price || 0) * qty).toFixed(2);
+      return `• *${i.name}*${i.size ? ' — Talla ' + i.size : ''}${qty > 1 ? ' x' + qty : ''} → S/ ${subtotal}`;
+    }).join('
+');
+    const msg =
+      `Hola D'Zoe Perú 💜 ¡Me quedé con ganas de comprar!
+
+` +
+      `Tenía estos productos en mi carrito:
+${lines}
+
+` +
+      `*Total: S/ ${total.toFixed(2)}*
+
+` +
+      `¿Me pueden ayudar a confirmar el pedido? 🛍️`;
+    return encodeURIComponent(msg);
+  }
+
+  /* ── Renderizar items dentro del toast ── */
+  function renderToastItems(cartItems) {
+    const container = document.getElementById('abandonedToastItems');
+    const totalEl   = document.getElementById('abandonedToastTotal');
+    if (!container) return;
+    const total = cartItems.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+    container.innerHTML = cartItems.slice(0, 3).map(i => `
+      <div class="abandoned-toast-item">
+        ${i.img ? `<img src="${i.img}" alt="${i.name}" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="abandoned-toast-item-info">
+          <div class="abandoned-toast-item-name">${i.name}</div>
+          <div class="abandoned-toast-item-detail">${i.size ? 'Talla ' + i.size + ' · ' : ''}S/ ${((i.price||0)*(i.qty||1)).toFixed(2)}</div>
+        </div>
+      </div>`).join('') + (cartItems.length > 3 ? `<div style="font-size:10.5px;color:var(--text-soft);text-align:center;padding:2px 0;font-weight:600;">+${cartItems.length - 3} producto${cartItems.length-3>1?'s':''} más</div>` : '');
+    if (totalEl) totalEl.textContent = `S/ ${total.toFixed(2)}`;
+  }
+
+  /* ── Mostrar toast ── */
+  function showAbandonedToast() {
+    try {
+      const cartItems = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (!cartItems.length) return;
+
+      // No molestar si acaba de cerrar el toast (snooze)
+      const dismissed = parseInt(localStorage.getItem(LS_DISMISSED) || '0');
+      if (dismissed && Date.now() - dismissed < SNOOZE_MS) return;
+
+      // No mostrar si ya se mostró hace menos de 1h
+      const lastShown = parseInt(localStorage.getItem(LS_LAST_SHOW) || '0');
+      if (lastShown && Date.now() - lastShown < 60 * 60 * 1000) return;
+
+      renderToastItems(cartItems);
+
+      // Configurar botón de WhatsApp
+      const btn = document.getElementById('abandonedToastBtn');
+      if (btn) {
+        btn.onclick = () => {
+          const msg = buildWaMsg(cartItems);
+          window.open(`https://wa.me/${WA_NUM}?text=${msg}`, '_blank');
+          hideToast(true); // ocultar como "comprado" → no volver a mostrar en esta sesión
+          sessionStorage.setItem('dzoe_abandoned_converted', '1');
+        };
+      }
+
+      const toast = document.getElementById('abandonedToast');
+      if (toast) {
+        toast.classList.add('show');
+        localStorage.setItem(LS_LAST_SHOW, Date.now().toString());
+        // Pulso en el botón del carrito
+        const cartBtn = document.querySelector('.hdr-cart-btn');
+        if (cartBtn) {
+          cartBtn.classList.add('cart-pulse-hint');
+          cartBtn.addEventListener('animationend', () => cartBtn.classList.remove('cart-pulse-hint'), { once: true });
+        }
+        // Auto-ocultar después de 25 segundos
+        setTimeout(() => hideToast(false), 25000);
+      }
+    } catch(e) {}
+  }
+
+  /* ── Ocultar toast ── */
+  function hideToast(converted) {
+    const toast = document.getElementById('abandonedToast');
+    if (toast) toast.classList.remove('show');
+    if (!converted) {
+      // Guardamos que cerró sin comprar → snooze
+      localStorage.setItem(LS_DISMISSED, Date.now().toString());
+    } else {
+      // Compró → limpiar timers para esta sesión
+      localStorage.removeItem(LS_DISMISSED);
+    }
+  }
+
+  /* ── Botón cerrar ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('abandonedToastClose')?.addEventListener('click', () => hideToast(false));
+  });
+
+  /* ── Interceptar saveCart para actualizar timestamp ── */
+  const origSaveCart = window.saveCart;
+  if (typeof origSaveCart === 'function') {
+    window.saveCart = function() {
+      origSaveCart.apply(this, arguments);
+      const c = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (c.length > 0) {
+        localStorage.setItem(LS_LAST_ADD, Date.now().toString());
+        resetAbandonTimer();
+      }
+    };
+  }
+
+  /* ── Timer de inactividad ── */
+  function resetAbandonTimer() {
+    clearTimeout(abandonTimer);
+    // Solo activar si no convertido esta sesión
+    if (sessionStorage.getItem('dzoe_abandoned_converted')) return;
+    abandonTimer = setTimeout(() => {
+      // Verificar que siga habiendo carrito y no haya comprado
+      const c = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (c.length > 0) showAbandonedToast();
+    }, DELAY_MS);
+  }
+
+  /* ── Al cargar la página: verificar carrito antiguo ── */
+  window.addEventListener('load', () => {
+    // Si ya convirtió en esta sesión, no molestar
+    if (sessionStorage.getItem('dzoe_abandoned_converted')) return;
+
+    try {
+      const cartItems = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (!cartItems.length) return;
+
+      const lastAdd = parseInt(localStorage.getItem(LS_LAST_ADD) || '0');
+      const age = lastAdd ? Date.now() - lastAdd : 0;
+
+      if (age > RETURN_MS) {
+        // Volvió con un carrito viejo → mostrar después de 8 segundos (no abrir de golpe)
+        setTimeout(showAbandonedToast, 8000);
+      } else if (lastAdd) {
+        // Tiene carrito reciente → continuar el timer desde donde estaba
+        const remaining = Math.max(0, DELAY_MS - age);
+        clearTimeout(abandonTimer);
+        abandonTimer = setTimeout(() => {
+          const c = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+          if (c.length > 0) showAbandonedToast();
+        }, remaining);
+      }
+    } catch(e) {}
+  });
+
+  /* ── Al salir de la página: guardar timestamp ── */
+  window.addEventListener('beforeunload', () => {
+    try {
+      const c = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+      if (c.length > 0 && !sessionStorage.getItem('dzoe_abandoned_converted')) {
+        // Ya está guardado por saveCart, solo aseguramos que el timestamp esté fresco
+        if (!localStorage.getItem(LS_LAST_ADD)) {
+          localStorage.setItem(LS_LAST_ADD, Date.now().toString());
+        }
+      }
+    } catch(e) {}
+  });
+
+  /* ── Detectar inactividad larga (usuario abre otra pestaña, deja la web) ── */
+  let hiddenAt = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      hiddenAt = Date.now();
+    } else {
+      // Volvió a la pestaña — si estuvo > 8 min ausente y tiene carrito, mostrar
+      if (hiddenAt && Date.now() - hiddenAt > 8 * 60 * 1000) {
+        const c = JSON.parse(localStorage.getItem('dzoe_cart') || '[]');
+        if (c.length > 0 && !sessionStorage.getItem('dzoe_abandoned_converted')) {
+          setTimeout(showAbandonedToast, 2000);
+        }
+      }
+      hiddenAt = 0;
+    }
+  });
+
+  /* ── Exponer para debugging desde consola ── */
+  window._dzoeTestAbandonedCart = showAbandonedToast;
+
+})();
 </script>
 
 </body>
