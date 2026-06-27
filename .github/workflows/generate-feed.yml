@@ -1,15 +1,10 @@
 name: Generar feed.xml para Google Merchant
 
 on:
-  # 1) Se regenera automáticamente cada 6 horas
   schedule:
     - cron: '0 */6 * * *'
-
-  # 2) También se regenera cada vez que haces push a main
   push:
     branches: [main]
-
-  # 3) Puedes dispararlo manualmente desde GitHub → Actions → "Run workflow"
   workflow_dispatch:
 
 jobs:
@@ -23,10 +18,10 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Instalar dependencias
-        run: npm install @supabase/supabase-js
+        run: npm install @supabase/supabase-js ws
 
       - name: Generar feed.xml
         env:
@@ -39,6 +34,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add feed.xml
-          # Solo hace commit si feed.xml cambió
           git diff --staged --quiet || git commit -m "chore: regenerar feed.xml [skip ci]"
           git push
