@@ -695,8 +695,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
   <div class="page-content">
 
-    <!-- Stats row (siempre visible arriba) -->
-    <div class="stats-grid" id="global-stats">
+    <!-- Stats row (solo visible en Dashboard) -->
+    <div class="stats-grid" id="global-stats" style="display:none;">
       <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-box"></i></div><h3>Productos</h3><div class="stat-value" id="total-products">0</div><div class="stat-change"><i class="fas fa-boxes-stacked"></i> En inventario</div></div>
       <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-warehouse"></i></div><h3>Stock Total</h3><div class="stat-value" id="total-stock">0</div><div class="stat-change"><i class="fas fa-arrow-up"></i> Unidades</div></div>
       <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-wallet"></i></div><h3>Valor Inventario</h3><div class="stat-value" id="inventory-value">S/0</div></div>
@@ -3840,6 +3840,9 @@ function goToSection(sectionId) {
   document.querySelectorAll('.page-section').forEach(s=>s.style.display='none');
   const sec = document.getElementById(sectionId);
   if (sec) { sec.style.display='block'; }
+  // Mostrar stats globales solo en Dashboard
+  const globalStats = document.getElementById('global-stats');
+  if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
   const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
   const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
