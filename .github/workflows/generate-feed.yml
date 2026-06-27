@@ -1,45 +1,44 @@
-# .github/workflows/generate-feed.yml
-# Regenera feed.xml automáticamente desde Supabase
-#
-# Se ejecuta:
-#   - Cada día a las 8am hora Perú (13:00 UTC)
-#   - Cada vez que haces push a main
-#   - Manualmente desde la pestaña Actions
-
-name: Generar feed.xml
+name: Generar feed.xml para Google Merchant
 
 on:
+  # 1) Se regenera automáticamente cada 6 horas
   schedule:
-    - cron: "0 13 * * *"   # 8:00 AM Perú (UTC-5) todos los días
+    - cron: '0 */6 * * *'
+
+  # 2) También se regenera cada vez que haces push a main
   push:
     branches: [main]
-    paths:
-      - "generate-feed.js" # también si editas el script
-  workflow_dispatch:        # botón manual en GitHub Actions
+
+  # 3) Puedes dispararlo manualmente desde GitHub → Actions → "Run workflow"
+  workflow_dispatch:
 
 jobs:
   build-feed:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repositorio
+      - name: Checkout del repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install @supabase/supabase-js
 
       - name: Generar feed.xml
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_ANON: ${{ secrets.SUPABASE_ANON }}
         run: node generate-feed.js
 
-      - name: Subir feed.xml al repositorio
+      - name: Hacer commit y push del feed.xml actualizado
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add feed.xml
-          git diff --staged --quiet || git commit -m "🤖 Actualizar feed.xml [$(date '+%Y-%m-%d')]"
+          # Solo hace commit si feed.xml cambió
+          git diff --staged --quiet || git commit -m "chore: regenerar feed.xml [skip ci]"
           git push
