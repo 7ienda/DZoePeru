@@ -673,6 +673,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart"></i><span>🔍 SEO Interno</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
+    <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="padding-left:32px;font-size:12px;opacity:.85;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
     <button class="menu-btn" data-section="integraciones-section"><i class="fas fa-plug"></i><span>🔌 Integraciones</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
   </div>
@@ -1014,41 +1015,123 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== AGREGAR / EDITAR PRODUCTO ====== -->
     <div id="add-product-section" class="page-section" style="display:none;">
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="form-section-title">Agregar producto</span></div>
-          <button class="btn btn-ghost btn-sm" onclick="clearForm()"><i class="fas fa-broom"></i> Limpiar</button>
-        </div>
-        <div class="section-body">
-          <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear"></div>
-          <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea></div>
-          <div class="form-grid" style="margin-top:16px;">
-            <div class="form-group">
-              <label>URLs de imágenes</label>
-              <div class="image-url-box">
-                <div id="image-urls-container"></div>
-                <button type="button" class="add-image-btn" onclick="addImageInput()"><i class="fas fa-plus"></i> Agregar imagen</button>
+
+      <!-- TABS -->
+      <style>
+      .add-tabs{display:flex;gap:10px;margin-bottom:20px;}
+      .add-tab{display:flex;align-items:center;gap:8px;padding:10px 22px;border-radius:30px;border:2px solid var(--line2);background:var(--card);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;transition:all .2s;}
+      .add-tab.active{background:var(--rose);border-color:var(--rose);color:white;}
+      .add-tab:not(.active):hover{border-color:var(--rose);color:var(--rose);}
+      .add-tab-upcoming.active{background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;}
+      .add-tab-upcoming:not(.active):hover{border-color:#7c3aed;color:#7c3aed;}
+      </style>
+
+      <div class="add-tabs">
+        <button class="add-tab active" id="tab-product-btn" onclick="switchAddTab('product')">
+          <i class="fas fa-plus-circle"></i> Agregar Producto
+        </button>
+        <button class="add-tab add-tab-upcoming" id="tab-upcoming-btn" onclick="switchAddTab('upcoming')">
+          <i class="fas fa-clock"></i> Agregar Próximo Ingreso
+        </button>
+      </div>
+
+      <!-- FORM PRODUCTO NORMAL -->
+      <div id="tab-product-form">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="form-section-title">Agregar producto</span></div>
+            <button class="btn btn-ghost btn-sm" onclick="clearForm()"><i class="fas fa-broom"></i> Limpiar</button>
+          </div>
+          <div class="section-body">
+            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear"></div>
+            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea></div>
+            <div class="form-grid" style="margin-top:16px;">
+              <div class="form-group">
+                <label>URLs de imágenes</label>
+                <div class="image-url-box">
+                  <div id="image-urls-container"></div>
+                  <button type="button" class="add-image-btn" onclick="addImageInput()"><i class="fas fa-plus"></i> Agregar imagen</button>
+                </div>
+                <div id="preview-images" class="preview-images"></div>
               </div>
-              <div id="preview-images" class="preview-images"></div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="featured-toggle" onclick="toggleFeatured()"><div class="toggle"></div><span>Destacar producto</span></div></div>
+                <div class="form-group"><label>Estado</label><div class="status-pills"><div class="status-pill active-pill selected" data-status="active">Activo</div><div class="status-pill inactive-pill" data-status="inactive">Inactivo</div></div></div>
+                <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
+              </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:14px;">
-              <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="featured-toggle" onclick="toggleFeatured()"><div class="toggle"></div><span>Destacar producto</span></div></div>
-              <div class="form-group"><label>Estado</label><div class="status-pills"><div class="status-pill active-pill selected" data-status="active">Activo</div><div class="status-pill inactive-pill" data-status="inactive">Inactivo</div></div></div>
-              <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
+            <div class="form-divider">Tallas — Precio, Costo y Stock</div>
+            <div class="sizes-section">
+              <div class="size-header"><span>Talla</span><span>Precio venta</span><span>Costo compra</span><span>Stock</span><span></span></div>
+              <div id="sizes-container"></div>
+              <button class="add-size-btn" onclick="addSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
-          </div>
-          <div class="form-divider">Tallas — Precio, Costo y Stock</div>
-          <div class="sizes-section">
-            <div class="size-header"><span>Talla</span><span>Precio venta</span><span>Costo compra</span><span>Stock</span><span></span></div>
-            <div id="sizes-container"></div>
-            <button class="add-size-btn" onclick="addSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
-          </div>
-          <div style="display:flex;gap:12px;margin-top:24px;">
-            <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-floppy-disk"></i> <span id="save-btn-text">Guardar producto</span></button>
-            <button class="btn btn-ghost" onclick="clearForm()">Cancelar</button>
+            <div style="display:flex;gap:12px;margin-top:24px;">
+              <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-floppy-disk"></i> <span id="save-btn-text">Guardar producto</span></button>
+              <button class="btn btn-ghost" onclick="clearForm()">Cancelar</button>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- FORM PRÓXIMO INGRESO -->
+      <div id="tab-upcoming-form" style="display:none;">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-clock" style="color:#7c3aed"></i> <span id="upcoming-form-title">Agregar Próximo Ingreso</span></div>
+            <button class="btn btn-ghost btn-sm" onclick="clearUpcomingForm()"><i class="fas fa-broom"></i> Limpiar</button>
+          </div>
+          <div class="section-body">
+            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="upcoming-name" placeholder="Ej: Conjunto Primavera 2025"></div>
+            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="upcoming-description" rows="2" placeholder="Descripción breve..."></textarea></div>
+
+            <div class="form-grid" style="margin-top:16px;">
+              <div class="form-group">
+                <label>URLs de imágenes</label>
+                <div class="image-url-box">
+                  <div id="upcoming-image-urls-container"></div>
+                  <button type="button" class="add-image-btn" onclick="addUpcomingImageInput()"><i class="fas fa-plus"></i> Agregar imagen</button>
+                </div>
+                <div id="upcoming-preview-images" class="preview-images"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div class="form-group">
+                  <label>📅 Fecha estimada de ingreso *</label>
+                  <input type="datetime-local" id="upcoming-date" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line2);background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;">
+                </div>
+                <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="upcoming-featured-toggle" onclick="toggleUpcomingFeatured()"><div class="toggle"></div><span>Destacar en próximos</span></div></div>
+                <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
+              </div>
+            </div>
+
+            <div class="form-divider">Tallas — Precio referencial y Costo</div>
+            <div class="sizes-section">
+              <div class="size-header"><span>Talla</span><span>Precio ref.</span><span>Costo compra</span><span>Stock est.</span><span></span></div>
+              <div id="upcoming-sizes-container"></div>
+              <button class="add-size-btn" onclick="addUpcomingSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:24px;">
+              <button class="btn btn-primary" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="saveUpcomingProduct()">
+                <i class="fas fa-floppy-disk"></i> <span id="upcoming-save-btn-text">Guardar Próximo Ingreso</span>
+              </button>
+              <button class="btn btn-ghost" onclick="clearUpcomingForm()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de próximos ingresos existentes -->
+        <div class="section" style="margin-top:20px;">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-list" style="color:#7c3aed"></i> Próximos Ingresos guardados</div>
+            <button class="btn btn-ghost btn-sm" onclick="loadUpcomingList()"><i class="fas fa-rotate"></i> Actualizar</button>
+          </div>
+          <div class="section-body">
+            <div id="upcoming-list-container" style="display:grid;gap:10px;"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- ====== CATEGORÍAS ====== -->
@@ -3637,8 +3720,265 @@ function clearForm() {
 }
 
 // ============================================
-// CATEGORIES
+// TABS — Agregar Producto vs Próximo Ingreso
 // ============================================
+function switchAddTab(tab) {
+  const isProduct = tab === 'product';
+  document.getElementById('tab-product-btn').classList.toggle('active', isProduct);
+  document.getElementById('tab-upcoming-btn').classList.toggle('active', !isProduct);
+  document.getElementById('tab-product-form').style.display = isProduct ? '' : 'none';
+  document.getElementById('tab-upcoming-form').style.display = isProduct ? 'none' : '';
+  if (!isProduct) {
+    loadUpcomingList();
+    populateUpcomingCategorySelect();
+  }
+}
+
+// ============================================
+// PRÓXIMOS INGRESOS — Admin (mi-cuenta)
+// ============================================
+let upcomingImages = [];
+let upcomingSizes = [];
+let upcomingCategories = [];
+let upcomingFeatured = false;
+let editingUpcomingId = null;
+
+function clearUpcomingForm() {
+  editingUpcomingId = null;
+  upcomingImages = []; upcomingSizes = []; upcomingCategories = []; upcomingFeatured = false;
+  ['upcoming-name','upcoming-description','upcoming-date'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('upcoming-featured-toggle').className = 'toggle-group';
+  document.getElementById('upcoming-selected-categories').innerHTML = '';
+  document.getElementById('upcoming-image-urls-container').innerHTML = '';
+  document.getElementById('upcoming-preview-images').innerHTML = '';
+  document.getElementById('upcoming-sizes-container').innerHTML = '<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar talla"</div>';
+  document.getElementById('upcoming-form-title').textContent = 'Agregar Próximo Ingreso';
+  document.getElementById('upcoming-save-btn-text').textContent = 'Guardar Próximo Ingreso';
+  addUpcomingImageInput();
+}
+
+function toggleUpcomingFeatured() {
+  upcomingFeatured = !upcomingFeatured;
+  document.getElementById('upcoming-featured-toggle').className = 'toggle-group' + (upcomingFeatured ? ' on' : '');
+}
+
+function addUpcomingImageInput(prefillUrl) {
+  const container = document.getElementById('upcoming-image-urls-container');
+  const idx = container.children.length;
+  const wrap = document.createElement('div');
+  wrap.className = 'image-url-row';
+  wrap.innerHTML = `<input type="text" placeholder="https://..." value="${prefillUrl||''}" oninput="syncUpcomingImages()" style="flex:1">
+    <button type="button" class="remove-image-btn" onclick="this.parentElement.remove();syncUpcomingImages();renderUpcomingPreview()"><i class="fas fa-times"></i></button>`;
+  container.appendChild(wrap);
+  if (prefillUrl) syncUpcomingImages();
+}
+
+function syncUpcomingImages() {
+  upcomingImages = [...document.getElementById('upcoming-image-urls-container').querySelectorAll('input')]
+    .map(i => i.value.trim()).filter(Boolean);
+  renderUpcomingPreview();
+}
+
+function renderUpcomingPreview() {
+  const el = document.getElementById('upcoming-preview-images');
+  if (!el) return;
+  el.innerHTML = upcomingImages.map(url =>
+    `<img src="${url}" onerror="this.style.display='none'" style="width:72px;height:72px;object-fit:cover;border-radius:10px;border:1px solid var(--line2);">`
+  ).join('');
+}
+
+function addUpcomingSizeRow(sz) {
+  const c = document.getElementById('upcoming-sizes-container');
+  if (c.querySelector('.size-empty-msg')) c.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'size-row';
+  row.innerHTML = `
+    <input type="text" placeholder="6M" value="${sz?.size||''}" class="up-sz-size" oninput="syncUpcomingSizes()">
+    <input type="number" placeholder="0" value="${sz?.price||''}" class="up-sz-price" oninput="syncUpcomingSizes()">
+    <input type="number" placeholder="0" value="${sz?.cost||''}" class="up-sz-cost" oninput="syncUpcomingSizes()">
+    <input type="number" placeholder="0" value="${sz?.stock||''}" class="up-sz-stock" oninput="syncUpcomingSizes()">
+    <button class="remove-size-btn" onclick="this.parentElement.remove();syncUpcomingSizes()"><i class="fas fa-times"></i></button>`;
+  c.appendChild(row);
+}
+
+function syncUpcomingSizes() {
+  upcomingSizes = [...document.getElementById('upcoming-sizes-container').querySelectorAll('.size-row')].map(row => ({
+    size:  row.querySelector('.up-sz-size')?.value?.trim() || '',
+    price: parseFloat(row.querySelector('.up-sz-price')?.value) || 0,
+    cost:  parseFloat(row.querySelector('.up-sz-cost')?.value)  || 0,
+    stock: parseInt(row.querySelector('.up-sz-stock')?.value)   || 0,
+  })).filter(s => s.size);
+}
+
+function populateUpcomingCategorySelect() {
+  const sel = document.getElementById('upcoming-category-select');
+  if (!sel) return;
+  sel.innerHTML = (categories||[]).map(c => `<option value="${c.name||c}">${c.emoji||''} ${c.name||c}</option>`).join('');
+}
+
+function addUpcomingCategory() {
+  const sel = document.getElementById('upcoming-category-select');
+  const val = sel?.value; if (!val || upcomingCategories.includes(val)) return;
+  upcomingCategories.push(val);
+  renderUpcomingSelectedCats();
+}
+
+function removeUpcomingCategory(cat) {
+  upcomingCategories = upcomingCategories.filter(c => c !== cat);
+  renderUpcomingSelectedCats();
+}
+
+function renderUpcomingSelectedCats() {
+  const el = document.getElementById('upcoming-selected-categories');
+  if (!el) return;
+  el.innerHTML = upcomingCategories.map(c =>
+    `<span class="tag-chip">${c} <button onclick="removeUpcomingCategory('${c}')">×</button></span>`
+  ).join('');
+}
+
+async function saveUpcomingProduct() {
+  const name = document.getElementById('upcoming-name').value.trim();
+  const dateVal = document.getElementById('upcoming-date').value;
+  if (!name) { showAlert('Nombre requerido', 'error'); return; }
+  if (!dateVal) { showAlert('Fecha estimada requerida', 'error'); return; }
+
+  syncUpcomingImages();
+  syncUpcomingSizes();
+
+  const data = {
+    id: editingUpcomingId || Date.now(),
+    name,
+    description: document.getElementById('upcoming-description').value.trim(),
+    images: upcomingImages,
+    image: upcomingImages[0] || '',
+    featured: upcomingFeatured,
+    categories: [...upcomingCategories],
+    sizes: upcomingSizes,
+    estimated_date: new Date(dateVal).toISOString(),
+    created_at: new Date().toISOString()
+  };
+
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('upcoming_products').upsert(data, { onConflict: 'id' });
+    if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
+  }
+
+  showAlert(editingUpcomingId ? 'Próximo Ingreso actualizado ✅' : 'Próximo Ingreso guardado ✅');
+  clearUpcomingForm();
+  loadUpcomingList();
+}
+
+async function loadUpcomingList() {
+  const container = document.getElementById('upcoming-list-container');
+  if (!container) return;
+  container.innerHTML = '<div style="color:var(--muted);padding:12px;">Cargando...</div>';
+
+  if (!supabaseClient) { container.innerHTML = '<div style="color:var(--muted);">Sin conexión</div>'; return; }
+
+  const { data, error } = await supabaseClient
+    .from('upcoming_products')
+    .select('*')
+    .order('estimated_date', { ascending: true });
+
+  if (error || !data?.length) {
+    container.innerHTML = '<div style="color:var(--muted);padding:16px;text-align:center;">No hay próximos ingresos guardados.</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(up => {
+    const date = new Date(up.estimated_date);
+    const dateStr = date.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const isArrived = Date.now() >= date.getTime();
+    const statusBadge = isArrived
+      ? `<span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">✅ Ya llegó</span>`
+      : `<span style="background:#ede9fe;color:#7c3aed;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">⏳ Próximamente</span>`;
+    const img = (up.images||[])[0] || up.image || '';
+    return `<div style="display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 16px;">
+      ${img ? `<img src="${img}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : '<div style="width:56px;height:56px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">📦</div>'}
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:800;font-size:14px;color:var(--text);">${up.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;"><i class="fas fa-calendar" style="color:#7c3aed;"></i> ${dateStr}</div>
+        ${statusBadge}
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        ${isArrived ? `<button class="btn btn-primary btn-sm" style="background:#16a34a;border-color:#16a34a;" onclick="promoteUpcomingAdmin('${up.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="editUpcoming('${up.id}')"><i class="fas fa-pen"></i></button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteUpcoming('${up.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function editUpcoming(id) {
+  if (!supabaseClient) return;
+  const { data } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
+  if (!data) return;
+
+  editingUpcomingId = id;
+  document.getElementById('upcoming-name').value = data.name || '';
+  document.getElementById('upcoming-description').value = data.description || '';
+  if (data.estimated_date) {
+    // Format for datetime-local input
+    const d = new Date(data.estimated_date);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('upcoming-date').value =
+      `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  upcomingFeatured = data.featured || false;
+  document.getElementById('upcoming-featured-toggle').className = 'toggle-group' + (upcomingFeatured ? ' on' : '');
+  upcomingCategories = [...(data.categories || [])];
+  renderUpcomingSelectedCats();
+  upcomingImages = [...(data.images || [])];
+  document.getElementById('upcoming-image-urls-container').innerHTML = '';
+  upcomingImages.forEach(url => addUpcomingImageInput(url));
+  renderUpcomingPreview();
+  document.getElementById('upcoming-sizes-container').innerHTML = '';
+  (data.sizes || []).forEach(sz => addUpcomingSizeRow(sz));
+  document.getElementById('upcoming-form-title').textContent = 'Editar Próximo Ingreso';
+  document.getElementById('upcoming-save-btn-text').textContent = 'Actualizar';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteUpcoming(id) {
+  if (!confirm('¿Eliminar este próximo ingreso?')) return;
+  if (!supabaseClient) return;
+  const { error } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
+  if (error) { showAlert('Error al eliminar', 'error'); return; }
+  showAlert('Eliminado ✅');
+  loadUpcomingList();
+}
+
+async function promoteUpcomingAdmin(id) {
+  if (!confirm('¿Pasar a la tienda como producto disponible?')) return;
+  if (!supabaseClient) return;
+  const { data: up } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
+  if (!up) return;
+
+  const productData = {
+    id: Date.now(),
+    name: up.name,
+    description: up.description || '',
+    images: up.images || [],
+    image: (up.images||[])[0] || up.image || '',
+    featured: up.featured || false,
+    status: 'active',
+    categories: up.categories || [],
+    sizes: (up.sizes||[]).map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock||0 })),
+    is_new: true,
+    created_at: new Date().toISOString()
+  };
+
+  const { error: ie } = await supabaseClient.from('products').insert([productData]);
+  if (ie) { showAlert('Error: ' + ie.message, 'error'); return; }
+  const { error: de } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
+  if (de) { showAlert('Error al limpiar upcoming: ' + de.message, 'error'); return; }
+
+  showAlert('✅ Producto creado en la tienda. Ve a Inventario para ajustar stock.');
+  loadUpcomingList();
+  if (typeof loadAllData === 'function') loadAllData();
+}
 async function addCategory() {
   const name = document.getElementById('new-category-name').value.trim();
   if (!name) { showAlert('Nombre requerido','error'); return; }
@@ -4383,6 +4723,17 @@ function goToSection(sectionId) {
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') renderSuppliersSection();
+  if (sectionId === 'add-product-section') {
+    // Asegurar que el tab activo esté visible
+    const prodForm = document.getElementById('tab-product-form');
+    const upForm   = document.getElementById('tab-upcoming-form');
+    if (prodForm && prodForm.style.display === 'none' && upForm && upForm.style.display !== 'none') {
+      // Tab upcoming ya activo — ok
+    } else {
+      // Default: tab producto
+      switchAddTab('product');
+    }
+  }
   closeMobileSidebar();
   window.scrollTo({top:0,behavior:'smooth'});
 }
