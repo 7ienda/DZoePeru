@@ -6926,35 +6926,65 @@ function updateRpPreview() {
   if (prev) { prev.textContent = (icon+' '+name).trim().toUpperCase(); prev.style.background = rpColor; }
 }
 
-function saveRibbonPro() {
+
+// ── Caché en memoria de listones PRO desde Supabase ──
+window._ribbonsProCache = null;
+async function _loadRibbonsProCache() {
+  if (window._ribbonsProCache !== null) return window._ribbonsProCache;
+  if (!supabaseClient) { window._ribbonsProCache = []; return []; }
+  try {
+    const { data, error } = await supabaseClient
+      .from('ribbons_pro')
+      .select('*')
+      .eq('active', true)
+      .order('priority', { ascending: true });
+    if (error) throw error;
+    // Normalizar campos para compatibilidad (auto_rule → autoRule, etc.)
+    window._ribbonsProCache = (data || []).map(r => ({
+      ...r,
+      autoRule: r.auto_rule,
+      autoParam: r.auto_param,
+      start: r.start_date,
+      end: r.end_date
+    }));
+    // Mantener localStorage sincronizado para funciones legacy
+    localStorage.setItem('dzoe_ribbons_pro', JSON.stringify(window._ribbonsProCache));
+  } catch(e) {
+    // Fallback a localStorage si falla Supabase
+    window._ribbonsProCache = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  }
+  return window._ribbonsProCache;
+}
+
+async function saveRibbonPro() {
   const name = document.getElementById('rp-name')?.value.trim();
   if (!name) { showAlert('Ingresa un nombre para el listón','error'); return; }
   const mode = document.getElementById('rp-mode')?.value || 'manual';
-  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
   const newRibbon = {
-    id: Date.now(), name,
+    id: String(Date.now()), name,
     icon: document.getElementById('rp-icon')?.value || '',
     color: rpColor,
-    priority: document.getElementById('rp-priority')?.value || '2',
+    priority: parseInt(document.getElementById('rp-priority')?.value) || 2,
     mode,
-    start: document.getElementById('rp-start')?.value || '',
-    end: document.getElementById('rp-end')?.value || '',
-    created: new Date().toISOString()
+    start_date: document.getElementById('rp-start')?.value || null,
+    end_date: document.getElementById('rp-end')?.value || null,
+    active: true
   };
   if (mode === 'auto') {
-    newRibbon.autoRule = document.getElementById('rp-auto-rule')?.value || 'new_arrivals';
-    newRibbon.autoParam = document.getElementById('rp-auto-param')?.value || '5';
-    newRibbon.autoFreq = document.getElementById('rp-auto-freq')?.value || 'realtime';
+    newRibbon.auto_rule = document.getElementById('rp-auto-rule')?.value || 'new_arrivals';
+    newRibbon.auto_param = document.getElementById('rp-auto-param')?.value || '5';
   }
-  ribbons.push(newRibbon);
-  localStorage.setItem('dzoe_ribbons_pro', JSON.stringify(ribbons));
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('ribbons_pro').insert([newRibbon]);
+    if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
+  }
+  // Actualizar caché local
+  window._ribbonsProCache = null;
+  await _loadRibbonsProCache();
 
-  // Si es automático, aplicar de inmediato
   if (mode === 'auto') applyAutoRibbonsPro();
-
   showAlert('✅ Listón ' + (mode==='auto'?'automático':'manual') + ' guardado');
   document.getElementById('ribbon-pro-form').style.display = 'none';
-  // Reset form
   ['rp-name','rp-icon','rp-start','rp-end','rp-auto-param'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('rp-mode').value='manual';
   toggleRpAutoConfig();
@@ -7032,11 +7062,12 @@ function getEffectiveRibbonPro(p) {
   return null;
 }
 
-function renderRibbonsPro() {
+async function renderRibbonsPro() {
+  await _loadRibbonsProCache();
   applyAutoRibbonsPro();
   const list = document.getElementById('ribbons-pro-list');
   if (!list) return;
-  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const ribbons = window._ribbonsProCache || [];
   const prods = window._allProducts || products || [];
 
   // KPIs
@@ -7112,7 +7143,7 @@ function renderRpAutoProducts() {
   const el = document.getElementById('rp-auto-products-list');
   if (!el) return;
   const prods = window._allProducts || products || [];
-  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const ribbons = window._ribbonsProCache || [];
   const withAuto = prods.filter(p=>p._ribbonAutoSource);
   if (!ribbons.filter(r=>r.mode==='auto').length) {
     el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;">No hay listones automáticos configurados. Crea uno con modo "Automático".</div>';
@@ -7157,8 +7188,8 @@ async function assignRibbonPro() {
   if (supabaseClient) await supabaseClient.from('products').update({ribbon: rid ? parseInt(rid) : null}).eq('id', pid);
   renderRibbonsPro();
   filterInventory && filterInventory();
-  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
-  const r = ribbons.find(x=>x.id===parseInt(rid));
+  const ribbons = window._ribbonsProCache || [];
+  const r = ribbons.find(x=>String(x.id)===String(rid));
   showAlert(r ? `✅ Listón "${r.name}" asignado a ${p.name}` : '✅ Listón quitado');
 }
 
@@ -7173,14 +7204,16 @@ async function removeRibbonProFromProduct(pid) {
   showAlert('Listón quitado');
 }
 
-function deleteRibbonPro(id) {
+async function deleteRibbonPro(id) {
   if (!confirm('¿Eliminar este listón?')) return;
-  let ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
-  ribbons = ribbons.filter(r=>r.id!==id);
-  localStorage.setItem('dzoe_ribbons_pro', JSON.stringify(ribbons));
-  // Quitar de productos
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('ribbons_pro').delete().eq('id', String(id));
+    if (error) { showAlert('Error: ' + error.message, 'error'); return; }
+  }
+  window._ribbonsProCache = null;
+  await _loadRibbonsProCache();
   const prods = window._allProducts || products || [];
-  prods.forEach(p=>{ if(p.ribbon_pro===id) p.ribbon_pro=null; });
+  prods.forEach(p=>{ if(String(p.ribbon_pro)===String(id)) p.ribbon_pro=null; });
   renderRibbonsPro();
   showAlert('Listón eliminado');
 }
