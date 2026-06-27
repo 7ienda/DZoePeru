@@ -7602,6 +7602,8 @@ let wishlist = JSON.parse(localStorage.getItem('dzoeWishlist') || '[]');
 let currentFilter = 'all';
 let currentSearch = '';
 let currentAgeFilter = null;
+let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
+let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 12;
 let selectedSizes = {};
@@ -7648,7 +7650,7 @@ async function loadProductsFromSupabase() {
   try {
     const { data, error } = await supabaseClient
       .from('products')
-      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,offer_price,offer_label,ribbon,created_at')
+      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,price,stock,slug,brand,status,created_at')
       .order('created_at', { ascending: false });
     if (error) { console.error('❌ Error Supabase:', error.message); return cached || []; }
     console.log('✅ Productos:', data?.length);
@@ -7701,7 +7703,7 @@ function paintHighlights(tab) {
     filtered = products.filter(p => p.is_new).slice(0, 4);
     if (!filtered.length) filtered = products.slice(0, 4);
   } else if (tab === 'oferta') {
-    filtered = products.filter(p => p.on_sale || p.offer_price).slice(0, 4);
+    filtered = products.filter(p => p.on_sale).slice(0, 4);
     if (!filtered.length) filtered = products.slice(0, 4);
   } else {
     filtered = products.slice(0, 4);
@@ -8800,8 +8802,7 @@ function clearAgeFilter() {
 // ═══════════════════════════════════════════════════════
 //  FILTRO POR GRUPO DE EDAD (bebe / ninos / mayores)
 // ═══════════════════════════════════════════════════════
-let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
-let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
+// currentAgeGroup y currentAgeFilterSet declarados en ESTADO GLOBAL (arriba)
 
 const AGE_GROUP_SIZES = {
   bebe:    ['Recién nacido','3-6 meses','6-9 meses','6-12 meses','9-12 meses','9-18 meses','12-18 meses','12-24 meses','18-24 meses','1 años','1-2 años','2 años'],
@@ -9493,7 +9494,7 @@ async function loadWishlistFromSupabase() {
   if (!supabaseClient) return;
   try {
     const sid = getWishlistSessionId();
-    const { data } = await supabaseClient.from('wishlists').select('items').eq('session_id', sid).single();
+    const { data } = await supabaseClient.from('wishlists').select('items').eq('session_id', sid).maybeSingle();
     if (data?.items?.length) {
       wishlist = data.items;
       localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist));
