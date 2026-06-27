@@ -615,10 +615,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       <i class="fas fa-exclamation-circle"></i> <span id="login-error-msg">Usuario o contraseña incorrectos</span>
     </div>
     <div id="login-card-main">
-    <label class="login-label">Email de administrador</label>
+    <label class="login-label">Usuario</label>
     <div class="login-input-wrap">
-      <input type="email" class="login-input" id="login-user" placeholder="admin@dzoeperu.com" autocomplete="username">
-      <i class="fas fa-envelope login-input-icon"></i>
+      <input type="text" class="login-input" id="login-user" placeholder="dzoe_admin" autocomplete="username">
+      <i class="fas fa-user login-input-icon"></i>
     </div>
     <label class="login-label">Contraseña</label>
     <div class="login-input-wrap">
@@ -2388,9 +2388,10 @@ const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClie
 console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
 
 // ============================================
-// LOGIN — Supabase Auth Real (signInWithPassword + OTP 2FA)
+// LOGIN — Local (con respaldo hasta configurar Supabase Auth)
 // ============================================
-let pendingLoginEmail = null;
+const DEFAULT_USER = 'dzoe_admin';
+const DEFAULT_PASS = 'dzoe2024';
 
 function togglePassVisible() {
   const inp = document.getElementById('login-pass');
@@ -2399,66 +2400,22 @@ function togglePassVisible() {
   else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-user').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const btn   = document.getElementById('login-btn-main');
-
-  if (!email || !pass) {
-    showLoginError('Completa todos los campos');
-    return;
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
+  const validUser = stored.user || DEFAULT_USER;
+  const validPass = stored.pass || DEFAULT_PASS;
+  if (u === validUser && p === validPass) {
+    localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
+    enterPanel(u);
+  } else {
+    showLoginError('Usuario o contraseña incorrectos');
   }
-  if (!supabaseClient) { showLoginError('Error de conexión con Supabase'); return; }
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ingresando...';
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
-
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel';
-
-  if (error) {
-    showLoginError('Credenciales incorrectas. Verifica tu email y contraseña.');
-    return;
-  }
-
-  // Solicitar OTP por email para 2FA
-  pendingLoginEmail = email;
-  await supabaseClient.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
-  document.getElementById('login-card-main').style.display = 'none';
-  document.getElementById('otp-step').style.display = 'block';
-  showAlert('📧 Código enviado a ' + email, 'info');
-}
-
-async function verifyOtp() {
-  const code = document.getElementById('otp-code').value.trim();
-  if (!code || code.length < 6) { showLoginError('Ingresa el código de 6 dígitos'); return; }
-  if (!pendingLoginEmail) { showLoginError('Sesión expirada, recarga la página'); return; }
-
-  const { data, error } = await supabaseClient.auth.verifyOtp({
-    email: pendingLoginEmail,
-    token: code,
-    type: 'email'
-  });
-
-  if (error) {
-    showLoginError('Código incorrecto o expirado');
-    return;
-  }
-
-  // Éxito — acceso al panel
-  enterPanel(data.user?.email || pendingLoginEmail);
-}
-
-async function resendOtp() {
-  if (!pendingLoginEmail) return;
-  await supabaseClient.auth.signInWithOtp({ email: pendingLoginEmail, options: { shouldCreateUser: false } });
-  showAlert('📧 Código reenviado', 'info');
 }
 
 function enterPanel(userEmail) {
-  document.getElementById('session-user').textContent = userEmail?.split('@')[0] || 'Admin';
+  document.getElementById('session-user').textContent = userEmail || 'Admin';
   const screen = document.getElementById('login-screen');
   screen.classList.add('hidden');
   document.getElementById('main-app').style.display = 'block';
@@ -2475,19 +2432,19 @@ function showLoginError(msg) {
   setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
 }
 
-async function checkSession() {
-  if (!supabaseClient) return;
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session) {
-    enterPanel(session.user?.email);
+function checkSession() {
+  const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
+  if (session.ts && (Date.now() - session.ts < 8 * 60 * 60 * 1000)) {
+    enterPanel(session.user || 'Admin');
   }
 }
 
-supabaseClient?.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT') {
-    window.location.reload();
+async function logout() {
+  if (confirm('¿Cerrar sesión?')) {
+    localStorage.removeItem('dzoe_session');
+    location.reload();
   }
-});
+}
 
 
 // ============================================
