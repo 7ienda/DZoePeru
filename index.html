@@ -4358,6 +4358,12 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
         <span class="nav-badge" aria-label="Función lista de deseos">Lista</span>
       </a>
 
+      <!-- === PRÓXIMOS INGRESOS === -->
+      <a href="#proximos-ingresos" class="nav-link" onclick="closeMobileMenu();document.getElementById('proximos-ingresos')?.scrollIntoView({behavior:'smooth'});return false;" itemprop="url">
+        <i class="fas fa-clock" aria-hidden="true" style="color:#7c3aed;"></i>
+        <span itemprop="name">Próximos</span>
+      </a>
+
       <!-- === BLOG === -->
       <a href="blog.html" class="nav-link" onclick="closeMobileMenu()"
          target="_blank" rel="noopener noreferrer" itemprop="url">
@@ -7606,9 +7612,10 @@ const ALL_SIZES = ["Recién nacido","3-6 meses","6-9 meses","6-12 meses","9-12 m
 // ═══════════════════════════════════════════════════════
 //  CACHÉ LOCAL — evita recargar en cada visita
 // ═══════════════════════════════════════════════════════
-const CACHE_KEY     = 'dzoe_products_cache';
-const CACHE_CAT_KEY = 'dzoe_categories_cache';
-const CACHE_TTL     = 5 * 60 * 1000; // 5 minutos
+const CACHE_KEY      = 'dzoe_products_cache';
+const CACHE_CAT_KEY  = 'dzoe_categories_cache';
+const CACHE_UP_KEY   = 'dzoe_upcoming_cache';
+const CACHE_TTL      = 5 * 60 * 1000; // 5 minutos
 
 function getCachedData(key) {
   try {
@@ -7641,7 +7648,7 @@ async function loadProductsFromSupabase() {
   try {
     const { data, error } = await supabaseClient
       .from('products')
-      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,created_at')
+      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,offer_price,offer_label,ribbon,created_at')
       .order('created_at', { ascending: false });
     if (error) { console.error('❌ Error Supabase:', error.message); return cached || []; }
     console.log('✅ Productos:', data?.length);
@@ -7739,6 +7746,9 @@ async function loadAllData() {
   // Estadísticas en segundo plano sin bloquear la UI
   setTimeout(loadTrustStats, 1500);
 
+  // Sincronizar wishlist desde Supabase (en background)
+  setTimeout(loadWishlistFromSupabase, 800);
+
   // Cargar próximos ingresos
   loadUpcomingProducts();
 }
@@ -7750,6 +7760,10 @@ let upcomingProducts = [];
 let countdownIntervals = {};
 
 async function loadUpcomingProducts() {
+  // Mostrar caché inmediatamente si existe
+  const cached = getCachedData(CACHE_UP_KEY);
+  if (cached) { upcomingProducts = cached; renderUpcomingSection(); }
+
   if (!supabaseClient) return;
   try {
     const { data, error } = await supabaseClient
@@ -7758,6 +7772,7 @@ async function loadUpcomingProducts() {
       .order('estimated_date', { ascending: true });
     if (error) { console.error('❌ upcoming_products:', error.message); return; }
     upcomingProducts = data || [];
+    if (upcomingProducts.length) setCachedData(CACHE_UP_KEY, upcomingProducts);
     renderUpcomingSection();
   } catch(e) { console.error('❌ Error upcoming:', e); }
 }
@@ -9077,8 +9092,56 @@ function injectProductSchema(productList) {
 function pedirReingreso(productId) {
   const product = products.find(p => String(p.id) === String(productId));
   const name = product ? product.name : 'producto';
-  const msg = encodeURIComponent(`Hola D'Zoe Perú 🌸 me interesa el producto *${name}* que aparece como agotado. ¿Podrían avisarme cuando vuelva a estar disponible? ¡Gracias! 🙏`);
-  window.open(`https://wa.me/51956063145?text=${msg}`, '_blank');
+
+  // Modal de captura de contacto
+  const existing = document.getElementById('reingreso-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'reingreso-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML = `
+    <div style="background:var(--card);border-radius:24px;padding:28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;">
+      <button onclick="document.getElementById('reingreso-modal').remove()" style="position:absolute;top:14px;right:14px;background:var(--bg);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:var(--text-soft);">✕</button>
+      <div style="font-size:28px;text-align:center;margin-bottom:8px;">🔔</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--text);text-align:center;margin-bottom:4px;">¡Te avisamos cuando llegue!</div>
+      <div style="font-size:12px;color:var(--text-soft);text-align:center;margin-bottom:20px;"><strong>${esc(name)}</strong> — está agotado por ahora</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <input id="reingreso-nombre" type="text" placeholder="Tu nombre" style="padding:11px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;width:100%;box-sizing:border-box;">
+        <input id="reingreso-telefono" type="tel" placeholder="Número de WhatsApp (ej: 987654321)" style="padding:11px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;width:100%;box-sizing:border-box;">
+        <button onclick="confirmarReingreso('${productId}','${esc(name)}')" style="background:linear-gradient(135deg,var(--rose),var(--lavender));color:white;border:none;border-radius:30px;padding:13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-top:4px;">
+          <i class="fas fa-bell"></i> Avísame cuando llegue
+        </button>
+        <a href="https://wa.me/51956063145?text=${encodeURIComponent(`Hola D'Zoe Perú 🌸 me interesa *${name}* (agotado). ¿Pueden avisarme cuando llegue?`)}" target="_blank" rel="noopener"
+          style="background:#25d366;color:white;border:none;border-radius:30px;padding:11px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:block;">
+          <i class="fab fa-whatsapp"></i> O escríbenos por WhatsApp
+        </a>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+async function confirmarReingreso(productId, productName) {
+  const nombre = document.getElementById('reingreso-nombre')?.value.trim();
+  const telefono = document.getElementById('reingreso-telefono')?.value.trim();
+  if (!telefono) { alert('Por favor ingresa tu número de WhatsApp'); return; }
+
+  // Guardar en Supabase
+  if (supabaseClient) {
+    try {
+      await supabaseClient.from('reingreso_alerts').insert([{
+        product_id: productId,
+        product_name: productName,
+        nombre: nombre || null,
+        telefono,
+        created_at: new Date().toISOString()
+      }]);
+    } catch(e) { /* no bloquear si falla */ }
+  }
+
+  document.getElementById('reingreso-modal')?.remove();
+  showNotif(`✅ ¡Listo ${nombre ? nombre : ''}! Te avisamos cuando llegue <strong>${productName}</strong> 🌸`);
 }
 
 function renderProducts() {
@@ -9402,7 +9465,43 @@ function closeCart() { document.getElementById('cartSidebar').classList.remove('
 // ═══════════════════════════════════════════════════════
 //  LISTA DE DESEOS
 // ═══════════════════════════════════════════════════════
-function saveWishlist() { localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist)); }
+// ── Wishlist session key (persistente entre dispositivos si el usuario lo comparte, o por localStorage) ──
+function getWishlistSessionId() {
+  let sid = localStorage.getItem('dzoe_wl_sid');
+  if (!sid) { sid = 'wl_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); localStorage.setItem('dzoe_wl_sid', sid); }
+  return sid;
+}
+
+function saveWishlist() {
+  localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist));
+  // Sync a Supabase en background (sin bloquear UI)
+  syncWishlistToSupabase();
+}
+
+async function syncWishlistToSupabase() {
+  if (!supabaseClient) return;
+  try {
+    const sid = getWishlistSessionId();
+    await supabaseClient.from('wishlists').upsert(
+      { session_id: sid, items: wishlist, updated_at: new Date().toISOString() },
+      { onConflict: 'session_id' }
+    );
+  } catch(e) { /* silencioso — localStorage es el fallback */ }
+}
+
+async function loadWishlistFromSupabase() {
+  if (!supabaseClient) return;
+  try {
+    const sid = getWishlistSessionId();
+    const { data } = await supabaseClient.from('wishlists').select('items').eq('session_id', sid).single();
+    if (data?.items?.length) {
+      wishlist = data.items;
+      localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist));
+      updateWishlistBadge();
+      renderWishlist();
+    }
+  } catch(e) { /* usa localStorage */ }
+}
 
 function updateWishlistBadge() {
   const badge = document.getElementById('wishlistFabBadge');
@@ -9508,35 +9607,6 @@ function comprarTodaLista() {
 function compartirListaWa() {
   if (!wishlist.length) { showNotif('⚠️ Agrega productos a tu lista primero 💕'); return; }
   compartirLista();
-}
-
-// ═══ SCHEMA PRODUCT DINÁMICO ═══
-function injectProductSchema(prods) {
-  const placeholder = document.getElementById('schema-products-placeholder');
-  if (!placeholder || !prods.length) return;
-  const items = prods.slice(0, 20).map(p => {
-    const sizes = p.sizes || [];
-    const price = sizes.length ? Math.min(...sizes.filter(s=>s.price).map(s=>s.price)) : 0;
-    const hasStock = sizes.some(s => s.stock > 0);
-    return {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": p.name,
-      "description": p.description || `Ropa infantil importada premium — ${(p.categories||[]).join(', ')}`,
-      "image": p.images?.[0] || p.image || '',
-      "brand": {"@type":"Brand","name":"D'Zoe Perú"},
-      "category": (p.categories||[]).join(' > '),
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "PEN",
-        "price": price > 0 ? price.toFixed(2) : "0",
-        "availability": hasStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "seller": {"@type":"Organization","name":"D'Zoe Perú"},
-        "url": "https://dzoeperu.com/"
-      }
-    };
-  });
-  placeholder.textContent = JSON.stringify(items);
 }
 
 function compartirLista() {
