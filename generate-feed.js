@@ -8,8 +8,16 @@ const fs = require('fs');
 const path = require('path');
 
 // ── Configuración Supabase ──────────────────────────────────────────────────
-const SUPABASE_URL  = 'https://uxwmodnadidlsfwtshcq.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4d21vZG5hZGlkbHNmd3RzaGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzY0MjAsImV4cCI6MjA5NTY1MjQyMH0.V3tNuv2iT9J2WbZbs7bzxf9j9RwF2r-Li4KO_1qQWRo';
+// Las credenciales se leen desde variables de entorno (GitHub Secrets en CI,
+// o un archivo .env local para correr manualmente).
+const SUPABASE_URL  = process.env.SUPABASE_URL  || 'https://uxwmodnadidlsfwtshcq.supabase.co';
+const SUPABASE_ANON = process.env.SUPABASE_ANON || '';
+
+if (!SUPABASE_ANON) {
+  console.error('❌ Falta la variable de entorno SUPABASE_ANON.');
+  console.error('   Crea un archivo .env o agrégala como GitHub Secret.');
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
