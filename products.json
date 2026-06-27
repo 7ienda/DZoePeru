@@ -692,6 +692,20 @@
     "url": "/productos/chaqueta-de-otono-e-invierno.html"
   },
   {
+    "id": 1782504744064,
+    "slug": "conjunto-margarita-2-piezas",
+    "name": "Conjunto Margarita 2 piezas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9FqNznaFGWMAi78ldYGMyj-pyidVFM2kgMNIU1twxCV0iM6wMriB8dtdLpVqgTxZE5rByIXpVjvw-F5bHOsapjP8UpjP03mglv60KxB3rF1zzXwZroiazhQk8TNFRep8duJO8hAU_1jqLHS4JmyvfzalPxVBhVrV4ZOoUVvrLAGFXV7L8gX_dCCwFgKOl/s16000/ra2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-margarita-2-piezas.html"
+  },
+  {
     "id": 1780364276345,
     "slug": "conjunto-jean-rosa-blanca",
     "name": "Conjunto Jean rosa blanca",
@@ -991,6 +1005,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-osito-rayado.html"
+  },
+  {
+    "id": 1782513680022,
+    "slug": "conjunto-osito-deportivo",
+    "name": "Conjunto Osito deportivo",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0-JgoiXr1RTagpKIB2yBLVH1mjlExtLsX0hX1DPB-WKApWY05MkezqeJJkdiTUgU4JbNLJZ88XbiirPuYLnBUahr7DBB7hD4ssQ1zpHlqYVKY0lfjv46kuCsgfoZBWtQBUl_VGyeVdc3GtwkHm1K6JLAbSDcJVOK9YB1mZssi8hkn7lrC9FH3l1bjEnXG/s16000/ew2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-osito-deportivo.html"
   },
   {
     "id": 1780371484080,
@@ -1296,6 +1324,19 @@
     "url": "/productos/conjunto-brown-dog.html"
   },
   {
+    "id": 1782515031019,
+    "slug": "casaca-coneja-mora-corta-viento",
+    "name": "Casaca coneja mora corta viento",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEic76pb_qBUo-ex_YrTJCe9MX2OlpIkEvDiNbL5eoJ3ye9FzSPCcPOREvbMUNJby0wUZABQTeOJwfbxC3bJzqYNTNAiTtQtE0obtogsDwL3ixTfohuDoKKRXK2La0-9wD8CtlP4F68WDR310T9o-Tm-zw6TIG2aQuZhSsTJPoQLujapB12WxVdwte3W1tD0/s16000/fd2.png",
+    "categories": [
+      "Casacas",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-coneja-mora-corta-viento.html"
+  },
+  {
     "id": 1780370109720,
     "slug": "blusa-celeste-ilusion-panalero",
     "name": "blusa celeste ilusion + pañalero",
@@ -1375,6 +1416,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-lady-cristal.html"
+  },
+  {
+    "id": 1782526384382,
+    "slug": "overol-brillo-de-cereza",
+    "name": "Overol brillo de cereza",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEilLxkNPht6KCxIJYMhzDVco3Y8AG8uD-3K5c51SSopUg7CsHK8rE4H0PUogUHEl6iWBjgDz9sN27WoRZFVbM7awKDfzoVBU8s0YGM62Rp5DIS4Epv6DSmd4xHVjkIb1GoumJAT08FNs-rgMH7KNSkUU_-GlKjCZYhKKDoCqcew51j38kYy3G7MYFei-CBl/s16000/gt2.png",
+    "categories": [
+      "Overoles",
+      "Ninas",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/overol-brillo-de-cereza.html"
   },
   {
     "id": 1780432685023,
