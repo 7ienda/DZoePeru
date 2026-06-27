@@ -2521,16 +2521,17 @@ async function loadAllData() {
 // STATS
 // ============================================
 function updateStats() {
-  document.getElementById('total-products').textContent = products.length;
-  document.getElementById('badge-products').textContent = products.length;
-  document.getElementById('badge-categories').textContent = categories.length;
-  document.getElementById('badge-orders').textContent = orders.length;
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('total-products', products.length);
+  set('badge-products', products.length);
+  set('badge-categories', categories.length);
+  set('badge-orders', orders.length);
   let stock = 0, invVal = 0;
   products.forEach(p => { (p.sizes||[]).forEach(s => { stock += s.stock||0; invVal += (s.cost||0)*(s.stock||0); }); });
-  document.getElementById('total-stock').textContent = stock;
-  document.getElementById('inventory-value').textContent = 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
+  set('total-stock', stock);
+  set('inventory-value', 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}));
   const totalSales = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  document.getElementById('stat-total-sales').textContent = 'S/'+totalSales.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
+  set('stat-total-sales', 'S/'+totalSales.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}));
 }
 
 // ============================================
@@ -6186,8 +6187,5 @@ checkSession = async function() {
 .cmd-palette-open { overflow:hidden; }
 </style>
 
-<div id="feed-engine" class="feed-panel" style="display:none;">
-  <!-- Feed Engine: hidden, managed from settings -->
-</div>
 </body>
 </html>
