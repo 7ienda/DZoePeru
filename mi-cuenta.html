@@ -4055,7 +4055,8 @@ function goToSection(sectionId) {
   if (sec) { sec.style.display='block'; }
   const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
   const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
-  document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
+  const topbarName = document.getElementById('topbar-section-name');
+  if (topbarName) topbarName.textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
   document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
