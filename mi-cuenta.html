@@ -2540,23 +2540,22 @@ function updateStats() {
 let salesChartInst = null, methodChartInst = null;
 
 function updateDashboard() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   const confirmed = orders.filter(o => o.status === 'confirmed').length;
   const pending = orders.filter(o => o.status === 'pending' || !o.status).length;
   const totalAmt = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  document.getElementById('dash-total-orders').textContent = orders.length;
-  document.getElementById('dash-confirmed').textContent = confirmed;
-  document.getElementById('dash-pending').textContent = pending;
-  document.getElementById('dash-avg-ticket').textContent = orders.length ? 'S/'+Math.round(totalAmt/orders.length) : 'S/0';
-  // Extra stats (cancelled, today revenue, low stock)
+  set('dash-total-orders', orders.length);
+  set('dash-confirmed', confirmed);
+  set('dash-pending', pending);
+  set('dash-avg-ticket', orders.length ? 'S/'+Math.round(totalAmt/orders.length) : 'S/0');
   const _cancelled = orders.filter(o => o.status === 'cancelled').length;
   const _todayStr = new Date().toISOString().slice(0,10);
   const _todayAmt = orders.filter(o => o.status === 'confirmed' && (o.created_at||'').slice(0,10) === _todayStr).reduce((a,o)=>a+(parseFloat(o.total)||0), 0);
   const _lowStock = products.filter(p => { const t=(p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0); return t>0&&t<=5; }).length;
-  const _elC = document.getElementById('dash-cancelled'); if (_elC) _elC.textContent = _cancelled;
-  const _elT = document.getElementById('dash-today'); if (_elT) _elT.textContent = 'S/'+_todayAmt.toFixed(0);
-  const _elL = document.getElementById('dash-low-stock'); if (_elL) _elL.textContent = _lowStock;
+  set('dash-cancelled', _cancelled);
+  set('dash-today', 'S/'+_todayAmt.toFixed(0));
+  set('dash-low-stock', _lowStock);
 
-  // Ganancia de productos vendidos (precio venta - costo * qty, solo órdenes confirmadas)
   let _profitSold = 0;
   orders.filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
@@ -2567,8 +2566,7 @@ function updateDashboard() {
       _profitSold += (price - cost) * (it.qty || 1);
     });
   });
-  const _elProfit = document.getElementById('dash-profit-sold');
-  if (_elProfit) _elProfit.textContent = 'S/'+_profitSold.toFixed(0);
+  set('dash-profit-sold', 'S/'+_profitSold.toFixed(0));
 
   // Sales chart by month
   const months = {};
@@ -2584,23 +2582,24 @@ function updateDashboard() {
     const key = d.toLocaleDateString('es-PE',{month:'short',year:'2-digit'});
     if (months[key] !== undefined) months[key] += parseFloat(o.total)||0;
   });
-  const ctx1 = document.getElementById('salesChart').getContext('2d');
-  if (salesChartInst) salesChartInst.destroy();
-  salesChartInst = new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(months),
-      datasets: [{ label: 'Ventas (S/)', data: Object.values(months), backgroundColor: 'rgba(194,97,122,.75)', borderRadius: 8, borderSkipped: false }]
-    },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'Nunito',size:11}}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
-  });
-
-  // Method chart
+  const ctx1 = document.getElementById('salesChart');
+  if (ctx1) {
+    if (salesChartInst) salesChartInst.destroy();
+    salesChartInst = new Chart(ctx1.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: Object.keys(months),
+        datasets: [{ label: 'Ventas (S/)', data: Object.values(months), backgroundColor: 'rgba(194,97,122,.75)', borderRadius: 8, borderSkipped: false }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'Nunito',size:11}}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
+    });
+  }
   const methodCounts = { yape:0, plin:0, sip:0, bank:0 };
   orders.forEach(o => { if (o.payment_method && methodCounts[o.payment_method] !== undefined) methodCounts[o.payment_method]++; });
-  const ctx2 = document.getElementById('methodChart').getContext('2d');
+  const ctx2 = document.getElementById('methodChart');
+  if (ctx2) {
   if (methodChartInst) methodChartInst.destroy();
-  methodChartInst = new Chart(ctx2, {
+  methodChartInst = new Chart(ctx2.getContext('2d'), {
     type: 'doughnut',
     data: {
       labels: ['Yape','Plin','Sip','Interbank'],
@@ -2608,6 +2607,7 @@ function updateDashboard() {
     },
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{family:'Nunito',size:11}, boxWidth:12 } } }, cutout:'65%' }
   });
+  }
 
   // Top products
   const productCount = {};
@@ -2615,18 +2615,19 @@ function updateDashboard() {
   const sorted = Object.entries(productCount).sort((a,b) => b[1]-a[1]).slice(0,5);
   const maxV = sorted[0]?.[1] || 1;
   const topEl = document.getElementById('top-products-list');
-  topEl.innerHTML = sorted.length ? sorted.map(([name, count]) => `
+  if (topEl) topEl.innerHTML = sorted.length ? sorted.map(([name, count]) => `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="flex:1;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${name}</div>
       <div style="flex:1.5;background:var(--bg2);border-radius:4px;height:8px;overflow:hidden;">
         <div style="width:${Math.round(count/maxV*100)}%;height:100%;background:var(--rose);border-radius:4px;"></div>
       </div>
       <div style="font-size:12px;color:var(--muted);width:28px;text-align:right;">${count}</div>
-    </div>`) .join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-chart-bar"></i><br>Sin datos aún</div>';
+    </div>`).join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-chart-bar"></i><br>Sin datos aún</div>';
 
   // Recent sales
   const recent = [...orders].slice(0,8);
-  document.getElementById('recent-sales-body').innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
+  const recentBody = document.getElementById('recent-sales-body');
+  if (recentBody) recentBody.innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
 
   // Sales stats
   const today = new Date().toDateString();
@@ -2641,11 +2642,11 @@ function updateDashboard() {
   const methodNames = {yape:'💜 Yape',plin:'💙 Plin',sip:'💚 Sip',bank:'🏦 Banco',cash:'💵 Efectivo'};
   const prodCount = {}; orders.forEach(o => (o.items||[]).forEach(it => { prodCount[it.name]=(prodCount[it.name]||0)+(it.qty||1); }));
   const topProd = Object.entries(prodCount).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
-  document.getElementById('sales-total-amt').textContent = 'S/ '+salesTotal.toFixed(2);
-  document.getElementById('sales-count').textContent = orders.length;
+  set('sales-total-amt', 'S/ '+salesTotal.toFixed(2));
+  set('sales-count', orders.length);
   const confirmedSub = document.getElementById('sales-confirmed-sub'); if(confirmedSub) confirmedSub.textContent = salesConfirmed+' confirmados';
-  document.getElementById('sales-avg').textContent = orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00';
-  document.getElementById('sales-pending-count').textContent = salesPending;
+  set('sales-avg', orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00');
+  set('sales-pending-count', salesPending);
   const deudaSub = document.getElementById('sales-deuda-sub'); if(deudaSub) deudaSub.textContent = 'S/ '+totalDeuda.toFixed(2)+' en deuda';
   const todayEl = document.getElementById('sales-today'); if(todayEl) todayEl.textContent = 'S/ '+todayTotal.toFixed(2);
   const topMethodEl = document.getElementById('sales-top-method'); if(topMethodEl) topMethodEl.textContent = topMethodKey ? methodNames[topMethodKey]||topMethodKey : '—';
