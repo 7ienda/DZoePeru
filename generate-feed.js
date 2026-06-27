@@ -157,7 +157,6 @@ async function main() {
   const { data, error } = await supabase
     .from('products')           // ← ajusta si tu tabla tiene otro nombre
     .select('*')
-    .eq('active', true)         // ← ajusta o elimina según tu esquema
     .order('created_at', { ascending: false });
 
   if (error) {
