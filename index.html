@@ -6261,6 +6261,63 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════════
+     PRÓXIMOS INGRESOS
+═══════════════════════════════════════════════════ -->
+<style>
+.upcoming-section{padding:48px 0 72px;background:linear-gradient(135deg,var(--rose-soft) 0%,rgba(179,157,200,.10) 100%);border-top:1px solid var(--border);}
+.upcoming-header{text-align:center;margin-bottom:32px;}
+.upcoming-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--rose-soft);color:var(--rose-dark);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:99px;border:1px solid rgba(179,157,200,.4);margin-bottom:12px;}
+.upcoming-title{font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.upcoming-title span{color:var(--rose);}
+.upcoming-subtitle{font-size:14px;color:var(--text-soft);}
+.upcoming-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.upcoming-card{background:var(--card);border-radius:20px;border:1.5px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .22s,box-shadow .22s;}
+.upcoming-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(179,157,200,.22);}
+.upcoming-img-wrap{position:relative;height:220px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));overflow:hidden;}
+.upcoming-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.upcoming-card:hover .upcoming-img-wrap img{transform:scale(1.04);}
+.upcoming-badge-soon{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--rose),var(--lavender));color:white;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;z-index:5;}
+.upcoming-badge-arrived{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#2e9c6b,#22c55e);color:white;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;z-index:5;}
+.upcoming-no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;}
+.upcoming-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1;}
+.upcoming-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.upcoming-cat-pill{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--rose-soft);color:var(--rose-dark);border:1px solid rgba(179,157,200,.35);padding:2px 9px;border-radius:99px;}
+.upcoming-name{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--text);margin-bottom:4px;line-height:1.25;}
+.upcoming-desc{font-size:11.5px;color:var(--text-soft);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.45;}
+.upcoming-sizes-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.upcoming-size-chip{font-size:10px;font-weight:700;background:var(--bg);border:1px solid var(--border);color:var(--text-soft);padding:2px 8px;border-radius:8px;}
+.upcoming-price{font-family:'Baloo 2',cursive;font-size:22px;font-weight:900;color:var(--rose-dark);margin-bottom:12px;}
+.upcoming-countdown{display:flex;gap:8px;justify-content:center;margin-bottom:12px;}
+.cd-block{display:flex;flex-direction:column;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:6px 10px;min-width:44px;}
+.cd-num{font-family:'Baloo 2',cursive;font-size:20px;font-weight:900;color:var(--rose);line-height:1;}
+.cd-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-soft);margin-top:2px;}
+.upcoming-arrived-msg{text-align:center;font-size:12px;font-weight:700;color:#2e9c6b;padding:8px;background:rgba(46,156,107,.10);border-radius:10px;margin-bottom:12px;}
+.upcoming-promote-btn{width:100%;background:linear-gradient(135deg,#2e9c6b,#22c55e);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:11px 16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .2s,transform .2s;margin-top:auto;}
+.upcoming-promote-btn:hover{opacity:.88;transform:scale(1.015);}
+.upcoming-wa-btn{width:100%;background:#25d366;color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:800;padding:9px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;transition:opacity .2s;text-decoration:none;}
+.upcoming-wa-btn:hover{opacity:.88;}
+.upcoming-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);font-size:14px;}
+body.dark-mode .upcoming-section{background:linear-gradient(135deg,rgba(60,30,40,.4) 0%,rgba(50,40,70,.2) 100%);}
+body.dark-mode .upcoming-card{background:#261A10;border-color:#5a4838;}
+body.dark-mode .upcoming-name{color:#e4d4c0;}
+body.dark-mode .cd-block{background:#1e1410;border-color:#5a4838;}
+@media(max-width:900px){.upcoming-grid{grid-template-columns:repeat(2,1fr);gap:12px;}}
+@media(max-width:480px){.upcoming-grid{grid-template-columns:repeat(2,1fr);gap:10px;}.upcoming-title{font-size:22px;}.upcoming-img-wrap{height:160px;}.cd-num{font-size:16px;}.cd-block{padding:5px 7px;min-width:36px;}}
+</style>
+
+<section class="upcoming-section" id="proximos-ingresos" style="display:none;">
+  <div class="container">
+    <div class="upcoming-header">
+      <div class="upcoming-eyebrow"><i class="fas fa-clock"></i> Muy pronto</div>
+      <div class="upcoming-title">Próximos <span>Ingresos</span></div>
+      <div class="upcoming-subtitle">Productos que llegan pronto — guárdalos en favoritos</div>
+    </div>
+    <div class="upcoming-grid" id="upcomingGrid"></div>
+  </div>
+</section>
+
+
 
 <!-- ═══════════════════════════════════════════════════════
      SECCIÓN PREMIUM DE CONFIANZA / BENEFICIOS
@@ -7681,6 +7738,180 @@ async function loadAllData() {
 
   // Estadísticas en segundo plano sin bloquear la UI
   setTimeout(loadTrustStats, 1500);
+
+  // Cargar próximos ingresos
+  loadUpcomingProducts();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PRÓXIMOS INGRESOS
+// ═══════════════════════════════════════════════════════
+let upcomingProducts = [];
+let countdownIntervals = {};
+
+async function loadUpcomingProducts() {
+  if (!supabaseClient) return;
+  try {
+    const { data, error } = await supabaseClient
+      .from('upcoming_products')
+      .select('*')
+      .order('estimated_date', { ascending: true });
+    if (error) { console.error('❌ upcoming_products:', error.message); return; }
+    upcomingProducts = data || [];
+    renderUpcomingSection();
+  } catch(e) { console.error('❌ Error upcoming:', e); }
+}
+
+function renderUpcomingSection() {
+  const section = document.getElementById('proximos-ingresos');
+  const grid    = document.getElementById('upcomingGrid');
+  if (!section || !grid) return;
+
+  if (!upcomingProducts.length) { section.style.display = 'none'; return; }
+
+  section.style.display = '';
+  // Limpiar intervalos previos
+  Object.values(countdownIntervals).forEach(clearInterval);
+  countdownIntervals = {};
+
+  grid.innerHTML = upcomingProducts.map(up => renderUpcomingCard(up)).join('');
+
+  // Iniciar countdowns
+  upcomingProducts.forEach(up => {
+    const target = new Date(up.estimated_date).getTime();
+    const isArrived = Date.now() >= target;
+    if (!isArrived) {
+      countdownIntervals[up.id] = setInterval(() => tickCountdown(up.id, target), 1000);
+      tickCountdown(up.id, target);
+    }
+  });
+}
+
+function renderUpcomingCard(up) {
+  const images = up.images || (up.image ? [up.image] : []);
+  const imgHtml = images[0]
+    ? `<img src="${images[0]}" alt="${esc(up.name)}" loading="lazy">`
+    : `<div class="upcoming-no-img">📦</div>`;
+
+  const sizes = up.sizes || [];
+  const minP = sizes.length ? Math.min(...sizes.filter(s=>s.price).map(s=>Number(s.price)||0)) : 0;
+  const priceHtml = minP > 0 ? `<div class="upcoming-price">S/ ${minP.toFixed(2)}</div>` : '';
+
+  const sizesHtml = sizes.length
+    ? `<div class="upcoming-sizes-row">${sizes.map(s => `<span class="upcoming-size-chip">${esc(s.size)}</span>`).join('')}</div>`
+    : '';
+
+  const cats = up.categories || [];
+  const catsHtml = cats.length
+    ? `<div class="upcoming-cats">${cats.map(c => `<span class="upcoming-cat-pill">${esc(c)}</span>`).join('')}</div>`
+    : '';
+
+  const target = new Date(up.estimated_date).getTime();
+  const isArrived = Date.now() >= target;
+
+  const badgeHtml = isArrived
+    ? `<div class="upcoming-badge-arrived">✅ Llegó</div>`
+    : `<div class="upcoming-badge-soon">⏳ Pronto</div>`;
+
+  const waMsg = encodeURIComponent(`Hola D'Zoe Perú, me interesa reservar: ${up.name}. ¿Cuándo llega?`);
+  const waUrl = `https://wa.me/51956063145?text=${waMsg}`;
+
+  const countdownOrArrived = isArrived
+    ? `<div class="upcoming-arrived-msg">🎉 ¡Ya llegó! Listo para pasar a productos.</div>
+       <button class="upcoming-promote-btn" onclick="promoteUpcoming('${up.id}')">
+         <i class="fas fa-arrow-up-from-bracket"></i> Pasar a Productos
+       </button>`
+    : `<div class="upcoming-countdown" id="cd-${up.id}">
+         <div class="cd-block"><span class="cd-num" id="cd-d-${up.id}">--</span><span class="cd-label">días</span></div>
+         <div class="cd-block"><span class="cd-num" id="cd-h-${up.id}">--</span><span class="cd-label">horas</span></div>
+         <div class="cd-block"><span class="cd-num" id="cd-m-${up.id}">--</span><span class="cd-label">min</span></div>
+         <div class="cd-block"><span class="cd-num" id="cd-s-${up.id}">--</span><span class="cd-label">seg</span></div>
+       </div>
+       <a href="${waUrl}" target="_blank" rel="noopener" class="upcoming-wa-btn">
+         <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
+       </a>`;
+
+  return `<div class="upcoming-card" id="upcoming-card-${up.id}">
+    ${badgeHtml}
+    <div class="upcoming-img-wrap">${imgHtml}</div>
+    <div class="upcoming-body">
+      ${catsHtml}
+      <div class="upcoming-name">${esc(up.name)}</div>
+      ${up.description ? `<div class="upcoming-desc">${esc(up.description)}</div>` : ''}
+      ${sizesHtml}
+      ${priceHtml}
+      ${countdownOrArrived}
+    </div>
+  </div>`;
+}
+
+function tickCountdown(id, target) {
+  const now  = Date.now();
+  const diff = target - now;
+  if (diff <= 0) {
+    clearInterval(countdownIntervals[id]);
+    // Actualizar card a estado "llegó"
+    const card = document.getElementById(`upcoming-card-${id}`);
+    if (card) {
+      const cdEl = document.getElementById(`cd-${id}`);
+      if (cdEl) cdEl.outerHTML =
+        `<div class="upcoming-arrived-msg">🎉 ¡Ya llegó! Listo para pasar a productos.</div>
+         <button class="upcoming-promote-btn" onclick="promoteUpcoming('${id}')">
+           <i class="fas fa-arrow-up-from-bracket"></i> Pasar a Productos
+         </button>`;
+      const badge = card.querySelector('.upcoming-badge-soon');
+      if (badge) { badge.className = 'upcoming-badge-arrived'; badge.textContent = '✅ Llegó'; }
+    }
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000)  / 60000);
+  const s = Math.floor((diff % 60000)    / 1000);
+  const pad = n => String(n).padStart(2,'0');
+  const dEl = document.getElementById(`cd-d-${id}`);
+  const hEl = document.getElementById(`cd-h-${id}`);
+  const mEl = document.getElementById(`cd-m-${id}`);
+  const sEl = document.getElementById(`cd-s-${id}`);
+  if (dEl) dEl.textContent = pad(d);
+  if (hEl) hEl.textContent = pad(h);
+  if (mEl) mEl.textContent = pad(m);
+  if (sEl) sEl.textContent = pad(s);
+}
+
+async function promoteUpcoming(id) {
+  if (!confirm('¿Pasar este producto a la tienda como producto disponible?')) return;
+  if (!supabaseClient) { alert('No hay conexión con Supabase'); return; }
+  const up = upcomingProducts.find(u => String(u.id) === String(id));
+  if (!up) return;
+
+  // Crear producto en tabla products
+  const productData = {
+    id: Date.now(),
+    name: up.name,
+    description: up.description || '',
+    images: up.images || [],
+    image: (up.images||[])[0] || up.image || '',
+    featured: up.featured || false,
+    status: 'active',
+    categories: up.categories || [],
+    sizes: (up.sizes || []).map(s => ({ size: s.size, price: s.price, cost: s.cost||0, stock: s.stock||0 })),
+    is_new: true,
+    created_at: new Date().toISOString()
+  };
+
+  const { error: insertErr } = await supabaseClient.from('products').insert([productData]);
+  if (insertErr) { alert('Error al crear el producto: ' + insertErr.message); return; }
+
+  // Eliminar de upcoming_products
+  const { error: delErr } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
+  if (delErr) { alert('Error al eliminar de próximos: ' + delErr.message); return; }
+
+  alert('✅ Producto pasado a la tienda correctamente.');
+  upcomingProducts = upcomingProducts.filter(u => String(u.id) !== String(id));
+  renderUpcomingSection();
+  // Recargar productos de la tienda
+  if (typeof loadAllData === 'function') loadAllData();
 }
 
 
