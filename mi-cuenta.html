@@ -6876,10 +6876,10 @@ const _origPatchTimer = setInterval(()=>{
   }
 }, 1200);
 // Also run on section switch
-const _origGoToSection = window.goToSection;
-if (_origGoToSection) {
+var _origGoToSectionPro = window.goToSection;
+if (_origGoToSectionPro) {
   window.goToSection = function(sec) {
-    _origGoToSection(sec);
+    _origGoToSectionPro(sec);
     if (sec === 'dashboard-section') setTimeout(updateDashboardPro, 300);
     if (sec === 'seo-section') setTimeout(loadSeoSection, 300);
     if (sec === 'analytics-pro-section') setTimeout(renderAnalyticsPro, 300);
