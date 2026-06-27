@@ -6317,6 +6317,7 @@ body.dark-mode .cd-block{background:#1e1410;border-color:#5a4838;}
     <div class="upcoming-header">
       <div class="upcoming-eyebrow"><i class="fas fa-clock"></i> Muy pronto</div>
       <div class="upcoming-title">Próximos <span>Ingresos</span></div>
+      <div class="upcoming-subtitle">Productos que llegan pronto — guárdalos en favoritos</div>
     </div>
     <div class="upcoming-grid" id="upcomingGrid"></div>
   </div>
@@ -7724,9 +7725,11 @@ function paintHighlights(tab) {
 }
 
 async function loadAllData() {
+  // Cargar productos, categorías Y listones en paralelo
   const [productsData, categoriesData] = await Promise.all([
     loadProductsFromSupabase(),
-    loadCategoriesFromSupabase()
+    loadCategoriesFromSupabase(),
+    _initRibbonsPro()   // listones listos antes del primer renderizado
   ]);
   products = productsData;
   window.products = products;
@@ -7736,16 +7739,13 @@ async function loadAllData() {
   renderAgeChips();
   renderCategoriesFromData();
   populateCategorySelects();
-  renderProducts();
+  renderProducts();   // ahora los listones ya están en caché
   renderCart();
   updateUI();
   injectProductSchema(products.slice(0, 20)); // solo primeros 20 para SEO
 
   // Renderizar highlights ahora que los datos reales están listos
   renderHighlights();
-
-  // Cargar listones PRO desde Supabase
-  _initRibbonsPro();
 
   // Estadísticas en segundo plano sin bloquear la UI
   setTimeout(loadTrustStats, 1500);
@@ -8893,8 +8893,6 @@ async function _initRibbonsPro() {
   } catch(e) {
     window._ribbonsProCache = [];
   }
-  // Re-renderizar productos con los listones ya cargados
-  if (window._ribbonsProCache.length) renderProducts();
 }
 
 function _getRibbonsPro() {
@@ -8944,24 +8942,23 @@ function getProductRibbonLabel(product, allProducts) {
 
   const ribbonsPro = _getRibbonsPro();
 
-  // 2. Listón manual PRO asignado desde el panel
+  // 2. Listón manual PRO asignado desde el panel (campo ribbon_pro = id del listón)
   if (product.ribbon_pro) {
-    const r = ribbonsPro.find(x => x.id === product.ribbon_pro);
+    const r = ribbonsPro.find(x => String(x.id) === String(product.ribbon_pro));
     if (r) return (r.icon ? r.icon + ' ' : '') + r.name;
   }
-  // También soporte para el campo legacy "ribbon" (nombre como string)
+  // Campo legacy "ribbon" (nombre como string)
   if (product.ribbon) {
     const r = ribbonsPro.find(x => x.name === product.ribbon);
     if (r) return (r.icon ? r.icon + ' ' : '') + r.name;
     return product.ribbon;
   }
 
-  // 3. Listones automáticos PRO — ordenados por prioridad
+  // 3. Listones automáticos PRO — se evalúan en tiempo real
   const autoRibbons = ribbonsPro
     .filter(r => r.mode === 'auto' && r.autoRule)
     .sort((a, b) => Number(a.priority) - Number(b.priority));
 
-  // Verificar vigencia de fechas
   const now = new Date();
   for (const r of autoRibbons) {
     if (r.start && new Date(r.start) > now) continue;
@@ -8971,7 +8968,7 @@ function getProductRibbonLabel(product, allProducts) {
     }
   }
 
-  // 4. Fallback: si no hay listones PRO configurados, usar lógica clásica
+  // 4. Fallback clásico si no hay listones PRO configurados
   if (!ribbonsPro.length) {
     if (product.on_sale) return '🔥 Oferta';
     const sorted = [...allProducts]
