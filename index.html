@@ -6317,7 +6317,6 @@ body.dark-mode .cd-block{background:#1e1410;border-color:#5a4838;}
     <div class="upcoming-header">
       <div class="upcoming-eyebrow"><i class="fas fa-clock"></i> Muy pronto</div>
       <div class="upcoming-title">Próximos <span>Ingresos</span></div>
-      <div class="upcoming-subtitle">Productos que llegan pronto — guárdalos en favoritos</div>
     </div>
     <div class="upcoming-grid" id="upcomingGrid"></div>
   </div>
@@ -7745,6 +7744,9 @@ async function loadAllData() {
   // Renderizar highlights ahora que los datos reales están listos
   renderHighlights();
 
+  // Cargar listones PRO desde Supabase
+  _initRibbonsPro();
+
   // Estadísticas en segundo plano sin bloquear la UI
   setTimeout(loadTrustStats, 1500);
 
@@ -8869,9 +8871,34 @@ function filterProducts() {
 // ═══════════════════════════════════════════════════════
 //  RIBBONS / BADGES
 // ═══════════════════════════════════════════════════════
-// ── Lee los Listones PRO del panel (dzoe_ribbons_pro en localStorage) ──
+// ── Listones PRO — caché en memoria cargada desde Supabase ──
+window._ribbonsProCache = null;
+
+async function _initRibbonsPro() {
+  if (window._ribbonsProCache !== null) return;
+  if (!supabaseClient) { window._ribbonsProCache = []; return; }
+  try {
+    const { data } = await supabaseClient
+      .from('ribbons_pro')
+      .select('*')
+      .eq('active', true)
+      .order('priority', { ascending: true });
+    window._ribbonsProCache = (data || []).map(r => ({
+      ...r,
+      autoRule: r.auto_rule,
+      autoParam: r.auto_param,
+      start: r.start_date,
+      end: r.end_date
+    }));
+  } catch(e) {
+    window._ribbonsProCache = [];
+  }
+  // Re-renderizar productos con los listones ya cargados
+  if (window._ribbonsProCache.length) renderProducts();
+}
+
 function _getRibbonsPro() {
-  try { return JSON.parse(localStorage.getItem('dzoe_ribbons_pro') || '[]'); } catch(e) { return []; }
+  return window._ribbonsProCache || [];
 }
 
 // Aplica la regla automática de un listón PRO y devuelve true si el producto la cumple
