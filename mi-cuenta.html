@@ -614,7 +614,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <div class="login-error" id="login-error">
       <i class="fas fa-exclamation-circle"></i> <span id="login-error-msg">Usuario o contraseña incorrectos</span>
     </div>
-    <div id="login-card-main">
     <label class="login-label">Usuario</label>
     <div class="login-input-wrap">
       <input type="text" class="login-input" id="login-user" placeholder="dzoe_admin" autocomplete="username">
@@ -625,24 +624,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       <input type="password" class="login-input" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
       <i class="fas fa-eye login-input-icon" id="toggle-pass" onclick="togglePassVisible()" style="cursor:pointer;"></i>
     </div>
-    <button class="login-btn" onclick="doLogin()" id="login-btn-main"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
-  </div>
-  <!-- OTP 2FA step (hidden initially) -->
-  <div id="otp-step" style="display:none;">
-    <div style="text-align:center;margin-bottom:24px;">
-      <div style="font-size:36px;margin-bottom:12px;">🔐</div>
-      <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;">Verificación en 2 pasos</div>
-      <div style="font-size:13px;color:var(--muted);">Ingresa el código enviado a tu email</div>
-    </div>
-    <label class="login-label">Código OTP</label>
-    <div class="login-input-wrap">
-      <input type="text" class="login-input" id="otp-code" placeholder="123456" maxlength="6" style="letter-spacing:.3em;text-align:center;font-size:22px;" onkeydown="if(event.key==='Enter') verifyOtp()">
-      <i class="fas fa-key login-input-icon"></i>
-    </div>
-    <button class="login-btn" onclick="verifyOtp()"><i class="fas fa-shield-check"></i> Verificar código</button>
-    <div style="text-align:center;margin-top:14px;">
-      <button onclick="resendOtp()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;">¿No recibiste el código? <span style="color:var(--rose);">Reenviar</span></button>
-    </div>
+    <button class="login-btn" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
   </div>
 </div>
 
@@ -873,36 +855,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       </div>
     </div>
 
-    <!-- ====== ANALYTICS PREMIUM ====== -->
-    <div id="analytics-premium-section" style="margin-top:24px;" class="dashboard-only">
-      <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--text);margin-bottom:16px;"><i class="fas fa-chart-mixed" style="color:var(--lavender)"></i> Analytics Premium</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
-        <div class="stat-card purple"><div class="stat-card-icon"><i class="fas fa-cart-shopping"></i></div><h3>AOV (Ticket promedio)</h3><div class="stat-value" id="analytics-aov">S/0</div><div class="stat-change">Valor medio por pedido</div></div>
-        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-receipt"></i></div><h3>Pedidos confirmados</h3><div class="stat-value" id="analytics-orders-total">0</div><div class="stat-change">Total histórico</div></div>
-        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div><h3>Revenue total</h3><div class="stat-value" id="analytics-revenue">S/0</div><div class="stat-change">Solo pedidos confirmados</div></div>
-        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-users"></i></div><h3>Clientes únicos</h3><div class="stat-value" id="analytics-clients">0</div><div class="stat-change">Con compras confirmadas</div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-clock" style="color:var(--sky)"></i> Heatmap — Horas de compra</div></div>
-          <div class="section-body">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">¿A qué hora te compran más? Cada casilla = 1 hora del día (0–23)</div>
-            <div id="hour-heatmap" style="display:grid;grid-template-columns:repeat(8,1fr);gap:5px;"></div>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:10px;color:var(--muted);">
-              <div style="width:14px;height:14px;border-radius:4px;background:var(--bg2);"></div>Sin ventas
-              <div style="width:14px;height:14px;border-radius:4px;background:#bfdbfe;"></div>Pocas
-              <div style="width:14px;height:14px;border-radius:4px;background:#60a5fa;"></div>Moderate
-              <div style="width:14px;height:14px;border-radius:4px;background:#2563eb;"></div>Peak
-            </div>
-          </div>
-        </div>
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-trophy" style="color:var(--orange)"></i> Top productos vendidos</div></div>
-          <div class="section-body"><div id="top-viewed-products"></div></div>
-        </div>
-      </div>
-    </div>
-
     <!-- ====== INVENTARIO ====== -->
     <div id="inventory-section" class="page-section" style="display:none;">
       <div class="section">
@@ -953,13 +905,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
         <div class="section-body">
           <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear"></div>
-          <div class="form-group" style="margin-top:14px;">
-            <label style="display:flex;align-items:center;justify-content:space-between;">
-              Descripción
-              <button id="ia-gen-btn" type="button" onclick="generateIaDescriptionForProduct()" style="background:var(--lav-light);color:var(--lavender);border:none;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Nunito',sans-serif;"><i class="fas fa-wand-magic-sparkles"></i> Generar con IA</button>
-            </label>
-            <textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea>
-          </div>
+          <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea></div>
           <div class="form-grid" style="margin-top:16px;">
             <div class="form-group">
               <label>URLs de imágenes</label>
@@ -2002,120 +1948,22 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     </div>
 
     <div id="settings-section" class="page-section" style="display:none;">
-
-      <!-- ⚠️ ALERTA DE SEGURIDAD RLS -->
-      <div id="rls-alert-banner" style="background:linear-gradient(135deg,#fef9c3,#fde68a);border:2px solid #f59e0b;border-radius:18px;padding:20px 24px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start;">
-        <div style="font-size:28px;flex-shrink:0;">🔒</div>
-        <div style="flex:1;">
-          <div style="font-weight:800;font-size:15px;color:#92400e;margin-bottom:6px;">Seguridad: Activa Row Level Security en Supabase</div>
-          <div style="font-size:12px;color:#78350f;margin-bottom:12px;">Sin RLS, cualquier persona con tu anon key puede leer o modificar productos, ventas y clientes. Ejecuta esto en tu Supabase SQL Editor:</div>
-          <pre style="background:#1e1b4b;color:#c4b5fd;padding:14px;border-radius:10px;font-size:11px;overflow-x:auto;line-height:1.6;">ALTER TABLE products ENABLE ROW LEVEL SECURITY;
-ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
-ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
-ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
-ALTER TABLE client_overrides ENABLE ROW LEVEL SECURITY;
-
--- Políticas: solo usuarios autenticados pueden ver/editar
-CREATE POLICY "auth_only" ON products USING (auth.role() = 'authenticated');
-CREATE POLICY "auth_only" ON orders USING (auth.role() = 'authenticated');
-CREATE POLICY "auth_only" ON customers USING (auth.role() = 'authenticated');</pre>
-          <button onclick="document.getElementById('rls-alert-banner').style.display='none'" style="margin-top:10px;background:#92400e;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;">✓ Ya lo hice, ocultar</button>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-
-        <!-- Contacto -->
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-store" style="color:var(--rose)"></i> Tienda</div></div>
-          <div class="section-body">
+      <div class="section">
+        <div class="section-header"><div class="section-title"><i class="fas fa-sliders" style="color:var(--rose)"></i> Configuración</div></div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
             <div class="form-group"><label>WhatsApp de contacto</label><input type="text" id="settings-whatsapp" placeholder="51956063145"></div>
             <div class="form-group"><label>Email de contacto</label><input type="email" id="settings-email"></div>
-            <div class="form-group"><label>Nombre de la tienda</label><input type="text" id="settings-storename" placeholder="D'Zoe Perú" value="D'Zoe Perú"></div>
           </div>
-        </div>
-
-        <!-- SEO Global -->
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-magnifying-glass" style="color:var(--mint)"></i> SEO Global</div></div>
-          <div class="section-body">
-            <div class="form-group"><label>Title template</label><input type="text" id="settings-seo-title" placeholder="{nombre} | D'Zoe Perú — Ropa Infantil"></div>
-            <div class="form-group"><label>Meta description template</label><textarea id="settings-seo-meta" rows="2" placeholder="Encuentra {nombre} en D'Zoe Perú. Ropa para bebés y niños con envío a todo Perú."></textarea></div>
-            <div class="form-group"><label>OG Image por defecto</label><input type="url" id="settings-og-image" placeholder="https://dzoeperu.com/og-default.jpg"></div>
-          </div>
-        </div>
-
-        <!-- Pixels & Tracking -->
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-chart-mixed" style="color:var(--lavender)"></i> Pixels & Tracking</div></div>
-          <div class="section-body">
-            <div class="form-group"><label><i class="fab fa-meta" style="color:#1877f2"></i> Meta Pixel ID</label><input type="text" id="settings-meta-pixel" placeholder="1234567890123456"></div>
-            <div class="form-group"><label><i class="fab fa-tiktok" style="color:#000"></i> TikTok Pixel ID</label><input type="text" id="settings-tiktok-pixel" placeholder="XXXXXXXXXXXXXXXXXX"></div>
-            <div class="form-group"><label><i class="fab fa-google" style="color:#4285f4"></i> Google Analytics ID</label><input type="text" id="settings-ga-id" placeholder="G-XXXXXXXXXX"></div>
-            <div class="form-group"><label><i class="fab fa-google" style="color:#4285f4"></i> Google Search Console</label><input type="text" id="settings-gsc-token" placeholder="Meta tag verification token"></div>
-          </div>
-        </div>
-
-        <!-- Integraciones -->
-        <div class="section">
-          <div class="section-header"><div class="section-title"><i class="fas fa-plug" style="color:var(--peach)"></i> Integraciones</div></div>
-          <div class="section-body">
-            <div class="form-group"><label><i class="fab fa-whatsapp" style="color:#25d366"></i> WhatsApp Business ID</label><input type="text" id="settings-wa-business-id" placeholder="ID de WhatsApp Business"></div>
-            <div class="form-group"><label><i class="fab fa-facebook" style="color:#1877f2"></i> Facebook Page ID</label><input type="text" id="settings-fb-page-id" placeholder="ID de Página Facebook"></div>
-            <div class="form-group"><label><i class="fab fa-instagram" style="color:#e1306c"></i> Instagram Business ID</label><input type="text" id="settings-ig-business-id" placeholder="ID de Business Instagram"></div>
-            <div class="form-group"><label><i class="fas fa-key" style="color:var(--orange)"></i> Meta Access Token</label><input type="password" id="settings-meta-token" placeholder="Token de Meta Business"></div>
-          </div>
-        </div>
-
-        <!-- IA Configuration -->
-        <div class="section" style="border-left:4px solid var(--lavender);">
-          <div class="section-header"><div class="section-title"><i class="fas fa-robot" style="color:var(--lavender)"></i> Inteligencia Artificial</div></div>
-          <div class="section-body">
-            <div style="background:var(--lav-light);border-radius:12px;padding:14px;margin-bottom:16px;font-size:12px;color:var(--text2);">
-              <strong>IA para D'Zoe:</strong> Genera descripciones SEO, hashtags y copy para redes sociales automáticamente desde el formulario de productos.
-            </div>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                <input type="checkbox" id="ia-auto-desc" style="width:16px;height:16px;accent-color:var(--lavender);" checked>
-                <span style="font-size:13px;font-weight:600;">Auto-descripción SEO al crear producto</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                <input type="checkbox" id="ia-auto-hashtags" style="width:16px;height:16px;accent-color:var(--lavender);" checked>
-                <span style="font-size:13px;font-weight:600;">Auto-hashtags para redes sociales</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                <input type="checkbox" id="ia-auto-seo-title" style="width:16px;height:16px;accent-color:var(--lavender);">
-                <span style="font-size:13px;font-weight:600;">Auto-título SEO optimizado</span>
-              </label>
-            </div>
-            <button class="btn btn-sm" style="margin-top:14px;background:var(--lav-light);color:var(--lavender);font-weight:700;" onclick="testIaDescription()"><i class="fas fa-wand-magic-sparkles"></i> Probar generación IA</button>
-          </div>
-        </div>
-
-        <!-- Backup & Export -->
-        <div class="section" style="border-left:4px solid var(--green);">
-          <div class="section-header"><div class="section-title"><i class="fas fa-database" style="color:var(--green)"></i> Backup & Exportación</div></div>
-          <div class="section-body">
-            <div style="background:var(--green-light);border-radius:12px;padding:14px;margin-bottom:16px;font-size:12px;color:#166534;">
-              <strong>⚠️ Urgente:</strong> Exporta tu data regularmente. Supabase tiene backups automáticos en planes pagados.
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <button class="btn btn-sm" style="background:var(--green-light);color:var(--green);font-weight:700;" onclick="exportData('productos')"><i class="fas fa-boxes-stacked"></i> Productos CSV</button>
-              <button class="btn btn-sm" style="background:var(--blue-light);color:var(--blue);font-weight:700;" onclick="exportData('ventas')"><i class="fas fa-receipt"></i> Ventas CSV</button>
-              <button class="btn btn-sm" style="background:var(--lav-light);color:var(--lavender);font-weight:700;" onclick="exportData('clientes')"><i class="fas fa-users"></i> Clientes CSV</button>
-              <button class="btn btn-sm" style="background:var(--orange-light);color:var(--orange);font-weight:700;" onclick="exportData('caja')"><i class="fas fa-cash-register"></i> Caja CSV</button>
-            </div>
-            <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line2);">
-              <button class="btn btn-primary" style="width:100%;" onclick="exportData('todo')"><i class="fas fa-download"></i> Exportar TODO (ZIP completo)</button>
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line2);">
+            <div style="font-weight:700;margin-bottom:14px;">🔐 Credenciales de acceso</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+              <div class="form-group"><label>Usuario admin</label><input type="text" id="settings-user" placeholder="dzoe_admin"></div>
+              <div class="form-group"><label>Contraseña</label><input type="password" id="settings-pass" placeholder="Nueva contraseña (dejar vacío = no cambiar)"></div>
             </div>
           </div>
+          <div style="margin-top:24px;"><button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
         </div>
-
-      </div>
-
-      <div style="margin-top:20px;display:flex;gap:12px;">
-        <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-floppy-disk"></i> Guardar configuración</button>
-        <button class="btn btn-ghost" onclick="loadSettings()"><i class="fas fa-rotate-left"></i> Recargar</button>
       </div>
     </div>
 
@@ -2388,17 +2236,10 @@ const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClie
 console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
 
 // ============================================
-// LOGIN — Local (con respaldo hasta configurar Supabase Auth)
+// LOGIN
 // ============================================
 const DEFAULT_USER = 'dzoe_admin';
 const DEFAULT_PASS = 'dzoe2024';
-
-function togglePassVisible() {
-  const inp = document.getElementById('login-pass');
-  const ico = document.getElementById('toggle-pass');
-  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash login-input-icon'; }
-  else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
-}
 
 function doLogin() {
   const u = document.getElementById('login-user').value.trim();
@@ -2408,43 +2249,37 @@ function doLogin() {
   const validPass = stored.pass || DEFAULT_PASS;
   if (u === validUser && p === validPass) {
     localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
-    enterPanel(u);
+    document.getElementById('session-user').textContent = u;
+    const screen = document.getElementById('login-screen');
+    screen.classList.add('hidden');
+    document.getElementById('main-app').style.display = 'block';
+    setTimeout(() => screen.remove(), 500);
+    loadAllData().then(() => goToSection('dashboard-section'));
   } else {
-    showLoginError('Usuario o contraseña incorrectos');
+    const err = document.getElementById('login-error');
+    err.classList.add('show');
+    document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos.';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-user').classList.add('shake');
+    setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
   }
 }
 
-function enterPanel(userEmail) {
-  const sessionEl = document.getElementById('session-user');
-  if (sessionEl) sessionEl.textContent = userEmail || 'Admin';
-  const screen = document.getElementById('login-screen');
-  if (screen) { screen.classList.add('hidden'); setTimeout(() => screen.remove(), 500); }
-  const mainApp = document.getElementById('main-app');
-  if (mainApp) mainApp.style.display = 'block';
-  loadAllData().then(() => setTimeout(() => goToSection('dashboard-section'), 100));
-  showAlert('✅ Bienvenida al panel D\'Zoe');
-}
-
-function showLoginError(msg) {
-  const err = document.getElementById('login-error');
-  if (err) err.classList.add('show');
-  const errMsg = document.getElementById('login-error-msg');
-  if (errMsg) errMsg.textContent = msg;
-  const userEl = document.getElementById('login-user');
-  if (userEl) { userEl.classList.add('shake'); setTimeout(() => userEl.classList.remove('shake'), 400); }
+function togglePassVisible() {
+  const inp = document.getElementById('login-pass');
+  const ico = document.getElementById('toggle-pass');
+  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash login-input-icon'; }
+  else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
 }
 
 function checkSession() {
   const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
   if (session.ts && (Date.now() - session.ts < 8 * 60 * 60 * 1000)) {
-    enterPanel(session.user || 'Admin');
-  }
-}
-
-async function logout() {
-  if (confirm('¿Cerrar sesión?')) {
-    localStorage.removeItem('dzoe_session');
-    location.reload();
+    document.getElementById('session-user').textContent = session.user || 'Admin';
+    const screen = document.getElementById('login-screen');
+    screen.style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    loadAllData().then(() => goToSection('dashboard-section'));
   }
 }
 
@@ -2523,17 +2358,16 @@ async function loadAllData() {
 // STATS
 // ============================================
 function updateStats() {
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  set('total-products', products.length);
-  set('badge-products', products.length);
-  set('badge-categories', categories.length);
-  set('badge-orders', orders.length);
+  document.getElementById('total-products').textContent = products.length;
+  document.getElementById('badge-products').textContent = products.length;
+  document.getElementById('badge-categories').textContent = categories.length;
+  document.getElementById('badge-orders').textContent = orders.length;
   let stock = 0, invVal = 0;
   products.forEach(p => { (p.sizes||[]).forEach(s => { stock += s.stock||0; invVal += (s.cost||0)*(s.stock||0); }); });
-  set('total-stock', stock);
-  set('inventory-value', 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}));
+  document.getElementById('total-stock').textContent = stock;
+  document.getElementById('inventory-value').textContent = 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
   const totalSales = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  set('stat-total-sales', 'S/'+totalSales.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}));
+  document.getElementById('stat-total-sales').textContent = 'S/'+totalSales.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
 }
 
 // ============================================
@@ -2542,22 +2376,23 @@ function updateStats() {
 let salesChartInst = null, methodChartInst = null;
 
 function updateDashboard() {
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   const confirmed = orders.filter(o => o.status === 'confirmed').length;
   const pending = orders.filter(o => o.status === 'pending' || !o.status).length;
   const totalAmt = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  set('dash-total-orders', orders.length);
-  set('dash-confirmed', confirmed);
-  set('dash-pending', pending);
-  set('dash-avg-ticket', orders.length ? 'S/'+Math.round(totalAmt/orders.length) : 'S/0');
+  document.getElementById('dash-total-orders').textContent = orders.length;
+  document.getElementById('dash-confirmed').textContent = confirmed;
+  document.getElementById('dash-pending').textContent = pending;
+  document.getElementById('dash-avg-ticket').textContent = orders.length ? 'S/'+Math.round(totalAmt/orders.length) : 'S/0';
+  // Extra stats (cancelled, today revenue, low stock)
   const _cancelled = orders.filter(o => o.status === 'cancelled').length;
   const _todayStr = new Date().toISOString().slice(0,10);
   const _todayAmt = orders.filter(o => o.status === 'confirmed' && (o.created_at||'').slice(0,10) === _todayStr).reduce((a,o)=>a+(parseFloat(o.total)||0), 0);
   const _lowStock = products.filter(p => { const t=(p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0); return t>0&&t<=5; }).length;
-  set('dash-cancelled', _cancelled);
-  set('dash-today', 'S/'+_todayAmt.toFixed(0));
-  set('dash-low-stock', _lowStock);
+  const _elC = document.getElementById('dash-cancelled'); if (_elC) _elC.textContent = _cancelled;
+  const _elT = document.getElementById('dash-today'); if (_elT) _elT.textContent = 'S/'+_todayAmt.toFixed(0);
+  const _elL = document.getElementById('dash-low-stock'); if (_elL) _elL.textContent = _lowStock;
 
+  // Ganancia de productos vendidos (precio venta - costo * qty, solo órdenes confirmadas)
   let _profitSold = 0;
   orders.filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
@@ -2568,7 +2403,8 @@ function updateDashboard() {
       _profitSold += (price - cost) * (it.qty || 1);
     });
   });
-  set('dash-profit-sold', 'S/'+_profitSold.toFixed(0));
+  const _elProfit = document.getElementById('dash-profit-sold');
+  if (_elProfit) _elProfit.textContent = 'S/'+_profitSold.toFixed(0);
 
   // Sales chart by month
   const months = {};
@@ -2584,24 +2420,23 @@ function updateDashboard() {
     const key = d.toLocaleDateString('es-PE',{month:'short',year:'2-digit'});
     if (months[key] !== undefined) months[key] += parseFloat(o.total)||0;
   });
-  const ctx1 = document.getElementById('salesChart');
-  if (ctx1) {
-    if (salesChartInst) salesChartInst.destroy();
-    salesChartInst = new Chart(ctx1.getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: Object.keys(months),
-        datasets: [{ label: 'Ventas (S/)', data: Object.values(months), backgroundColor: 'rgba(194,97,122,.75)', borderRadius: 8, borderSkipped: false }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'Nunito',size:11}}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
-    });
-  }
+  const ctx1 = document.getElementById('salesChart').getContext('2d');
+  if (salesChartInst) salesChartInst.destroy();
+  salesChartInst = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(months),
+      datasets: [{ label: 'Ventas (S/)', data: Object.values(months), backgroundColor: 'rgba(194,97,122,.75)', borderRadius: 8, borderSkipped: false }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'Nunito',size:11}}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
+  });
+
+  // Method chart
   const methodCounts = { yape:0, plin:0, sip:0, bank:0 };
   orders.forEach(o => { if (o.payment_method && methodCounts[o.payment_method] !== undefined) methodCounts[o.payment_method]++; });
-  const ctx2 = document.getElementById('methodChart');
-  if (ctx2) {
+  const ctx2 = document.getElementById('methodChart').getContext('2d');
   if (methodChartInst) methodChartInst.destroy();
-  methodChartInst = new Chart(ctx2.getContext('2d'), {
+  methodChartInst = new Chart(ctx2, {
     type: 'doughnut',
     data: {
       labels: ['Yape','Plin','Sip','Interbank'],
@@ -2609,7 +2444,6 @@ function updateDashboard() {
     },
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{family:'Nunito',size:11}, boxWidth:12 } } }, cutout:'65%' }
   });
-  }
 
   // Top products
   const productCount = {};
@@ -2617,19 +2451,18 @@ function updateDashboard() {
   const sorted = Object.entries(productCount).sort((a,b) => b[1]-a[1]).slice(0,5);
   const maxV = sorted[0]?.[1] || 1;
   const topEl = document.getElementById('top-products-list');
-  if (topEl) topEl.innerHTML = sorted.length ? sorted.map(([name, count]) => `
+  topEl.innerHTML = sorted.length ? sorted.map(([name, count]) => `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="flex:1;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${name}</div>
       <div style="flex:1.5;background:var(--bg2);border-radius:4px;height:8px;overflow:hidden;">
         <div style="width:${Math.round(count/maxV*100)}%;height:100%;background:var(--rose);border-radius:4px;"></div>
       </div>
       <div style="font-size:12px;color:var(--muted);width:28px;text-align:right;">${count}</div>
-    </div>`).join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-chart-bar"></i><br>Sin datos aún</div>';
+    </div>`) .join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-chart-bar"></i><br>Sin datos aún</div>';
 
   // Recent sales
   const recent = [...orders].slice(0,8);
-  const recentBody = document.getElementById('recent-sales-body');
-  if (recentBody) recentBody.innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
+  document.getElementById('recent-sales-body').innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
 
   // Sales stats
   const today = new Date().toDateString();
@@ -2644,11 +2477,11 @@ function updateDashboard() {
   const methodNames = {yape:'💜 Yape',plin:'💙 Plin',sip:'💚 Sip',bank:'🏦 Banco',cash:'💵 Efectivo'};
   const prodCount = {}; orders.forEach(o => (o.items||[]).forEach(it => { prodCount[it.name]=(prodCount[it.name]||0)+(it.qty||1); }));
   const topProd = Object.entries(prodCount).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
-  set('sales-total-amt', 'S/ '+salesTotal.toFixed(2));
-  set('sales-count', orders.length);
+  document.getElementById('sales-total-amt').textContent = 'S/ '+salesTotal.toFixed(2);
+  document.getElementById('sales-count').textContent = orders.length;
   const confirmedSub = document.getElementById('sales-confirmed-sub'); if(confirmedSub) confirmedSub.textContent = salesConfirmed+' confirmados';
-  set('sales-avg', orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00');
-  set('sales-pending-count', salesPending);
+  document.getElementById('sales-avg').textContent = orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00';
+  document.getElementById('sales-pending-count').textContent = salesPending;
   const deudaSub = document.getElementById('sales-deuda-sub'); if(deudaSub) deudaSub.textContent = 'S/ '+totalDeuda.toFixed(2)+' en deuda';
   const todayEl = document.getElementById('sales-today'); if(todayEl) todayEl.textContent = 'S/ '+todayTotal.toFixed(2);
   const topMethodEl = document.getElementById('sales-top-method'); if(topMethodEl) topMethodEl.textContent = topMethodKey ? methodNames[topMethodKey]||topMethodKey : '—';
@@ -2826,13 +2659,9 @@ function salesRowHtml(o) {
     <td><span class="sale-method-badge ${methodBadge}">${methodLabel}</span></td>
     <td>
       <select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
-        <option value="pending"   ${(!o.status||o.status==='pending')  ?'selected':''}>⏳ Pendiente</option>
-        <option value="confirmed" ${o.status==='confirmed' ?'selected':''}>✅ Confirmado</option>
-        <option value="packed"    ${o.status==='packed'    ?'selected':''}>📦 Empacado</option>
-        <option value="shipped"   ${o.status==='shipped'   ?'selected':''}>🚚 Enviado</option>
-        <option value="delivered" ${o.status==='delivered' ?'selected':''}>🎉 Entregado</option>
-        <option value="cancelled" ${o.status==='cancelled' ?'selected':''}>❌ Cancelado</option>
-        <option value="returned"  ${o.status==='returned'  ?'selected':''}>↩️ Devuelto</option>
+        <option value="pending" ${(!o.status||o.status==='pending')?'selected':''}>⏳ Pendiente</option>
+        <option value="confirmed" ${o.status==='confirmed'?'selected':''}>✅ Confirmado</option>
+        <option value="cancelled" ${o.status==='cancelled'?'selected':''}>❌ Cancelado</option>
       </select>
     </td>
     <td style="font-size:11px;white-space:nowrap;">${date}</td>
@@ -2886,31 +2715,8 @@ function openSaleDetail(id) {
       <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">DNI</div><div>${cl.dni||'—'}</div></div>
       <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Teléfono</div><div>${cl.phone||'—'}</div></div>
       <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">WhatsApp</div><div>${o.whatsapp||'—'}</div></div>
-      <div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Destino</div><div style="font-size:12px;">${cl.destination||'—'}</div></div>
+      <div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Destino Shalom</div><div style="font-size:12px;">${cl.destination||'—'}</div></div>
       ${cl.nota?`<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Nota</div><div style="font-size:13px;">${cl.nota}</div></div>`:''}
-    </div>
-    <!-- Tracking de envío -->
-    <div style="background:var(--sky-light);border-radius:14px;padding:16px;margin-bottom:18px;">
-      <div style="font-weight:800;font-size:13px;color:var(--text);margin-bottom:12px;"><i class="fas fa-truck" style="color:var(--sky)"></i> Tracking de envío</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:flex-end;">
-        <div>
-          <label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;">Courier</label>
-          <select id="tracking-courier-${o.id}" style="width:100%;padding:8px 10px;border-radius:8px;border:1.5px solid var(--border);font-family:'Nunito',sans-serif;font-size:12px;background:var(--card);color:var(--text);">
-            <option value="">— Seleccionar —</option>
-            <option value="Olva Courier" ${o.courier==='Olva Courier'?'selected':''}>Olva Courier</option>
-            <option value="Shalom Empresarial" ${o.courier==='Shalom Empresarial'?'selected':''}>Shalom Empresarial</option>
-            <option value="Marvisur" ${o.courier==='Marvisur'?'selected':''}>Marvisur</option>
-            <option value="Civa" ${o.courier==='Civa'?'selected':''}>Civa</option>
-            <option value="Otro" ${o.courier==='Otro'?'selected':''}>Otro</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;">Nro. de tracking</label>
-          <input id="tracking-number-${o.id}" type="text" value="${o.tracking_number||''}" placeholder="Ej: SH-123456789" style="width:100%;padding:8px 10px;border-radius:8px;border:1.5px solid var(--border);font-family:'Nunito',sans-serif;font-size:12px;background:var(--card);color:var(--text);">
-        </div>
-        <button onclick="saveTracking(${o.id})" style="background:var(--sky);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;"><i class="fas fa-floppy-disk"></i> Guardar</button>
-      </div>
-      ${o.shipping_date?`<div style="font-size:11px;color:var(--muted);margin-top:8px;">📅 Enviado el ${new Date(o.shipping_date).toLocaleDateString('es-PE')}</div>`:''}
     </div>
     <div style="font-weight:700;margin-bottom:10px;">Productos del pedido</div>
     ${itemsHtml}
@@ -2918,26 +2724,11 @@ function openSaleDetail(id) {
       <span style="font-weight:700;">Total pagado</span>
       <span style="font-family:Baloo2,cursive;font-size:26px;font-weight:700;color:var(--rose);">S/ ${parseFloat(o.total||0).toFixed(2)}</span>
     </div>
-    <div style="margin-top:16px;font-size:12px;color:var(--muted);">Fecha: ${date} · Método: ${o.payment_method||'—'} · Estado: ${getOrderStateLabel(o.status).label}</div>`;
+    <div style="margin-top:16px;font-size:12px;color:var(--muted);">Fecha: ${date} · Método: ${o.payment_method||'—'}</div>`;
   document.getElementById('sale-modal').classList.add('open');
 }
 
 function closeSaleModal() { document.getElementById('sale-modal').classList.remove('open'); }
-
-async function saveTracking(orderId) {
-  const courier = document.getElementById(`tracking-courier-${orderId}`)?.value || '';
-  const trackingNum = document.getElementById(`tracking-number-${orderId}`)?.value.trim() || '';
-  const shippingDate = new Date().toISOString();
-  const update = { courier, tracking_number: trackingNum };
-  if (trackingNum) update.shipping_date = shippingDate;
-  if (supabaseClient) {
-    const { error } = await supabaseClient.from('orders').update(update).eq('id', orderId);
-    if (error) { showAlert('Error al guardar tracking', 'error'); return; }
-  }
-  const o = orders.find(x => x.id === orderId);
-  if (o) { o.courier = courier; o.tracking_number = trackingNum; if(trackingNum) o.shipping_date = shippingDate; }
-  showAlert(`✅ Tracking guardado: ${courier} ${trackingNum}`);
-}
 
 // ============================================
 // PRODUCTOS VENDIDOS
@@ -3794,8 +3585,6 @@ function renderClientsSection() {
   body.innerHTML = filtered.map(cl => {
     const lastDate = cl.lastDate ? cl.lastDate.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
     const waUrl = cl.phone ? `https://wa.me/51${cl.phone.replace(/^51/,'')}?text=${encodeURIComponent(`Hola ${cl.name}, somos D'Zoe Perú 👗`)}` : '';
-    const score = getClientScore(cl);
-    const ltv = cl.total;
     return `<tr>
       <td><span style="font-family:monospace;font-size:12px;background:var(--bg2);padding:2px 8px;border-radius:6px;">${cl.dni||'—'}</span></td>
       <td><strong>${cl.name||'—'}</strong>${cl._overridden?'<span style="font-size:9px;background:var(--lav-light);color:var(--lavender);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700;">Editado</span>':''}</td>
@@ -3803,11 +3592,7 @@ function renderClientsSection() {
       <td>${cl.phone ? `<a href="${waUrl}" target="_blank" style="color:var(--green);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px;"><i class="fab fa-whatsapp"></i> ${cl.phone}</a>` : '—'}</td>
       <td>${cl.destino ? `<span style="background:var(--sky-light);color:var(--sky);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;"><i class="fas fa-location-dot"></i> ${cl.destino}</span>` : '<span style="color:var(--muted);font-size:12px;">—</span>'}</td>
       <td style="text-align:center;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${cl.count}</span></td>
-      <td>
-        <span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span>
-        <span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;background:${score.bg};color:${score.color};margin-left:6px;">${score.label}</span>
-        ${cl.nota?`<div style="font-size:10px;color:var(--muted);margin-top:2px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${cl.nota}">📝 ${cl.nota}</div>`:''}
-      </td>
+      <td><span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span>${cl.nota?`<div style="font-size:10px;color:var(--muted);margin-top:2px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${cl.nota}">📝 ${cl.nota}</div>`:''}</td>
       <td style="font-size:12px;color:var(--muted);">${lastDate}</td>
       <td>
         <div style="display:flex;gap:5px;">
@@ -4057,8 +3842,7 @@ function goToSection(sectionId) {
   if (sec) { sec.style.display='block'; }
   const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
   const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
-  const topbarName = document.getElementById('topbar-section-name');
-  if (topbarName) topbarName.textContent = nameMap[sectionId]||'Panel';
+  document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
   document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
@@ -4070,8 +3854,6 @@ function goToSection(sectionId) {
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') renderSuppliersSection();
-  if (sectionId === 'dashboard-section') setTimeout(renderAnalyticsPremium, 100);
-  if (sectionId === 'settings-section') { loadSettings(); subscribeRealtimeNotifications(); }
   closeMobileSidebar();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -4106,20 +3888,17 @@ function updateClock() {
   if (c) c.textContent = new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
-function openMobileSidebar() { document.getElementById('sidebar')?.classList.add('open'); document.getElementById('sidebar-overlay')?.classList.add('active'); }
-function closeMobileSidebar() { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sidebar-overlay')?.classList.remove('active'); }
+function openMobileSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); }
+function closeMobileSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); }
 
-async function logout() {
-  if (confirm('¿Cerrar sesión?')) {
-    localStorage.removeItem('dzoe_session');
-    location.reload();
-  }
+function logout() {
+  if (confirm('¿Cerrar sesión?')) { localStorage.removeItem('dzoe_session'); location.reload(); }
 }
 
 // ============================================
 // CLOSE MODAL OUTSIDE CLICK
 // ============================================
-document.getElementById('sale-modal')?.addEventListener('click', function(e) {
+document.getElementById('sale-modal').addEventListener('click', function(e) {
   if (e.target === this) closeSaleModal();
 });
 
@@ -5754,442 +5533,201 @@ function niUpdatePreview() {
 if (typeof iconMap !== 'undefined') iconMap['nuevo-ingreso-section'] = 'fa-star';
 if (typeof nameMap !== 'undefined') nameMap['nuevo-ingreso-section'] = '⭐ Nuevo Ingreso';
 
+</script>
+
+<div id="feed-engine" class="feed-panel">
+  <h2>Feed Engine D'Zoe</h2>
+
+  <div class="feed-stats">
+    <div>Total: <span id="total-products">0</span></div>
+    <div>Válidos: <span id="valid-products">0</span></div>
+    <div>Errores: <span id="error-products">0</span></div>
+    <div>Precio 0: <span id="zero-price">0</span></div>
+  </div>
+
+  <button onclick="syncCatalog()">Sincronizar catálogo</button>
+  <button onclick="exportMetaFeed()">Exportar Meta</button>
+
+  <div id="feed-errors"></div>
+</div>
+
+<script type="module" src="admin-feed.js"></script>
+
+  <div class="meta-integrations">
+  <h2>Integraciones Meta</h2>
+
+  <label>Meta Catalog Feed URL</label>
+  <input id="meta-feed-url" type="text" value="https://dzoeperu.com/catalog.xml">
+
+  <label>Facebook Page ID</label>
+  <input id="facebook-page-id" type="text">
+
+  <label>Instagram Business ID</label>
+  <input id="instagram-business-id" type="text">
+
+  <label>WhatsApp Business ID</label>
+  <input id="whatsapp-business-id" type="text">
+
+  <label>Meta Access Token</label>
+  <input id="meta-access-token" type="password">
+
+  <button onclick="saveMetaConfig()">Guardar configuración</button>
+  <button onclick="connectMetaCatalog()">Conectar catálogo</button>
+</div>
+
+<script>
 // ============================================
+// MEJORAS PREMIUM — Agregadas sobre el original
+// ============================================
+
+// EXPORT CSV
+function exportData(type) {
+  let rows = [], filename = '';
+  if (type === 'productos') {
+    const headers = ['id','nombre','precio_min','stock_total','estado','creado'];
+    rows = [headers, ...products.map(p => [
+      p.id,
+      '"'+((p.name||'').replace(/"/g,'""'))+'"',
+      (p.sizes||[]).reduce((m,s)=>!m||s.price<m?s.price:m,0),
+      (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0),
+      p.status==='active'?'Activo':'Inactivo',
+      p.created_at
+    ])];
+    filename = 'dzoe-productos.csv';
+  } else if (type === 'ventas') {
+    const headers = ['id','cliente','total','adelanto','deuda','metodo','estado','fecha'];
+    rows = [headers, ...orders.map(o => [
+      o.id,
+      '"'+((o.name||'')+' '+(o.lastname||'')).trim()+'"',
+      o.total, o.adelanto||0, o.deuda||0,
+      o.payment_method||'', o.status||'pending', o.created_at
+    ])];
+    filename = 'dzoe-ventas.csv';
+  } else if (type === 'clientes') {
+    const clients = buildClientsFromOrders();
+    const headers = ['nombre','apellido','dni','telefono','pedidos','total','ultima_compra'];
+    rows = [headers, ...clients.map(cl => [
+      '"'+(cl.name||'')+'"','"'+(cl.lastname||'')+'"',
+      cl.dni||'',cl.phone||'',cl.count,cl.total.toFixed(2),
+      cl.lastDate?cl.lastDate.toLocaleDateString('es-PE'):''
+    ])];
+    filename = 'dzoe-clientes.csv';
+  } else if (type === 'caja') {
+    const gastos = JSON.parse(localStorage.getItem('dzoe_gastos')||'[]');
+    const headers = ['fecha','categoria','descripcion','monto'];
+    rows = [headers, ...gastos.map(g => [g.fecha,g.cat,'"'+((g.desc||'').replace(/"/g,'""'))+'"',g.monto])];
+    filename = 'dzoe-caja.csv';
+  } else if (type === 'todo') {
+    ['productos','ventas','clientes','caja'].forEach((t,i) => setTimeout(()=>exportData(t), i*400));
+    showAlert('📦 Descargando 4 archivos CSV...');
+    return;
+  }
+  if (!rows.length) { showAlert('Sin datos para exportar','error'); return; }
+  const csv = rows.map(r=>r.join(',')).join('\n');
+  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showAlert('✅ '+filename+' descargado');
+}
+
 // COMMAND PALETTE (Ctrl+K)
-// ============================================
 function openCommandPalette() {
-  document.getElementById('cmd-palette').classList.add('open');
-  document.getElementById('cmd-input').value = '';
+  let pal = document.getElementById('cmd-palette');
+  if (!pal) {
+    pal = document.createElement('div');
+    pal.id = 'cmd-palette';
+    pal.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:flex-start;justify-content:center;padding-top:100px;background:rgba(30,20,60,.55);backdrop-filter:blur(6px);';
+    pal.innerHTML = '<div style="background:#fff;border-radius:20px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;"><div style="padding:16px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px;"><i class=\"fas fa-magnifying-glass\" style=\"color:#999;font-size:16px;\"></i><input id=\"cmd-input\" type=\"text\" placeholder=\"Buscar... (Esc para cerrar)\" oninput=\"renderCmdResults(this.value)\" style=\"flex:1;border:none;outline:none;font-family:Nunito,sans-serif;font-size:15px;font-weight:600;background:transparent;\"></div><div id=\"cmd-results\" style=\"max-height:380px;overflow-y:auto;\"></div></div>';
+    pal.addEventListener('click', e => { if(e.target===pal) closeCommandPalette(); });
+    document.body.appendChild(pal);
+  }
+  pal.style.display = 'flex';
+  setTimeout(() => document.getElementById('cmd-input')?.focus(), 50);
   renderCmdResults('');
-  setTimeout(() => document.getElementById('cmd-input').focus(), 50);
 }
 function closeCommandPalette() {
-  document.getElementById('cmd-palette').classList.remove('open');
+  const pal = document.getElementById('cmd-palette');
+  if (pal) pal.style.display = 'none';
 }
 function renderCmdResults(q) {
   const query = q.toLowerCase();
   const commands = [
-    { label:'📊 Dashboard', action:()=>goToSection('dashboard-section'), tags:'inicio home' },
-    { label:'📦 Inventario', action:()=>goToSection('inventory-section'), tags:'productos stock' },
-    { label:'🛍️ Ventas', action:()=>goToSection('sales-section'), tags:'pedidos ordenes' },
-    { label:'👥 Clientes', action:()=>goToSection('clients-section'), tags:'compradores crm' },
-    { label:'🚚 Proveedores', action:()=>goToSection('suppliers-section'), tags:'compras' },
-    { label:'💰 Caja', action:()=>goToSection('caja-section'), tags:'finanzas gastos ingresos' },
-    { label:'💸 Préstamos', action:()=>goToSection('prestamos-section'), tags:'deudas' },
-    { label:'✍️ Blog', action:()=>goToSection('blog-admin-section'), tags:'posts articulos seo' },
-    { label:'☁️ Productos Digitales', action:()=>goToSection('digitales-admin-section'), tags:'ebooks pdfs' },
-    { label:'⭐ Nuevo Ingreso', action:()=>goToSection('nuevo-ingreso-section'), tags:'lanzamiento' },
-    { label:'➕ Agregar Producto', action:()=>goToSection('add-product-section'), tags:'nuevo crear' },
-    { label:'⚙️ Configuración', action:()=>goToSection('settings-section'), tags:'ajustes backup pixeles ia' },
-    { label:'🌙 Modo Oscuro', action:()=>toggleDarkMode(), tags:'dark light tema' },
-    { label:'📤 Exportar Productos CSV', action:()=>exportData('productos'), tags:'backup descargar' },
-    { label:'📤 Exportar Ventas CSV', action:()=>exportData('ventas'), tags:'backup descargar' },
-    { label:'📤 Exportar Clientes CSV', action:()=>exportData('clientes'), tags:'backup descargar' },
-    { label:'🚪 Cerrar sesión', action:()=>logout(), tags:'salir logout' },
+    {label:'📊 Dashboard', fn:'dashboard-section'},
+    {label:'📦 Inventario', fn:'inventory-section'},
+    {label:'🛍️ Ventas', fn:'sales-section'},
+    {label:'👥 Clientes', fn:'clients-section'},
+    {label:'🚚 Proveedores', fn:'suppliers-section'},
+    {label:'💰 Caja', fn:'caja-section'},
+    {label:'✍️ Blog', fn:'blog-admin-section'},
+    {label:'☁️ Digitales', fn:'digitales-admin-section'},
+    {label:'⭐ Nuevo Ingreso', fn:'nuevo-ingreso-section'},
+    {label:'➕ Agregar Producto', fn:'add-product-section'},
+    {label:'⚙️ Configuración', fn:'settings-section'},
   ];
-  const filtered = query
-    ? commands.filter(c => c.label.toLowerCase().includes(query) || c.tags.includes(query))
-    : commands.slice(0, 8);
+  const filtered = query ? commands.filter(c=>c.label.toLowerCase().includes(query)) : commands;
   const el = document.getElementById('cmd-results');
-  if (!filtered.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">Sin resultados</div>'; return; }
-  el.innerHTML = filtered.map((c,i) => `
-    <button onclick="closeCommandPalette();(${c.action.toString()})()" style="width:100%;text-align:left;padding:12px 18px;background:${i===0?'var(--rose-soft)':'transparent'};border:none;border-bottom:1px solid var(--line2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);transition:background .15s;" onmouseover="this.style.background='var(--rose-soft)'" onmouseout="this.style.background='transparent'">
-      ${c.label}
-    </button>`).join('');
+  if (!el) return;
+  el.innerHTML = filtered.map(c =>
+    '<button onclick=\"closeCommandPalette();goToSection(\''+c.fn+'\')\" style=\"width:100%;text-align:left;padding:12px 18px;background:transparent;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;font-family:Nunito,sans-serif;font-size:14px;font-weight:600;color:#2D2545;\" onmouseover=\"this.style.background='#f5f0ff';\" onmouseout=\"this.style.background='transparent';\">'+c.label+'</button>'
+  ).join('') || '<div style=\"padding:20px;text-align:center;color:#999;\">Sin resultados</div>';
 }
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openCommandPalette(); }
-  if (e.key === 'Escape') closeCommandPalette();
+  if ((e.ctrlKey||e.metaKey) && e.key==='k') { e.preventDefault(); openCommandPalette(); }
+  if (e.key==='Escape') closeCommandPalette();
 });
 
-// ============================================
-// LIVE NOTIFICATIONS (Supabase Realtime)
-// ============================================
-let notifCount = 0;
-const notifList = [];
-
-function addNotification(icon, msg, type='info') {
-  notifCount++;
-  notifList.unshift({ icon, msg, type, time: new Date() });
-  const badge = document.getElementById('notif-badge');
-  if (badge) { badge.textContent = notifCount; badge.style.display = 'flex'; }
-  showToast(`${icon} ${msg}`);
-}
-
-function subscribeRealtimeNotifications() {
-  if (!supabaseClient) return;
-  supabaseClient
-    .channel('admin-notifications')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, payload => {
-      const o = payload.new;
-      addNotification('🛍️', `Nueva venta: ${o.name||'Cliente'} — S/${parseFloat(o.total||0).toFixed(2)}`);
-      orders.unshift(o);
-      updateStats();
-      filterSales();
-    })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, payload => {
-      const o = payload.new;
-      const idx = orders.findIndex(x => x.id === o.id);
-      if (idx !== -1) orders[idx] = o;
-    })
-    .subscribe();
-
-  // Stock bajo check cada 5 min
-  setInterval(checkLowStockAlerts, 5 * 60 * 1000);
-}
-
-function checkLowStockAlerts() {
-  const lowStock = products.filter(p => (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0) <= 2 && (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0) > 0);
-  lowStock.forEach(p => {
-    const stock = (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0);
-    if (stock <= 2) addNotification('⚠️', `Stock crítico: ${p.name} (${stock} uds)`, 'warning');
-  });
-}
-
-// ============================================
-// CRM — SCORE DE CLIENTE
-// ============================================
+// CRM SCORE
 function getClientScore(cl) {
-  if (cl.total >= 500 || cl.count >= 5) return { label:'VIP 👑', color:'var(--purple)', bg:'var(--purple-light)' };
-  if (cl.total >= 200 || cl.count >= 3) return { label:'Frecuente ⭐', color:'var(--orange)', bg:'var(--orange-light)' };
-  if (cl.count === 1 && cl.lastDate && (Date.now()-cl.lastDate)>30*86400000) return { label:'Dormido 😴', color:'var(--muted)', bg:'var(--bg2)' };
-  return { label:'Nuevo 🌱', color:'var(--green)', bg:'var(--green-light)' };
+  if (cl.total >= 500 || cl.count >= 5) return {label:'VIP 👑', color:'#6b2fd4', bg:'#ece9fe'};
+  if (cl.total >= 200 || cl.count >= 3) return {label:'Frecuente ⭐', color:'#c97010', bg:'#fef0c7'};
+  if (cl.count === 1 && cl.lastDate && (Date.now()-cl.lastDate)>30*86400000) return {label:'Dormido 😴', color:'#8A80A8', bg:'#F3EEFA'};
+  return {label:'Nuevo 🌱', color:'#1f9e6e', bg:'#d0f2e6'};
 }
 
-// ============================================
-// ANALYTICS PREMIUM — AOV, ROAS, Conversión, Heatmap horas
-// ============================================
-function renderAnalyticsPremium() {
-  const confirmedOrders = orders.filter(o => o.status === 'confirmed');
-  const totalRevenue = confirmedOrders.reduce((a,o) => a+(parseFloat(o.total)||0), 0);
-  const aov = confirmedOrders.length ? totalRevenue/confirmedOrders.length : 0;
-  const totalClients = new Set(confirmedOrders.map(o => o.dni||o.phone||o.name)).size;
-  const newClients = totalClients;
-
-  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
-  set('analytics-aov', 'S/' + aov.toFixed(2));
-  set('analytics-orders-total', confirmedOrders.length);
-  set('analytics-revenue', 'S/' + totalRevenue.toFixed(2));
-  set('analytics-clients', totalClients);
-
-  // Heatmap por hora de compra
-  const hourMap = {};
-  orders.forEach(o => {
-    if (!o.created_at) return;
-    const h = new Date(o.created_at).getHours();
-    hourMap[h] = (hourMap[h]||0)+1;
-  });
-  const maxH = Math.max(...Object.values(hourMap), 1);
-  const heatEl = document.getElementById('hour-heatmap');
-  if (heatEl) {
-    heatEl.innerHTML = Array.from({length:24},(_,h) => {
-      const v = hourMap[h]||0;
-      const pct = v/maxH;
-      const bg = pct===0?'var(--bg2)':pct<0.33?'#bfdbfe':pct<0.66?'#60a5fa':'#2563eb';
-      return `<div title="${h}:00 — ${v} ventas" style="width:28px;height:28px;border-radius:6px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,.4);">${h}</div>`;
-    }).join('');
-  }
-
-  // Top productos más vistos (por aparición en items)
-  const productHits = {};
-  orders.forEach(o => (o.items||[]).forEach(it => {
-    productHits[it.name] = (productHits[it.name]||0)+1;
-  }));
-  const topProds = Object.entries(productHits).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const topEl = document.getElementById('top-viewed-products');
-  if (topEl) {
-    topEl.innerHTML = topProds.map(([name,count],i) => `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2);">
-        <div style="width:24px;height:24px;border-radius:6px;background:var(--rose-light);color:var(--rose);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;">${i+1}</div>
-        <div style="flex:1;font-size:13px;font-weight:600;">${name}</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:var(--rose);">${count}×</div>
-      </div>`).join('');
-  }
-}
-
-// ============================================
-// HISTORIAL DE MOVIMIENTOS DE STOCK
-// ============================================
-async function logStockMovement(productId, productName, change, reason, size) {
-  if (!supabaseClient) return;
-  await supabaseClient.from('stock_movements').insert({
-    product_id: productId,
-    product_name: productName,
-    change: change,
-    reason: reason,
-    size: size || null,
-    user_email: (await supabaseClient.auth.getUser()).data?.user?.email || 'admin',
-    created_at: new Date().toISOString()
-  }).then(({error}) => {
-    if (error) console.warn('stock_movements insert error:', error.message);
-  });
-}
-
-// ============================================
-// FUNNEL DE VENTAS — Estados extendidos
-// ============================================
-const ORDER_STATES = [
-  { value:'pending',   label:'⏳ Pendiente',   color:'var(--orange)' },
-  { value:'confirmed', label:'✅ Confirmado',   color:'var(--green)'  },
-  { value:'packed',    label:'📦 Empacado',     color:'var(--blue)'   },
-  { value:'shipped',   label:'🚚 Enviado',      color:'var(--lavender)' },
-  { value:'delivered', label:'🎉 Entregado',    color:'var(--mint)'   },
-  { value:'cancelled', label:'❌ Cancelado',    color:'var(--red)'    },
-  { value:'returned',  label:'↩️ Devuelto',     color:'var(--peach)'  },
-];
-
-function getOrderStateLabel(status) {
-  return ORDER_STATES.find(s => s.value === status) || ORDER_STATES[0];
-}
-
-// ============================================
-// EXPORT CSV / BACKUP
-// ============================================
-function exportData(type) {
-  let rows = [], filename = '';
-  if (type === 'productos' || type === 'todo') {
-    const headers = ['id','nombre','descripcion','categorias','precio_min','stock_total','destacado','estado','creado'];
-    rows = [headers, ...products.map(p => [
-      p.id,
-      `"${(p.name||'').replace(/"/g,'""')}"`,
-      `"${(p.description||'').replace(/"/g,'""')}"`,
-      `"${(p.categories||[]).join(', ')}"`,
-      (p.sizes||[]).reduce((m,s)=>!m||s.price<m?s.price:m,0),
-      (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0),
-      p.featured?'Sí':'No',
-      p.status==='active'?'Activo':'Inactivo',
-      p.created_at
-    ])];
-    if (type === 'productos') { downloadCSV(rows, 'dzoe-productos.csv'); return; }
-  }
-  if (type === 'ventas' || type === 'todo') {
-    const vheaders = ['id','cliente','dni','telefono','total','adelanto','deuda','metodo','estado','fecha'];
-    const vrows = [vheaders, ...orders.map(o => [
-      o.id,
-      `"${(o.name||'')+' '+(o.lastname||'')}".trim()`,
-      o.dni||'',
-      o.phone||'',
-      o.total,
-      o.adelanto||0,
-      o.deuda||0,
-      o.payment_method||'',
-      o.status||'pending',
-      o.created_at
-    ])];
-    if (type === 'ventas') { downloadCSV(vrows, 'dzoe-ventas.csv'); return; }
-  }
-  if (type === 'clientes' || type === 'todo') {
-    const clients = buildClientsFromOrders();
-    const cheaders = ['nombre','apellido','dni','telefono','pedidos','total','ultima_compra'];
-    const crows = [cheaders, ...clients.map(cl => [
-      `"${cl.name}"`,`"${cl.lastname}"`,cl.dni,cl.phone,cl.count,cl.total.toFixed(2),cl.lastDate?.toLocaleDateString('es-PE')||''
-    ])];
-    if (type === 'clientes') { downloadCSV(crows, 'dzoe-clientes.csv'); return; }
-  }
-  if (type === 'caja' || type === 'todo') {
-    const gastos = JSON.parse(localStorage.getItem('dzoe_gastos')||'[]');
-    const gheaders = ['fecha','categoria','descripcion','monto'];
-    const grows = [gheaders, ...gastos.map(g => [g.fecha,g.cat,`"${(g.desc||'').replace(/"/g,'""')}"`,g.monto])];
-    if (type === 'caja') { downloadCSV(grows, 'dzoe-caja.csv'); return; }
-  }
-  if (type === 'todo') {
-    // Para ZIP completo, descargamos cada CSV secuencialmente
-    const exportSets = [
-      { type:'productos', name:'dzoe-productos.csv' },
-      { type:'ventas',    name:'dzoe-ventas.csv'    },
-      { type:'clientes',  name:'dzoe-clientes.csv'  },
-      { type:'caja',      name:'dzoe-caja.csv'      },
-    ];
-    exportSets.forEach((s,i) => setTimeout(() => exportData(s.type), i*300));
-    showAlert('📦 Descargando 4 archivos CSV...', 'info');
-  }
-}
-
-function downloadCSV(rows, filename) {
-  const csv = rows.map(r => r.join(',')).join('\n');
-  const blob = new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showAlert(`✅ ${filename} descargado`);
-}
-
-// ============================================
-// IA — GENERACIÓN DE DESCRIPCIONES SEO
-// ============================================
-async function generateIaDescription(productName, categories, sizes) {
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: `Eres un experto en SEO para tiendas de ropa infantil en Perú. 
-Genera para el producto "${productName}" (categorías: ${categories}, tallas: ${sizes}):
-1. Descripción SEO de 2-3 oraciones (máx 160 caracteres por Google)
-2. 5 hashtags para Instagram/TikTok
-3. Título SEO optimizado
-
-Responde SOLO en JSON sin backticks:
-{"description":"...","hashtags":"...","seo_title":"..."}`
-        }]
-      })
-    });
-    const data = await response.json();
-    const text = data.content?.[0]?.text || '{}';
-    return JSON.parse(text.replace(/```json|```/g,'').trim());
-  } catch(e) {
-    return null;
-  }
-}
-
-async function generateIaDescriptionForProduct() {
-  const name = document.getElementById('product-name')?.value.trim();
-  if (!name) { showAlert('Ingresa el nombre del producto primero', 'error'); return; }
-  const cats = selectedCategories.join(', ') || 'Ropa infantil';
-  const sizes = productSizes.map(s=>s.size).join(', ') || 'Varias tallas';
-  const btn = document.getElementById('ia-gen-btn');
-  if (btn) { btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generando...'; }
-  showToast('🤖 Generando con IA...');
-  const result = await generateIaDescription(name, cats, sizes);
-  if (btn) { btn.disabled=false; btn.innerHTML='<i class="fas fa-wand-magic-sparkles"></i> Generar con IA'; }
-  if (result) {
-    if (result.description && document.getElementById('product-description')) {
-      document.getElementById('product-description').value = result.description;
-    }
-    if (result.hashtags) showAlert(`✅ Descripción generada\n\nHashtags: ${result.hashtags}`, 'info');
-    if (result.seo_title) showToast(`🏷️ Título SEO: ${result.seo_title}`);
-  } else {
-    showAlert('Error al generar con IA. Inténtalo de nuevo.', 'error');
-  }
-}
-
-async function testIaDescription() {
-  const result = await generateIaDescription('Conjunto Teddy Bear', 'Bebés, Niñas', '6-12m, 12-18m, 1-2a');
-  if (result) {
-    alert(`✅ IA funcionando correctamente!\n\nDescripción: ${result.description}\n\nHashtags: ${result.hashtags}\n\nTítulo SEO: ${result.seo_title}`);
-  } else {
-    alert('❌ Error conectando con la IA. Verifica tu conexión.');
-  }
-}
-
-// ============================================
-// SETTINGS — Save / Load (extendido)
-// ============================================
+// SETTINGS MEJORADO
+const _origSaveSettings = typeof saveSettings !== 'undefined' ? saveSettings : null;
 function saveSettings() {
+  const u = document.getElementById('settings-user')?.value.trim();
+  const p = document.getElementById('settings-pass')?.value;
+  const stored = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
+  if (u) stored.user = u;
+  if (p) stored.pass = p;
+  localStorage.setItem('dzoe_credentials', JSON.stringify(stored));
   const settings = {
-    whatsapp:   document.getElementById('settings-whatsapp')?.value || '',
-    email:      document.getElementById('settings-email')?.value || '',
-    storename:  document.getElementById('settings-storename')?.value || "D'Zoe Perú",
-    seo_title:  document.getElementById('settings-seo-title')?.value || '',
-    seo_meta:   document.getElementById('settings-seo-meta')?.value || '',
-    og_image:   document.getElementById('settings-og-image')?.value || '',
-    meta_pixel: document.getElementById('settings-meta-pixel')?.value || '',
-    tiktok_pixel: document.getElementById('settings-tiktok-pixel')?.value || '',
-    ga_id:      document.getElementById('settings-ga-id')?.value || '',
-    gsc_token:  document.getElementById('settings-gsc-token')?.value || '',
-    wa_business_id: document.getElementById('settings-wa-business-id')?.value || '',
-    fb_page_id: document.getElementById('settings-fb-page-id')?.value || '',
-    ig_business_id: document.getElementById('settings-ig-business-id')?.value || '',
-    ia_auto_desc: document.getElementById('ia-auto-desc')?.checked,
-    ia_auto_hashtags: document.getElementById('ia-auto-hashtags')?.checked,
-    ia_auto_seo_title: document.getElementById('ia-auto-seo-title')?.checked,
+    whatsapp: document.getElementById('settings-whatsapp')?.value || '',
+    email: document.getElementById('settings-email')?.value || '',
   };
   localStorage.setItem('dzoe_settings', JSON.stringify(settings));
   showAlert('✅ Configuración guardada');
 }
 
+// BACKUP rápido desde settings
 function loadSettings() {
-  const s = JSON.parse(localStorage.getItem('dzoe_settings')||'{}');
-  const set = (id,v) => { const el=document.getElementById(id); if(el) el.value=v||''; };
-  const setChk = (id,v) => { const el=document.getElementById(id); if(el) el.checked=!!v; };
-  set('settings-whatsapp', s.whatsapp);
-  set('settings-email', s.email);
-  set('settings-storename', s.storename || "D'Zoe Perú");
-  set('settings-seo-title', s.seo_title);
-  set('settings-seo-meta', s.seo_meta);
-  set('settings-og-image', s.og_image);
-  set('settings-meta-pixel', s.meta_pixel);
-  set('settings-tiktok-pixel', s.tiktok_pixel);
-  set('settings-ga-id', s.ga_id);
-  set('settings-gsc-token', s.gsc_token);
-  set('settings-wa-business-id', s.wa_business_id);
-  set('settings-fb-page-id', s.fb_page_id);
-  set('settings-ig-business-id', s.ig_business_id);
-  setChk('ia-auto-desc', s.ia_auto_desc !== false);
-  setChk('ia-auto-hashtags', s.ia_auto_hashtags !== false);
-  setChk('ia-auto-seo-title', s.ia_auto_seo_title);
+  const settings = JSON.parse(localStorage.getItem('dzoe_settings')||'{}');
+  const creds = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
+  if (document.getElementById('settings-whatsapp')) document.getElementById('settings-whatsapp').value = settings.whatsapp||'';
+  if (document.getElementById('settings-email')) document.getElementById('settings-email').value = settings.email||'';
+  if (document.getElementById('settings-user')) document.getElementById('settings-user').value = creds.user||DEFAULT_USER;
 }
 
-// ============================================
-// INIT PREMIUM FEATURES
-// ============================================
-(function initPremiumFeatures() {
-  // Subscribe realtime after login
-  const origEnterPanel = typeof enterPanel !== 'undefined' ? enterPanel : null;
-  // Realtime subscribe on load if session active
-  setTimeout(() => {
-    const mainApp = document.getElementById('main-app');
-    if (mainApp && mainApp.style.display !== 'none') {
-      subscribeRealtimeNotifications();
-    }
-  }, 2000);
-  // Keyboard shortcut hint in topbar
+// Hint Ctrl+K en topbar
+setTimeout(() => {
   const tb = document.querySelector('.topbar-right');
-  if (tb) {
-    const hint = document.createElement('div');
-    hint.innerHTML = '<button onclick="openCommandPalette()" title="Paleta de comandos (Ctrl+K)" style="display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--border);padding:7px 12px;border-radius:99px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;box-shadow:var(--shadow);transition:all .2s;" onmouseover="this.style.borderColor=\'var(--rose)\'" onmouseout="this.style.borderColor=\'var(--border)\'"><i class="fas fa-magnifying-glass"></i> Buscar <kbd style="background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:10px;">Ctrl+K</kbd></button>';
-    hint.style.display='contents';
+  if (tb && !document.getElementById('cmd-hint-btn')) {
+    const hint = document.createElement('button');
+    hint.id = 'cmd-hint-btn';
+    hint.onclick = openCommandPalette;
+    hint.title = 'Paleta de comandos (Ctrl+K)';
+    hint.style.cssText = 'display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #DDD0EE;padding:7px 12px;border-radius:99px;font-size:11px;font-weight:700;color:#5C4E7A;cursor:pointer;box-shadow:0 2px 12px rgba(140,100,190,.1);font-family:Nunito,sans-serif;';
+    hint.innerHTML = '<i class=\"fas fa-magnifying-glass\"></i> Buscar <kbd style=\"background:#F3EEFA;border:1px solid #DDD0EE;border-radius:4px;padding:1px 5px;font-size:10px;\">Ctrl+K</kbd>';
     tb.insertBefore(hint, tb.firstChild);
   }
-})();
+}, 500);
 
+console.log('✅ Mejoras premium cargadas: Export CSV, Command Palette (Ctrl+K), CRM Score');
 </script>
-
-<!-- ============================================
-     COMMAND PALETTE (Ctrl+K)
-     ============================================ -->
-<div id="cmd-palette" style="position:fixed;inset:0;z-index:10000;display:none;align-items:flex-start;justify-content:center;padding-top:100px;background:rgba(30,20,60,.55);backdrop-filter:blur(6px);">
-  <div style="background:var(--card);border-radius:20px;width:100%;max-width:560px;box-shadow:var(--shadow-lg);overflow:hidden;border:1.5px solid var(--line);">
-    <div style="padding:16px 20px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:12px;">
-      <i class="fas fa-magnifying-glass" style="color:var(--muted);font-size:16px;"></i>
-      <input id="cmd-input" type="text" placeholder="Buscar o navegar... (Esc para cerrar)" oninput="renderCmdResults(this.value)" style="flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;background:transparent;color:var(--text);">
-      <kbd style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--muted);">Esc</kbd>
-    </div>
-    <div id="cmd-results" style="max-height:380px;overflow-y:auto;"></div>
-  </div>
-</div>
-<script>
-document.getElementById('cmd-palette').addEventListener('click', function(e) {
-  if (e.target === this) closeCommandPalette();
-});
-// Init on load
-document.addEventListener('DOMContentLoaded', () => {
-  loadSettings();
-});
-// Subscribe realtime when panel is shown
-const _origCheckSession = checkSession;
-checkSession = async function() {
-  await _origCheckSession.apply(this, arguments);
-  setTimeout(subscribeRealtimeNotifications, 1500);
-};
-</script>
-
-<!-- ============================================
-     NOTIFICACION BADGE en topbar
-     ============================================ -->
-<style>
-#notif-badge {
-  position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;
-  background:var(--red);color:#fff;font-size:9px;font-weight:800;
-  display:none;align-items:center;justify-content:center;
-}
-.cmd-palette-open { overflow:hidden; }
-</style>
 
 </body>
 </html>
