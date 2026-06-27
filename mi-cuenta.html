@@ -673,7 +673,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn" data-section="analytics-pro-section"><i class="fas fa-chart-line"></i><span>📊 Analytics PRO</span></button>
     <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart"></i><span>🔍 SEO Interno</span></button>
     <span class="menu-label">Sistema</span>
-    <button class="menu-btn" data-section="add-product-section"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
+    <button class="menu-btn" data-section="add-product-section" onclick="goToSection('add-product-section');switchAddTab('product');renderSizesList();"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
     <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="padding-left:32px;font-size:12px;opacity:.85;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
     <button class="menu-btn" data-section="integraciones-section"><i class="fas fa-plug"></i><span>🔌 Integraciones</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
