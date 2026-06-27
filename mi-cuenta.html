@@ -1098,7 +1098,16 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
               <div style="display:flex;flex-direction:column;gap:14px;">
                 <div class="form-group">
                   <label>📅 Fecha estimada de ingreso *</label>
-                  <input type="datetime-local" id="upcoming-date" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line2);background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;">
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <select id="upcoming-date-day" style="flex:1;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line2);background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;font-size:13px;"></select>
+                    <select id="upcoming-date-month" style="flex:1.5;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line2);background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;font-size:13px;">
+                      <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option>
+                      <option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option>
+                      <option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option>
+                      <option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
+                    </select>
+                  </div>
+                  <input type="hidden" id="upcoming-date">
                 </div>
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="upcoming-featured-toggle" onclick="toggleUpcomingFeatured()"><div class="toggle"></div><span>Destacar en próximos</span></div></div>
                 <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
@@ -3748,6 +3757,7 @@ function switchAddTab(tab) {
   if (!isProduct) {
     loadUpcomingList();
     populateUpcomingCategorySelect();
+    initUpcomingDateSelects();
     // Inicializar input de imagen si el contenedor está vacío
     const imgContainer = document.getElementById('upcoming-image-urls-container');
     if (imgContainer && imgContainer.children.length === 0) addUpcomingImageInput();
@@ -3763,12 +3773,36 @@ let upcomingCategories = [];
 let upcomingFeatured = false;
 let editingUpcomingId = null;
 
+
+// Inicializa los selects de día/mes con valores actuales
+function initUpcomingDateSelects() {
+  const dayEl = document.getElementById('upcoming-date-day');
+  const monthEl = document.getElementById('upcoming-date-month');
+  if (!dayEl) return;
+  // Poblar días 1-31 si aún no tiene opciones
+  if (dayEl.options.length === 0) {
+    for (let d = 1; d <= 31; d++) {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d;
+      dayEl.appendChild(opt);
+    }
+  }
+  const now = new Date();
+  dayEl.value = now.getDate();
+  if (monthEl) monthEl.value = now.getMonth();
+}
+
 function clearUpcomingForm() {
   editingUpcomingId = null;
   upcomingImages = []; upcomingSizes = []; upcomingCategories = []; upcomingFeatured = false;
-  ['upcoming-name','upcoming-description','upcoming-date'].forEach(id => {
+  ['upcoming-name','upcoming-description'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
+  const dayEl = document.getElementById('upcoming-date-day');
+  const monthEl = document.getElementById('upcoming-date-month');
+  const now = new Date();
+  if (dayEl) dayEl.value = now.getDate();
+  if (monthEl) monthEl.value = now.getMonth();
   document.getElementById('upcoming-featured-toggle').className = 'toggle-group';
   document.getElementById('upcoming-selected-categories').innerHTML = '';
   document.getElementById('upcoming-image-urls-container').innerHTML = '';
@@ -3811,16 +3845,19 @@ function renderUpcomingPreview() {
 
 function addUpcomingSizeRow(sz) {
   const c = document.getElementById('upcoming-sizes-container');
-  if (c.querySelector('.size-empty-msg')) c.innerHTML = '';
+  // Limpiar placeholder
+  if (c.children.length === 1 && c.children[0].tagName !== 'DIV'.toLowerCase() || (c.children.length===1 && !c.querySelector('.size-row'))) c.innerHTML = '';
   const row = document.createElement('div');
   row.className = 'size-row';
+  const opts = sizeOptions.map(opt => `<option value="${opt}" ${opt===(sz?.size||sizeOptions[0])?'selected':''}>${opt}</option>`).join('');
   row.innerHTML = `
-    <input type="text" placeholder="6M" value="${sz?.size||''}" class="up-sz-size" oninput="syncUpcomingSizes()">
+    <select class="up-sz-size" onchange="syncUpcomingSizes()">${opts}</select>
     <input type="number" placeholder="0" value="${sz?.price||''}" class="up-sz-price" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.cost||''}" class="up-sz-cost" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.stock||''}" class="up-sz-stock" oninput="syncUpcomingSizes()">
     <button class="remove-size-btn" onclick="this.parentElement.remove();syncUpcomingSizes()"><i class="fas fa-times"></i></button>`;
   c.appendChild(row);
+  syncUpcomingSizes();
 }
 
 function syncUpcomingSizes() {
@@ -3860,9 +3897,15 @@ function renderUpcomingSelectedCats() {
 
 async function saveUpcomingProduct() {
   const name = document.getElementById('upcoming-name').value.trim();
-  const dateVal = document.getElementById('upcoming-date').value;
+  const dayEl = document.getElementById('upcoming-date-day');
+  const monthEl = document.getElementById('upcoming-date-month');
+  const day = dayEl ? parseInt(dayEl.value) : null;
+  const month = monthEl ? parseInt(monthEl.value) : null;
+  const year = new Date().getFullYear();
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
-  if (!dateVal) { showAlert('Fecha estimada requerida', 'error'); return; }
+  if (day === null || isNaN(day)) { showAlert('Selecciona día y mes', 'error'); return; }
+  const dateObj = new Date(year, month, day, 12, 0, 0);
+  const dateVal = dateObj.toISOString();
 
   syncUpcomingImages();
   syncUpcomingSizes();
@@ -3876,7 +3919,7 @@ async function saveUpcomingProduct() {
     featured: upcomingFeatured,
     categories: [...upcomingCategories],
     sizes: upcomingSizes,
-    estimated_date: new Date(dateVal).toISOString(),
+    estimated_date: dateVal,
     created_at: new Date().toISOString()
   };
 
