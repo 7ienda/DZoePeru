@@ -7034,11 +7034,10 @@ function getAutoRibbonProducts(ribbon) {
 }
 
 function applyAutoRibbonsPro() {
-  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const ribbons = window._ribbonsProCache || [];
   const autoRibbons = ribbons.filter(r=>r.mode==='auto').sort((a,b)=>Number(a.priority)-Number(b.priority));
   const prods = window._allProducts || products || [];
-  // clear all auto-set ribbons first
-  prods.forEach(p=>{ if(p._ribbonAutoSource) { p.ribbon_pro_auto = null; p._ribbonAutoSource = null; } });
+  prods.forEach(p=>{ p.ribbon_pro_auto = null; p._ribbonAutoSource = null; });
   autoRibbons.forEach(ribbon=>{
     const matched = getAutoRibbonProducts(ribbon);
     matched.forEach(p=>{ if(!p.ribbon_pro_auto) { p.ribbon_pro_auto = ribbon.id; p._ribbonAutoSource = ribbon.name; } });
@@ -7047,16 +7046,13 @@ function applyAutoRibbonsPro() {
 
 // Get effective ribbon for product (PRO version)
 function getEffectiveRibbonPro(p) {
-  // 1. Manual PRO override
+  const ribbons = window._ribbonsProCache || [];
   if (p.ribbon_pro) {
-    const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
-    const r = ribbons.find(x=>x.id===p.ribbon_pro);
+    const r = ribbons.find(x=>String(x.id)===String(p.ribbon_pro));
     if (r) return r;
   }
-  // 2. Auto PRO
   if (p.ribbon_pro_auto) {
-    const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
-    const r = ribbons.find(x=>x.id===p.ribbon_pro_auto);
+    const r = ribbons.find(x=>String(x.id)===String(p.ribbon_pro_auto));
     if (r) return r;
   }
   return null;
