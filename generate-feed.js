@@ -1,145 +1,169 @@
-// generate-feed.js
-// Genera feed.xml leyendo productos desde Supabase
-// Ejecutado por GitHub Actions automáticamente
+// generate-feed.js — D'Zoe Perú
+// Genera feed.xml compatible con Google Merchant Center (namespace g:)
+// Ejecutar: node generate-feed.js
+// Requiere: @supabase/supabase-js  (npm install @supabase/supabase-js)
 
-const https = require("https");
-const fs = require("fs");
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+const path = require('path');
 
-// ── Config ────────────────────────────────────────────────────────────────────
-const SITE_URL   = "https://dzoeperu.com";
-const SITE_TITLE = "D'Zoe Perú — Ropa Infantil Importada Premium";
-const SITE_DESC  = "Tienda N°1 de ropa infantil importada premium en Perú. Vestidos, abrigos, conjuntos y bodies para bebés y niños de 0 a 14 años. Envíos a todo el Perú por Shalom.";
-const MAX_ITEMS  = 50;
+// ── Configuración Supabase ──────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://uxwmodnadidlsfwtshcq.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4d21vZG5hZGlkbHNmd3RzaGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzY0MjAsImV4cCI6MjA5NTY1MjQyMH0.V3tNuv2iT9J2WbZbs7bzxf9j9RwF2r-Li4KO_1qQWRo';
 
-const SUPABASE_URL = process.env.SUPABASE_URL;   // secret en GitHub
-const SUPABASE_KEY = process.env.SUPABASE_KEY;   // secret en GitHub
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error("❌ Faltan variables SUPABASE_URL y SUPABASE_KEY");
-  process.exit(1);
-}
+// ── Helpers ─────────────────────────────────────────────────────────────────
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function escapeXml(str) {
-  if (!str) return "";
+  if (!str) return '';
   return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
 
-function toRFC822(dateStr) {
-  const d = new Date(dateStr);
-  // Ajustar a hora Perú (UTC-5)
-  return d.toUTCString().replace("GMT", "-0500");
+function buildSlug(product) {
+  return (product.slug || String(product.id))
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
 }
 
-function productUrl(p) {
-  return p.slug
-    ? `${SITE_URL}/producto.html?slug=${p.slug}`
-    : `${SITE_URL}/producto.html?id=${p.id}`;
+/**
+ * Devuelve el precio mínimo con stock de un producto.
+ * Si no hay ninguna talla con stock, devuelve el precio mínimo global.
+ */
+function getPrice(product) {
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+
+  // precio con stock
+  const withStock = sizes.filter(s => s.stock > 0 && s.price);
+  if (withStock.length) {
+    return Math.min(...withStock.map(s => parseFloat(s.price)));
+  }
+
+  // precio sin stock (fallback)
+  const allPrices = sizes.filter(s => s.price).map(s => parseFloat(s.price));
+  if (allPrices.length) return Math.min(...allPrices);
+
+  // precio directo en el producto
+  return parseFloat(product.price || product.precio || 0);
 }
 
-// ── Fetch desde Supabase REST API ─────────────────────────────────────────────
-function fetchProducts() {
-  return new Promise((resolve, reject) => {
-    // Join con categorías usando el select de Supabase
-    const query = encodeURIComponent(
-   "id,name,description,price,image,slug,created_at,brand,categories"
-    );
-    const url = `${SUPABASE_URL}/rest/v1/products?select=${query}&order=created_at.desc&limit=${MAX_ITEMS}`;
-
-    const options = {
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-      },
-    };
-
-    https.get(url, options, (res) => {
-      let data = "";
-      res.on("data", chunk => data += chunk);
-      res.on("end", () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error("Error parseando respuesta de Supabase: " + data));
-        }
-      });
-    }).on("error", reject);
-  });
+function hasStock(product) {
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+  if (sizes.length) return sizes.some(s => s.stock > 0);
+  // si no hay tallas, usar campo stock directo
+  const s = parseInt(product.stock ?? product.cantidad ?? 1);
+  return s > 0;
 }
 
-// ── Generar XML ───────────────────────────────────────────────────────────────
-function buildFeed(products) {
-  const now = toRFC822(new Date().toISOString());
+function getImage(product) {
+  if (Array.isArray(product.images) && product.images[0]) return product.images[0];
+  if (product.image)  return product.image;
+  if (product.imagen) return product.imagen;
+  return '';
+}
+
+function getCategories(product) {
+  if (Array.isArray(product.categories)) return product.categories.join(' > ');
+  if (product.category)   return product.category;
+  if (product.categoria)  return product.categoria;
+  return 'Ropa Infantil';
+}
+
+// Google Product Category — apparel genérico para bebés/niños
+// Ver: https://www.google.com/basepages/producttype/taxonomy-with-ids.es-419.txt
+const GOOGLE_CATEGORY = '267'; // Ropa y accesorios > Ropa > Ropa para bebés y niños pequeños
+
+// ── Generador XML ────────────────────────────────────────────────────────────
+
+function buildFeedXml(products) {
+  const now = new Date().toUTCString();
 
   const items = products.map(p => {
-    const url      = productUrl(p);
-    const title    = escapeXml(p.name || "Producto D'Zoe Perú");
-   const catName  = p.categories || "Ropa Infantil";
-const imgUrl   = escapeXml(p.image || `${SITE_URL}/og-image.jpg`);
-    const brand    = p.brand    ? `<strong>Marca:</strong> ${escapeXml(p.brand)}<br>` : "";
-    const price    = p.price    ? `<strong>Precio:</strong> S/ ${Number(p.price).toFixed(2)}<br>` : "";
-    const desc     = escapeXml(p.description || `Producto importado premium de la categoría ${catName}.`);
+    const slug        = buildSlug(p);
+    const price       = getPrice(p);
+    const inStock     = hasStock(p);
+    const image       = getImage(p);
+    const categories  = getCategories(p);
+    const productUrl  = `https://dzoeperu.com/producto.html?slug=${slug}`;
+    const desc        = p.description || p.descripcion ||
+                        `${p.name} — ropa infantil importada premium. D'Zoe Perú.`;
+
+    // availability: valor exacto que exige Google
+    const availability = inStock ? 'in stock' : 'out of stock';
+
+    // precio formateado: "XX.XX PEN"
+    const priceStr = price > 0 ? `${price.toFixed(2)} PEN` : '0.00 PEN';
 
     return `
   <item>
-    <title>${title}</title>
-    <link>${url}</link>
-    <guid isPermaLink="${p.slug ? "true" : "false"}">${url}</guid>
-    <pubDate>${toRFC822(p.created_at)}</pubDate>
-    <dc:creator>D'Zoe Perú</dc:creator>
-    <category>${escapeXml(catName)}</category>
-    <description><![CDATA[${brand}${price}<p>${desc}</p><a href="${url}">Ver producto →</a>]]></description>
-    <media:content url="${imgUrl}" medium="image"/>
-    <media:thumbnail url="${imgUrl}"/>
+    <g:id>${escapeXml(String(p.id))}</g:id>
+    <title>${escapeXml(p.name)}</title>
+    <description>${escapeXml(desc)}</description>
+    <link>${escapeXml(productUrl)}</link>
+    <g:image_link>${escapeXml(image)}</g:image_link>
+    <g:availability>${availability}</g:availability>
+    <g:price>${priceStr}</g:price>
+    <g:brand>D&apos;Zoe Perú</g:brand>
+    <g:condition>new</g:condition>
+    <g:google_product_category>${GOOGLE_CATEGORY}</g:google_product_category>
+    <g:product_type>${escapeXml(categories)}</g:product_type>
+    <g:shipping>
+      <g:country>PE</g:country>
+      <g:service>Shalom / Olva Courier</g:service>
+      <g:price>0.00 PEN</g:price>
+    </g:shipping>
+    <g:identifier_exists>false</g:identifier_exists>
   </item>`;
-  }).join("\n");
+  }).join('');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
-  xmlns:atom="http://www.w3.org/2005/Atom"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:media="http://search.yahoo.com/mrss/">
+  xmlns:g="http://base.google.com/ns/1.0"
+  xmlns:atom="http://www.w3.org/2005/Atom">
 
   <channel>
-    <title>${escapeXml(SITE_TITLE)}</title>
-    <link>${SITE_URL}/</link>
-    <description>${escapeXml(SITE_DESC)}</description>
-    <language>es-pe</language>
-    <copyright>Copyright ${new Date().getFullYear()} D'Zoe Perú</copyright>
-    <managingEditor>ventas@dzoeperu.com (D'Zoe Perú)</managingEditor>
+    <title>D&apos;Zoe Perú — Ropa Infantil Importada Premium</title>
+    <link>https://dzoeperu.com/</link>
+    <description>Tienda N°1 de ropa infantil importada premium en Perú. Bebés y niños de 0 a 14 años.</description>
+    <language>es-PE</language>
     <pubDate>${now}</pubDate>
     <lastBuildDate>${now}</lastBuildDate>
-    <ttl>1440</ttl>
-    <image>
-      <url>${SITE_URL}/og-image.jpg</url>
-      <title>${escapeXml(SITE_TITLE)}</title>
-      <link>${SITE_URL}/</link>
-    </image>
-    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://dzoeperu.com/feed.xml" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
-(async () => {
-  console.log("📡 Conectando a Supabase...");
-  const products = await fetchProducts();
+// ── Main ─────────────────────────────────────────────────────────────────────
 
-  if (!Array.isArray(products)) {
-    console.error("❌ Respuesta inesperada:", products);
+async function main() {
+  console.log('🔄 Cargando productos desde Supabase…');
+
+  const { data, error } = await supabase
+    .from('products')           // ← ajusta si tu tabla tiene otro nombre
+    .select('*')
+    .eq('active', true)         // ← ajusta o elimina según tu esquema
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('❌ Error Supabase:', error.message);
     process.exit(1);
   }
 
-  console.log(`✅ ${products.length} productos obtenidos`);
+  console.log(`✅ ${data.length} productos cargados.`);
 
-  const xml = buildFeed(products);
-  fs.writeFileSync("feed.xml", xml, "utf8");
+  const xml = buildFeedXml(data);
 
-  console.log("✅ feed.xml generado correctamente");
-})();
+  const outPath = path.join(__dirname, 'feed.xml');
+  fs.writeFileSync(outPath, xml, 'utf8');
+  console.log(`📄 feed.xml generado → ${outPath}`);
+}
+
+main();
