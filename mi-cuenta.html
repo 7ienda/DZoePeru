@@ -6676,8 +6676,8 @@ function renderCmdResults(q) {
   const el = document.getElementById('cmd-results');
   if (!el) return;
   el.innerHTML = filtered.map(c =>
-    '<button onclick=\"closeCommandPalette();goToSection(\''+c.fn+'\')\" style=\"width:100%;text-align:left;padding:12px 18px;background:transparent;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;font-family:Nunito,sans-serif;font-size:14px;font-weight:600;color:#2D2545;\" onmouseover=\"this.style.background='#f5f0ff';\" onmouseout=\"this.style.background='transparent';\">'+c.label+'</button>'
-  ).join('') || '<div style=\"padding:20px;text-align:center;color:#999;\">Sin resultados</div>';
+    `<button onclick="closeCommandPalette();goToSection('${c.fn}')" style="width:100%;text-align:left;padding:12px 18px;background:transparent;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;font-family:Nunito,sans-serif;font-size:14px;font-weight:600;color:#2D2545;" onmouseover="this.style.background='#f5f0ff';" onmouseout="this.style.background='transparent';">${c.label}</button>`
+  ).join('') || '<div style="padding:20px;text-align:center;color:#999;">Sin resultados</div>';
 }
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey||e.metaKey) && e.key==='k') { e.preventDefault(); openCommandPalette(); }
@@ -7569,7 +7569,7 @@ function loadSeoForProduct() {
   document.getElementById('seo-keywords').value = d.keywords||'';
   updateSeoPreview();
   const p = (window._allProducts||[]).find(x=>x.id==id);
-  const schema = p ? JSON.stringify({"@context":"https://schema.org","@type":"Product","name":p.name,"description":p.description||'','offers":{"@type":"Offer","priceCurrency":"PEN","price":'+(p.sizes&&p.sizes[0]?p.sizes[0].price:0)+'}'},null,2) : '';
+  const schema = p ? JSON.stringify({"@context":"https://schema.org","@type":"Product","name":p.name,"description":p.description||'',offers:{"@type":"Offer","priceCurrency":"PEN","price":(p.sizes&&p.sizes[0]?p.sizes[0].price:0)}},null,2) : '';
   document.getElementById('seo-schema-preview').textContent = schema;
 }
 
