@@ -2415,21 +2415,23 @@ function doLogin() {
 }
 
 function enterPanel(userEmail) {
-  document.getElementById('session-user').textContent = userEmail || 'Admin';
+  const sessionEl = document.getElementById('session-user');
+  if (sessionEl) sessionEl.textContent = userEmail || 'Admin';
   const screen = document.getElementById('login-screen');
-  screen.classList.add('hidden');
-  document.getElementById('main-app').style.display = 'block';
-  setTimeout(() => screen.remove(), 500);
-  loadAllData().then(() => goToSection('dashboard-section'));
+  if (screen) { screen.classList.add('hidden'); setTimeout(() => screen.remove(), 500); }
+  const mainApp = document.getElementById('main-app');
+  if (mainApp) mainApp.style.display = 'block';
+  loadAllData().then(() => setTimeout(() => goToSection('dashboard-section'), 100));
   showAlert('✅ Bienvenida al panel D\'Zoe');
 }
 
 function showLoginError(msg) {
   const err = document.getElementById('login-error');
-  err.classList.add('show');
-  document.getElementById('login-error-msg').textContent = msg;
-  document.getElementById('login-user').classList.add('shake');
-  setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
+  if (err) err.classList.add('show');
+  const errMsg = document.getElementById('login-error-msg');
+  if (errMsg) errMsg.textContent = msg;
+  const userEl = document.getElementById('login-user');
+  if (userEl) { userEl.classList.add('shake'); setTimeout(() => userEl.classList.remove('shake'), 400); }
 }
 
 function checkSession() {
@@ -4104,12 +4106,12 @@ function updateClock() {
   if (c) c.textContent = new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
-function openMobileSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); }
-function closeMobileSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); }
+function openMobileSidebar() { document.getElementById('sidebar')?.classList.add('open'); document.getElementById('sidebar-overlay')?.classList.add('active'); }
+function closeMobileSidebar() { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sidebar-overlay')?.classList.remove('active'); }
 
 async function logout() {
   if (confirm('¿Cerrar sesión?')) {
-    if (supabaseClient) await supabaseClient.auth.signOut();
+    localStorage.removeItem('dzoe_session');
     location.reload();
   }
 }
@@ -4117,7 +4119,7 @@ async function logout() {
 // ============================================
 // CLOSE MODAL OUTSIDE CLICK
 // ============================================
-document.getElementById('sale-modal').addEventListener('click', function(e) {
+document.getElementById('sale-modal')?.addEventListener('click', function(e) {
   if (e.target === this) closeSaleModal();
 });
 
