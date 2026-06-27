@@ -8622,23 +8622,103 @@ function filterProducts() {
 // ═══════════════════════════════════════════════════════
 //  RIBBONS / BADGES
 // ═══════════════════════════════════════════════════════
+// ── Lee los Listones PRO del panel (dzoe_ribbons_pro en localStorage) ──
+function _getRibbonsPro() {
+  try { return JSON.parse(localStorage.getItem('dzoe_ribbons_pro') || '[]'); } catch(e) { return []; }
+}
+
+// Aplica la regla automática de un listón PRO y devuelve true si el producto la cumple
+function _matchAutoRibbon(ribbon, product, allProducts) {
+  const param = parseInt(ribbon.autoParam) || 5;
+  const paramStr = (ribbon.autoParam || '').toLowerCase();
+  switch (ribbon.autoRule) {
+    case 'new_arrivals': {
+      const sorted = [...allProducts].sort((a, b) => {
+        const ta = a.created_at ? new Date(a.created_at).getTime() : Number(a.id);
+        const tb = b.created_at ? new Date(b.created_at).getTime() : Number(b.id);
+        return tb - ta;
+      });
+      return sorted.slice(0, param).some(p => p.id === product.id);
+    }
+    case 'low_stock': {
+      const stock = (product.sizes || []).reduce((a, s) => a + (s.stock || 0), 0);
+      return stock > 0 && stock <= param;
+    }
+    case 'out_of_stock':
+      return (product.sizes || []).reduce((a, s) => a + (s.stock || 0), 0) === 0;
+    case 'top_sold': {
+      // Sin acceso a orders en el index, ordenamos por ventas si existe campo sold_count
+      if (product.sold_count !== undefined) {
+        const sorted = [...allProducts].sort((a, b) => (b.sold_count || 0) - (a.sold_count || 0));
+        return sorted.slice(0, param).some(p => p.id === product.id);
+      }
+      return false;
+    }
+    case 'category':
+      return (product.category || '').toLowerCase().includes(paramStr);
+    default:
+      return false;
+  }
+}
+
 function getProductRibbonLabel(product, allProducts) {
   const sizes = product.sizes || [];
   const totalStock = sizes.reduce((s, sz) => s + (sz.stock || 0), 0);
+
+  // 1. Agotado: máxima prioridad siempre
   if (totalStock === 0) return 'Agotado';
-  if (product.on_sale) return '🔥 Oferta';
-  // Mostrar "Nuevo" solo en los 4 productos más recientes por created_at
-  const sorted = [...allProducts]
-    .filter(p => p.created_at)
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  const top4Ids = new Set(sorted.slice(0, 4).map(p => p.id));
-  if (top4Ids.has(product.id)) return '✨ Nuevo';
+
+  const ribbonsPro = _getRibbonsPro();
+
+  // 2. Listón manual PRO asignado desde el panel
+  if (product.ribbon_pro) {
+    const r = ribbonsPro.find(x => x.id === product.ribbon_pro);
+    if (r) return (r.icon ? r.icon + ' ' : '') + r.name;
+  }
+  // También soporte para el campo legacy "ribbon" (nombre como string)
+  if (product.ribbon) {
+    const r = ribbonsPro.find(x => x.name === product.ribbon);
+    if (r) return (r.icon ? r.icon + ' ' : '') + r.name;
+    return product.ribbon;
+  }
+
+  // 3. Listones automáticos PRO — ordenados por prioridad
+  const autoRibbons = ribbonsPro
+    .filter(r => r.mode === 'auto' && r.autoRule)
+    .sort((a, b) => Number(a.priority) - Number(b.priority));
+
+  // Verificar vigencia de fechas
+  const now = new Date();
+  for (const r of autoRibbons) {
+    if (r.start && new Date(r.start) > now) continue;
+    if (r.end   && new Date(r.end)   < now) continue;
+    if (_matchAutoRibbon(r, product, allProducts)) {
+      return (r.icon ? r.icon + ' ' : '') + r.name;
+    }
+  }
+
+  // 4. Fallback: si no hay listones PRO configurados, usar lógica clásica
+  if (!ribbonsPro.length) {
+    if (product.on_sale) return '🔥 Oferta';
+    const sorted = [...allProducts]
+      .filter(p => p.created_at)
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    const top4Ids = new Set(sorted.slice(0, 4).map(p => p.id));
+    if (top4Ids.has(product.id)) return '✨ Nuevo';
+  }
+
   return null;
 }
 
 function getProductRibbonStyle(label) {
   if (!label) return '';
   if (label === 'Agotado') return 'background:#aaa;color:#fff;';
+  // Buscar color en listones PRO
+  const ribbonsPro = _getRibbonsPro();
+  // Coincidencia por nombre (con o sin emoji al inicio)
+  const r = ribbonsPro.find(x => label.includes(x.name));
+  if (r) return `background:${r.color};color:#fff;box-shadow:0 3px 10px ${r.color}55;`;
+  // Fallback colores clásicos
   if (label.includes('Oferta')) return 'background:var(--rose);color:#fff;box-shadow:0 3px 10px var(--cta-glow);';
   return 'background:var(--rose);color:#fff;box-shadow:0 3px 10px rgba(124,80,192,0.35);';
 }
