@@ -662,9 +662,18 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
     <span class="menu-label">Vitrina</span>
     <button class="menu-btn" data-section="nuevo-ingreso-section"><i class="fas fa-star"></i><span>⭐ Nuevo Ingreso</span></button>
+    <button class="menu-btn" data-section="drops-section"><i class="fas fa-bolt"></i><span>⚡ Drops</span></button>
+    <button class="menu-btn" data-section="lookbooks-section"><i class="fas fa-book-open"></i><span>📖 Lookbooks</span></button>
+    <span class="menu-label">Marketing</span>
+    <button class="menu-btn" data-section="ribbons-pro-section"><i class="fas fa-ribbon"></i><span>🎀 Listones PRO</span></button>
+    <button class="menu-btn" data-section="promociones-section"><i class="fas fa-percent"></i><span>💸 Promociones</span></button>
+    <button class="menu-btn" data-section="carritos-section"><i class="fas fa-cart-arrow-down"></i><span>🛒 Carritos Abandonados</span></button>
+    <span class="menu-label">Analítica</span>
+    <button class="menu-btn" data-section="analytics-pro-section"><i class="fas fa-chart-line"></i><span>📊 Analytics PRO</span></button>
+    <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart"></i><span>🔍 SEO Interno</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
-    <button class="menu-btn" data-section="ribbons-section"><i class="fas fa-ribbon"></i><span>Listones</span></button>
+    <button class="menu-btn" data-section="integraciones-section"><i class="fas fa-plug"></i><span>🔌 Integraciones</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
   </div>
   <div class="sidebar-footer">
@@ -687,6 +696,26 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       </div>
     </div>
     <div class="topbar-right">
+      <div style="position:relative;">
+        <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;"></i>
+        <input type="text" id="global-search-input" placeholder="Buscar... (Ctrl+K)" onclick="openCommandPalette()" readonly style="padding:8px 14px 8px 34px;border:1.5px solid var(--border);border-radius:99px;font-family:Nunito,sans-serif;font-size:12px;font-weight:600;background:var(--card);color:var(--text);cursor:pointer;width:170px;outline:none;">
+      </div>
+      <div id="sales-clima" title="Clima de ventas hoy" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;background:var(--green-light);color:var(--green);font-size:12px;font-weight:700;cursor:default;">
+        <span id="clima-icon">&#127828;</span><span id="clima-label">Calculando...</span>
+      </div>
+      <div onclick="goToSection('promociones-section')" title="Campanas activas" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;background:var(--rose-xlight);color:var(--rose-dark);font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);">
+        <i class="fas fa-bullhorn"></i><span id="campanas-count">0</span> campañas
+      </div>
+      <div style="position:relative;">
+        <button onclick="toggleNotificaciones()" style="width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:15px;position:relative;" title="Notificaciones">
+          <i class="fas fa-bell"></i>
+          <span id="notif-dot" style="position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--card);display:none;"></span>
+        </button>
+        <div id="notif-dropdown" style="display:none;position:absolute;top:44px;right:0;width:300px;background:var(--card);border:1.5px solid var(--border);border-radius:18px;box-shadow:var(--shadow-lg);z-index:500;overflow:hidden;">
+          <div style="padding:14px 18px;border-bottom:1px solid var(--line2);font-weight:800;font-size:13px;">Notificaciones</div>
+          <div id="notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0;"></div>
+        </div>
+      </div>
       <div class="user-pill"><div class="dot"></div><span id="session-user">Admin</span></div>
       <div class="time-display" id="live-clock">--:--:--</div>
       <button class="dark-toggle" id="dark-toggle-btn" onclick="toggleDarkMode()" title="Modo oscuro"><i class="fas fa-moon" id="dark-toggle-icon"></i></button>
@@ -784,6 +813,93 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           </div>
         </div>
       </div>
+
+      <!-- ====== BLOQUE HOY ====== -->
+      <div style="margin-top:24px;">
+        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-calendar-day" style="color:var(--rose);"></i> HOY</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+          <div class="stat-card green" style="padding:18px 20px;">
+            <div class="stat-card-icon"><i class="fas fa-coins"></i></div>
+            <h3>Ventas hoy</h3>
+            <div class="stat-value" id="hoy-ventas" style="font-size:28px;">S/0</div>
+            <div class="stat-change"><i class="fas fa-arrow-up"></i> <span id="hoy-ventas-pct">vs ayer</span></div>
+          </div>
+          <div class="stat-card blue" style="padding:18px 20px;">
+            <div class="stat-card-icon"><i class="fas fa-receipt"></i></div>
+            <h3>Pedidos hoy</h3>
+            <div class="stat-value" id="hoy-pedidos" style="font-size:28px;">0</div>
+            <div class="stat-change" id="hoy-pedidos-sub">pedidos nuevos</div>
+          </div>
+          <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--mint);">
+            <div class="stat-card-icon" style="background:var(--mint-soft);color:var(--mint);"><i class="fas fa-sack-dollar"></i></div>
+            <h3>Ganancia hoy</h3>
+            <div class="stat-value" id="hoy-ganancia" style="font-size:28px;color:var(--mint);">S/0</div>
+            <div class="stat-change" style="color:var(--mint);">Estimada</div>
+          </div>
+          <div class="stat-card orange" style="padding:18px 20px;">
+            <div class="stat-card-icon"><i class="fas fa-user-plus"></i></div>
+            <h3>Nuevos clientes</h3>
+            <div class="stat-value" id="hoy-clientes" style="font-size:28px;">0</div>
+            <div class="stat-change">registrados hoy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== BLOQUE ALERTAS ====== -->
+      <div style="margin-top:24px;">
+        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-triangle-exclamation" style="color:var(--orange);"></i> ALERTAS</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+          <div class="stat-card" onclick="goToSection('inventory-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--red);">
+            <div class="stat-card-icon" style="background:var(--red-light);color:var(--red);"><i class="fas fa-boxes-stacked"></i></div>
+            <h3>Stock crítico</h3>
+            <div class="stat-value" id="alerta-stock" style="font-size:28px;color:var(--red);">0</div>
+            <div class="stat-change" style="color:var(--red);">productos &lt;= 3 uds</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('carritos-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--orange);">
+            <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-cart-arrow-down"></i></div>
+            <h3>Carritos abandonados</h3>
+            <div class="stat-value" id="alerta-carritos" style="font-size:28px;color:var(--orange);">0</div>
+            <div class="stat-change" style="color:var(--orange);">sin recuperar</div>
+          </div>
+          <div class="stat-card" onclick="goToSection('sales-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--blue);">
+            <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-clock"></i></div>
+            <h3>Pedidos pendientes</h3>
+            <div class="stat-value" id="alerta-pendientes" style="font-size:28px;color:var(--blue);">0</div>
+            <div class="stat-change" style="color:var(--blue);">por confirmar</div>
+          </div>
+          <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--muted);">
+            <div class="stat-card-icon" style="background:var(--bg2);color:var(--muted);"><i class="fas fa-ban"></i></div>
+            <h3>Sin movimiento</h3>
+            <div class="stat-value" id="alerta-sin-movimiento" style="font-size:28px;color:var(--muted);">0</div>
+            <div class="stat-change" style="color:var(--muted);">más de 30 días</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== BLOQUE TOP ====== -->
+      <div style="margin-top:24px;">
+        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-trophy" style="color:var(--orange);"></i> TOP</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+          <div class="section" style="min-height:160px;">
+            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--orange);">🔥 Más vendidos</div></div>
+            <div id="top-mas-vendidos" style="padding:0 14px 14px;font-size:12px;"></div>
+          </div>
+          <div class="section" style="min-height:160px;">
+            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--blue);">👁️ Más vistos</div></div>
+            <div id="top-mas-vistos" style="padding:0 14px 14px;font-size:12px;color:var(--muted);">Conecta analytics para ver datos</div>
+          </div>
+          <div class="section" style="min-height:160px;">
+            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--green);">💰 Más rentables</div></div>
+            <div id="top-mas-rentables" style="padding:0 14px 14px;font-size:12px;"></div>
+          </div>
+          <div class="section" style="min-height:160px;">
+            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--muted);">📉 Menos vendidos</div></div>
+            <div id="top-menos-vendidos" style="padding:0 14px 14px;font-size:12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== ACCESOS RÁPIDOS HEADER ====== -->
 
       <!-- Deudores rápidos -->
       <div class="section" style="margin-top:24px;border-left:4px solid var(--orange);">
@@ -1083,83 +1199,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     </div>
 
     <!-- ====== LISTONES ====== -->
-    <div id="ribbons-section" class="page-section" style="display:none;">
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-ribbon" style="color:var(--rose)"></i> Listones de Producto</div>
-          <div style="font-size:12px;color:var(--muted);">Los últimos 5 productos reciben el listón <strong>"Nuevo"</strong> automáticamente</div>
-        </div>
-        <div class="section-body">
 
-          <!-- Listones personalizados -->
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div style="font-weight:700;font-size:15px;">Listones disponibles</div>
-            <button class="btn btn-primary btn-sm" onclick="openRibbonForm()"><i class="fas fa-plus"></i> Nuevo listón</button>
-          </div>
-
-          <!-- Form add/edit ribbon -->
-          <div id="ribbon-form" style="display:none;background:var(--bg);border-radius:16px;padding:22px;margin-bottom:20px;border:1.5px dashed var(--line);">
-            <div style="font-weight:700;margin-bottom:14px;" id="ribbon-form-title">✨ Nuevo Listón</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:flex-end;">
-              <div class="form-group">
-                <label>Nombre del listón</label>
-                <input type="text" id="ribbon-name-input" placeholder="Ej: Oferta, Hot, Exclusivo...">
-              </div>
-              <div class="form-group">
-                <label>Color de fondo</label>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="ribbon-color-picker">
-                  <div class="ribbon-color-opt selected" data-color="#c2617a" style="background:#c2617a;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#2e9c6b" style="background:#2e9c6b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#2563eb" style="background:#2563eb;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#7c3aed" style="background:#7c3aed;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#d97706" style="background:#d97706;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#dc2626" style="background:#dc2626;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#0891b2" style="background:#0891b2;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="ribbon-color-opt" data-color="#1e293b" style="background:#1e293b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Vista previa</label>
-                <div id="ribbon-preview" style="display:inline-block;padding:4px 14px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:#c2617a;letter-spacing:.04em;text-transform:uppercase;margin-top:4px;">NUEVO</div>
-              </div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn btn-primary btn-sm" onclick="saveRibbonItem()"><i class="fas fa-floppy-disk"></i> Guardar</button>
-                <button class="btn btn-ghost btn-sm" onclick="closeRibbonForm()">Cancelar</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ribbons list -->
-          <div id="ribbons-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:32px;"></div>
-
-          <!-- Asignar listón a producto -->
-          <div style="border-top:1px solid var(--line2);padding-top:24px;">
-            <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Asignar listón a producto</div>
-            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Elige un producto y asígnale cualquier listón manualmente. Los últimos 5 productos ya tienen <em>"Nuevo"</em> automático.</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:flex-end;">
-              <div class="form-group">
-                <label>Producto</label>
-                <select id="ribbon-product-select"></select>
-              </div>
-              <div class="form-group">
-                <label>Listón a asignar</label>
-                <select id="ribbon-assign-select">
-                  <option value="">— Sin listón —</option>
-                </select>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="assignRibbon()"><i class="fas fa-tag"></i> Asignar</button>
-            </div>
-          </div>
-
-          <!-- Products with ribbons -->
-          <div style="margin-top:24px;">
-            <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:var(--text2);">Productos con listón asignado</div>
-            <div id="ribboned-products-list"></div>
-          </div>
-
-        </div>
-      </div>
-    </div>
 
 
     <!-- ====== CAJA PREMIUM ====== -->
@@ -2131,6 +2171,492 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         }
       </style>
 
+    </div>
+
+
+    <!-- ====== NUEVO DASHBOARD PRO ====== -->
+    <!-- The original dashboard-section remains. We ADD the new blocks inside it via JS -->
+
+    <!-- ====== LISTONES PRO ====== -->
+    <div id="ribbons-pro-section" class="page-section" style="display:none;">
+
+      <!-- KPIs -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+        <div class="stat-card" style="border-left:4px solid var(--rose);padding:18px 20px;">
+          <div class="stat-card-icon" style="background:var(--rose-soft);color:var(--rose);"><i class="fas fa-ribbon"></i></div>
+          <h3>Listones creados</h3>
+          <div class="stat-value" id="rp-kpi-total" style="font-size:28px;color:var(--rose);">0</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid var(--green);padding:18px 20px;">
+          <div class="stat-card-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-robot"></i></div>
+          <h3>Auto-asignados</h3>
+          <div class="stat-value" id="rp-kpi-auto" style="font-size:28px;color:var(--green);">0</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid var(--blue);padding:18px 20px;">
+          <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-hand-pointer"></i></div>
+          <h3>Manual</h3>
+          <div class="stat-value" id="rp-kpi-manual" style="font-size:28px;color:var(--blue);">0</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid var(--orange);padding:18px 20px;">
+          <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-tags"></i></div>
+          <h3>Productos etiquetados</h3>
+          <div class="stat-value" id="rp-kpi-etiquetados" style="font-size:28px;color:var(--orange);">0</div>
+        </div>
+      </div>
+
+      <!-- Sección Listones PRO: Crear + Lista -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-ribbon" style="color:var(--rose)"></i> Listones PRO</div>
+          <button class="btn btn-primary btn-sm" onclick="openRibbonProForm()"><i class="fas fa-plus"></i> Crear Listón</button>
+        </div>
+        <div class="section-body">
+          <!-- Quick ribbons -->
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">⚡ Listones rápidos predefinidos — clic para usar</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;" id="quick-ribbons-row">
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Más vendido" data-color="#e05050" data-icon="🔥" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffe2e2;color:#d42020;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fbb;transition:.2s;">🔥 Más vendido</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Nuevo" data-color="#6b2fd4" data-icon="✨" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ece9fe;color:#6b2fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #d4c8ff;transition:.2s;">✨ Nuevo</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Exclusivo" data-color="#c2617a" data-icon="🎀" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🎀 Exclusivo</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Oferta" data-color="#c97010" data-icon="💸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fef0c7;color:#c97010;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fdd783;transition:.2s;">💸 Oferta</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Últimas unidades" data-color="#d97706" data-icon="⚡" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffedd5;color:#d97706;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fed7aa;transition:.2s;">⚡ Últimas unidades</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Premium" data-color="#1d5fd4" data-icon="👑" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#daeafe;color:#1d5fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #bfdbfe;transition:.2s;">👑 Premium</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Favorito" data-color="#1f9e6e" data-icon="🧸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#d0f2e6;color:#1f9e6e;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #a7f3d0;transition:.2s;">🧸 Favorito</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Recién llegado" data-color="#c2617a" data-icon="🆕" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🆕 Recién llegado</div>
+              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Agotado" data-color="#64748b" data-icon="🚫" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#f1f5f9;color:#64748b;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #cbd5e1;transition:.2s;">🚫 Agotado</div>
+            </div>
+          </div>
+
+          <!-- Form crear listón -->
+          <div id="ribbon-pro-form" style="display:none;background:var(--bg);border-radius:16px;padding:22px;margin-bottom:20px;border:1.5px dashed var(--rose-mid);">
+            <div style="font-weight:800;font-size:15px;margin-bottom:16px;">✨ Configurar Listón PRO</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+              <div class="form-group"><label>Nombre *</label><input type="text" id="rp-name" placeholder="Ej: Hot Sale" oninput="updateRpPreview()"></div>
+              <div class="form-group"><label>Ícono / Emoji</label><input type="text" id="rp-icon" placeholder="🔥" style="font-size:20px;text-align:center;" oninput="updateRpPreview()"></div>
+              <div class="form-group"><label>Prioridad</label><select id="rp-priority"><option value="1">1 — Alta</option><option value="2" selected>2 — Media</option><option value="3">3 — Baja</option></select></div>
+              <div class="form-group">
+                <label>Modo de asignación</label>
+                <select id="rp-mode" onchange="toggleRpAutoConfig()">
+                  <option value="manual">✋ Manual</option>
+                  <option value="auto">🤖 Automático</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Fecha inicio</label><input type="date" id="rp-start"></div>
+              <div class="form-group"><label>Fecha fin</label><input type="date" id="rp-end"></div>
+              <div class="form-group" style="grid-column:span 2;">
+                <label>Color</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="rp-color-picker">
+                  <div class="rp-color-opt selected" data-color="#c2617a" style="background:#c2617a;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2.5px solid #c2617a;box-shadow:0 0 0 2px #fff;"></div>
+                  <div class="rp-color-opt" data-color="#d42020" style="background:#d42020;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#c97010" style="background:#c97010;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#1f9e6e" style="background:#1f9e6e;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#1d5fd4" style="background:#1d5fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#6b2fd4" style="background:#6b2fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#64748b" style="background:#64748b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  <div class="rp-color-opt" data-color="#1e293b" style="background:#1e293b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Config automático -->
+            <div id="rp-auto-config" style="display:none;background:var(--green-light);border-radius:12px;padding:14px 18px;margin-bottom:14px;border:1.5px solid rgba(31,158,110,.2);">
+              <div style="font-size:12px;font-weight:800;color:var(--green);margin-bottom:10px;">🤖 Configuración Automática</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                <div class="form-group">
+                  <label style="font-size:11px;">Regla automática</label>
+                  <select id="rp-auto-rule">
+                    <option value="new_arrivals">Últimos N productos ingresados</option>
+                    <option value="low_stock">Stock crítico (≤ N unidades)</option>
+                    <option value="out_of_stock">Sin stock (agotados)</option>
+                    <option value="top_sold">Más vendidos</option>
+                    <option value="category">Por categoría</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label style="font-size:11px;">Parámetro N / Valor</label>
+                  <input type="text" id="rp-auto-param" placeholder="Ej: 5 (últimos 5) o nombre categoría">
+                </div>
+                <div class="form-group">
+                  <label style="font-size:11px;">Actualización</label>
+                  <select id="rp-auto-freq">
+                    <option value="realtime">En tiempo real</option>
+                    <option value="daily">Diaria</option>
+                  </select>
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--green);margin-top:8px;font-weight:600;">✅ El listón se aplicará automáticamente a todos los productos que cumplan la regla.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="flex:1;background:var(--card);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);">Preview: <span id="rp-preview" style="display:inline-block;padding:3px 12px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:#c2617a;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;">LISTÓN</span></div>
+              <button class="btn btn-primary btn-sm" onclick="saveRibbonPro()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+              <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ribbon-pro-form').style.display='none'">Cancelar</button>
+            </div>
+          </div>
+
+          <!-- Lista listones PRO -->
+          <div id="ribbons-pro-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+        </div>
+      </div>
+
+      <!-- Sección: Asignación Manual a Productos -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-hand-pointer" style="color:var(--blue)"></i> Asignación Manual por Producto</div>
+          <div style="font-size:12px;color:var(--muted);">Asigna cualquier listón directamente a un producto específico</div>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:flex-end;margin-bottom:20px;">
+            <div class="form-group">
+              <label>Producto</label>
+              <select id="rp-product-select">
+                <option value="">— Selecciona un producto —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Listón a asignar</label>
+              <select id="rp-assign-select">
+                <option value="">— Sin listón —</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="assignRibbonPro()" style="height:42px;"><i class="fas fa-tag"></i> Asignar</button>
+          </div>
+          <!-- Productos con listón -->
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Productos con listón asignado manualmente</div>
+            <div id="rp-products-assigned"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Listones Automáticos Activos -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-robot" style="color:var(--green)"></i> Listones Automáticos Activos</div>
+          <div style="font-size:12px;color:var(--muted);">Productos que reciben listón por regla automática</div>
+        </div>
+        <div class="section-body">
+          <div id="rp-auto-products-list"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ====== PROMOCIONES ====== -->
+    <div id="promociones-section" class="page-section" style="display:none;">
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-percent"></i></div><h3>Cupones Activos</h3><div class="stat-value" id="promo-activos">0</div></div>
+        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-fire"></i></div><h3>Usos Totales</h3><div class="stat-value" id="promo-usos">0</div></div>
+        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div><h3>Descuento Total</h3><div class="stat-value" id="promo-ahorro">S/0</div></div>
+        <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-calendar-xmark"></i></div><h3>Vencidos</h3><div class="stat-value" id="promo-vencidos">0</div></div>
+      </div>
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> Crear Promoción</div>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+            <div class="form-group"><label>Código cupón *</label><input type="text" id="promo-code" placeholder="DZOE10" style="text-transform:uppercase;font-weight:800;font-size:16px;letter-spacing:.06em;"></div>
+            <div class="form-group"><label>Tipo de descuento</label><select id="promo-type" onchange="renderPromoPreview()"><option value="pct">Porcentaje (%)</option><option value="fixed">Monto fijo (S/)</option><option value="shipping">Envío gratis</option></select></div>
+            <div class="form-group"><label>Valor</label><input type="number" id="promo-value" placeholder="10" min="0" oninput="renderPromoPreview()"></div>
+            <div class="form-group"><label>Fecha expiración</label><input type="date" id="promo-expiry"></div>
+            <div class="form-group"><label>Límite de usos</label><input type="number" id="promo-limit" placeholder="Sin límite" min="1"></div>
+            <div class="form-group"><label>Aplica a</label><select id="promo-applies"><option value="all">Todos los productos</option><option value="cat">Por categoría</option><option value="prod">Producto específico</option></select></div>
+          </div>
+          <div id="promo-preview-box" style="display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 18px;background:var(--green-light);border-radius:14px;border:1.5px solid rgba(31,158,110,.2);">
+            <div style="font-size:28px;">🎟️</div>
+            <div><div style="font-family:Baloo2,cursive;font-size:20px;font-weight:800;color:var(--green);letter-spacing:.06em;" id="promo-preview-code">CÓDIGO</div><div style="font-size:12px;color:var(--green);font-weight:600;" id="promo-preview-desc">Descuento aplicado al checkout</div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" onclick="savePromocion()"><i class="fas fa-ticket"></i> Crear cupón</button>
+            <button class="btn btn-ghost" onclick="clearPromoForm()"><i class="fas fa-broom"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Cupones activos</div></div>
+        <div class="section-body" style="padding:0 0 20px;">
+          <div class="table-wrap">
+            <table class="orders-table">
+              <thead><tr><th>Código</th><th>Tipo</th><th>Valor</th><th>Usos</th><th>Expira</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <tbody id="promociones-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== CARRITOS ABANDONADOS ====== -->
+    <div id="carritos-section" class="page-section" style="display:none;">
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-cart-arrow-down"></i></div><h3>Carritos abandonados</h3><div class="stat-value" id="ca-total">0</div></div>
+        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div><h3>Valor perdido</h3><div class="stat-value" id="ca-valor">S/0</div></div>
+        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-check-double"></i></div><h3>Recuperados</h3><div class="stat-value" id="ca-recuperados">0</div></div>
+        <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-chart-line"></i></div><h3>Tasa recuperación</h3><div class="stat-value" id="ca-tasa">0%</div></div>
+      </div>
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> Registrar carrito abandonado</div>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+            <div class="form-group"><label>Cliente *</label><input type="text" id="ca-cliente" placeholder="Nombre del cliente"></div>
+            <div class="form-group"><label>WhatsApp</label><input type="text" id="ca-wa" placeholder="9XXXXXXXX"></div>
+            <div class="form-group"><label>Total carrito (S/)</label><input type="number" id="ca-total-val" placeholder="0.00" step="0.01"></div>
+            <div class="form-group"><label>Productos en carrito</label><input type="text" id="ca-items" placeholder="Ej: Vestido rosa, Zapatos blancos"></div>
+            <div class="form-group"><label>Hora abandono</label><input type="datetime-local" id="ca-hora"></div>
+            <div class="form-group"><label>Motivo estimado</label><select id="ca-motivo"><option value="precio">Precio</option><option value="envio">Costo de envío</option><option value="duda">Dudas sobre el producto</option><option value="otro">Otro</option></select></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" onclick="saveCarritoAbandonado()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><div class="section-title"><i class="fas fa-cart-arrow-down" style="color:var(--orange)"></i> Carritos pendientes</div></div>
+        <div class="section-body" style="padding:0 0 20px;">
+          <div class="table-wrap">
+            <table class="orders-table">
+              <thead><tr><th>Cliente</th><th>WhatsApp</th><th>Productos</th><th>Total</th><th>Hora</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <tbody id="carritos-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== DROPS PREMIUM ====== -->
+    <div id="drops-section" class="page-section" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div><div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">⚡ Drops Premium</div><div style="font-size:12px;color:var(--muted);">Colecciones con contador regresivo y banner especial</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openDropForm()"><i class="fas fa-plus"></i> Nuevo Drop</button>
+      </div>
+      <div id="drops-form-container" style="display:none;" class="section" style="margin-bottom:20px;">
+        <div class="section-header"><div class="section-title"><i class="fas fa-bolt" style="color:var(--rose)"></i> Crear Drop</div></div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+            <div class="form-group"><label>Nombre del drop *</label><input type="text" id="drop-name" placeholder="Drop Invierno"></div>
+            <div class="form-group"><label>Emoji / banner</label><input type="text" id="drop-emoji" placeholder="❄️" style="font-size:24px;text-align:center;"></div>
+            <div class="form-group"><label>Fecha de lanzamiento</label><input type="datetime-local" id="drop-date"></div>
+            <div class="form-group" style="grid-column:span 3;"><label>Descripción</label><input type="text" id="drop-desc" placeholder="Colección exclusiva de temporada..."></div>
+            <div class="form-group" style="grid-column:span 3;"><label>Productos incluidos (IDs separados por coma)</label><input type="text" id="drop-products" placeholder="Buscar productos..."></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;">
+            <button class="btn btn-primary" onclick="saveDrop()"><i class="fas fa-floppy-disk"></i> Publicar Drop</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('drops-form-container').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div id="drops-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;"></div>
+    </div>
+
+    <!-- ====== LOOKBOOKS ====== -->
+    <div id="lookbooks-section" class="page-section" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div><div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">📖 Lookbooks</div><div style="font-size:12px;color:var(--muted);">Outfits completos con productos de tu tienda</div></div>
+        <button class="btn btn-primary btn-sm" onclick="openLookbookForm()"><i class="fas fa-plus"></i> Nuevo Lookbook</button>
+      </div>
+      <div id="lookbook-form-container" style="display:none;" class="section" style="margin-bottom:20px;">
+        <div class="section-header"><div class="section-title"><i class="fas fa-book-open" style="color:var(--rose)"></i> Crear Lookbook</div></div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group"><label>Nombre del look *</label><input type="text" id="lb-name" placeholder="Outfit Primavera Coreano"></div>
+            <div class="form-group"><label>Estación / tema</label><input type="text" id="lb-tema" placeholder="Ej: Coreano, Casual, Fiesta"></div>
+            <div class="form-group"><label>Imagen del look (URL)</label><input type="text" id="lb-img" placeholder="https://..."></div>
+            <div class="form-group"><label>Descripción</label><input type="text" id="lb-desc" placeholder="Outfit completo para salida de día..."></div>
+          </div>
+          <div style="margin-top:14px;">
+            <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Productos del outfit</div>
+            <div id="lb-products-rows"></div>
+            <button class="btn btn-ghost btn-sm" onclick="addLookbookProductRow()" style="margin-top:8px;"><i class="fas fa-plus"></i> Agregar prenda</button>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;">
+            <button class="btn btn-primary" onclick="saveLookbook()"><i class="fas fa-floppy-disk"></i> Guardar Lookbook</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('lookbook-form-container').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div id="lookbooks-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;"></div>
+    </div>
+
+    <!-- ====== ANALYTICS PRO ====== -->
+    <div id="analytics-pro-section" class="page-section" style="display:none;">
+      <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;margin-bottom:4px;">📊 Analytics PRO</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Métricas avanzadas de conversión y comportamiento</div>
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-funnel-dollar"></i></div><h3>Tasa de Conversión</h3><div class="stat-value" id="anapro-conv">0%</div><div class="stat-change">Visitas → Ventas</div></div>
+        <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-eye"></i></div><h3>Productos vistos</h3><div class="stat-value" id="anapro-views">0</div></div>
+        <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-cart-plus"></i></div><h3>Add to Cart</h3><div class="stat-value" id="anapro-atc">0</div></div>
+        <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-cart-arrow-down"></i></div><h3>Abandono carrito</h3><div class="stat-value" id="anapro-abandon">0%</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="chart-card">
+          <div class="chart-title">Embudo de Conversión</div>
+          <div class="chart-sub">Visitas → Vista producto → Carrito → Venta</div>
+          <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">ROI por Producto</div>
+          <div class="chart-sub">Retorno sobre inversión</div>
+          <div class="chart-wrap"><canvas id="roiChart"></canvas></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="chart-card">
+          <div class="chart-title">Tendencia de visitas</div>
+          <div class="chart-sub">Últimas 4 semanas</div>
+          <div class="chart-wrap"><canvas id="anaVisitsChart"></canvas></div>
+        </div>
+        <div class="section">
+          <div class="section-header"><div class="section-title"><i class="fas fa-bullseye" style="color:var(--rose)"></i> Registrar métricas</div></div>
+          <div class="section-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group"><label>Visitas hoy</label><input type="number" id="ana-visitas" placeholder="0" min="0"></div>
+              <div class="form-group"><label>Add to carts hoy</label><input type="number" id="ana-atc" placeholder="0" min="0"></div>
+              <div class="form-group"><label>Ventas hoy</label><input type="number" id="ana-ventas-hoy" placeholder="0" min="0"></div>
+              <div class="form-group"><label>Carritos abandonados</label><input type="number" id="ana-abandon-hoy" placeholder="0" min="0"></div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="saveAnalyticsPro()"><i class="fas fa-floppy-disk"></i> Guardar métricas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SEO INTERNO ====== -->
+    <div id="seo-section" class="page-section" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div><div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">🔍 SEO Interno</div><div style="font-size:12px;color:var(--muted);">Optimización por producto para buscadores</div></div>
+      </div>
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose)"></i> Editar SEO de producto</div>
+        </div>
+        <div class="section-body">
+          <div class="form-group" style="margin-bottom:14px;"><label>Producto</label><select id="seo-product-select" onchange="loadSeoForProduct()"><option value="">— Selecciona producto —</option></select></div>
+          <div id="seo-form-body" style="display:none;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+              <div class="form-group"><label>Slug (URL amigable)</label><input type="text" id="seo-slug" placeholder="conjunto-teddy-bear-rosado"></div>
+              <div class="form-group"><label>Meta Title</label><input type="text" id="seo-title" placeholder="Conjunto Teddy Bear | D'Zoe Perú" maxlength="60"></div>
+              <div class="form-group" style="grid-column:span 2;"><label>Meta Description</label><textarea id="seo-desc" rows="2" placeholder="Descripción optimizada para Google (160 caracteres)..." maxlength="160"></textarea></div>
+              <div class="form-group" style="grid-column:span 2;"><label>Keywords (separadas por coma)</label><input type="text" id="seo-keywords" placeholder="ropa bebe peru, conjunto osito, dzoe"></div>
+            </div>
+            <!-- Schema preview -->
+            <div style="background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--line2);margin-bottom:14px;">
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fas fa-code"></i> Schema.org (Product)</div>
+              <div style="font-family:monospace;font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-all;" id="seo-schema-preview">Selecciona un producto para ver el schema</div>
+            </div>
+            <!-- Google preview -->
+            <div style="background:#fff;border-radius:12px;padding:16px;border:1.5px solid #e0e0e0;margin-bottom:14px;">
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fab fa-google" style="color:#4285f4;"></i> Vista previa en Google</div>
+              <div id="seo-google-preview">
+                <div style="color:#1a0dab;font-size:18px;font-weight:400;" id="seo-prev-title">Meta Title</div>
+                <div style="color:#006621;font-size:13px;" id="seo-prev-url">dzoe.pe/productos/slug</div>
+                <div style="color:#545454;font-size:13px;line-height:1.5;" id="seo-prev-desc">Meta description...</div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSeoProduct()"><i class="fas fa-floppy-disk"></i> Guardar SEO</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header"><div class="section-title"><i class="fas fa-list-check" style="color:var(--rose)"></i> Estado SEO de todos los productos</div></div>
+        <div class="section-body" style="padding:0 0 20px;">
+          <div class="table-wrap">
+            <table class="orders-table">
+              <thead><tr><th>Producto</th><th>Slug</th><th>Meta Title</th><th>Keywords</th><th>Score SEO</th><th>Acciones</th></tr></thead>
+              <tbody id="seo-products-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== INTEGRACIONES ====== -->
+    <div id="integraciones-section" class="page-section" style="display:none;">
+      <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;margin-bottom:4px;">🔌 Integraciones</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:24px;">Conecta tu tienda con plataformas externas</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;" id="integraciones-grid">
+
+        <!-- Meta Catalog -->
+        <div class="section integ-card" data-key="meta">
+          <div class="section-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#0082fb,#004fd4);display:flex;align-items:center;justify-content:center;font-size:24px;">📘</div>
+              <div><div style="font-weight:800;font-size:16px;">Meta Catalog</div><div style="font-size:12px;color:var(--muted);">Facebook & Instagram Shopping</div></div>
+              <div id="integ-meta-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Pixel ID</label><input type="text" id="integ-meta-pixel" placeholder="123456789012345"></div>
+            <div class="form-group" style="margin-bottom:14px;"><label>Access Token</label><input type="password" id="integ-meta-token" placeholder="EAAxxxxxxx..."></div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary btn-sm" onclick="saveInteg('meta')"><i class="fas fa-plug"></i> Conectar</button>
+              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('meta')"><i class="fas fa-upload"></i> Exportar catálogo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TikTok -->
+        <div class="section integ-card" data-key="tiktok">
+          <div class="section-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#010101,#2d2d2d);display:flex;align-items:center;justify-content:center;font-size:24px;">🎵</div>
+              <div><div style="font-weight:800;font-size:16px;">TikTok Catalog</div><div style="font-size:12px;color:var(--muted);">TikTok Shopping & Ads</div></div>
+              <div id="integ-tiktok-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Pixel Code</label><input type="text" id="integ-tiktok-pixel" placeholder="XXXXXXXXXXXXXXXX"></div>
+            <div class="form-group" style="margin-bottom:14px;"><label>Access Token</label><input type="password" id="integ-tiktok-token" placeholder="Token de acceso..."></div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary btn-sm" onclick="saveInteg('tiktok')"><i class="fas fa-plug"></i> Conectar</button>
+              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('tiktok')"><i class="fas fa-upload"></i> Exportar catálogo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Merchant -->
+        <div class="section integ-card" data-key="google">
+          <div class="section-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#ea4335,#fbbc05);display:flex;align-items:center;justify-content:center;font-size:24px;">🛒</div>
+              <div><div style="font-weight:800;font-size:16px;">Google Merchant</div><div style="font-size:12px;color:var(--muted);">Google Shopping & Ads</div></div>
+              <div id="integ-google-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Merchant ID</label><input type="text" id="integ-google-merchant" placeholder="123456789"></div>
+            <div class="form-group" style="margin-bottom:14px;"><label>API Key</label><input type="password" id="integ-google-key" placeholder="AIzaSy..."></div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary btn-sm" onclick="saveInteg('google')"><i class="fas fa-plug"></i> Conectar</button>
+              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('google')"><i class="fas fa-download"></i> Descargar Feed XML</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp API -->
+        <div class="section integ-card" data-key="whatsapp">
+          <div class="section-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;font-size:24px;">💬</div>
+              <div><div style="font-weight:800;font-size:16px;">WhatsApp API</div><div style="font-size:12px;color:var(--muted);">Mensajes automáticos & recuperación</div></div>
+              <div id="integ-whatsapp-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Número WhatsApp Business</label><input type="text" id="integ-wa-number" placeholder="+51 9XXXXXXXX"></div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Token API (Meta Business)</label><input type="password" id="integ-wa-token" placeholder="EAAxxxxxxx..."></div>
+            <div class="form-group" style="margin-bottom:14px;"><label>Mensaje carrito abandonado</label><textarea id="integ-wa-msg" rows="2" placeholder="Hola {nombre}, notamos que dejaste {producto} en tu carrito 🛒 ¿Te ayudamos a completar tu pedido?"></textarea></div>
+            <button class="btn btn-primary btn-sm" onclick="saveInteg('whatsapp')"><i class="fas fa-plug"></i> Conectar</button>
+          </div>
+        </div>
+
+        <!-- Email Marketing -->
+        <div class="section integ-card" data-key="email">
+          <div class="section-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:24px;">📧</div>
+              <div><div style="font-weight:800;font-size:16px;">Email Marketing</div><div style="font-size:12px;color:var(--muted);">Mailchimp / Brevo / SendGrid</div></div>
+              <div id="integ-email-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;"><label>Plataforma</label><select id="integ-email-platform"><option value="mailchimp">Mailchimp</option><option value="brevo">Brevo (Sendinblue)</option><option value="sendgrid">SendGrid</option></select></div>
+            <div class="form-group" style="margin-bottom:10px;"><label>API Key</label><input type="password" id="integ-email-key" placeholder="API Key..."></div>
+            <div class="form-group" style="margin-bottom:14px;"><label>Lista / Audiencia ID</label><input type="text" id="integ-email-list" placeholder="ID de lista..."></div>
+            <button class="btn btn-primary btn-sm" onclick="saveInteg('email')"><i class="fas fa-plug"></i> Conectar</button>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div><!-- end page-content -->
@@ -3843,15 +4369,15 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-section':'Listones', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
   document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
   const btn = document.querySelector(`.menu-btn[data-section="${sectionId}"]`);
   if (btn) btn.classList.add('active');
-  if (sectionId === 'ribbons-section') renderRibbonsSection();
+  if (sectionId === 'ribbons-pro-section') renderRibbonsPro();
   if (sectionId === 'caja-section') setTimeout(renderCaja, 50);
   if (sectionId === 'prestamos-section') setTimeout(renderPrestamos, 50);
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
@@ -5730,6 +6256,937 @@ setTimeout(() => {
 }, 500);
 
 console.log('✅ Mejoras premium cargadas: Export CSV, Command Palette (Ctrl+K), CRM Score');
+
+// ============================================================
+//  D'ZOE PANEL v10 — NUEVOS MÓDULOS PREMIUM
+// ============================================================
+
+// ── NOTIFICACIONES ──────────────────────────────────────────
+function toggleNotificaciones() {
+  const d = document.getElementById('notif-dropdown');
+  if (!d) return;
+  const isOpen = d.style.display === 'block';
+  d.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) renderNotificaciones();
+}
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('[title="Notificaciones"]')?.parentElement;
+  if (wrap && !wrap.contains(e.target)) {
+    const d = document.getElementById('notif-dropdown');
+    if (d) d.style.display = 'none';
+  }
+});
+function renderNotificaciones() {
+  const list = document.getElementById('notif-list');
+  if (!list) return;
+  const notifs = [];
+  // Stock crítico
+  const products = window._allProducts || [];
+  const criticos = products.filter(p => (p.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0) <= 3 && p.status !== 'inactive');
+  if (criticos.length > 0) notifs.push({icon:'🔴', text:`${criticos.length} productos con stock crítico`, action:'inventory-section'});
+  // Carritos
+  const carritos = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]').filter(c=>c.estado==='pendiente');
+  if (carritos.length > 0) notifs.push({icon:'🛒', text:`${carritos.length} carritos abandonados sin recuperar`, action:'carritos-section'});
+  // Cupones vencidos
+  const promos = JSON.parse(localStorage.getItem('dzoe_promociones')||'[]');
+  const venc = promos.filter(p=>p.expiry && new Date(p.expiry)<new Date()).length;
+  if (venc > 0) notifs.push({icon:'🎟️', text:`${venc} cupones vencidos`, action:'promociones-section'});
+  // Badge
+  const dot = document.getElementById('notif-dot');
+  if (dot) dot.style.display = notifs.length > 0 ? 'block' : 'none';
+  if (notifs.length === 0) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;"><i class="fas fa-check-circle" style="font-size:24px;display:block;margin-bottom:8px;opacity:.5;"></i>Sin alertas nuevas</div>';
+    return;
+  }
+  list.innerHTML = notifs.map(n=>`<div onclick="goToSection('${n.action}');toggleNotificaciones()" style="padding:12px 18px;border-bottom:1px solid var(--line2);cursor:pointer;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;transition:background .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">${n.icon} <span>${n.text}</span></div>`).join('');
+}
+
+// ── CLIMA DE VENTAS ──────────────────────────────────────────
+function updateClimaVentas() {
+  const orders = window._allOrders || [];
+  const today = new Date().toDateString();
+  const todaySales = orders.filter(o => new Date(o.created_at).toDateString() === today && o.status === 'confirmed');
+  const total = todaySales.reduce((s,o)=>s+(o.total||0),0);
+  const climaIcon = document.getElementById('clima-icon');
+  const climaLabel = document.getElementById('clima-label');
+  if (!climaIcon) return;
+  if (total >= 500) { climaIcon.textContent = '🌟'; climaLabel.textContent = 'Excelente'; document.getElementById('sales-clima').style.background='var(--green-light)'; }
+  else if (total >= 200) { climaIcon.textContent = '☀️'; climaLabel.textContent = 'Bueno'; document.getElementById('sales-clima').style.background='var(--green-light)'; }
+  else if (total >= 50) { climaIcon.textContent = '⛅'; climaLabel.textContent = 'Normal'; document.getElementById('sales-clima').style.background='var(--orange-light)'; document.getElementById('sales-clima').style.color='var(--orange)'; }
+  else { climaIcon.textContent = '🌧️'; climaLabel.textContent = 'Lento'; document.getElementById('sales-clima').style.background='var(--blue-light)'; document.getElementById('sales-clima').style.color='var(--blue)'; }
+}
+
+// ── DASHBOARD HOY / ALERTAS / TOP ───────────────────────────
+function updateDashboardPro() {
+  const orders = window._allOrders || [];
+  const products = window._allProducts || [];
+  const today = new Date().toDateString();
+  // HOY
+  const todayOrders = orders.filter(o => new Date(o.created_at).toDateString() === today);
+  const todaySales = todayOrders.reduce((s,o)=>s+(o.total||0),0);
+  const todayProfit = todayOrders.filter(o=>o.status==='confirmed').reduce((s,o)=>{
+    const items = o.items || [];
+    return s + items.reduce((ss,it)=>{
+      const p = products.find(x=>x.id===it.product_id);
+      const sz = p && (p.sizes||[]).find(x=>x.name===it.size);
+      return ss + ((sz&&sz.price||0) - (sz&&sz.cost||0)) * (it.qty||1);
+    },0);
+  },0);
+  const uniqueClients = [...new Set(todayOrders.map(o=>o.name+o.lastname))].filter(n=>n.trim()).length;
+  document.getElementById('hoy-ventas') && (document.getElementById('hoy-ventas').textContent = 'S/'+todaySales.toFixed(0));
+  document.getElementById('hoy-pedidos') && (document.getElementById('hoy-pedidos').textContent = todayOrders.length);
+  document.getElementById('hoy-ganancia') && (document.getElementById('hoy-ganancia').textContent = 'S/'+Math.max(0,todayProfit).toFixed(0));
+  document.getElementById('hoy-clientes') && (document.getElementById('hoy-clientes').textContent = uniqueClients);
+  // ALERTAS
+  const critStock = products.filter(p=>{
+    const total = (p.sizes||[]).reduce((s,sz)=>s+(parseInt(sz.stock)||0),0);
+    return total <= 3 && p.status !== 'inactive';
+  }).length;
+  document.getElementById('alerta-stock') && (document.getElementById('alerta-stock').textContent = critStock);
+  const carritosPend = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]').filter(c=>c.estado==='pendiente').length;
+  document.getElementById('alerta-carritos') && (document.getElementById('alerta-carritos').textContent = carritosPend);
+  const pending = orders.filter(o=>o.status==='pending').length;
+  document.getElementById('alerta-pendientes') && (document.getElementById('alerta-pendientes').textContent = pending);
+  const thirtyDaysAgo = new Date(Date.now()-30*86400000);
+  const soldIds = new Set(orders.filter(o=>new Date(o.created_at)>thirtyDaysAgo).flatMap(o=>(o.items||[]).map(i=>i.product_id)));
+  const noMov = products.filter(p=>!soldIds.has(p.id) && p.status==='active').length;
+  document.getElementById('alerta-sin-movimiento') && (document.getElementById('alerta-sin-movimiento').textContent = noMov);
+  // TOP
+  const salesCount = {};
+  const salesRev = {};
+  orders.filter(o=>o.status==='confirmed').forEach(o=>{
+    (o.items||[]).forEach(it=>{
+      salesCount[it.product_id] = (salesCount[it.product_id]||0)+(it.qty||1);
+      const p = products.find(x=>x.id===it.product_id);
+      const sz = p && (p.sizes||[]).find(x=>x.name===it.size);
+      const profit = ((sz&&sz.price||0)-(sz&&sz.cost||0))*(it.qty||1);
+      salesRev[it.product_id] = (salesRev[it.product_id]||0)+profit;
+    });
+  });
+  const topSell = Object.entries(salesCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topProfit = Object.entries(salesRev).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const bottomSell = Object.entries(salesCount).sort((a,b)=>a[1]-b[1]).slice(0,5);
+  function renderTopList(elId, items, suffix, color) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (!items.length) { el.innerHTML = '<div style="color:var(--muted);padding:6px 0;">Sin datos</div>'; return; }
+    el.innerHTML = items.map(([id,val],i)=>{
+      const p = products.find(x=>x.id==id);
+      return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line2);">
+        <span style="font-size:12px;font-weight:800;color:var(--muted);width:14px;">${i+1}</span>
+        <span style="flex:1;font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p?p.name:'ID:'+id}</span>
+        <span style="font-size:11px;font-weight:800;color:${color};">${suffix==='S/'?'S/'+val.toFixed(0):val+' uds'}</span>
+      </div>`;
+    }).join('');
+  }
+  renderTopList('top-mas-vendidos', topSell, 'uds', 'var(--orange)');
+  renderTopList('top-mas-rentables', topProfit, 'S/', 'var(--green)');
+  renderTopList('top-menos-vendidos', bottomSell, 'uds', 'var(--muted)');
+  // Campañas
+  const activePromos = JSON.parse(localStorage.getItem('dzoe_promociones')||'[]').filter(p=>!p.expiry||new Date(p.expiry)>=new Date()).length;
+  document.getElementById('campanas-count') && (document.getElementById('campanas-count').textContent = activePromos);
+  updateClimaVentas();
+  renderNotificaciones();
+}
+
+// Hook into existing data load
+const _origRenderDash = window.renderDashboard || null;
+// Patch: watch for when orders/products are loaded
+const _origPatchTimer = setInterval(()=>{
+  if ((window._allOrders||[]).length>0 || (window._allProducts||[]).length>0) {
+    updateDashboardPro();
+    clearInterval(_origPatchTimer);
+  }
+}, 1200);
+// Also run on section switch
+const _origGoToSection = window.goToSection;
+if (_origGoToSection) {
+  window.goToSection = function(sec) {
+    _origGoToSection(sec);
+    if (sec === 'dashboard-section') setTimeout(updateDashboardPro, 300);
+    if (sec === 'seo-section') setTimeout(loadSeoSection, 300);
+    if (sec === 'analytics-pro-section') setTimeout(renderAnalyticsPro, 300);
+    if (sec === 'ribbons-pro-section') setTimeout(renderRibbonsPro, 300);
+    if (sec === 'drops-section') setTimeout(renderDrops, 300);
+    if (sec === 'lookbooks-section') setTimeout(renderLookbooks, 300);
+    if (sec === 'promociones-section') setTimeout(renderPromociones, 300);
+    if (sec === 'carritos-section') setTimeout(renderCarritos, 300);
+    if (sec === 'integraciones-section') setTimeout(loadIntegraciones, 300);
+  };
+}
+setInterval(updateDashboardPro, 60000);
+
+// ── LISTONES PRO ─────────────────────────────────────────────
+let rpColor = '#c2617a';
+
+function openRibbonProForm() {
+  const form = document.getElementById('ribbon-pro-form');
+  form.style.display = 'block';
+  form.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function toggleRpAutoConfig() {
+  const mode = document.getElementById('rp-mode')?.value;
+  const cfg = document.getElementById('rp-auto-config');
+  if (cfg) cfg.style.display = mode === 'auto' ? 'block' : 'none';
+}
+
+document.addEventListener('click', e => {
+  const opt = e.target.closest('.rp-color-opt');
+  if (opt) {
+    document.querySelectorAll('.rp-color-opt').forEach(x=>{x.style.border='2px solid transparent';x.style.boxShadow='';});
+    opt.style.border = '2.5px solid '+opt.dataset.color;
+    opt.style.boxShadow = '0 0 0 2px #fff, 0 0 0 4px '+opt.dataset.color;
+    rpColor = opt.dataset.color;
+    updateRpPreview();
+  }
+});
+
+function updateRpPreview() {
+  const name = document.getElementById('rp-name')?.value || 'LISTÓN';
+  const icon = document.getElementById('rp-icon')?.value || '';
+  const prev = document.getElementById('rp-preview');
+  if (prev) { prev.textContent = (icon+' '+name).trim().toUpperCase(); prev.style.background = rpColor; }
+}
+
+function saveRibbonPro() {
+  const name = document.getElementById('rp-name')?.value.trim();
+  if (!name) { showAlert('Ingresa un nombre para el listón','error'); return; }
+  const mode = document.getElementById('rp-mode')?.value || 'manual';
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const newRibbon = {
+    id: Date.now(), name,
+    icon: document.getElementById('rp-icon')?.value || '',
+    color: rpColor,
+    priority: document.getElementById('rp-priority')?.value || '2',
+    mode,
+    start: document.getElementById('rp-start')?.value || '',
+    end: document.getElementById('rp-end')?.value || '',
+    created: new Date().toISOString()
+  };
+  if (mode === 'auto') {
+    newRibbon.autoRule = document.getElementById('rp-auto-rule')?.value || 'new_arrivals';
+    newRibbon.autoParam = document.getElementById('rp-auto-param')?.value || '5';
+    newRibbon.autoFreq = document.getElementById('rp-auto-freq')?.value || 'realtime';
+  }
+  ribbons.push(newRibbon);
+  localStorage.setItem('dzoe_ribbons_pro', JSON.stringify(ribbons));
+
+  // Si es automático, aplicar de inmediato
+  if (mode === 'auto') applyAutoRibbonsPro();
+
+  showAlert('✅ Listón ' + (mode==='auto'?'automático':'manual') + ' guardado');
+  document.getElementById('ribbon-pro-form').style.display = 'none';
+  // Reset form
+  ['rp-name','rp-icon','rp-start','rp-end','rp-auto-param'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rp-mode').value='manual';
+  toggleRpAutoConfig();
+  renderRibbonsPro();
+}
+
+function useQuickRibbon(el) {
+  document.getElementById('rp-name').value = el.dataset.name;
+  document.getElementById('rp-icon').value = el.dataset.icon;
+  rpColor = el.dataset.color;
+  document.querySelectorAll('.rp-color-opt').forEach(x=>{x.style.border='2px solid transparent';x.style.boxShadow='';});
+  updateRpPreview();
+  openRibbonProForm();
+}
+
+// Calcula qué productos reciben cada listón automático
+function getAutoRibbonProducts(ribbon) {
+  const prods = window._allProducts || products || [];
+  const param = parseInt(ribbon.autoParam) || 5;
+  const paramStr = (ribbon.autoParam||'').toLowerCase();
+  switch(ribbon.autoRule) {
+    case 'new_arrivals': {
+      const sorted = [...prods].sort((a,b)=>{
+        const ta = a.created_at ? new Date(a.created_at).getTime() : Number(a.id);
+        const tb = b.created_at ? new Date(b.created_at).getTime() : Number(b.id);
+        return tb - ta;
+      });
+      return sorted.slice(0, param);
+    }
+    case 'low_stock':
+      return prods.filter(p=>{
+        const stock = (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0);
+        return stock > 0 && stock <= param;
+      });
+    case 'out_of_stock':
+      return prods.filter(p=>(p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0)===0);
+    case 'top_sold': {
+      const ordersLocal = window._allOrders || orders || [];
+      const counts = {};
+      ordersLocal.forEach(o=>(o.items||[]).forEach(it=>{counts[it.productId]=(counts[it.productId]||0)+(it.qty||1);}));
+      return [...prods].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0)).slice(0,param);
+    }
+    case 'category':
+      return prods.filter(p=>(p.category||'').toLowerCase().includes(paramStr));
+    default: return [];
+  }
+}
+
+function applyAutoRibbonsPro() {
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const autoRibbons = ribbons.filter(r=>r.mode==='auto').sort((a,b)=>Number(a.priority)-Number(b.priority));
+  const prods = window._allProducts || products || [];
+  // clear all auto-set ribbons first
+  prods.forEach(p=>{ if(p._ribbonAutoSource) { p.ribbon_pro_auto = null; p._ribbonAutoSource = null; } });
+  autoRibbons.forEach(ribbon=>{
+    const matched = getAutoRibbonProducts(ribbon);
+    matched.forEach(p=>{ if(!p.ribbon_pro_auto) { p.ribbon_pro_auto = ribbon.id; p._ribbonAutoSource = ribbon.name; } });
+  });
+}
+
+// Get effective ribbon for product (PRO version)
+function getEffectiveRibbonPro(p) {
+  // 1. Manual PRO override
+  if (p.ribbon_pro) {
+    const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+    const r = ribbons.find(x=>x.id===p.ribbon_pro);
+    if (r) return r;
+  }
+  // 2. Auto PRO
+  if (p.ribbon_pro_auto) {
+    const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+    const r = ribbons.find(x=>x.id===p.ribbon_pro_auto);
+    if (r) return r;
+  }
+  return null;
+}
+
+function renderRibbonsPro() {
+  applyAutoRibbonsPro();
+  const list = document.getElementById('ribbons-pro-list');
+  if (!list) return;
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const prods = window._allProducts || products || [];
+
+  // KPIs
+  const autoCount = ribbons.filter(r=>r.mode==='auto').length;
+  const manualCount = ribbons.filter(r=>r.mode==='manual').length;
+  const etiquetados = prods.filter(p=>p.ribbon_pro||p.ribbon_pro_auto).length;
+  const setEl = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setEl('rp-kpi-total', ribbons.length);
+  setEl('rp-kpi-auto', autoCount);
+  setEl('rp-kpi-manual', manualCount);
+  setEl('rp-kpi-etiquetados', etiquetados);
+
+  if (!ribbons.length) {
+    list.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--muted);">No hay listones PRO. Crea uno arriba o elige un listón rápido.</div>';
+  } else {
+    list.innerHTML = ribbons.map(r=>{
+      const matched = r.mode==='auto' ? getAutoRibbonProducts(r) : prods.filter(p=>p.ribbon_pro===r.id);
+      return `
+        <div style="background:var(--card);border-radius:16px;border:1.5px solid var(--line2);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="padding:4px 14px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:${r.color};letter-spacing:.04em;text-transform:uppercase;">${r.icon||''} ${r.name}</div>
+            <div style="margin-left:auto;display:flex;gap:6px;">
+              <span style="padding:3px 9px;border-radius:99px;background:var(--bg2);font-size:10px;font-weight:700;color:var(--muted);">P${r.priority}</span>
+              <span style="padding:3px 9px;border-radius:99px;background:${r.mode==='auto'?'var(--green-light)':'var(--blue-light)'};font-size:10px;font-weight:700;color:${r.mode==='auto'?'var(--green)':'var(--blue)'};">${r.mode==='auto'?'🤖 Auto':'✋ Manual'}</span>
+            </div>
+          </div>
+          ${r.mode==='auto' && r.autoRule ? `<div style="font-size:11px;color:var(--green);font-weight:600;">⚙️ Regla: ${{new_arrivals:'Últimos ingresos',low_stock:'Stock crítico',out_of_stock:'Agotados',top_sold:'Más vendidos',category:'Por categoría'}[r.autoRule]||r.autoRule} · N=${r.autoParam||'5'}</div>`:''}
+          ${r.start||r.end?`<div style="font-size:11px;color:var(--muted);">📅 ${r.start||'—'} → ${r.end||'—'}</div>`:''}
+          <div style="font-size:11px;color:var(--muted);">🏷️ Aplicado a <strong>${matched.length}</strong> producto(s)</div>
+          <div style="display:flex;gap:6px;">
+            <button onclick="deleteRibbonPro(${r.id})" style="background:var(--red-light);color:var(--red);border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">🗑️ Eliminar</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // Poblar select productos y listones para asignación manual
+  const pSel = document.getElementById('rp-product-select');
+  const rSel = document.getElementById('rp-assign-select');
+  if (pSel) pSel.innerHTML = '<option value="">— Selecciona un producto —</option>' + prods.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  if (rSel) rSel.innerHTML = '<option value="">— Sin listón —</option>' + ribbons.map(r=>`<option value="${r.id}">${r.icon||''} ${r.name}</option>`).join('');
+
+  // Render productos asignados manualmente
+  renderRpProductsAssigned();
+  // Render listones automáticos activos
+  renderRpAutoProducts();
+}
+
+function renderRpProductsAssigned() {
+  const el = document.getElementById('rp-products-assigned');
+  if (!el) return;
+  const prods = window._allProducts || products || [];
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const withManual = prods.filter(p=>p.ribbon_pro);
+  if (!withManual.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;">Ningún producto tiene listón manual asignado aún.</div>';
+    return;
+  }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">' +
+    withManual.map(p=>{
+      const r = ribbons.find(x=>x.id===p.ribbon_pro);
+      const color = r ? r.color : 'var(--rose)';
+      const label = r ? (r.icon||'')+' '+r.name : 'Desconocido';
+      return `<div style="background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;">
+        <div style="background:${color};color:#fff;padding:3px 10px;border-radius:0 99px 99px 0;font-size:10px;font-weight:800;text-transform:uppercase;flex-shrink:0;">${label}</div>
+        <div style="flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</div>
+        <button onclick="removeRibbonProFromProduct(${p.id})" style="background:var(--red-light);color:var(--red);border:none;border-radius:8px;width:28px;height:28px;cursor:pointer;flex-shrink:0;font-size:12px;" title="Quitar listón"><i class="fas fa-times"></i></button>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+function renderRpAutoProducts() {
+  const el = document.getElementById('rp-auto-products-list');
+  if (!el) return;
+  const prods = window._allProducts || products || [];
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const withAuto = prods.filter(p=>p._ribbonAutoSource);
+  if (!ribbons.filter(r=>r.mode==='auto').length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;">No hay listones automáticos configurados. Crea uno con modo "Automático".</div>';
+    return;
+  }
+  if (!withAuto.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;">Ningún producto cumple las reglas automáticas activas aún.</div>';
+    return;
+  }
+  // Group by ribbon
+  const groups = {};
+  withAuto.forEach(p=>{
+    const key = p._ribbonAutoSource;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(p);
+  });
+  el.innerHTML = Object.entries(groups).map(([rName, ps])=>{
+    const r = ribbons.find(x=>x.name===rName);
+    const color = r ? r.color : 'var(--rose)';
+    return `<div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="padding:4px 14px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:${color};">${r?.icon||''} ${rName}</div>
+        <span style="font-size:12px;color:var(--muted);font-weight:700;">${ps.length} producto(s)</span>
+        <span style="padding:3px 9px;border-radius:99px;background:var(--green-light);font-size:10px;font-weight:700;color:var(--green);">🤖 Auto</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${ps.map(p=>`<span style="background:var(--bg2);border:1.5px solid var(--line2);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600;">${p.name}</span>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function assignRibbonPro() {
+  const pid = document.getElementById('rp-product-select')?.value;
+  const rid = document.getElementById('rp-assign-select')?.value;
+  if (!pid) { showAlert('Selecciona un producto','error'); return; }
+  const prods = window._allProducts || products || [];
+  const p = prods.find(x=>String(x.id)===String(pid));
+  if (!p) return;
+  p.ribbon_pro = rid ? parseInt(rid) : null;
+  // Sync to Supabase
+  if (supabaseClient) await supabaseClient.from('products').update({ribbon: rid ? parseInt(rid) : null}).eq('id', pid);
+  renderRibbonsPro();
+  filterInventory && filterInventory();
+  const ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  const r = ribbons.find(x=>x.id===parseInt(rid));
+  showAlert(r ? `✅ Listón "${r.name}" asignado a ${p.name}` : '✅ Listón quitado');
+}
+
+async function removeRibbonProFromProduct(pid) {
+  const prods = window._allProducts || products || [];
+  const p = prods.find(x=>x.id===pid);
+  if (!p) return;
+  p.ribbon_pro = null;
+  if (supabaseClient) await supabaseClient.from('products').update({ribbon:null}).eq('id',pid);
+  renderRibbonsPro();
+  filterInventory && filterInventory();
+  showAlert('Listón quitado');
+}
+
+function deleteRibbonPro(id) {
+  if (!confirm('¿Eliminar este listón?')) return;
+  let ribbons = JSON.parse(localStorage.getItem('dzoe_ribbons_pro')||'[]');
+  ribbons = ribbons.filter(r=>r.id!==id);
+  localStorage.setItem('dzoe_ribbons_pro', JSON.stringify(ribbons));
+  // Quitar de productos
+  const prods = window._allProducts || products || [];
+  prods.forEach(p=>{ if(p.ribbon_pro===id) p.ribbon_pro=null; });
+  renderRibbonsPro();
+  showAlert('Listón eliminado');
+}
+
+// Auto-aplicar listones automáticos cuando se carguen los productos
+const _origLoadProducts = window.loadProducts;
+if (_origLoadProducts) {
+  window.loadProducts = async function() {
+    await _origLoadProducts.apply(this, arguments);
+    applyAutoRibbonsPro();
+  };
+}
+
+// ── PROMOCIONES ───────────────────────────────────────────────
+function renderPromoPreview() {
+  const code = (document.getElementById('promo-code')?.value||'CÓDIGO').toUpperCase();
+  const type = document.getElementById('promo-type')?.value;
+  const value = document.getElementById('promo-value')?.value;
+  document.getElementById('promo-preview-code').textContent = code;
+  let desc = '';
+  if (type==='pct') desc = value+'% de descuento';
+  else if (type==='fixed') desc = 'S/'+value+' de descuento';
+  else desc = '🚚 Envío gratis incluido';
+  document.getElementById('promo-preview-desc').textContent = desc;
+}
+document.getElementById('promo-code')?.addEventListener('input', function(){ this.value=this.value.toUpperCase(); renderPromoPreview(); });
+document.getElementById('promo-type')?.addEventListener('change', renderPromoPreview);
+
+function savePromocion() {
+  const code = document.getElementById('promo-code')?.value.trim().toUpperCase();
+  if (!code) { showAlert('Ingresa un código de cupón','error'); return; }
+  const promos = JSON.parse(localStorage.getItem('dzoe_promociones')||'[]');
+  if (promos.find(p=>p.code===code)) { showAlert('Ya existe un cupón con ese código','error'); return; }
+  promos.push({
+    id: Date.now(), code,
+    type: document.getElementById('promo-type')?.value,
+    value: parseFloat(document.getElementById('promo-value')?.value)||0,
+    expiry: document.getElementById('promo-expiry')?.value||'',
+    limit: parseInt(document.getElementById('promo-limit')?.value)||0,
+    applies: document.getElementById('promo-applies')?.value||'all',
+    uses: 0, created: new Date().toISOString()
+  });
+  localStorage.setItem('dzoe_promociones', JSON.stringify(promos));
+  showAlert('✅ Cupón '+code+' creado');
+  clearPromoForm(); renderPromociones();
+}
+
+function clearPromoForm() {
+  ['promo-code','promo-value','promo-expiry','promo-limit'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+
+function renderPromociones() {
+  const promos = JSON.parse(localStorage.getItem('dzoe_promociones')||'[]');
+  const tbody = document.getElementById('promociones-tbody');
+  if (!tbody) return;
+  const now = new Date();
+  let activos=0,vencidos=0,usos=0;
+  promos.forEach(p=>{ if(!p.expiry||new Date(p.expiry)>=now) activos++; else vencidos++; usos+=p.uses||0; });
+  document.getElementById('promo-activos') && (document.getElementById('promo-activos').textContent=activos);
+  document.getElementById('promo-usos') && (document.getElementById('promo-usos').textContent=usos);
+  document.getElementById('promo-vencidos') && (document.getElementById('promo-vencidos').textContent=vencidos);
+  if (!promos.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">No hay cupones creados</td></tr>'; return; }
+  tbody.innerHTML = promos.map(p=>{
+    const expired = p.expiry && new Date(p.expiry)<now;
+    const typeLabel = p.type==='pct'?p.value+'%':p.type==='fixed'?'S/'+p.value:'Envío gratis';
+    return `<tr>
+      <td><span style="font-family:monospace;font-size:14px;font-weight:800;letter-spacing:.06em;color:var(--green);">${p.code}</span></td>
+      <td>${p.type==='pct'?'Porcentaje':p.type==='fixed'?'Monto fijo':'Envío gratis'}</td>
+      <td style="font-weight:800;">${typeLabel}</td>
+      <td>${p.uses||0}${p.limit?'/'+p.limit:''}</td>
+      <td>${p.expiry||'Sin fecha'}</td>
+      <td><span class="order-status ${expired?'status-cancelled':'status-confirmed'}">${expired?'Vencido':'Activo'}</span></td>
+      <td><button onclick="deletePromocion(${p.id})" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+
+function deletePromocion(id) {
+  let promos = JSON.parse(localStorage.getItem('dzoe_promociones')||'[]');
+  promos = promos.filter(p=>p.id!==id);
+  localStorage.setItem('dzoe_promociones', JSON.stringify(promos));
+  renderPromociones();
+}
+
+// ── CARRITOS ABANDONADOS ──────────────────────────────────────
+function saveCarritoAbandonado() {
+  const cliente = document.getElementById('ca-cliente')?.value.trim();
+  if (!cliente) { showAlert('Ingresa el nombre del cliente','error'); return; }
+  const carritos = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]');
+  carritos.unshift({
+    id: Date.now(), cliente,
+    wa: document.getElementById('ca-wa')?.value||'',
+    total: parseFloat(document.getElementById('ca-total-val')?.value)||0,
+    items: document.getElementById('ca-items')?.value||'',
+    hora: document.getElementById('ca-hora')?.value || new Date().toISOString(),
+    motivo: document.getElementById('ca-motivo')?.value||'',
+    estado: 'pendiente', created: new Date().toISOString()
+  });
+  localStorage.setItem('dzoe_carritos', JSON.stringify(carritos));
+  showAlert('✅ Carrito registrado');
+  ['ca-cliente','ca-wa','ca-total-val','ca-items','ca-hora'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  renderCarritos();
+}
+
+function renderCarritos() {
+  const carritos = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]');
+  const tbody = document.getElementById('carritos-tbody');
+  if (!tbody) return;
+  const total = carritos.length;
+  const valor = carritos.reduce((s,c)=>s+(c.total||0),0);
+  const recup = carritos.filter(c=>c.estado==='recuperado').length;
+  document.getElementById('ca-total') && (document.getElementById('ca-total').textContent=total);
+  document.getElementById('ca-valor') && (document.getElementById('ca-valor').textContent='S/'+valor.toFixed(0));
+  document.getElementById('ca-recuperados') && (document.getElementById('ca-recuperados').textContent=recup);
+  document.getElementById('ca-tasa') && (document.getElementById('ca-tasa').textContent=total?(Math.round(recup/total*100)+'%'):'0%');
+  if (!carritos.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">No hay carritos registrados</td></tr>'; return; }
+  tbody.innerHTML = carritos.map(c=>`<tr>
+    <td style="font-weight:700;">${c.cliente}</td>
+    <td>${c.wa?`<a href="https://wa.me/51${c.wa.replace(/\D/g,'')}" target="_blank" style="color:var(--green);font-weight:700;"><i class="fab fa-whatsapp"></i> ${c.wa}</a>`:'-'}</td>
+    <td style="max-width:180px;font-size:12px;">${c.items||'-'}</td>
+    <td style="font-family:Baloo2,cursive;font-weight:800;color:var(--rose);">S/${(c.total||0).toFixed(2)}</td>
+    <td style="font-size:12px;">${c.hora?new Date(c.hora).toLocaleString('es-PE',{dateStyle:'short',timeStyle:'short'}):'-'}</td>
+    <td><span class="order-status ${c.estado==='recuperado'?'status-confirmed':'status-pending'}">${c.estado==='recuperado'?'Recuperado':'Pendiente'}</span></td>
+    <td style="display:flex;gap:6px;">
+      ${c.estado!=='recuperado'?`<button onclick="recuperarCarrito(${c.id})" class="btn btn-green btn-sm"><i class="fas fa-check"></i> Recuperar</button>`:''}
+      ${c.wa?`<a href="https://wa.me/51${c.wa.replace(/\D/g,'')}?text=${encodeURIComponent('Hola '+c.cliente+'! Notamos que dejaste productos en tu carrito 🛒 ¿Te ayudamos a completar tu pedido?')}" target="_blank" class="btn btn-sm" style="background:#d0f2e6;color:#1f9e6e;font-weight:700;"><i class="fab fa-whatsapp"></i></a>`:''}
+      <button onclick="deleteCarrito(${c.id})" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+}
+
+function recuperarCarrito(id) {
+  let c = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]');
+  c = c.map(x=>x.id===id?{...x,estado:'recuperado'}:x);
+  localStorage.setItem('dzoe_carritos', JSON.stringify(c));
+  renderCarritos(); showAlert('✅ Marcado como recuperado');
+}
+
+function deleteCarrito(id) {
+  let c = JSON.parse(localStorage.getItem('dzoe_carritos')||'[]');
+  c = c.filter(x=>x.id!==id);
+  localStorage.setItem('dzoe_carritos', JSON.stringify(c));
+  renderCarritos();
+}
+
+// ── DROPS ─────────────────────────────────────────────────────
+function openDropForm() { document.getElementById('drops-form-container').style.display='block'; }
+
+function saveDrop() {
+  const name = document.getElementById('drop-name')?.value.trim();
+  if (!name) { showAlert('Ingresa nombre del Drop','error'); return; }
+  const drops = JSON.parse(localStorage.getItem('dzoe_drops')||'[]');
+  drops.unshift({
+    id: Date.now(), name,
+    emoji: document.getElementById('drop-emoji')?.value||'⚡',
+    date: document.getElementById('drop-date')?.value||'',
+    desc: document.getElementById('drop-desc')?.value||'',
+    products: document.getElementById('drop-products')?.value||'',
+    active: true, created: new Date().toISOString()
+  });
+  localStorage.setItem('dzoe_drops', JSON.stringify(drops));
+  showAlert('✅ Drop publicado'); document.getElementById('drops-form-container').style.display='none';
+  renderDrops();
+}
+
+function renderDrops() {
+  const list = document.getElementById('drops-list');
+  if (!list) return;
+  const drops = JSON.parse(localStorage.getItem('dzoe_drops')||'[]');
+  if (!drops.length) { list.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);">No hay drops. Crea el primero con el botón de arriba.</div>'; return; }
+  list.innerHTML = drops.map(d=>{
+    const launchDate = d.date ? new Date(d.date) : null;
+    const now = new Date();
+    const diff = launchDate ? launchDate-now : 0;
+    const launched = diff <= 0;
+    const days = Math.floor(diff/86400000);
+    const hrs = Math.floor((diff%86400000)/3600000);
+    const mins = Math.floor((diff%3600000)/60000);
+    return `<div style="background:var(--card);border-radius:20px;border:1.5px solid var(--line2);overflow:hidden;box-shadow:var(--shadow);">
+      <div style="background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));padding:24px;text-align:center;">
+        <div style="font-size:52px;margin-bottom:8px;">${d.emoji}</div>
+        <div style="font-family:Baloo2,cursive;font-size:20px;font-weight:800;">${d.name}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;">${d.desc}</div>
+      </div>
+      <div style="padding:16px 18px;">
+        ${!launched && launchDate ? `<div style="display:flex;justify-content:center;gap:12px;margin-bottom:12px;">
+          <div style="text-align:center;background:var(--rose-dark);color:#fff;border-radius:10px;padding:8px 12px;min-width:52px;">
+            <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">${days}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;">días</div>
+          </div>
+          <div style="text-align:center;background:var(--rose-dark);color:#fff;border-radius:10px;padding:8px 12px;min-width:52px;">
+            <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">${hrs}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;">horas</div>
+          </div>
+          <div style="text-align:center;background:var(--rose-dark);color:#fff;border-radius:10px;padding:8px 12px;min-width:52px;">
+            <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">${mins}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;">min</div>
+          </div>
+        </div>` : launched && launchDate ? '<div style="text-align:center;padding:8px;background:var(--green-light);color:var(--green);border-radius:10px;font-weight:800;margin-bottom:12px;">🚀 ¡YA LANZADO!</div>' : ''}
+        <button onclick="deleteDrop(${d.id})" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;"><i class="fas fa-trash"></i> Eliminar Drop</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteDrop(id) {
+  let drops = JSON.parse(localStorage.getItem('dzoe_drops')||'[]');
+  drops = drops.filter(d=>d.id!==id);
+  localStorage.setItem('dzoe_drops', JSON.stringify(drops));
+  renderDrops();
+}
+
+// ── LOOKBOOKS ─────────────────────────────────────────────────
+function openLookbookForm() { document.getElementById('lookbook-form-container').style.display='block'; addLookbookProductRow(); }
+
+function addLookbookProductRow() {
+  const container = document.getElementById('lb-products-rows');
+  if (!container) return;
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 36px;gap:8px;margin-bottom:8px;';
+  const products = window._allProducts||[];
+  const opts = products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  row.innerHTML = `<select style="border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-family:Nunito,sans-serif;font-size:13px;background:var(--card);color:var(--text);"><option value="">— Selecciona prenda —</option>${opts}</select>
+    <input type="text" placeholder="Ej: Vestido principal, Accesorio..." style="border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-family:Nunito,sans-serif;font-size:13px;background:var(--card);color:var(--text);">
+    <button onclick="this.parentElement.remove()" style="background:var(--red-light);color:var(--red);border:none;border-radius:10px;cursor:pointer;font-size:14px;">✕</button>`;
+  container.appendChild(row);
+}
+
+function saveLookbook() {
+  const name = document.getElementById('lb-name')?.value.trim();
+  if (!name) { showAlert('Ingresa un nombre','error'); return; }
+  const rows = document.getElementById('lb-products-rows')?.querySelectorAll('div') || [];
+  const items = [...rows].map(r=>{
+    const sel = r.querySelector('select')?.value;
+    const label = r.querySelector('input')?.value;
+    return sel ? {id:sel, label} : null;
+  }).filter(Boolean);
+  const lookbooks = JSON.parse(localStorage.getItem('dzoe_lookbooks')||'[]');
+  lookbooks.unshift({
+    id: Date.now(), name,
+    tema: document.getElementById('lb-tema')?.value||'',
+    img: document.getElementById('lb-img')?.value||'',
+    desc: document.getElementById('lb-desc')?.value||'',
+    items, created: new Date().toISOString()
+  });
+  localStorage.setItem('dzoe_lookbooks', JSON.stringify(lookbooks));
+  showAlert('✅ Lookbook guardado'); document.getElementById('lookbook-form-container').style.display='none';
+  renderLookbooks();
+}
+
+function renderLookbooks() {
+  const list = document.getElementById('lookbooks-list');
+  if (!list) return;
+  const lookbooks = JSON.parse(localStorage.getItem('dzoe_lookbooks')||'[]');
+  if (!lookbooks.length) { list.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);">No hay lookbooks. Crea el primero arriba.</div>'; return; }
+  const products = window._allProducts||[];
+  list.innerHTML = lookbooks.map(lb=>`
+    <div style="background:var(--card);border-radius:20px;border:1.5px solid var(--line2);overflow:hidden;box-shadow:var(--shadow);">
+      <div style="height:140px;background:linear-gradient(135deg,var(--rose-soft),var(--sky-light));position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px;">
+        ${lb.img?`<img src="${lb.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">`:''} 📖
+        ${lb.tema?`<span style="position:absolute;top:10px;right:10px;background:var(--rose-dark);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:99px;">${lb.tema}</span>`:''}
+      </div>
+      <div style="padding:16px 18px;">
+        <div style="font-weight:800;font-size:16px;margin-bottom:4px;">${lb.name}</div>
+        ${lb.desc?`<div style="font-size:12px;color:var(--muted);margin-bottom:10px;">${lb.desc}</div>`:''}
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+          ${lb.items.map(it=>{
+            const p=products.find(x=>x.id==it.id);
+            return `<div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:18px;height:18px;border-radius:50%;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--rose-dark);">+</span> <span style="font-weight:700;">${it.label||''}</span> ${p?`<span style="color:var(--muted);">${p.name}</span>`:''}`;
+          }).join('')}
+        </div>
+        <button onclick="deleteLookbook(${lb.id})" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;"><i class="fas fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteLookbook(id) {
+  let lb = JSON.parse(localStorage.getItem('dzoe_lookbooks')||'[]');
+  lb = lb.filter(x=>x.id!==id);
+  localStorage.setItem('dzoe_lookbooks', JSON.stringify(lb));
+  renderLookbooks();
+}
+
+// ── ANALYTICS PRO ─────────────────────────────────────────────
+function saveAnalyticsPro() {
+  const data = JSON.parse(localStorage.getItem('dzoe_analytics_pro')||'[]');
+  data.push({
+    date: new Date().toDateString(),
+    visitas: parseInt(document.getElementById('ana-visitas')?.value)||0,
+    atc: parseInt(document.getElementById('ana-atc')?.value)||0,
+    ventas: parseInt(document.getElementById('ana-ventas-hoy')?.value)||0,
+    abandon: parseInt(document.getElementById('ana-abandon-hoy')?.value)||0,
+  });
+  localStorage.setItem('dzoe_analytics_pro', JSON.stringify(data));
+  showAlert('✅ Métricas guardadas'); renderAnalyticsPro();
+}
+
+function renderAnalyticsPro() {
+  const data = JSON.parse(localStorage.getItem('dzoe_analytics_pro')||'[]');
+  const totVisitas = data.reduce((s,d)=>s+d.visitas,0);
+  const totAtc = data.reduce((s,d)=>s+d.atc,0);
+  const totVentas = data.reduce((s,d)=>s+d.ventas,0);
+  const totAbandon = data.reduce((s,d)=>s+d.abandon,0);
+  const conv = totVisitas>0 ? (totVentas/totVisitas*100).toFixed(1)+'%' : '0%';
+  const abandRate = totAtc>0 ? (totAbandon/totAtc*100).toFixed(1)+'%' : '0%';
+  document.getElementById('anapro-conv') && (document.getElementById('anapro-conv').textContent=conv);
+  document.getElementById('anapro-views') && (document.getElementById('anapro-views').textContent=totVisitas);
+  document.getElementById('anapro-atc') && (document.getElementById('anapro-atc').textContent=totAtc);
+  document.getElementById('anapro-abandon') && (document.getElementById('anapro-abandon').textContent=abandRate);
+  // Funnel chart
+  const funnelCtx = document.getElementById('funnelChart');
+  if (funnelCtx && !funnelCtx._chart) {
+    funnelCtx._chart = new Chart(funnelCtx, { type:'bar', data:{
+      labels:['Visitas','Vieron producto','Agregaron al carrito','Compraron'],
+      datasets:[{data:[totVisitas,Math.round(totVisitas*.6),totAtc,totVentas],backgroundColor:['#B39DC8','#8A6FAA','#C8A0D8','#7DC4A8'],borderRadius:8}]
+    }, options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});
+  }
+  // ROI chart
+  const roiCtx = document.getElementById('roiChart');
+  const orders = window._allOrders||[];
+  const products = window._allProducts||[];
+  const roiData = {};
+  orders.filter(o=>o.status==='confirmed').forEach(o=>(o.items||[]).forEach(it=>{
+    const p=products.find(x=>x.id===it.product_id);
+    const sz=p&&(p.sizes||[]).find(x=>x.name===it.size);
+    if(sz&&sz.cost>0){const roi=((sz.price-sz.cost)/sz.cost*100);roiData[p.name]=(roiData[p.name]||[]).concat(roi);}
+  }));
+  const roiAvg = Object.entries(roiData).map(([k,v])=>[k,v.reduce((s,x)=>s+x,0)/v.length]).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if (roiCtx && !roiCtx._chart && roiAvg.length) {
+    roiCtx._chart = new Chart(roiCtx, { type:'bar', data:{
+      labels:roiAvg.map(x=>x[0].substring(0,18)),
+      datasets:[{label:'ROI %',data:roiAvg.map(x=>x[1].toFixed(1)),backgroundColor:'rgba(125,196,168,.7)',borderColor:'#7DC4A8',borderWidth:2,borderRadius:8}]
+    }, options:{plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'%'}}}}});
+  }
+}
+
+// ── SEO INTERNO ───────────────────────────────────────────────
+function loadSeoSection() {
+  const select = document.getElementById('seo-product-select');
+  if (!select) return;
+  const products = window._allProducts||[];
+  select.innerHTML = '<option value="">— Selecciona producto —</option>' +
+    products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  renderSeoTable();
+}
+
+function loadSeoForProduct() {
+  const id = document.getElementById('seo-product-select')?.value;
+  if (!id) { document.getElementById('seo-form-body').style.display='none'; return; }
+  document.getElementById('seo-form-body').style.display='block';
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const d = seoData[id]||{};
+  document.getElementById('seo-slug').value = d.slug||'';
+  document.getElementById('seo-title').value = d.title||'';
+  document.getElementById('seo-desc').value = d.desc||'';
+  document.getElementById('seo-keywords').value = d.keywords||'';
+  updateSeoPreview();
+  const p = (window._allProducts||[]).find(x=>x.id==id);
+  const schema = p ? JSON.stringify({"@context":"https://schema.org","@type":"Product","name":p.name,"description":p.description||'','offers":{"@type":"Offer","priceCurrency":"PEN","price":'+(p.sizes&&p.sizes[0]?p.sizes[0].price:0)+'}'},null,2) : '';
+  document.getElementById('seo-schema-preview').textContent = schema;
+}
+
+function updateSeoPreview() {
+  const id = document.getElementById('seo-product-select')?.value;
+  const slug = document.getElementById('seo-slug')?.value || 'producto';
+  const title = document.getElementById('seo-title')?.value || 'Meta Title';
+  const desc = document.getElementById('seo-desc')?.value || 'Meta description...';
+  document.getElementById('seo-prev-title') && (document.getElementById('seo-prev-title').textContent=title);
+  document.getElementById('seo-prev-url') && (document.getElementById('seo-prev-url').textContent='dzoe.pe/productos/'+slug);
+  document.getElementById('seo-prev-desc') && (document.getElementById('seo-prev-desc').textContent=desc.substring(0,160));
+}
+['seo-slug','seo-title','seo-desc'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateSeoPreview));
+
+function saveSeoProduct() {
+  const id = document.getElementById('seo-product-select')?.value;
+  if (!id) { showAlert('Selecciona un producto','error'); return; }
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  seoData[id] = {
+    slug: document.getElementById('seo-slug')?.value||'',
+    title: document.getElementById('seo-title')?.value||'',
+    desc: document.getElementById('seo-desc')?.value||'',
+    keywords: document.getElementById('seo-keywords')?.value||'',
+    updated: new Date().toISOString()
+  };
+  localStorage.setItem('dzoe_seo', JSON.stringify(seoData));
+  showAlert('✅ SEO guardado'); renderSeoTable();
+}
+
+function renderSeoTable() {
+  const tbody = document.getElementById('seo-products-tbody');
+  if (!tbody) return;
+  const products = window._allProducts||[];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  if (!products.length) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted);">Cargando productos...</td></tr>'; return; }
+  tbody.innerHTML = products.map(p=>{
+    const d = seoData[p.id]||{};
+    const score = [d.slug,d.title,d.desc,d.keywords].filter(Boolean).length;
+    const scoreColor = score>=4?'var(--green)':score>=2?'var(--orange)':'var(--red)';
+    const scoreLabel = score>=4?'✅ Completo':score>=2?'⚠️ Incompleto':'❌ Sin SEO';
+    return `<tr>
+      <td style="font-weight:700;max-width:180px;">${p.name}</td>
+      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${d.slug||'—'}</td>
+      <td style="max-width:200px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.title||'—'}</td>
+      <td style="font-size:11px;color:var(--muted);">${d.keywords||'—'}</td>
+      <td><span style="font-weight:800;font-size:12px;color:${scoreColor};">${scoreLabel}</span></td>
+      <td><button onclick="document.getElementById('seo-product-select').value='${p.id}';loadSeoForProduct()" class="btn btn-ghost btn-sm" style="font-size:11px;"><i class="fas fa-pencil"></i> Editar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── INTEGRACIONES ─────────────────────────────────────────────
+function loadIntegraciones() {
+  const integ = JSON.parse(localStorage.getItem('dzoe_integraciones')||'{}');
+  ['meta','tiktok','google','whatsapp','email'].forEach(key=>{
+    const status = document.getElementById('integ-'+key+'-status');
+    if (status && integ[key]) {
+      status.textContent = '✅ Conectado';
+      status.style.background = 'var(--green-light)'; status.style.color = 'var(--green)';
+    }
+  });
+  if (integ.meta) { document.getElementById('integ-meta-pixel') && (document.getElementById('integ-meta-pixel').value=integ.meta.pixel||''); }
+  if (integ.whatsapp) { document.getElementById('integ-wa-number') && (document.getElementById('integ-wa-number').value=integ.whatsapp.number||''); document.getElementById('integ-wa-msg') && (document.getElementById('integ-wa-msg').value=integ.whatsapp.msg||''); }
+}
+
+function saveInteg(key) {
+  const integ = JSON.parse(localStorage.getItem('dzoe_integraciones')||'{}');
+  if (key==='meta') integ.meta = {pixel:document.getElementById('integ-meta-pixel')?.value||'',connected:true};
+  if (key==='tiktok') integ.tiktok = {pixel:document.getElementById('integ-tiktok-pixel')?.value||'',connected:true};
+  if (key==='google') integ.google = {merchant:document.getElementById('integ-google-merchant')?.value||'',connected:true};
+  if (key==='whatsapp') integ.whatsapp = {number:document.getElementById('integ-wa-number')?.value||'',msg:document.getElementById('integ-wa-msg')?.value||'',connected:true};
+  if (key==='email') integ.email = {platform:document.getElementById('integ-email-platform')?.value||'',list:document.getElementById('integ-email-list')?.value||'',connected:true};
+  localStorage.setItem('dzoe_integraciones', JSON.stringify(integ));
+  const status = document.getElementById('integ-'+key+'-status');
+  if (status) { status.textContent='✅ Conectado'; status.style.background='var(--green-light)'; status.style.color='var(--green)'; }
+  showAlert('✅ '+key.charAt(0).toUpperCase()+key.slice(1)+' conectado');
+}
+
+function exportCatalog(platform) {
+  const products = window._allProducts||[];
+  if (!products.length) { showAlert('No hay productos para exportar','error'); return; }
+  let content = '';
+  if (platform==='google') {
+    content = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n<channel>\n<title>D\u0027Zoe Perú</title>\n';
+    products.forEach(p=>{
+      const price = (p.sizes&&p.sizes[0])?p.sizes[0].price:'0';
+      content += `<item>\n<g:id>${p.id}</g:id>\n<g:title>${p.name}</g:title>\n<g:price>${price} PEN</g:price>\n<g:availability>${(p.sizes||[]).some(s=>s.stock>0)?'in stock':'out of stock'}</g:availability>\n</item>\n`;
+    });
+    content += '</channel>\n</rss>';
+    const blob = new Blob([content],{type:'application/xml'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='google-merchant-feed.xml'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } else {
+    // CSV para Meta/TikTok
+    const rows = [['id','title','description','price','availability','image_link','link']];
+    products.forEach(p=>{ const price=(p.sizes&&p.sizes[0])?p.sizes[0].price:'0'; rows.push([p.id,'"'+p.name+'"','"'+(p.description||'')+'"',price+' PEN',(p.sizes||[]).some(s=>s.stock>0)?'in stock':'out of stock',p.images&&p.images[0]?p.images[0]:'','https://dzoe.pe/producto/'+p.id]); });
+    const csv = rows.map(r=>r.join(',')).join('\n');
+    const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=platform+'-catalog.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+  showAlert('✅ Catálogo exportado para '+platform);
+}
+
+// ── CSS EXTRA PARA NUEVOS MÓDULOS ─────────────────────────────
+(function injectStyles(){
+  const s = document.createElement('style');
+  s.textContent = `
+    .integ-card { transition: transform .2s, box-shadow .2s; }
+    .integ-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .ribbon-pro-chip { transition: transform .15s, box-shadow .15s; }
+    .ribbon-pro-chip:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+    #sales-clima { transition: all .3s; }
+    @media (max-width:900px){
+      #global-search-input{width:120px;}
+      #sales-clima{display:none!important;}
+      #campanas-badge{display:none!important;}
+    }
+  `;
+  document.head.appendChild(s);
+})();
+
+console.log('✅ D\'Zoe Panel v10 — 10 módulos PRO cargados');
 </script>
 
 </body>
