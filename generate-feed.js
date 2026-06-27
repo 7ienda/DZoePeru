@@ -22,7 +22,7 @@ if (!SUPABASE_ANON) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
-
+  
 function escapeXml(str) {
   if (!str) return '';
   return String(str)
