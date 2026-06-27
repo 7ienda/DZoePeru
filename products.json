@@ -412,19 +412,6 @@
     "url": "/productos/casaca-osito-amarillo.html"
   },
   {
-    "id": 1780324514891,
-    "slug": "sueter-oxford",
-    "name": "Suéter Oxford",
-    "price": 35,
-    "image": "https://img.kwcdn.com/thumbnail/s/3ef6328e4228282e85b58ebe321da2aa_29fb656f9501.jpg",
-    "categories": [
-      "Sueters",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/sueter-oxford.html"
-  },
-  {
     "id": 1780325879921,
     "slug": "jersey-infantil",
     "name": "Jersey infantil",
@@ -463,6 +450,19 @@
     ],
     "inStock": false,
     "url": "/productos/conjunto-camisero-celeste.html"
+  },
+  {
+    "id": 1780324514891,
+    "slug": "sueter-oxford",
+    "name": "Suéter Oxford",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi4W6f6A1DK7pCUDiFHVJ9lDLk5y6PP0w-7K-jzD7fl361Z7_5zYp6GA3bUZnLnXOuvKy2PwVxoRRMH0_3q7DYgmM16RvnzSkokpkwzu_mJkT0OcxF85HrlPMmVFb1A_BORpTFibXbAbZ9XBZr_dPs-Bvzl5ITLpCURZUi6Lq-BYrt06bxa3Za_8M7uUMRi/s16000/ma1.png",
+    "categories": [
+      "Sueters",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/sueter-oxford.html"
   },
   {
     "id": 1780346883637,
@@ -587,6 +587,19 @@
     "url": "/productos/cardigan-corazones-marron.html"
   },
   {
+    "id": 1780349320863,
+    "slug": "casaca-marron-3d",
+    "name": "Casaca marron 3d",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5fiVQPFMI9dO56zGBRCmjvwT2qvL0vizliBj7EeGPcgSJLTxy6LD28jNQ7MLkyJ49IVs_JhoINaH1lAvG7XUyTTx53YQ7lsgGdtVJtXUdcEwEJy3PUyKe53ShjG2r108fCXF_UJCW2b_o1uxKEmboqGXDWcR_iLuV77ixiLVOWOlufIlDqhgXxLNacVVS/s16000/cd1.png",
+    "categories": [
+      "Casacas",
+      "Ninos"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-marron-3d.html"
+  },
+  {
     "id": 1780350326311,
     "slug": "casaca-peluche-osito",
     "name": "Casaca Peluche Osito",
@@ -599,19 +612,6 @@
     ],
     "inStock": true,
     "url": "/productos/casaca-peluche-osito.html"
-  },
-  {
-    "id": 1780349320863,
-    "slug": "casaca-marron-3d",
-    "name": "Casaca marron 3d",
-    "price": 42,
-    "image": "https://img.kwcdn.com/product/temu-avi/image-crop/a18ab6dd-d3dc-47be-b57e-34e1c4786c54.jpg",
-    "categories": [
-      "Casacas",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/casaca-marron-3d.html"
   },
   {
     "id": 1780350011279,
@@ -1942,19 +1942,6 @@
     "url": "/productos/abrigo-osita-de-nieve.html"
   },
   {
-    "id": 1782070013307,
-    "slug": "conjunto-3-piezas-oso-amarillo",
-    "name": "Conjunto 3 piezas Oso amarillo",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8u_2TN3PKUajU9SUuxMEUaA7KG1RXCLXNxe9U2u2cSv3h57UesulUYX6m30TW_WpdsLkbwLpK-bbwJ2xF5KjXEIHwifjrJAMIPdv2KghwQZHUJrAk3cF5PhiztD20t7bHkEpfxTjyCz0FL_6r5OTlUgFc2XyZpkAfTDMcYjV9ZanpUQ-LMyaopxP7Yk4/s16000/gf2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-3-piezas-oso-amarillo.html"
-  },
-  {
     "id": 1781904898115,
     "slug": "conjunto-jean-urban",
     "name": "Conjunto Jean Urban",
@@ -1968,6 +1955,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-jean-urban.html"
+  },
+  {
+    "id": 1782070013307,
+    "slug": "conjunto-3-piezas-oso-amarillo",
+    "name": "Conjunto 3 piezas Oso amarillo",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8u_2TN3PKUajU9SUuxMEUaA7KG1RXCLXNxe9U2u2cSv3h57UesulUYX6m30TW_WpdsLkbwLpK-bbwJ2xF5KjXEIHwifjrJAMIPdv2KghwQZHUJrAk3cF5PhiztD20t7bHkEpfxTjyCz0FL_6r5OTlUgFc2XyZpkAfTDMcYjV9ZanpUQ-LMyaopxP7Yk4/s16000/gf2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Ninos",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-3-piezas-oso-amarillo.html"
   },
   {
     "id": 1782436167872,

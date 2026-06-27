@@ -427,12 +427,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/sueter-oxford.html</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/jersey-infantil.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -446,6 +440,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-camisero-celeste.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/sueter-oxford.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -505,13 +505,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/casaca-peluche-osito.html</loc>
+    <loc>https://dzoeperu.com/productos/casaca-marron-3d.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/casaca-marron-3d.html</loc>
+    <loc>https://dzoeperu.com/productos/casaca-peluche-osito.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1105,13 +1105,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-3-piezas-oso-amarillo.html</loc>
+    <loc>https://dzoeperu.com/productos/conjunto-jean-urban.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-jean-urban.html</loc>
+    <loc>https://dzoeperu.com/productos/conjunto-3-piezas-oso-amarillo.html</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
