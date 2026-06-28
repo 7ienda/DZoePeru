@@ -399,47 +399,46 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .page-size-select { font-size: 12px; padding: 6px 10px; border: 1.5px solid var(--line); border-radius: 9px; font-weight: 600; }
 
 /* ============================================
-   CATEGORIES — Premium
+   CATEGORIES — Groups + Drag & Drop
    ============================================ */
-.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
-.cat-card {
-  background: var(--card); border: 1.5px solid var(--line2); border-radius: 24px; padding: 22px;
-  transition: all .25s cubic-bezier(.22,.9,.36,1); box-shadow: var(--shadow); position: relative; overflow: hidden;
-}
-.cat-card::before {
-  content: ''; position: absolute; top: -28px; right: -28px;
-  width: 90px; height: 90px; border-radius: 50%; background: var(--rose-xlight); opacity: .5;
-  transition: transform .3s;
-}
-.cat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
-.cat-card:hover::before { transform: scale(1.3); }
-.cat-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; position: relative; z-index: 1; }
-.cat-emoji {
-  font-size: 28px; width: 52px; height: 52px; border-radius: 16px;
-  background: var(--rose-soft); display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; box-shadow: 0 4px 14px rgba(140,100,190,.14);
-}
-.cat-name { font-weight: 800; font-size: 16px; flex: 1; color: var(--text); letter-spacing: -.01em; }
 .cat-add-form {
-  background: var(--card); border: 2px dashed var(--rose-light); border-radius: 24px;
-  padding: 28px; margin-bottom: 24px;
-  box-shadow: var(--shadow);
+  background: var(--card); border: 1.5px solid var(--line2); border-radius: 20px;
+  padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow);
 }
-.cat-add-form > div:first-child { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-.emoji-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.emoji-opt {
-  font-size: 20px; padding: 7px 9px; border-radius: 10px; cursor: pointer;
-  transition: all .15s; border: 1.5px solid transparent;
+/* Group container */
+.cat-group-wrap { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+.cat-group {
+  background: var(--bg); border: 1.5px solid var(--line2); border-radius: 18px; overflow: hidden;
+  transition: box-shadow .2s;
 }
-.emoji-opt:hover { background: var(--rose-xlight); border-color: var(--rose-light); }
-.emoji-opt.selected { background: var(--rose-light); border-color: var(--rose); box-shadow: 0 2px 8px rgba(140,100,190,.2); }
-.cat-color-picker { display: flex; gap: 10px; }
-.color-dot {
-  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-  transition: all .15s; border: 2px solid transparent; box-shadow: 0 2px 6px rgba(0,0,0,.12);
+.cat-group.drag-over { box-shadow: 0 0 0 2px var(--rose); }
+.cat-group-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--card);
+  border-bottom: 1.5px solid var(--line2); cursor: pointer; user-select: none;
 }
-.color-dot:hover { transform: scale(1.18); }
-.color-dot.selected { border-color: var(--text); transform: scale(1.28); box-shadow: 0 3px 10px rgba(0,0,0,.2); }
+.cat-group-drag { color: var(--muted); font-size: 13px; cursor: grab; padding: 2px 4px; }
+.cat-group-drag:active { cursor: grabbing; }
+.cat-group-color { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.cat-group-title { font-weight: 800; font-size: 14px; flex: 1; color: var(--text); }
+.cat-group-count { font-size: 11px; color: var(--muted); font-weight: 700; background: var(--bg2); padding: 2px 9px; border-radius: 99px; }
+.cat-group-toggle { color: var(--muted); font-size: 12px; transition: transform .2s; }
+.cat-group-toggle.open { transform: rotate(180deg); }
+/* Cards inside group */
+.cat-group-body { padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.cat-group-body.collapsed { display: none; }
+.cat-card {
+  background: var(--card); border: 1.5px solid var(--line2); border-radius: 14px; padding: 14px 16px;
+  transition: all .2s; box-shadow: 0 1px 6px rgba(140,100,190,.07);
+  cursor: grab; display: flex; flex-direction: column; gap: 10px;
+}
+.cat-card:active { cursor: grabbing; opacity: .7; }
+.cat-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.cat-card.dragging { opacity: .4; }
+.cat-card-header { display: flex; align-items: center; gap: 10px; }
+.cat-color-bar { width: 4px; height: 36px; border-radius: 4px; flex-shrink: 0; }
+.cat-name { font-weight: 800; font-size: 14px; flex: 1; color: var(--text); }
+.cat-count-chip { font-size: 10px; color: var(--muted); font-weight: 700; background: var(--bg2); padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
 
 /* ── Remove / delete buttons — uniform style ── */
 .remove-size-btn,
@@ -450,10 +449,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; transition: all .18s;
 }
-.remove-size-btn:hover, .remove-image-btn:hover {
-  background: var(--red); color: #fff; transform: scale(1.08);
-}
-/* Keep remove-image-btn at 44px width (was set inline) */
+.remove-size-btn:hover, .remove-image-btn:hover { background: var(--red); color: #fff; transform: scale(1.08); }
 .remove-image-btn { width: 44px; }
 
 /* ============================================
@@ -1187,29 +1183,43 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <!-- ====== CATEGORÍAS ====== -->
     <div id="categories-section" class="page-section" style="display:none;">
       <div class="section">
-        <div class="section-header"><div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div><span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span></div>
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span>
+            <button class="btn btn-ghost btn-sm" onclick="addCategoryGroup()"><i class="fas fa-folder-plus"></i> Nuevo grupo</button>
+          </div>
+        </div>
         <div class="section-body">
+          <!-- Formulario nueva categoría -->
           <div class="cat-add-form">
-            <div><i class="fas fa-sparkles" style="color:var(--rose);"></i> Nueva Categoría</div>
+            <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-plus-circle" style="color:var(--rose);"></i> Nueva Categoría
+            </div>
             <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
               <div class="form-group" style="flex:1;min-width:160px;"><label>Nombre</label><input type="text" id="new-category-name" placeholder="Ej: Bebés"></div>
-              <div class="form-group"><label>Emoji</label><div class="emoji-picker">
-                <span class="emoji-opt selected" data-emoji="👶">👶</span><span class="emoji-opt" data-emoji="🧢">🧢</span>
-                <span class="emoji-opt" data-emoji="🎀">🎀</span><span class="emoji-opt" data-emoji="🧥">🧥</span>
-                <span class="emoji-opt" data-emoji="🧶">🧶</span><span class="emoji-opt" data-emoji="☁️">☁️</span>
-                <span class="emoji-opt" data-emoji="👗">👗</span><span class="emoji-opt" data-emoji="👕">👕</span>
-              </div></div>
-              <div class="form-group"><label>Color</label><div class="cat-color-picker">
-                <div class="color-dot selected" data-color="#c2617a" style="background:#c2617a"></div>
-                <div class="color-dot" data-color="#2e9c6b" style="background:#2e9c6b"></div>
-                <div class="color-dot" data-color="#2563eb" style="background:#2563eb"></div>
-                <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed"></div>
-                <div class="color-dot" data-color="#d97706" style="background:#d97706"></div>
-              </div></div>
-              <button class="btn btn-primary btn-sm" onclick="addCategory()" style="flex-shrink:0;"><i class="fas fa-plus"></i> Agregar</button>
+              <div class="form-group" style="min-width:140px;">
+                <label>Color</label>
+                <div class="cat-color-picker" id="cat-color-picker-form">
+                  <div class="color-dot selected" data-color="#c2617a" style="background:#c2617a" onclick="selectCatColor(this)"></div>
+                  <div class="color-dot" data-color="#2e9c6b" style="background:#2e9c6b" onclick="selectCatColor(this)"></div>
+                  <div class="color-dot" data-color="#2563eb" style="background:#2563eb" onclick="selectCatColor(this)"></div>
+                  <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed" onclick="selectCatColor(this)"></div>
+                  <div class="color-dot" data-color="#d97706" style="background:#d97706" onclick="selectCatColor(this)"></div>
+                  <div class="color-dot" data-color="#0891b2" style="background:#0891b2" onclick="selectCatColor(this)"></div>
+                </div>
+              </div>
+              <div class="form-group" style="min-width:140px;">
+                <label>Grupo</label>
+                <select id="new-category-group" style="padding:10px 14px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:13px;background:var(--bg);color:var(--text);">
+                  <option value="">Sin grupo</option>
+                </select>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="addCategory()" style="flex-shrink:0;white-space:nowrap;"><i class="fas fa-plus"></i> Agregar</button>
             </div>
           </div>
-          <div id="categories-list" class="categories-grid"></div>
+          <!-- Grupos + Categorías -->
+          <div id="categories-list" class="cat-group-wrap"></div>
         </div>
       </div>
     </div>
@@ -2671,48 +2681,172 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== SEO INTERNO ====== -->
     <div id="seo-section" class="page-section" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-        <div><div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;">🔍 SEO Interno</div><div style="font-size:12px;color:var(--muted);">Optimización por producto para buscadores</div></div>
-      </div>
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose)"></i> Editar SEO de producto</div>
+      <!-- Header KPIs -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+        <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--green);">
+          <div class="stat-card-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-circle-check"></i></div>
+          <h3>SEO completo</h3><div class="stat-value" id="seo-kpi-complete" style="font-size:28px;color:var(--green);">0</div>
         </div>
-        <div class="section-body">
-          <div class="form-group" style="margin-bottom:14px;"><label>Producto</label><select id="seo-product-select" onchange="loadSeoForProduct()"><option value="">— Selecciona producto —</option></select></div>
-          <div id="seo-form-body" style="display:none;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-              <div class="form-group"><label>Slug (URL amigable)</label><input type="text" id="seo-slug" placeholder="conjunto-teddy-bear-rosado"></div>
-              <div class="form-group"><label>Meta Title</label><input type="text" id="seo-title" placeholder="Conjunto Teddy Bear | D'Zoe Perú" maxlength="60"></div>
-              <div class="form-group" style="grid-column:span 2;"><label>Meta Description</label><textarea id="seo-desc" rows="2" placeholder="Descripción optimizada para Google (160 caracteres)..." maxlength="160"></textarea></div>
-              <div class="form-group" style="grid-column:span 2;"><label>Keywords (separadas por coma)</label><input type="text" id="seo-keywords" placeholder="ropa bebe peru, conjunto osito, dzoe"></div>
-            </div>
-            <!-- Schema preview -->
-            <div style="background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--line2);margin-bottom:14px;">
-              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fas fa-code"></i> Schema.org (Product)</div>
-              <div style="font-family:monospace;font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-all;" id="seo-schema-preview">Selecciona un producto para ver el schema</div>
-            </div>
-            <!-- Google preview -->
-            <div style="background:#fff;border-radius:12px;padding:16px;border:1.5px solid #e0e0e0;margin-bottom:14px;">
-              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fab fa-google" style="color:#4285f4;"></i> Vista previa en Google</div>
-              <div id="seo-google-preview">
-                <div style="color:#1a0dab;font-size:18px;font-weight:400;" id="seo-prev-title">Meta Title</div>
-                <div style="color:#006621;font-size:13px;" id="seo-prev-url">dzoe.pe/productos/slug</div>
-                <div style="color:#545454;font-size:13px;line-height:1.5;" id="seo-prev-desc">Meta description...</div>
+        <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--orange);">
+          <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-triangle-exclamation"></i></div>
+          <h3>Incompleto</h3><div class="stat-value" id="seo-kpi-partial" style="font-size:28px;color:var(--orange);">0</div>
+        </div>
+        <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--red);">
+          <div class="stat-card-icon" style="background:var(--red-light);color:var(--red);"><i class="fas fa-xmark"></i></div>
+          <h3>Sin SEO</h3><div class="stat-value" id="seo-kpi-none" style="font-size:28px;color:var(--red);">0</div>
+        </div>
+        <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--rose);">
+          <div class="stat-card-icon" style="background:var(--rose-soft);color:var(--rose);"><i class="fas fa-chart-line"></i></div>
+          <h3>Score promedio</h3><div class="stat-value" id="seo-kpi-avg" style="font-size:28px;color:var(--rose);">0%</div>
+        </div>
+      </div>
+
+      <!-- Tabs SEO -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;background:var(--bg2);padding:5px;border-radius:14px;width:fit-content;border:1.5px solid var(--line2);">
+        <button class="caja-tab active" id="seo-tab-editor" onclick="switchSeoTab('editor')"><i class="fas fa-pen-nib"></i> Editor</button>
+        <button class="caja-tab" id="seo-tab-tabla" onclick="switchSeoTab('tabla')"><i class="fas fa-table"></i> Tabla</button>
+        <button class="caja-tab" id="seo-tab-checklist" onclick="switchSeoTab('checklist')"><i class="fas fa-list-check"></i> Checklist</button>
+        <button class="caja-tab" id="seo-tab-sitemap" onclick="switchSeoTab('sitemap')"><i class="fas fa-sitemap"></i> Sitemap</button>
+      </div>
+
+      <!-- TAB: EDITOR -->
+      <div id="seo-tab-editor-content">
+        <div class="section" style="margin-bottom:20px;">
+          <div class="section-header"><div class="section-title"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose)"></i> Editar SEO por producto</div></div>
+          <div class="section-body">
+            <div class="form-group" style="margin-bottom:14px;"><label>Producto</label><select id="seo-product-select" onchange="loadSeoForProduct()"><option value="">— Selecciona producto —</option></select></div>
+            <div id="seo-form-body" style="display:none;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="form-group">
+                  <label>Slug (URL amigable) <span id="seo-slug-len" style="font-weight:400;color:var(--muted);"></span></label>
+                  <input type="text" id="seo-slug" placeholder="conjunto-teddy-bear-rosado" oninput="updateSeoPreview();updateSeoCharCounts()">
+                </div>
+                <div class="form-group">
+                  <label>Meta Title <span id="seo-title-len" style="font-weight:400;color:var(--muted);"></span></label>
+                  <input type="text" id="seo-title" placeholder="Conjunto Teddy Bear | D'Zoe Perú" maxlength="60" oninput="updateSeoPreview();updateSeoCharCounts()">
+                </div>
+                <div class="form-group" style="grid-column:span 2;">
+                  <label>Meta Description <span id="seo-desc-len" style="font-weight:400;color:var(--muted);"></span></label>
+                  <textarea id="seo-desc" rows="2" placeholder="Descripción optimizada para Google (máx. 160 caracteres)..." maxlength="160" oninput="updateSeoPreview();updateSeoCharCounts()"></textarea>
+                </div>
+                <div class="form-group" style="grid-column:span 2;">
+                  <label>Keywords (separadas por coma)</label>
+                  <input type="text" id="seo-keywords" placeholder="ropa bebe peru, conjunto osito, dzoe" oninput="updateSeoPreview()">
+                </div>
+                <div class="form-group">
+                  <label>URL Canónica <span style="font-weight:400;color:var(--muted);">(dejar vacío = URL automática)</span></label>
+                  <input type="text" id="seo-canonical" placeholder="https://dzoeperu.com/producto/slug">
+                </div>
+                <div class="form-group">
+                  <label>Robots</label>
+                  <select id="seo-robots" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                    <option value="index,follow">index, follow (recomendado)</option>
+                    <option value="noindex,follow">noindex, follow</option>
+                    <option value="noindex,nofollow">noindex, nofollow</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Score en tiempo real -->
+              <div style="background:var(--bg2);border-radius:14px;padding:16px;margin-bottom:14px;border:1.5px solid var(--line2);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                  <span style="font-size:12px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;"><i class="fas fa-gauge-high"></i> Score SEO en tiempo real</span>
+                  <span id="seo-score-val" style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--green);">0%</span>
+                </div>
+                <div style="background:var(--line2);border-radius:99px;height:8px;overflow:hidden;margin-bottom:10px;">
+                  <div id="seo-score-bar" style="height:100%;border-radius:99px;background:var(--green);width:0%;transition:width .4s;"></div>
+                </div>
+                <div id="seo-score-tips" style="display:flex;flex-direction:column;gap:5px;font-size:11px;"></div>
+              </div>
+
+              <!-- Schema preview -->
+              <div style="background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--line2);margin-bottom:14px;">
+                <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+                  <span><i class="fas fa-code"></i> Schema.org (Product)</span>
+                  <button class="btn btn-ghost btn-sm" style="font-size:10px;" onclick="copySeoSchema()"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+                <div style="font-family:monospace;font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-all;max-height:180px;overflow-y:auto;" id="seo-schema-preview">Selecciona un producto para ver el schema</div>
+              </div>
+
+              <!-- Google preview -->
+              <div style="background:#fff;border-radius:12px;padding:16px;border:1.5px solid #e0e0e0;margin-bottom:14px;">
+                <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fab fa-google" style="color:#4285f4;"></i> Vista previa en Google</div>
+                <div id="seo-prev-url" style="color:#006621;font-size:13px;margin-bottom:2px;">dzoe.pe/productos/slug</div>
+                <div id="seo-prev-title" style="color:#1a0dab;font-size:18px;font-weight:400;margin-bottom:2px;">Meta Title</div>
+                <div id="seo-prev-desc" style="color:#545454;font-size:13px;line-height:1.5;">Meta description...</div>
+              </div>
+
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-primary" onclick="saveSeoProduct()"><i class="fas fa-floppy-disk"></i> Guardar SEO</button>
+                <button class="btn btn-ghost" onclick="clearSeoForm()"><i class="fas fa-broom"></i> Limpiar</button>
               </div>
             </div>
-            <button class="btn btn-primary" onclick="saveSeoProduct()"><i class="fas fa-floppy-disk"></i> Guardar SEO</button>
           </div>
         </div>
       </div>
-      <div class="section">
-        <div class="section-header"><div class="section-title"><i class="fas fa-list-check" style="color:var(--rose)"></i> Estado SEO de todos los productos</div></div>
-        <div class="section-body" style="padding:0 0 20px;">
-          <div class="table-wrap">
-            <table class="orders-table">
-              <thead><tr><th>Producto</th><th>Slug</th><th>Meta Title</th><th>Keywords</th><th>Score SEO</th><th>Acciones</th></tr></thead>
-              <tbody id="seo-products-tbody"></tbody>
-            </table>
+
+      <!-- TAB: TABLA -->
+      <div id="seo-tab-tabla-content" style="display:none;">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-list-check" style="color:var(--rose)"></i> Estado SEO de todos los productos</div>
+            <div style="display:flex;gap:8px;">
+              <select id="seo-filter-score" onchange="renderSeoTable()" class="filter-select" style="font-size:12px;">
+                <option value="">Todos los scores</option>
+                <option value="complete">✅ Completos</option>
+                <option value="partial">⚠️ Incompletos</option>
+                <option value="none">❌ Sin SEO</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="exportSeoCSV()"><i class="fas fa-download"></i> Exportar CSV</button>
+            </div>
+          </div>
+          <div class="section-body" style="padding:0 0 20px;">
+            <div class="table-wrap">
+              <table class="orders-table">
+                <thead><tr><th>Producto</th><th>Slug</th><th>Meta Title</th><th>Keywords</th><th>Robots</th><th>Score SEO</th><th>Acciones</th></tr></thead>
+                <tbody id="seo-products-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CHECKLIST -->
+      <div id="seo-tab-checklist-content" style="display:none;">
+        <div class="section">
+          <div class="section-header"><div class="section-title"><i class="fas fa-clipboard-check" style="color:var(--rose)"></i> Checklist SEO global de la tienda</div></div>
+          <div class="section-body">
+            <div id="seo-checklist-body" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SITEMAP -->
+      <div id="seo-tab-sitemap-content" style="display:none;">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-sitemap" style="color:var(--rose)"></i> Generador de Sitemap XML</div>
+            <button class="btn btn-primary btn-sm" onclick="generateSitemap()"><i class="fas fa-download"></i> Descargar sitemap.xml</button>
+          </div>
+          <div class="section-body">
+            <div style="background:var(--bg2);border-radius:12px;padding:16px;margin-bottom:16px;border:1.5px solid var(--line2);">
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Configuración</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                <div class="form-group" style="margin:0;"><label>URL base</label><input type="text" id="sitemap-base-url" value="https://dzoeperu.com" placeholder="https://..."></div>
+                <div class="form-group" style="margin:0;"><label>Cambio de frecuencia</label>
+                  <select id="sitemap-changefreq" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                    <option value="daily">Diario</option><option value="weekly" selected>Semanal</option><option value="monthly">Mensual</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0;"><label>Prioridad productos</label>
+                  <select id="sitemap-priority" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                    <option value="1.0">1.0 (Alta)</option><option value="0.8" selected>0.8</option><option value="0.6">0.6</option><option value="0.5">0.5 (Media)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Preview (primeras 10 URLs)</div>
+            <div style="font-family:monospace;font-size:11px;color:var(--text2);background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--line2);white-space:pre-wrap;overflow-x:auto;max-height:320px;overflow-y:auto;" id="sitemap-preview"></div>
           </div>
         </div>
       </div>
@@ -3176,6 +3310,12 @@ function filterInventory() {
     const matchCat = !cat || (p.categories||[]).includes(cat);
     const matchStatus = !status || p.status === status;
     return matchName && matchCat && matchStatus;
+  });
+  // Sort: most recently stocked first (stock_updated_at > created_at)
+  filteredProducts.sort((a, b) => {
+    const ta = a.stock_updated_at || a.created_at || '';
+    const tb = b.stock_updated_at || b.created_at || '';
+    return tb.localeCompare(ta);
   });
   inventoryCurrentPage = 1;
   renderInventoryPage();
@@ -3726,13 +3866,21 @@ async function saveProduct() {
   const validImages = productImages.filter(img => img && img.trim() !== '');
   const finalSizes = productSizes.filter(s => s.size && (s.price>0||s.stock>0));
   const existingProduct = editingProductId ? products.find(p=>p.id===editingProductId) : null;
+
+  // Detect stock change: any size with stock > 0 where previously was 0, or total stock increased
+  const prevTotal = (existingProduct?.sizes||[]).reduce((a,s)=>a+(s.stock||0),0);
+  const newTotal  = finalSizes.reduce((a,s)=>a+(s.stock||0),0);
+  const stockChanged = !existingProduct || newTotal !== prevTotal;
+  const now = new Date().toISOString();
+
   const productData = {
     id: editingProductId || Date.now(),
     name, description: desc, images: validImages,
     image: validImages[0]||'', featured: featuredValue, status: statusValue,
     categories: [...selectedCategories],
     sizes: finalSizes.map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock })),
-    created_at: existingProduct?.created_at || new Date().toISOString()
+    created_at: existingProduct?.created_at || now,
+    stock_updated_at: stockChanged ? now : (existingProduct?.stock_updated_at || existingProduct?.created_at || now)
   };
   if (editingProductId) { const idx = products.findIndex(p=>p.id===editingProductId); if(idx!==-1) products[idx]=productData; }
   else products.unshift(productData);
@@ -4148,9 +4296,10 @@ async function deleteReingresoAlert(id) {
 async function addCategory() {
   const name = document.getElementById('new-category-name').value.trim();
   if (!name) { showAlert('Nombre requerido','error'); return; }
-  const cat = { name, emoji: selectedEmoji, color: selectedCatColor };
+  const group = document.getElementById('new-category-group')?.value || '';
+  const cat = { name, color: selectedCatColor, group: group || undefined };
   categories.push(cat);
-  if (supabaseClient) { const {error} = await supabaseClient.from('categories').upsert({name:cat.name,emoji:cat.emoji,color:cat.color},{onConflict:'name'}); if(error){showAlert('Error','error');return;} }
+  if (supabaseClient) { const {error} = await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color},{onConflict:'name'}); if(error){showAlert('Error','error');return;} }
   document.getElementById('new-category-name').value='';
   renderCategoriesList(); renderCategorySelect(); updateStats(); showAlert('Categoría agregada');
 }
@@ -4162,57 +4311,170 @@ async function deleteCategory(name) {
   renderCategoriesList(); renderCategorySelect(); updateStats(); showAlert('Categoría eliminada');
 }
 
-async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseClient.from('categories').upsert({name:cat.name,emoji:cat.emoji,color:cat.color},{onConflict:'name'}); }
+async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color},{onConflict:'name'}); }
+
+// ── Groups storage ──
+function loadCatGroups() { return JSON.parse(localStorage.getItem('dzoe_cat_groups') || '[]'); }
+function saveCatGroups(g) { localStorage.setItem('dzoe_cat_groups', JSON.stringify(g)); }
+
+function addCategoryGroup() {
+  const name = prompt('Nombre del grupo:');
+  if (!name || !name.trim()) return;
+  const groups = loadCatGroups();
+  if (groups.find(g => g.name === name.trim())) { showAlert('Ya existe ese grupo', 'error'); return; }
+  groups.push({ name: name.trim() });
+  saveCatGroups(groups);
+  renderCategoriesList();
+  showAlert('Grupo creado');
+}
+function deleteCatGroup(gname) {
+  if (!confirm(`¿Eliminar el grupo "${gname}"?\nLas categorías pasarán a "Sin grupo".`)) return;
+  saveCatGroups(loadCatGroups().filter(g => g.name !== gname));
+  categories.forEach(c => { if (c.group === gname) delete c.group; });
+  renderCategoriesList();
+}
+function renameCatGroup(oldName) {
+  const nw = prompt('Nuevo nombre:', oldName);
+  if (!nw || !nw.trim() || nw.trim() === oldName) return;
+  const groups = loadCatGroups();
+  const g = groups.find(g => g.name === oldName); if (!g) return;
+  g.name = nw.trim();
+  saveCatGroups(groups);
+  categories.forEach(c => { if (c.group === oldName) c.group = nw.trim(); });
+  renderCategoriesList();
+}
+function updateGroupSelect() {
+  const sel = document.getElementById('new-category-group'); if (!sel) return;
+  const groups = loadCatGroups();
+  sel.innerHTML = '<option value="">Sin grupo</option>' + groups.map(g=>`<option value="${g.name}">${g.name}</option>`).join('');
+}
 
 function renderCategoriesList() {
   const el = document.getElementById('categories-list'); if (!el) return;
   const hdr = document.getElementById('badge-categories-hdr'); if (hdr) hdr.textContent = categories.length + ' categorías';
-  el.innerHTML = categories.map((c,i) => {
-    const catProductCount = products.filter(p => (p.categories||[]).includes(c.name)).length;
-    const bg = c.color ? c.color + '18' : 'var(--rose-soft)';
-    return `
-    <div class="cat-card" id="cat-card-${i}">
-      <div class="cat-card-header">
-        <div class="cat-emoji" style="background:${bg};" id="cat-emoji-disp-${i}">${c.emoji||'📦'}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="cat-name" id="cat-name-disp-${i}">${c.name}</div>
-          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-            <div style="width:10px;height:10px;border-radius:50%;background:${c.color||'#c2617a'};flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.18);"></div>
-            <span style="font-size:11px;color:var(--muted);font-weight:700;">${catProductCount} producto${catProductCount===1?'':'s'}</span>
-          </div>
-        </div>
+  updateGroupSelect();
+
+  const groups = loadCatGroups();
+  const grouped = {}; groups.forEach(g => grouped[g.name] = []); grouped['__none__'] = [];
+  categories.forEach(c => {
+    const key = (c.group && grouped[c.group]) ? c.group : '__none__';
+    grouped[key].push(c);
+  });
+  const openGroups = JSON.parse(sessionStorage.getItem('dzoe_cat_open_groups') || '{}');
+
+  function catCardHtml(c) {
+    const i = categories.indexOf(c);
+    const cnt = products.filter(p => (p.categories||[]).includes(c.name)).length;
+    const color = c.color || '#c2617a';
+    return `<div class="cat-card" draggable="true" id="cat-item-${i}"
+      ondragstart="catCardDragStart(event,'${c.name}')"
+      ondragover="catCardDragOver(event)"
+      ondrop="catCardDrop(event,'${c.name}')"
+      ondragleave="this.style.outline=''">
+      <div class="cat-card-header" id="cat-hdr-${i}">
+        <div class="cat-color-bar" style="background:${color};"></div>
+        <span class="cat-name">${c.name}</span>
+        <span class="cat-count-chip">${cnt} prod.</span>
       </div>
-      <!-- Edit form (hidden by default) -->
-      <div id="cat-edit-${i}" style="display:none;margin-bottom:12px;background:var(--bg);border-radius:14px;padding:14px;border:1px solid var(--line2);">
-        <input type="text" id="cat-edit-name-${i}" value="${c.name}" style="width:100%;margin-bottom:10px;">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
-          ${['👶','👗','👦','🎀','🌸','🧸','🎁','⭐'].map(e=>`<span class="emoji-opt ${e===c.emoji?'selected':''}" data-cat-i="${i}" data-emoji="${e}" onclick="selectEditEmoji(${i},'${e}')">${e}</span>`).join('')}
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:12px;">
-          ${['#c2617a','#2e9c6b','#2563eb','#7c3aed','#d97706'].map(col=>`<div class="color-dot ${col===c.color?'selected':''}" data-cat-i="${i}" data-color="${col}" style="background:${col}" onclick="selectEditColor(${i},'${col}')"></div>`).join('')}
+      <div id="cat-edit-inline-${i}" style="display:none;flex-direction:column;gap:8px;background:var(--bg2);border-radius:10px;padding:10px;">
+        <input type="text" id="cat-edit-name-${i}" value="${c.name}" style="width:100%;font-size:13px;padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);">
+        <div style="display:flex;gap:7px;">
+          ${['#c2617a','#2e9c6b','#2563eb','#7c3aed','#d97706','#0891b2'].map(col=>`<div class="color-dot ${col===color?'selected':''}" data-cat-i="${i}" data-color="${col}" style="background:${col};width:20px;height:20px;" onclick="selectEditColor(${i},'${col}')"></div>`).join('')}
         </div>
         <div style="display:flex;gap:6px;">
-          <button class="btn btn-primary btn-sm" onclick="saveEditCategory(${i})"><i class="fas fa-floppy-disk"></i> Guardar</button>
-          <button class="btn btn-ghost btn-sm" onclick="cancelEditCategory(${i})">Cancelar</button>
+          <button class="btn btn-primary btn-sm" style="font-size:11px;padding:5px 12px;" onclick="saveEditCategory(${i})"><i class="fas fa-check"></i> Guardar</button>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px;padding:5px 12px;" onclick="cancelEditCategory(${i})">Cancelar</button>
         </div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openEditCategory(${i})"><i class="fas fa-pen"></i> Editar</button>
-        <button style="width:34px;height:34px;border-radius:9px;background:var(--red-light);border:1px solid rgba(212,32,32,.15);color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .18s;flex-shrink:0;" onmouseover="this.style.background='var(--red)';this.style.color='#fff'" onmouseout="this.style.background='var(--red-light)';this.style.color='var(--red)'" onclick="deleteCategory('${c.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
+      <div style="display:flex;gap:6px;" id="cat-act-${i}">
+        <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px;" onclick="openEditCategory(${i})"><i class="fas fa-pen"></i> Editar</button>
+        <button style="width:30px;height:30px;border-radius:8px;background:var(--red-light);border:1px solid rgba(212,32,32,.15);color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .18s;" onmouseover="this.style.background='var(--red)';this.style.color='#fff'" onmouseout="this.style.background='var(--red-light)';this.style.color='var(--red)'" onclick="deleteCategory('${c.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
       </div>
-    </div>`; }).join('');
+    </div>`;
+  }
+
+  function groupHtml(gname, isNone) {
+    const cats = grouped[gname] || [];
+    const isOpen = openGroups[gname] !== false;
+    const color = cats[0]?.color || (isNone ? 'var(--muted)' : 'var(--rose)');
+    const label = isNone ? 'Sin grupo' : gname;
+    const actBtns = isNone ? '' : `
+      <button class="btn btn-ghost" style="padding:2px 8px;font-size:10px;margin-right:4px;" onclick="event.stopPropagation();renameCatGroup('${gname}')"><i class="fas fa-pen"></i></button>
+      <button class="btn btn-ghost" style="padding:2px 8px;font-size:10px;color:var(--red);border-color:var(--red-light);margin-right:6px;" onclick="event.stopPropagation();deleteCatGroup('${gname}')"><i class="fas fa-trash"></i></button>`;
+    return `<div class="cat-group" id="catgroup-${gname.replace(/[^a-z0-9]/gi,'_')}"
+      ondragover="groupDragOver(event,this)" ondrop="groupDrop(event,'${isNone?'':gname}')" ondragleave="this.classList.remove('drag-over')">
+      <div class="cat-group-header" onclick="toggleCatGroup('${gname}')">
+        <i class="fas fa-grip-vertical cat-group-drag"></i>
+        <div class="cat-group-color" style="background:${color};"></div>
+        <span class="cat-group-title" ${isNone?'style="color:var(--muted);"':''}>${label}</span>
+        <span class="cat-group-count">${cats.length}</span>
+        ${actBtns}
+        <i class="fas fa-chevron-down cat-group-toggle ${isOpen?'open':''}"></i>
+      </div>
+      <div class="cat-group-body ${isOpen?'':'collapsed'}">
+        ${cats.length ? cats.map(catCardHtml).join('') :
+          `<div style="color:var(--muted);font-size:12px;padding:8px 12px;font-weight:600;grid-column:1/-1;"><i class="fas fa-arrow-down" style="margin-right:4px;"></i>Arrastra categorías aquí</div>`}
+      </div>
+    </div>`;
+  }
+
+  let html = groups.map(g => groupHtml(g.name, false)).join('');
+  if (grouped['__none__'].length || !groups.length) html += groupHtml('__none__', true);
+  el.innerHTML = html;
+}
+
+function toggleCatGroup(name) {
+  const open = JSON.parse(sessionStorage.getItem('dzoe_cat_open_groups') || '{}');
+  open[name] = !(open[name] !== false);
+  sessionStorage.setItem('dzoe_cat_open_groups', JSON.stringify(open));
+  renderCategoriesList();
+}
+
+// ── Color picker ──
+function selectCatColor(dot) {
+  document.querySelectorAll('#cat-color-picker-form .color-dot').forEach(d => d.classList.remove('selected'));
+  dot.classList.add('selected');
+  selectedCatColor = dot.dataset.color;
+}
+
+// ── Drag & drop — card to card ──
+let _draggedCat = null;
+function catCardDragStart(e, catName) { _draggedCat = catName; e.dataTransfer.effectAllowed = 'move'; }
+function catCardDragOver(e) { e.preventDefault(); e.stopPropagation(); e.currentTarget.style.outline = '2px solid var(--rose)'; }
+function catCardDrop(e, targetCatName) {
+  e.preventDefault(); e.stopPropagation(); e.currentTarget.style.outline = '';
+  if (!_draggedCat || _draggedCat === targetCatName) return;
+  const fi = categories.findIndex(c => c.name === _draggedCat);
+  const ti = categories.findIndex(c => c.name === targetCatName);
+  if (fi === -1 || ti === -1) return;
+  const [mv] = categories.splice(fi, 1);
+  mv.group = categories[ti]?.group || mv.group;
+  categories.splice(ti, 0, mv);
+  _draggedCat = null;
+  renderCategoriesList(); renderCategorySelect();
+}
+// ── Drag & drop — card into group ──
+function groupDragOver(e, el) { e.preventDefault(); el.classList.add('drag-over'); }
+function groupDrop(e, groupName) {
+  e.preventDefault(); document.querySelectorAll('.cat-group').forEach(g=>g.classList.remove('drag-over'));
+  if (!_draggedCat) return;
+  const cat = categories.find(c => c.name === _draggedCat);
+  if (cat) cat.group = groupName || undefined;
+  _draggedCat = null;
+  renderCategoriesList(); renderCategorySelect();
 }
 
 function openEditCategory(i) {
-  document.getElementById('cat-edit-'+i).style.display = 'block';
-  document.getElementById('cat-card-'+i).querySelector('.cat-card-header').style.display = 'none';
+  const card = document.getElementById('cat-item-'+i); if (!card) return;
+  card.querySelector('.cat-card-header').style.display = 'none';
+  document.getElementById('cat-act-'+i).style.display = 'none';
+  document.getElementById('cat-edit-inline-'+i).style.display = 'flex';
 }
 function cancelEditCategory(i) {
-  document.getElementById('cat-edit-'+i).style.display = 'none';
-  document.getElementById('cat-card-'+i).querySelector('.cat-card-header').style.display = 'flex';
-}
-function selectEditEmoji(i, emoji) {
-  document.querySelectorAll(`[data-cat-i="${i}"].emoji-opt`).forEach(e => e.classList.toggle('selected', e.dataset.emoji === emoji));
+  const card = document.getElementById('cat-item-'+i); if (!card) return;
+  card.querySelector('.cat-card-header').style.display = 'flex';
+  document.getElementById('cat-act-'+i).style.display = 'flex';
+  document.getElementById('cat-edit-inline-'+i).style.display = 'none';
 }
 function selectEditColor(i, color) {
   document.querySelectorAll(`[data-cat-i="${i}"].color-dot`).forEach(d => d.classList.toggle('selected', d.dataset.color === color));
@@ -4221,17 +4483,12 @@ async function saveEditCategory(i) {
   const oldName = categories[i].name;
   const newName = document.getElementById('cat-edit-name-'+i).value.trim();
   if (!newName) { showAlert('El nombre no puede estar vacío','error'); return; }
-  const emoji = document.querySelector(`[data-cat-i="${i}"].emoji-opt.selected`)?.dataset.emoji || categories[i].emoji;
   const color = document.querySelector(`[data-cat-i="${i}"].color-dot.selected`)?.dataset.color || categories[i].color;
-  categories[i] = { name: newName, emoji, color };
-  // Update products that had old category name
-  products.forEach(p => {
-    if (p.categories) p.categories = p.categories.map(cn => cn === oldName ? newName : cn);
-  });
+  categories[i] = { ...categories[i], name: newName, color };
+  products.forEach(p => { if (p.categories) p.categories = p.categories.map(cn => cn === oldName ? newName : cn); });
   if (supabaseClient) {
     await supabaseClient.from('categories').delete().eq('name', oldName);
-    await supabaseClient.from('categories').upsert({ name: newName, emoji, color }, { onConflict: 'name' });
-    // Update products in supabase
+    await supabaseClient.from('categories').upsert({ name: newName, color }, { onConflict: 'name' });
     const affected = products.filter(p => p.categories?.includes(newName));
     for (const p of affected) await supabaseClient.from('products').update({ categories: p.categories }).eq('id', p.id);
   }
@@ -4241,9 +4498,9 @@ async function saveEditCategory(i) {
 
 function renderCategorySelect() {
   const sel = document.getElementById('category-select'); if (!sel) return;
-  sel.innerHTML = categories.map(c=>`<option value="${c.name}">${c.emoji||''} ${c.name}</option>`).join('');
+  sel.innerHTML = categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
   const invFilter = document.getElementById('inventory-cat-filter');
-  if (invFilter) invFilter.innerHTML = `<option value="">Todas las categorías</option>` + categories.map(c=>`<option value="${c.name}">${c.emoji||''} ${c.name}</option>`).join('');
+  if (invFilter) invFilter.innerHTML = `<option value="">Todas las categorías</option>` + categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
 }
 
 function addSelectedCategory() {
@@ -4964,9 +5221,6 @@ document.querySelectorAll('.status-pill').forEach(el => {
 });
 document.querySelectorAll('.emoji-opt').forEach(el => {
   el.addEventListener('click', ()=>{ document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedEmoji=el.dataset.emoji; });
-});
-document.querySelectorAll('.color-dot').forEach(el => {
-  el.addEventListener('click', ()=>{ document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected')); el.classList.add('selected'); selectedCatColor=el.dataset.color; });
 });
 
 setInterval(updateClock, 1000);
@@ -7596,13 +7850,71 @@ function renderAnalyticsPro() {
 }
 
 // ── SEO INTERNO ───────────────────────────────────────────────
+// ══════════════════════════════════════════════
+//  SEO INTERNO — funciones completas
+// ══════════════════════════════════════════════
+function switchSeoTab(tab) {
+  ['editor','tabla','checklist','sitemap'].forEach(t => {
+    document.getElementById('seo-tab-'+t)?.classList.toggle('active', t===tab);
+    const c = document.getElementById('seo-tab-'+t+'-content');
+    if (c) c.style.display = t===tab ? 'block' : 'none';
+  });
+  if (tab==='tabla') renderSeoTable();
+  if (tab==='checklist') renderSeoChecklist();
+  if (tab==='sitemap') renderSitemapPreview();
+}
+
 function loadSeoSection() {
   const select = document.getElementById('seo-product-select');
   if (!select) return;
-  const products = window._allProducts||[];
+  const prods = window._allProducts || products || [];
   select.innerHTML = '<option value="">— Selecciona producto —</option>' +
-    products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    prods.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  updateSeoKpis();
   renderSeoTable();
+}
+
+function updateSeoKpis() {
+  const prods = window._allProducts || products || [];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  let complete=0, partial=0, none=0, total=0;
+  prods.forEach(p => {
+    const d = seoData[p.id]||{};
+    const sc = calcSeoScore(d, p);
+    total += sc;
+    if (sc >= 80) complete++; else if (sc >= 40) partial++; else none++;
+  });
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('seo-kpi-complete', complete);
+  set('seo-kpi-partial', partial);
+  set('seo-kpi-none', none);
+  set('seo-kpi-avg', prods.length ? Math.round(total/prods.length)+'%' : '0%');
+}
+
+function calcSeoScore(d, p) {
+  let sc = 0;
+  const checks = [
+    { pass: !!(d.slug && d.slug.length >= 5), pts: 20, label: 'Slug definido (≥5 chars)' },
+    { pass: !!(d.title && d.title.length >= 10 && d.title.length <= 60), pts: 25, label: 'Meta Title (10–60 chars)' },
+    { pass: !!(d.desc && d.desc.length >= 50 && d.desc.length <= 160), pts: 25, label: 'Meta Description (50–160 chars)' },
+    { pass: !!(d.keywords && d.keywords.split(',').filter(Boolean).length >= 2), pts: 15, label: 'Mínimo 2 keywords' },
+    { pass: !!(p && p.images && p.images.length >= 1), pts: 10, label: 'Producto tiene imagen' },
+    { pass: !!(p && p.description && p.description.length >= 40), pts: 5, label: 'Descripción del producto ≥40 chars' },
+  ];
+  checks.forEach(c => { if (c.pass) sc += c.pts; });
+  return sc;
+}
+
+function getSeoTips(d, p) {
+  const checks = [
+    { pass: !!(d.slug && d.slug.length >= 5), label: 'Agrega un slug (URL amigable)', ok:'Slug ✓' },
+    { pass: !!(d.title && d.title.length >= 10 && d.title.length <= 60), label: 'Meta Title entre 10 y 60 caracteres', ok:'Meta Title ✓' },
+    { pass: !!(d.desc && d.desc.length >= 50 && d.desc.length <= 160), label: 'Meta Description entre 50 y 160 caracteres', ok:'Meta Description ✓' },
+    { pass: !!(d.keywords && d.keywords.split(',').filter(Boolean).length >= 2), label: 'Añade al menos 2 keywords', ok:'Keywords ✓' },
+    { pass: !!(p && p.images && p.images.length >= 1), label: 'Sube al menos una imagen al producto', ok:'Imagen ✓' },
+    { pass: !!(p && p.description && p.description.length >= 40), label: 'Descripción del producto debe tener ≥40 chars', ok:'Descripción ✓' },
+  ];
+  return checks;
 }
 
 function loadSeoForProduct() {
@@ -7615,22 +7927,87 @@ function loadSeoForProduct() {
   document.getElementById('seo-title').value = d.title||'';
   document.getElementById('seo-desc').value = d.desc||'';
   document.getElementById('seo-keywords').value = d.keywords||'';
+  document.getElementById('seo-canonical').value = d.canonical||'';
+  document.getElementById('seo-robots').value = d.robots||'index,follow';
   updateSeoPreview();
-  const p = (window._allProducts||[]).find(x=>x.id==id);
-  const schema = p ? JSON.stringify({"@context":"https://schema.org","@type":"Product","name":p.name,"description":p.description||'',offers:{"@type":"Offer","priceCurrency":"PEN","price":(p.sizes&&p.sizes[0]?p.sizes[0].price:0)}},null,2) : '';
+  updateSeoCharCounts();
+  updateSeoScoreLive();
+  const p = (window._allProducts||products||[]).find(x=>String(x.id)===String(id));
+  const schema = p ? JSON.stringify({
+    "@context":"https://schema.org","@type":"Product","name":p.name,
+    "description":p.description||'',
+    "image": (p.images&&p.images[0]) || p.image || '',
+    "brand":{"@type":"Brand","name":"D'Zoe Perú"},
+    "offers":{"@type":"Offer","priceCurrency":"PEN",
+      "price": (p.sizes&&p.sizes[0]) ? p.sizes[0].price : 0,
+      "availability": (p.sizes||[]).some(s=>s.stock>0) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "url": `https://dzoeperu.com/producto/${d.slug||p.id}`}
+  },null,2) : '';
   document.getElementById('seo-schema-preview').textContent = schema;
 }
 
-function updateSeoPreview() {
+function updateSeoCharCounts() {
+  const title = document.getElementById('seo-title')?.value||'';
+  const desc = document.getElementById('seo-desc')?.value||'';
+  const slug = document.getElementById('seo-slug')?.value||'';
+  const tEl = document.getElementById('seo-title-len');
+  const dEl = document.getElementById('seo-desc-len');
+  const sEl = document.getElementById('seo-slug-len');
+  if (tEl) { tEl.textContent = `${title.length}/60`; tEl.style.color = title.length>60?'var(--red)':title.length>=10?'var(--green)':'var(--orange)'; }
+  if (dEl) { dEl.textContent = `${desc.length}/160`; dEl.style.color = desc.length>160?'var(--red)':desc.length>=50?'var(--green)':'var(--orange)'; }
+  if (sEl) { sEl.textContent = `${slug.length} chars`; sEl.style.color = slug.length>=5?'var(--green)':'var(--orange)'; }
+}
+
+function updateSeoScoreLive() {
   const id = document.getElementById('seo-product-select')?.value;
+  const p = (window._allProducts||products||[]).find(x=>String(x.id)===String(id));
+  const d = {
+    slug: document.getElementById('seo-slug')?.value||'',
+    title: document.getElementById('seo-title')?.value||'',
+    desc: document.getElementById('seo-desc')?.value||'',
+    keywords: document.getElementById('seo-keywords')?.value||'',
+  };
+  const sc = calcSeoScore(d, p);
+  const scoreEl = document.getElementById('seo-score-val');
+  const barEl = document.getElementById('seo-score-bar');
+  const tipsEl = document.getElementById('seo-score-tips');
+  if (!scoreEl) return;
+  scoreEl.textContent = sc + '%';
+  const color = sc>=80?'var(--green)':sc>=50?'var(--orange)':'var(--red)';
+  scoreEl.style.color = color;
+  if (barEl) { barEl.style.width = sc+'%'; barEl.style.background = color; }
+  if (tipsEl) {
+    const tips = getSeoTips(d, p);
+    tipsEl.innerHTML = tips.map(t=>`<div style="display:flex;align-items:center;gap:6px;color:${t.pass?'var(--green)':'var(--muted)'};">
+      <i class="fas ${t.pass?'fa-check-circle':'fa-circle-xmark'}" style="font-size:12px;flex-shrink:0;"></i>
+      <span>${t.pass ? t.ok : t.label}</span>
+    </div>`).join('');
+  }
+}
+
+function updateSeoPreview() {
   const slug = document.getElementById('seo-slug')?.value || 'producto';
   const title = document.getElementById('seo-title')?.value || 'Meta Title';
   const desc = document.getElementById('seo-desc')?.value || 'Meta description...';
-  document.getElementById('seo-prev-title') && (document.getElementById('seo-prev-title').textContent=title);
-  document.getElementById('seo-prev-url') && (document.getElementById('seo-prev-url').textContent='dzoe.pe/productos/'+slug);
-  document.getElementById('seo-prev-desc') && (document.getElementById('seo-prev-desc').textContent=desc.substring(0,160));
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('seo-prev-title', title.substring(0,60) || 'Meta Title');
+  set('seo-prev-url', 'dzoeperu.com/producto/'+slug);
+  set('seo-prev-desc', desc.substring(0,160) || 'Meta description...');
+  updateSeoScoreLive();
 }
-['seo-slug','seo-title','seo-desc'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateSeoPreview));
+
+function clearSeoForm() {
+  ['seo-slug','seo-title','seo-desc','seo-keywords','seo-canonical'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('seo-robots').value='index,follow';
+  updateSeoPreview(); updateSeoCharCounts();
+}
+
+function copySeoSchema() {
+  const text = document.getElementById('seo-schema-preview')?.textContent||'';
+  navigator.clipboard.writeText(text).then(()=>showAlert('Schema copiado al portapapeles'));
+}
 
 function saveSeoProduct() {
   const id = document.getElementById('seo-product-select')?.value;
@@ -7641,33 +8018,148 @@ function saveSeoProduct() {
     title: document.getElementById('seo-title')?.value||'',
     desc: document.getElementById('seo-desc')?.value||'',
     keywords: document.getElementById('seo-keywords')?.value||'',
+    canonical: document.getElementById('seo-canonical')?.value||'',
+    robots: document.getElementById('seo-robots')?.value||'index,follow',
     updated: new Date().toISOString()
   };
   localStorage.setItem('dzoe_seo', JSON.stringify(seoData));
-  showAlert('✅ SEO guardado'); renderSeoTable();
+  showAlert('✅ SEO guardado');
+  updateSeoKpis();
+  renderSeoTable();
 }
 
 function renderSeoTable() {
   const tbody = document.getElementById('seo-products-tbody');
   if (!tbody) return;
-  const products = window._allProducts||[];
+  const prods = window._allProducts || products || [];
   const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
-  if (!products.length) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted);">Cargando productos...</td></tr>'; return; }
-  tbody.innerHTML = products.map(p=>{
+  const filter = document.getElementById('seo-filter-score')?.value||'';
+  if (!prods.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">Cargando productos...</td></tr>'; return; }
+  const rows = prods.map(p => {
     const d = seoData[p.id]||{};
-    const score = [d.slug,d.title,d.desc,d.keywords].filter(Boolean).length;
-    const scoreColor = score>=4?'var(--green)':score>=2?'var(--orange)':'var(--red)';
-    const scoreLabel = score>=4?'✅ Completo':score>=2?'⚠️ Incompleto':'❌ Sin SEO';
+    const sc = calcSeoScore(d, p);
+    const tier = sc>=80?'complete':sc>=40?'partial':'none';
+    if (filter && filter!==tier) return '';
+    const col = sc>=80?'var(--green)':sc>=40?'var(--orange)':'var(--red)';
+    const lbl = sc>=80?'✅ Completo':sc>=40?'⚠️ Incompleto':'❌ Sin SEO';
     return `<tr>
-      <td style="font-weight:700;max-width:180px;">${p.name}</td>
+      <td style="font-weight:700;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</td>
       <td style="font-family:monospace;font-size:11px;color:var(--muted);">${d.slug||'—'}</td>
-      <td style="max-width:200px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.title||'—'}</td>
-      <td style="font-size:11px;color:var(--muted);">${d.keywords||'—'}</td>
-      <td><span style="font-weight:800;font-size:12px;color:${scoreColor};">${scoreLabel}</span></td>
-      <td><button onclick="document.getElementById('seo-product-select').value='${p.id}';loadSeoForProduct()" class="btn btn-ghost btn-sm" style="font-size:11px;"><i class="fas fa-pencil"></i> Editar</button></td>
+      <td style="max-width:180px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.title||'—'}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;">${d.keywords||'—'}</td>
+      <td style="font-size:11px;"><span style="background:var(--bg2);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;">${d.robots||'—'}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="flex:1;background:var(--line2);border-radius:99px;height:5px;min-width:50px;overflow:hidden;">
+            <div style="height:100%;border-radius:99px;background:${col};width:${sc}%;"></div>
+          </div>
+          <span style="font-size:11px;font-weight:800;color:${col};white-space:nowrap;">${sc}%</span>
+        </div>
+      </td>
+      <td><button onclick="document.getElementById('seo-product-select').value='${p.id}';switchSeoTab('editor');loadSeoForProduct();" class="btn btn-ghost btn-sm" style="font-size:11px;"><i class="fas fa-pencil"></i> Editar</button></td>
     </tr>`;
+  }).filter(Boolean).join('');
+  tbody.innerHTML = rows || '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Sin resultados con ese filtro</td></tr>';
+}
+
+function exportSeoCSV() {
+  const prods = window._allProducts || products || [];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const head = ['ID','Producto','Slug','Meta Title','Meta Desc','Keywords','Robots','Score'];
+  const rows = prods.map(p=>{
+    const d=seoData[p.id]||{};
+    const sc=calcSeoScore(d,p);
+    return [p.id,`"${p.name}"`,d.slug||'',`"${d.title||''}"`,`"${d.desc||''}"`,`"${d.keywords||''}"`,d.robots||'index,follow',sc+'%'].join(',');
+  });
+  const csv = [head.join(','),...rows].join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='dzoe-seo.csv'; a.click();
+}
+
+function renderSeoChecklist() {
+  const el = document.getElementById('seo-checklist-body'); if (!el) return;
+  const prods = window._allProducts || products || [];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const total = prods.length;
+  const withSlug = prods.filter(p=>(seoData[p.id]||{}).slug).length;
+  const withTitle = prods.filter(p=>(seoData[p.id]||{}).title).length;
+  const withDesc = prods.filter(p=>(seoData[p.id]||{}).desc).length;
+  const withKw = prods.filter(p=>(seoData[p.id]||{}).keywords).length;
+  const withImg = prods.filter(p=>(p.images||[]).length>0 || p.image).length;
+  const withProdDesc = prods.filter(p=>(p.description||'').length>=40).length;
+
+  const checks = [
+    { label:'Todos los productos tienen Slug', count:withSlug, total, tip:'El slug es la URL amigable. Google lo usa para entender el tema de la página.' },
+    { label:'Todos los productos tienen Meta Title', count:withTitle, total, tip:'El meta title es el título que aparece en los resultados de Google. Máx. 60 caracteres.' },
+    { label:'Todos los productos tienen Meta Description', count:withDesc, total, tip:'La meta description es el texto descriptivo bajo el título en Google. Máx. 160 caracteres.' },
+    { label:'Todos los productos tienen Keywords', count:withKw, total, tip:'Las keywords ayudan a clasificar el contenido internamente y en buscadores.' },
+    { label:'Todos los productos tienen imagen', count:withImg, total, tip:'Google Images puede generar tráfico relevante. Sube al menos 1 imagen por producto.' },
+    { label:'Todos los productos tienen descripción (≥40 chars)', count:withProdDesc, total, tip:'Una descripción rica en texto ayuda al SEO y mejora la conversión.' },
+  ];
+
+  el.innerHTML = checks.map(c => {
+    const pct = total ? Math.round(c.count/c.total*100) : 0;
+    const col = pct===100?'var(--green)':pct>=50?'var(--orange)':'var(--red)';
+    const ico = pct===100 ? 'fa-circle-check' : pct>=50 ? 'fa-circle-half-stroke' : 'fa-circle-xmark';
+    return `<div style="background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:16px 20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <i class="fas ${ico}" style="color:${col};font-size:18px;flex-shrink:0;"></i>
+        <div style="flex:1;">
+          <div style="font-weight:800;font-size:14px;color:var(--text);">${c.label}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;">${c.tip}</div>
+        </div>
+        <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:${col};">${c.count}/${c.total}</span>
+      </div>
+      <div style="background:var(--line2);border-radius:99px;height:6px;overflow:hidden;">
+        <div style="height:100%;border-radius:99px;background:${col};width:${pct}%;transition:width .5s;"></div>
+      </div>
+    </div>`;
   }).join('');
 }
+
+function renderSitemapPreview() {
+  const el = document.getElementById('sitemap-preview'); if (!el) return;
+  const base = (document.getElementById('sitemap-base-url')?.value||'https://dzoeperu.com').replace(/\/$/,'');
+  const freq = document.getElementById('sitemap-changefreq')?.value||'weekly';
+  const pri = document.getElementById('sitemap-priority')?.value||'0.8';
+  const prods = window._allProducts || products || [];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const today = new Date().toISOString().split('T')[0];
+  const staticUrls = [
+    { loc: base+'/', priority:'1.0', freq:'daily' },
+    { loc: base+'/#productos', priority:'0.9', freq:'daily' },
+    { loc: base+'/#blog', priority:'0.7', freq:'weekly' },
+  ];
+  const prodUrls = prods.slice(0,7).map(p => {
+    const d = seoData[p.id]||{};
+    return { loc: `${base}/producto/${d.slug||p.id}`, priority:pri, freq };
+  });
+  const all = [...staticUrls,...prodUrls];
+  const preview = all.map(u=>`  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`).join('\n');
+  el.textContent = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${preview}\n  <!-- ... ${Math.max(0,prods.length-7)} productos más -->\n</urlset>`;
+}
+
+function generateSitemap() {
+  const base = (document.getElementById('sitemap-base-url')?.value||'https://dzoeperu.com').replace(/\/$/,'');
+  const freq = document.getElementById('sitemap-changefreq')?.value||'weekly';
+  const pri = document.getElementById('sitemap-priority')?.value||'0.8';
+  const prods = window._allProducts || products || [];
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const today = new Date().toISOString().split('T')[0];
+  const urls = [
+    { loc:base+'/', priority:'1.0', freq:'daily' },
+    { loc:base+'/#productos', priority:'0.9', freq:'daily' },
+    { loc:base+'/#blog', priority:'0.7', freq:'weekly' },
+    ...prods.map(p=>{ const d=seoData[p.id]||{}; return {loc:`${base}/producto/${d.slug||p.id}`,priority:pri,freq}; })
+  ];
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
+    + urls.map(u=>`  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`).join('\n')
+    + '\n</urlset>';
+  const a=document.createElement('a'); a.href='data:application/xml;charset=utf-8,'+encodeURIComponent(xml);
+  a.download='sitemap.xml'; a.click();
+  showAlert('✅ sitemap.xml descargado');
+}
+
 
 // ── INTEGRACIONES ─────────────────────────────────────────────
 function loadIntegraciones() {
