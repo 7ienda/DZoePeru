@@ -6152,11 +6152,11 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
 
     /* ── CARD ASISTENTE ── */
     .side-talla {
-      width: 320px;
+      width: 100%;
       flex-shrink: 0;
       background: var(--mint-soft);
       border-radius: 22px;
-      padding: 26px 24px;
+      padding: 26px 32px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -6334,7 +6334,24 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
 
     @media(max-width:680px){
       .split-banner { gap: 14px; }
-      .side-wish, .side-talla { width: 100%; }
+      .side-talla { width: 100%; padding: 20px 16px; }
+    }
+
+    /* Horizontal layout for the talla form on wide screens */
+    @media(min-width:700px){
+      #tallaFormZone {
+        display: grid !important;
+        grid-template-columns: auto 1fr auto;
+        align-items: end;
+        gap: 16px;
+      }
+      #tallaFormZone > div:first-child { /* género */
+        min-width: 130px;
+      }
+      #tallaFormZone .inp-group {
+        display: flex;
+        gap: 10px;
+      }
     }
     </style>
 
@@ -7787,29 +7804,11 @@ body.dark-mode .anl-name { color: #e4d4c0; }
 
 </style>
 
-   <div style="display:flex;justify-content:center;padding:0 16px 8px;">
-   <div class="split-banner">
-      <!-- LISTA DE DESEOS -->
-      <div class="side-wish" onclick="openWishlist()">
-        <div class="sw-tag">🎁 Baby Shower</div>
-        <div class="sw-title">Lista de Deseos<br><span>de Mami 💕</span></div>
-        <div class="sw-desc">Guarda tus prendas favoritas y comparte la lista con tu familia y amigos antes del baby shower.</div>
-        <div class="sw-features">
-          <div class="sw-feat"><div class="sw-feat-dot">💖</div><span>Agrega productos con un clic desde la tienda</span></div>
-          <div class="sw-feat"><div class="sw-feat-dot">📲</div><span>Comparte por WhatsApp en segundos</span></div>
-          <div class="sw-feat"><div class="sw-feat-dot">🎀</div><span>Tu familia elige el regalo perfecto</span></div>
-        </div>
-        <button class="sw-cta" onclick="event.stopPropagation();openWishlist()">
-          <i class="fas fa-heart"></i> Crear mi lista de deseos
-        </button>
-        <div class="sw-social">
-          <div class="sw-social-pill"><i class="fab fa-whatsapp"></i> WhatsApp</div>
-          <div class="sw-social-pill"><i class="fas fa-share-alt"></i> Compartir</div>
-        </div>
-      </div>
+   <div style="width:1200px;max-width:95%;margin:0 auto;padding:0 16px 8px;">
+   <div class="split-banner" style="margin:0;flex-wrap:nowrap;">
 
       <!-- ASISTENTE DE TALLA -->
-      <div class="side-talla">
+      <div class="side-talla" style="width:100%;max-width:100%;flex-shrink:1;">
         <div class="st-tag">✨ Asistente D'Zoe</div>
         <div class="st-title">¿Qué talla le queda<br><span>perfecta?</span></div>
 
