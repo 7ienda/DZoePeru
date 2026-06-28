@@ -399,21 +399,62 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .page-size-select { font-size: 12px; padding: 6px 10px; border: 1.5px solid var(--line); border-radius: 9px; font-weight: 600; }
 
 /* ============================================
-   CATEGORIES
+   CATEGORIES — Premium
    ============================================ */
-.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
-.cat-card { background: var(--card); border: 1.5px solid var(--line2); border-radius: 20px; padding: 20px; transition: all .22s; box-shadow: var(--shadow); }
-.cat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-.cat-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.cat-emoji { font-size: 24px; }
-.cat-name { font-weight: 800; font-size: 15px; flex: 1; color: var(--text); }
-.cat-add-form { background: var(--bg); border: 1.5px dashed var(--line); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+.cat-card {
+  background: var(--card); border: 1.5px solid var(--line2); border-radius: 24px; padding: 22px;
+  transition: all .25s cubic-bezier(.22,.9,.36,1); box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.cat-card::before {
+  content: ''; position: absolute; top: -28px; right: -28px;
+  width: 90px; height: 90px; border-radius: 50%; background: var(--rose-xlight); opacity: .5;
+  transition: transform .3s;
+}
+.cat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+.cat-card:hover::before { transform: scale(1.3); }
+.cat-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; position: relative; z-index: 1; }
+.cat-emoji {
+  font-size: 28px; width: 52px; height: 52px; border-radius: 16px;
+  background: var(--rose-soft); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(140,100,190,.14);
+}
+.cat-name { font-weight: 800; font-size: 16px; flex: 1; color: var(--text); letter-spacing: -.01em; }
+.cat-add-form {
+  background: var(--card); border: 2px dashed var(--rose-light); border-radius: 24px;
+  padding: 28px; margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.cat-add-form > div:first-child { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
 .emoji-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.emoji-opt { font-size: 20px; padding: 6px 8px; border-radius: 9px; cursor: pointer; transition: background .15s; }
-.emoji-opt.selected { background: var(--rose-light); }
-.cat-color-picker { display: flex; gap: 8px; }
-.color-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; transition: transform .15s; }
-.color-dot.selected { border: 2.5px solid var(--text); transform: scale(1.28); }
+.emoji-opt {
+  font-size: 20px; padding: 7px 9px; border-radius: 10px; cursor: pointer;
+  transition: all .15s; border: 1.5px solid transparent;
+}
+.emoji-opt:hover { background: var(--rose-xlight); border-color: var(--rose-light); }
+.emoji-opt.selected { background: var(--rose-light); border-color: var(--rose); box-shadow: 0 2px 8px rgba(140,100,190,.2); }
+.cat-color-picker { display: flex; gap: 10px; }
+.color-dot {
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  transition: all .15s; border: 2px solid transparent; box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+.color-dot:hover { transform: scale(1.18); }
+.color-dot.selected { border-color: var(--text); transform: scale(1.28); box-shadow: 0 3px 10px rgba(0,0,0,.2); }
+
+/* ── Remove / delete buttons — uniform style ── */
+.remove-size-btn,
+.remove-image-btn {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: var(--red-light); border: 1px solid rgba(212,32,32,.15);
+  border-radius: 9px; cursor: pointer; color: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all .18s;
+}
+.remove-size-btn:hover, .remove-image-btn:hover {
+  background: var(--red); color: #fff; transform: scale(1.08);
+}
+/* Keep remove-image-btn at 44px width (was set inline) */
+.remove-image-btn { width: 44px; }
 
 /* ============================================
    VENTAS TABLE
@@ -662,7 +703,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
     <span class="menu-label">Vitrina</span>
-    <button class="menu-btn" data-section="nuevo-ingreso-section"><i class="fas fa-star"></i><span>⭐ Nuevo Ingreso</span></button>
     <button class="menu-btn" data-section="drops-section"><i class="fas fa-bolt"></i><span>⚡ Drops</span></button>
     <button class="menu-btn" data-section="lookbooks-section"><i class="fas fa-book-open"></i><span>📖 Lookbooks</span></button>
     <span class="menu-label">Marketing</span>
@@ -674,7 +714,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart"></i><span>🔍 SEO Interno</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section" onclick="goToSection('add-product-section');switchAddTab('product');renderSizesList();"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
-    <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="padding-left:32px;font-size:12px;opacity:.85;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
+    <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="display:none;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
     <button class="menu-btn" data-section="integraciones-section"><i class="fas fa-plug"></i><span>🔌 Integraciones</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
   </div>
@@ -1147,12 +1187,12 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <!-- ====== CATEGORÍAS ====== -->
     <div id="categories-section" class="page-section" style="display:none;">
       <div class="section">
-        <div class="section-header"><div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div></div>
+        <div class="section-header"><div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div><span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span></div>
         <div class="section-body">
           <div class="cat-add-form">
-            <div style="font-weight:700;margin-bottom:16px;">✨ Nueva Categoría</div>
+            <div><i class="fas fa-sparkles" style="color:var(--rose);"></i> Nueva Categoría</div>
             <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
-              <div class="form-group" style="flex:1;"><label>Nombre</label><input type="text" id="new-category-name" placeholder="Ej: Bebés"></div>
+              <div class="form-group" style="flex:1;min-width:160px;"><label>Nombre</label><input type="text" id="new-category-name" placeholder="Ej: Bebés"></div>
               <div class="form-group"><label>Emoji</label><div class="emoji-picker">
                 <span class="emoji-opt selected" data-emoji="👶">👶</span><span class="emoji-opt" data-emoji="🧢">🧢</span>
                 <span class="emoji-opt" data-emoji="🎀">🎀</span><span class="emoji-opt" data-emoji="🧥">🧥</span>
@@ -1166,7 +1206,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed"></div>
                 <div class="color-dot" data-color="#d97706" style="background:#d97706"></div>
               </div></div>
-              <button class="btn btn-primary btn-sm" onclick="addCategory()"><i class="fas fa-plus"></i> Agregar</button>
+              <button class="btn btn-primary btn-sm" onclick="addCategory()" style="flex-shrink:0;"><i class="fas fa-plus"></i> Agregar</button>
             </div>
           </div>
           <div id="categories-list" class="categories-grid"></div>
@@ -3845,8 +3885,8 @@ function renderUpcomingPreview() {
 
 function addUpcomingSizeRow(sz) {
   const c = document.getElementById('upcoming-sizes-container');
-  // Limpiar placeholder
-  if (c.children.length === 1 && c.children[0].tagName !== 'DIV'.toLowerCase() || (c.children.length===1 && !c.querySelector('.size-row'))) c.innerHTML = '';
+  // Limpiar placeholder solo si no hay .size-row aún
+  if (!c.querySelector('.size-row')) c.innerHTML = '';
   const row = document.createElement('div');
   row.className = 'size-row';
   const opts = sizeOptions.map(opt => `<option value="${opt}" ${opt===(sz?.size||sizeOptions[0])?'selected':''}>${opt}</option>`).join('');
@@ -4126,21 +4166,29 @@ async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseC
 
 function renderCategoriesList() {
   const el = document.getElementById('categories-list'); if (!el) return;
-  el.innerHTML = categories.map((c,i) => { const catProductCount = products.filter(p => (p.categories||[]).includes(c.name)).length; return `
+  const hdr = document.getElementById('badge-categories-hdr'); if (hdr) hdr.textContent = categories.length + ' categorías';
+  el.innerHTML = categories.map((c,i) => {
+    const catProductCount = products.filter(p => (p.categories||[]).includes(c.name)).length;
+    const bg = c.color ? c.color + '18' : 'var(--rose-soft)';
+    return `
     <div class="cat-card" id="cat-card-${i}">
       <div class="cat-card-header">
-        <span class="cat-emoji" id="cat-emoji-disp-${i}">${c.emoji||'📦'}</span>
-        <span class="cat-name" id="cat-name-disp-${i}">${c.name}</span>
-        <div style="width:12px;height:12px;border-radius:50%;background:${c.color||'#c2617a'};flex-shrink:0;"></div>
+        <div class="cat-emoji" style="background:${bg};" id="cat-emoji-disp-${i}">${c.emoji||'📦'}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="cat-name" id="cat-name-disp-${i}">${c.name}</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:${c.color||'#c2617a'};flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.18);"></div>
+            <span style="font-size:11px;color:var(--muted);font-weight:700;">${catProductCount} producto${catProductCount===1?'':'s'}</span>
+          </div>
+        </div>
       </div>
-      <div style="margin:6px 0 10px;"><span style="background:var(--lav-light);color:var(--lavender);font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;">${catProductCount} producto${catProductCount===1?'':'s'}</span></div>
       <!-- Edit form (hidden by default) -->
-      <div id="cat-edit-${i}" style="display:none;margin-bottom:10px;">
-        <input type="text" id="cat-edit-name-${i}" value="${c.name}" style="width:100%;margin-bottom:8px;">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+      <div id="cat-edit-${i}" style="display:none;margin-bottom:12px;background:var(--bg);border-radius:14px;padding:14px;border:1px solid var(--line2);">
+        <input type="text" id="cat-edit-name-${i}" value="${c.name}" style="width:100%;margin-bottom:10px;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
           ${['👶','👗','👦','🎀','🌸','🧸','🎁','⭐'].map(e=>`<span class="emoji-opt ${e===c.emoji?'selected':''}" data-cat-i="${i}" data-emoji="${e}" onclick="selectEditEmoji(${i},'${e}')">${e}</span>`).join('')}
         </div>
-        <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
           ${['#c2617a','#2e9c6b','#2563eb','#7c3aed','#d97706'].map(col=>`<div class="color-dot ${col===c.color?'selected':''}" data-cat-i="${i}" data-color="${col}" style="background:${col}" onclick="selectEditColor(${i},'${col}')"></div>`).join('')}
         </div>
         <div style="display:flex;gap:6px;">
@@ -4150,7 +4198,7 @@ function renderCategoriesList() {
       </div>
       <div style="display:flex;gap:8px;">
         <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openEditCategory(${i})"><i class="fas fa-pen"></i> Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteCategory('${c.name.replace(/'/g,"\'")}')"><i class="fas fa-trash"></i></button>
+        <button style="width:34px;height:34px;border-radius:9px;background:var(--red-light);border:1px solid rgba(212,32,32,.15);color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .18s;flex-shrink:0;" onmouseover="this.style.background='var(--red)';this.style.color='#fff'" onmouseout="this.style.background='var(--red-light)';this.style.color='var(--red)'" onclick="deleteCategory('${c.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
       </div>
     </div>`; }).join('');
 }
