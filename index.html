@@ -869,6 +869,7 @@ img{display:block;max-width:100%;}
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* Botones icono del header */
@@ -4641,14 +4642,14 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .hero-slider-wrap { aspect-ratio: 16/7; max-height: 440px; }
 }
 @media(max-width: 600px) {
-  /* En mobile usamos aspect-ratio cuadrado/portrait para que se vea bien */
-  .hero-slider-wrap { aspect-ratio: 4/3; max-height: 320px; }
+  .hero-slider-wrap { aspect-ratio: 16/7; max-height: unset; }
+  .hero-slide img { object-fit: contain; object-position: center center; background: #f3eef8; }
   .hero-arr { width: 34px; height: 34px; font-size: 14px; }
   .hero-arr.left  { left: 10px; }
   .hero-arr.right { right: 10px; }
 }
 @media(max-width: 400px) {
-  .hero-slider-wrap { aspect-ratio: 3/2.5; max-height: 260px; }
+  .hero-slider-wrap { aspect-ratio: 16/7; }
 }
 </style>
 
@@ -6309,8 +6310,22 @@ body.dark-mode .upcoming-card{background:#261A10;border-color:#5a4838;}
 body.dark-mode .upcoming-name{color:#e4d4c0;}
 body.dark-mode .cd-block{background:#1e1410;border-color:#5a4838;}
 @media(max-width:900px){.upcoming-grid{grid-template-columns:repeat(2,1fr);gap:12px;}}
-@media(max-width:600px){.upcoming-grid{grid-template-columns:1fr;gap:10px;}}
-@media(max-width:480px){.upcoming-grid{grid-template-columns:1fr;gap:10px;}.upcoming-title{font-size:22px;}.cd-num{font-size:16px;}.cd-block{padding:5px 7px;min-width:36px;}}
+@media(max-width:600px){
+  .upcoming-grid{grid-template-columns:1fr;gap:12px;}
+  .upcoming-card{display:grid !important;grid-template-columns:50vw 1fr !important;border-radius:18px !important;overflow:hidden !important;min-height:180px !important;max-width:100%;}
+  .upcoming-img-wrap{width:50vw !important;max-width:240px !important;height:100% !important;min-height:180px !important;aspect-ratio:unset !important;border-radius:0 !important;flex-shrink:0 !important;position:relative;}
+  .upcoming-img-wrap img{position:absolute;inset:0;width:100% !important;height:100% !important;object-fit:cover !important;}
+  .upcoming-body{padding:12px 12px 12px;display:flex;flex-direction:column;justify-content:space-between;}
+  .upcoming-name{font-size:13px;}
+  .upcoming-desc{font-size:11px;-webkit-line-clamp:3;}
+  .upcoming-cats{margin-bottom:5px;}
+  .upcoming-countdown{gap:5px;margin-bottom:8px;}
+  .cd-block{padding:4px 6px;min-width:30px;}
+  .cd-num{font-size:14px;}
+  .cd-label{font-size:7px;}
+  .upcoming-wa-btn{font-size:11px;padding:8px 10px;}
+}
+@media(max-width:480px){.upcoming-title{font-size:22px;}}
 </style>
 
 <section class="upcoming-section" id="proximos-ingresos" style="display:none;">
@@ -7183,6 +7198,22 @@ body.dark-mode .anl-name { color: #e4d4c0; }
   .avisame-inner { grid-template-columns: 1fr; gap: 28px; }
   .avisame-visual { display: none; }
   .avisame-title { font-size: 24px; }
+}
+
+/* ── PRÓXIMOS INGRESOS MOBILE — layout igual a productos ── */
+@media (max-width: 600px) {
+  .upcoming-grid { grid-template-columns: 1fr !important; gap: 16px !important; max-width: 480px !important; margin-left: auto !important; margin-right: auto !important; }
+  .upcoming-card { display: grid !important; grid-template-columns: 50vw 1fr !important; border-radius: 18px !important; overflow: hidden !important; min-height: 180px !important; align-items: unset !important; }
+  .upcoming-img-wrap { aspect-ratio: 3/4 !important; width: 50vw !important; max-width: 240px !important; height: 100% !important; min-height: 180px !important; flex-shrink: 0 !important; border-radius: 0 !important; position: relative !important; }
+  .upcoming-img-wrap img { position: static !important; width: 100% !important; height: 100% !important; object-fit: cover !important; }
+  .upcoming-body { padding: 10px 12px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; min-height: unset !important; overflow: hidden !important; }
+  .upcoming-name { font-size: 13px !important; }
+  .upcoming-countdown { gap: 4px !important; margin-bottom: 6px !important; }
+  .cd-block { padding: 3px 5px !important; min-width: 28px !important; }
+  .cd-num { font-size: 13px !important; }
+  .cd-label { font-size: 7px !important; }
+  .upcoming-wa-btn { font-size: 11px !important; padding: 7px 8px !important; margin-top: 6px !important; }
+  .upcoming-badge-soon, .upcoming-badge-arrived { top: 6px !important; left: 6px !important; font-size: 8.5px !important; padding: 2px 7px !important; }
 }
 </style>
 
