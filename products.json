@@ -1089,12 +1089,12 @@
     "slug": "dino-3d-green",
     "name": "Dino 3D Green",
     "price": 45,
-    "image": "https://img.kwcdn.com/product/fancy/2d880e77-5c71-448c-845c-89edce28fe9b.jpg?imageMogr2/auto-orient|imageView2/2/w/800/q/70/format/webp",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgX0SXyCVEQvyTZAY5oczlW2Z2vE1MIcz4igHG4t0EmGxG_j9xR1oWQ7qYSGHEplbQ0RsCsRt-tTbFThRHWxrk3ydQhfm8qQqtq8CJFP15gYkW3lCQDv5_OWQ7teVFTIPbfjZK0tiZV3RJhsuw68q3TnAVlQd4RY85kl-sjeQDo8bGGPCx0xqgxaKY2_Fp_/s16000/did2.png",
     "categories": [
       "Ninos",
       "Conjunto Pantalon"
     ],
-    "inStock": false,
+    "inStock": true,
     "url": "/productos/dino-3d-green.html"
   },
   {
