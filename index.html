@@ -908,6 +908,47 @@ img{display:block;max-width:100%;}
 .login-btn-text { font-size: 13px; font-weight: 700; color: var(--text-soft); }
 .login-btn:hover .login-btn-text { color: var(--rose-dark); }
 
+/* Favoritos próximos ingresos — header */
+.hdr-favs-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, var(--lav-light), var(--rose-soft));
+  border: 1.5px solid var(--rose-light);
+  border-radius: 12px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  font-family: 'Nunito', sans-serif;
+  flex-shrink: 0;
+}
+.hdr-favs-btn i { font-size: 14px; color: var(--rose); }
+.hdr-favs-btn .favs-info { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.hdr-favs-btn .favs-label { font-size: 9px; font-weight: 700; color: var(--text-soft); letter-spacing: 0.5px; text-transform: uppercase; }
+.hdr-favs-btn .favs-text { font-size: 13px; font-weight: 800; color: var(--text); }
+.hdr-favs-btn:hover {
+  border-color: var(--rose);
+  box-shadow: 0 4px 18px rgba(179,157,200,0.35);
+}
+.hdr-favs-badge {
+  position: absolute;
+  top: -7px; right: -7px;
+  background: var(--rose);
+  color: white;
+  font-size: 10px; font-weight: 800;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: none;
+  align-items: center; justify-content: center;
+  border: 2px solid white;
+}
+body.dark-mode .hdr-favs-btn { background: linear-gradient(135deg,#2e2248,#2C1E14); border-color: #6a5848; }
+body.dark-mode .hdr-favs-btn .favs-text { color: #e4d4c0; }
+body.dark-mode .hdr-favs-btn:hover { border-color: var(--rose); }
+@media(max-width:900px) { .hdr-favs-btn .favs-info { display: none; } .hdr-favs-btn { padding: 6px 10px; } }
+@media(max-width:600px) { .hdr-favs-btn { padding: 5px 8px; } }
+
 /* Carrito */
 .hdr-cart-btn {
   display: flex;
@@ -1720,6 +1761,54 @@ body.dark-mode .sk-img,body.dark-mode .sk-line,body.dark-mode .sk-sz{background:
 /* ===================== CARRITO LATERAL ===================== */
 .cart-overlay{position:fixed;inset:0;background:rgba(45,37,69,0.35);backdrop-filter:blur(3px);z-index:1000;visibility:hidden;opacity:0;transition:0.3s;}
 .cart-overlay.active{visibility:visible;opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   FAVORITOS PRÓXIMOS INGRESOS — DRAWER
+═══════════════════════════════════════════════ */
+.pi-favs-overlay{position:fixed;inset:0;background:rgba(45,37,69,0.35);backdrop-filter:blur(3px);z-index:1000;visibility:hidden;opacity:0;transition:0.3s;}
+.pi-favs-overlay.active{visibility:visible;opacity:1;}
+.pi-favs-sidebar{position:fixed;top:0;right:-420px;width:400px;height:100%;background:var(--cream);z-index:1001;display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-10px 0 40px rgba(163,133,210,0.25);}
+.pi-favs-sidebar.open{right:0;}
+.pi-favs-header{display:flex;justify-content:space-between;align-items:center;padding:22px 22px 18px;background:linear-gradient(135deg,var(--lav-light),var(--rose-soft));border-bottom:2px solid var(--border);}
+.pi-favs-header h3{font-family:'Baloo 2',cursive;font-size:20px;color:var(--text);display:flex;align-items:center;gap:8px;}
+.pi-favs-header h3 i{color:var(--rose);}
+.pi-favs-header-badge{background:var(--rose);color:#fff;font-size:11px;font-weight:800;border-radius:20px;padding:2px 9px;margin-left:4px;}
+.pi-favs-close{background:white;border:none;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--text-soft);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);transition:0.2s;}
+.pi-favs-close:hover{background:var(--rose);color:white;}
+.pi-favs-items{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.pi-favs-items::-webkit-scrollbar{width:5px;}
+.pi-favs-items::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:10px;}
+.pi-favs-empty{text-align:center;color:var(--text-soft);margin-top:60px;font-size:15px;font-weight:600;}
+.pi-favs-empty .pi-empty-icon{font-size:52px;display:block;margin-bottom:12px;}
+.pi-fav-card{background:white;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);transition:0.2s;position:relative;}
+.pi-fav-card:hover{border-color:var(--rose-light);}
+.pi-fav-img{width:72px;height:90px;border-radius:12px;object-fit:cover;background:var(--rose-soft);flex-shrink:0;}
+.pi-fav-img-placeholder{width:72px;height:90px;border-radius:12px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.pi-fav-info{flex:1;min-width:0;}
+.pi-fav-cats{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px;}
+.pi-fav-cat{font-size:8.5px;font-weight:800;text-transform:uppercase;color:var(--rose-dark);background:var(--rose-soft);border:1px solid var(--rose-light);border-radius:20px;padding:1px 7px;}
+.pi-fav-name{font-family:'Baloo 2',cursive;font-size:13.5px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:4px;}
+.pi-fav-date{font-size:10.5px;font-weight:700;color:var(--text-soft);display:flex;align-items:center;gap:4px;margin-bottom:6px;}
+.pi-fav-date i{color:var(--rose);font-size:9px;}
+.pi-fav-date strong{color:var(--rose-dark);}
+.pi-fav-price{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--rose-dark);}
+.pi-fav-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;margin-top:4px;}
+.pi-fav-badge.flight{background:rgba(255,255,255,0.9);border:1px solid rgba(179,157,200,0.4);color:var(--rose-dark);}
+.pi-fav-badge.arrived{background:linear-gradient(135deg,var(--mint),#4caf72);color:#fff;}
+.pi-fav-remove{position:absolute;top:10px;right:10px;background:var(--rose-soft);border:none;color:var(--rose-dark);cursor:pointer;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:0.2s;}
+.pi-fav-remove:hover{background:var(--rose);color:white;}
+.pi-fav-wa{display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,var(--rose),var(--cta));color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;margin-top:8px;transition:all 0.2s;width:100%;}
+.pi-fav-wa:hover{opacity:0.88;color:#fff;}
+.pi-favs-footer{padding:16px 22px;background:white;border-top:2px solid var(--border);}
+.pi-favs-footer-note{font-size:11.5px;color:var(--text-soft);font-weight:600;text-align:center;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.pi-favs-ver-todos{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:linear-gradient(135deg,var(--rose),var(--lavender));color:#fff;border:none;border-radius:40px;padding:13px;font-weight:800;font-size:14px;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;transition:0.25s;box-shadow:0 6px 20px rgba(179,157,200,0.4);}
+.pi-favs-ver-todos:hover{opacity:0.9;transform:translateY(-1px);color:#fff;}
+.pi-favs-clear{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;background:transparent;color:var(--text-soft);border:none;font-size:11.5px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:10px;padding:4px;transition:0.2s;}
+.pi-favs-clear:hover{color:var(--rose);}
+body.dark-mode .pi-favs-sidebar{background:#2A1810;}
+body.dark-mode .pi-fav-card{background:#1E1610;border-color:#5a4838;}
+body.dark-mode .pi-fav-name{color:#e4d4c0;}
+@media(max-width:600px){.pi-favs-sidebar{width:100%;right:-100%;}.pi-favs-sidebar.open{right:0;}}
 .cart-sidebar{position:fixed;top:0;right:-420px;width:400px;height:100%;background:var(--cream);z-index:1001;display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-10px 0 40px rgba(163,133,210,0.25);}
 .cart-sidebar.open{right:0;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;padding:22px 22px 18px;background:var(--rose-soft);border-bottom:2px solid var(--border);}
@@ -4510,6 +4599,16 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
               aria-label="Iniciar sesión o ver mi cuenta">
         <i class="fas fa-user" aria-hidden="true"></i>
         <span class="login-btn-text">Mi cuenta</span>
+      </button>
+
+      <!-- Favoritos próximos ingresos -->
+      <button class="hdr-favs-btn" id="hdrFavsBtn" aria-label="Ver mis favoritos de próximos ingresos">
+        <i class="fas fa-heart" aria-hidden="true"></i>
+        <div class="favs-info">
+          <span class="favs-label">FAVORITOS</span>
+          <span class="favs-text">✨ Guardados</span>
+        </div>
+        <span class="hdr-favs-badge" id="hdrFavsBadge" aria-live="polite">0</span>
       </button>
 
       <!-- Carrito -->
@@ -7924,6 +8023,39 @@ body.dark-mode .anl-name { color: #e4d4c0; }
   </div>
 </div>
 
+<!-- FAVORITOS PRÓXIMOS INGRESOS — DRAWER -->
+<div class="pi-favs-overlay" id="piFavsOverlay"></div>
+<div class="pi-favs-sidebar" id="piFavsSidebar">
+  <div class="pi-favs-header">
+    <h3>
+      <i class="fas fa-heart"></i> Mis Favoritos
+      <span class="pi-favs-header-badge" id="piFavsBadgeCount">0</span>
+    </h3>
+    <button class="pi-favs-close" id="piFavsCloseBtn" aria-label="Cerrar favoritos">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="pi-favs-items" id="piFavsContainer">
+    <div class="pi-favs-empty">
+      <span class="pi-empty-icon">💝</span>
+      Aún no tienes favoritos guardados.<br>
+      <span style="font-size:13px;margin-top:6px;display:block;">Guarda los productos que te gustan para reservarlos fácilmente.</span>
+    </div>
+  </div>
+  <div class="pi-favs-footer">
+    <div class="pi-favs-footer-note">
+      <i class="fas fa-plane-arrival" style="color:var(--rose);"></i>
+      Reserva antes de que lleguen — precio especial garantizado
+    </div>
+    <a href="/proximos-ingresos.html" class="pi-favs-ver-todos">
+      <i class="fas fa-plane-arrival"></i> Ver todos los próximos ingresos
+    </a>
+    <button class="pi-favs-clear" id="piFavsClearBtn">
+      <i class="fas fa-trash-alt"></i> Limpiar favoritos
+    </button>
+  </div>
+</div>
+
 <!-- MODAL LOGIN -->
 <div class="login-modal" id="loginModal">
   <div class="login-modal-content">
@@ -8454,9 +8586,9 @@ function renderUpcomingCard(up) {
     </a>
     <div class="upcoming-row-btns">
       <button class="upcoming-fav-btn ${isFav?'active':''}" id="ucfav-${up.id}"
-        onclick="ucToggleFav('${up.id}',this)"
+        onclick="${isFav ? `openPiFavs()` : `ucToggleFav('${up.id}',this)`}"
         aria-label="Favoritos" aria-pressed="${isFav}">
-        <i class="${isFav?'fas':'far'} fa-heart"></i> ${isFav?'Guardado':'💝 Favoritos'}
+        <i class="${isFav?'fas':'far'} fa-heart"></i> ${isFav?'Ver favoritos':'💝 Favoritos'}
       </button>
       <button class="upcoming-notify-btn ${isNotify?'active':''}" id="ucnotify-${up.id}"
         onclick="ucToggleNotify('${up.id}',this,'${ucEsc(up.name)}')"
@@ -8534,9 +8666,10 @@ window.ucToggleFav = function(id, btn) {
   const idx = ucFavs.indexOf(String(id));
   if (idx === -1) {
     ucFavs.push(String(id));
-    btn.innerHTML = '<i class="fas fa-heart"></i> Guardado';
+    btn.innerHTML = '<i class="fas fa-heart"></i> Ver favoritos';
     btn.classList.add('active');
     btn.setAttribute('aria-pressed','true');
+    btn.onclick = () => openPiFavs();
     if (typeof showToast === 'function') showToast('💝 Agregado a favoritos');
     else { const t = document.createElement('div'); t.textContent='💝 Guardado'; t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2D2545;color:#fff;padding:10px 20px;border-radius:12px;z-index:9999;font-weight:700;font-family:Nunito,sans-serif;'; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
     if (supabaseClient) supabaseClient.rpc('increment_favoritos', {row_id: id}).catch(()=>{});
@@ -8545,9 +8678,119 @@ window.ucToggleFav = function(id, btn) {
     btn.innerHTML = '<i class="far fa-heart"></i> 💝 Favoritos';
     btn.classList.remove('active');
     btn.setAttribute('aria-pressed','false');
+    btn.onclick = () => ucToggleFav(id, btn);
   }
   localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+  renderPiFavsDrawer();
+  updatePiFavsBadge();
 };
+
+// ── Drawer de Favoritos ───────────────────────────────────────
+function openPiFavs() {
+  renderPiFavsDrawer();
+  document.getElementById('piFavsSidebar').classList.add('open');
+  document.getElementById('piFavsOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closePiFavs() {
+  document.getElementById('piFavsSidebar').classList.remove('open');
+  document.getElementById('piFavsOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function renderPiFavsDrawer() {
+  const container = document.getElementById('piFavsContainer');
+  const badge     = document.getElementById('piFavsBadgeCount');
+  if (!container) return;
+
+  const favItems = upcomingProducts.filter(up => ucFavs.includes(String(up.id)));
+
+  if (badge) badge.textContent = favItems.length;
+
+  if (!favItems.length) {
+    container.innerHTML = `
+      <div class="pi-favs-empty">
+        <span class="pi-empty-icon">💝</span>
+        Aún no tienes favoritos guardados.<br>
+        <span style="font-size:13px;margin-top:6px;display:block;">Guarda los productos que te gustan para reservarlos fácilmente.</span>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = favItems.map(up => {
+    const images    = up.images || (up.image ? [up.image] : []);
+    const img0      = images[0] || '';
+    const sizes     = up.sizes || [];
+    const prices    = sizes.filter(s=>s.price).map(s=>Number(s.price)||0).filter(n=>n>0);
+    const minP      = prices.length ? Math.min(...prices) : 0;
+    const target    = new Date(up.estimated_date).getTime();
+    const isArrived = Date.now() >= target;
+    const dateStr   = new Date(up.estimated_date).toLocaleDateString('es-PE', {day:'numeric', month:'long'});
+    const cats      = (up.categories || []).slice(0,2);
+    const waMsg     = encodeURIComponent(`Hola D'Zoe Perú 💜 Quiero reservar: *${up.name}*. Fecha estimada: ${dateStr}. ¿Cómo procedo?`);
+    const waUrl     = `https://wa.me/51956063145?text=${waMsg}`;
+
+    const imgEl = img0
+      ? `<img src="${ucEsc(img0)}" alt="${ucEsc(up.name)}" class="pi-fav-img" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="pi-fav-img-placeholder">📦</div>`;
+
+    const catsHtml = cats.length
+      ? `<div class="pi-fav-cats">${cats.map(c=>`<span class="pi-fav-cat">${ucEsc(c)}</span>`).join('')}</div>`
+      : '';
+
+    const statusBadge = isArrived
+      ? `<span class="pi-fav-badge arrived">✅ ¡Ya llegó!</span>`
+      : `<span class="pi-fav-badge flight">✈️ En camino</span>`;
+
+    const priceHtml = minP > 0
+      ? `<div class="pi-fav-price">S/ ${minP.toFixed(2)}</div>` : '';
+
+    return `
+    <div class="pi-fav-card" id="pifavcard-${up.id}">
+      ${imgEl}
+      <div class="pi-fav-info">
+        ${catsHtml}
+        <div class="pi-fav-name">${ucEsc(up.name)}</div>
+        <div class="pi-fav-date"><i class="fas fa-calendar-check"></i> Llega aprox. <strong>${dateStr}</strong></div>
+        ${priceHtml}
+        ${statusBadge}
+        ${!isArrived ? `<a href="${waUrl}" target="_blank" rel="noopener" class="pi-fav-wa">
+          <i class="fab fa-whatsapp"></i> Reservar ahora
+        </a>` : ''}
+      </div>
+      <button class="pi-fav-remove" onclick="ucRemoveFav('${up.id}')" aria-label="Quitar de favoritos">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+window.ucRemoveFav = function(id) {
+  ucFavs = ucFavs.filter(f => f !== String(id));
+  localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+  // Actualizar botón en la card del home si existe
+  const btn = document.getElementById(`ucfav-${id}`);
+  if (btn) {
+    btn.innerHTML = '<i class="far fa-heart"></i> 💝 Favoritos';
+    btn.classList.remove('active');
+    btn.setAttribute('aria-pressed','false');
+  }
+  renderPiFavsDrawer();
+  updatePiFavsBadge();
+};
+
+function updatePiFavsBadge() {
+  const count = ucFavs.length;
+  // Badge dentro del drawer
+  const drawerBadge = document.getElementById('piFavsBadgeCount');
+  if (drawerBadge) drawerBadge.textContent = count;
+  // Badge del botón en el header
+  const hdrBadge = document.getElementById('hdrFavsBadge');
+  if (hdrBadge) {
+    hdrBadge.textContent = count;
+    hdrBadge.style.display = count > 0 ? 'flex' : 'none';
+  }
+}
 
 window.ucToggleNotify = function(id, btn, name) {
   const idx = ucNotified.indexOf(String(id));
@@ -10674,6 +10917,9 @@ window.addEventListener('popstate', () => {
 });
 // ── Leer URL al cargar (deep link) ──
 window.addEventListener('DOMContentLoaded', () => {
+  // Inicializar badge de favoritos con datos de localStorage
+  updatePiFavsBadge();
+
   // ── GitHub Pages SPA: recuperar ruta real desde ?_path=/categoria/jeans ──
   const _rawParams = new URLSearchParams(window.location.search);
   const _redirectedPath = _rawParams.get('_path');
@@ -10855,6 +11101,30 @@ document.getElementById('clearCartBtn')?.addEventListener('click', clearCart);
 document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   if (!cart.length) { showNotif('🛒 Tu carrito está vacío'); return; }
   goToCheckout();
+});
+
+// ═══════════════════════════════════════════════════════
+//  FAVORITOS PRÓXIMOS INGRESOS — EVENT LISTENERS
+// ═══════════════════════════════════════════════════════
+document.getElementById('piFavsCloseBtn')?.addEventListener('click', closePiFavs);
+document.getElementById('piFavsOverlay')?.addEventListener('click', closePiFavs);
+document.getElementById('hdrFavsBtn')?.addEventListener('click', openPiFavs);
+document.getElementById('piFavsClearBtn')?.addEventListener('click', () => {
+  if (!ucFavs.length) return;
+  if (!confirm('¿Limpiar todos tus favoritos de próximos ingresos?')) return;
+  // Limpiar botones en cards del home
+  ucFavs.forEach(id => {
+    const btn = document.getElementById(`ucfav-${id}`);
+    if (btn) {
+      btn.innerHTML = '<i class="far fa-heart"></i> 💝 Favoritos';
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed','false');
+    }
+  });
+  ucFavs = [];
+  localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+  renderPiFavsDrawer();
+  updatePiFavsBadge();
 });
 
 // ═══ WHATSAPP FLOTANTE — SMART 2026 ═══
