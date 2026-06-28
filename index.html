@@ -4603,7 +4603,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
 
       <!-- Favoritos próximos ingresos -->
       <button class="hdr-favs-btn" id="hdrFavsBtn" aria-label="Ver mis favoritos de próximos ingresos">
-        <i class="fas fa-heart" aria-hidden="true"></i>
+        <span aria-hidden="true" style="font-size:1.1em;">⭐</span>
         <div class="favs-info">
           <span class="favs-label">FAVORITOS</span>
           <span class="favs-text">✨ Guardados</span>
@@ -8028,7 +8028,7 @@ body.dark-mode .anl-name { color: #e4d4c0; }
 <div class="pi-favs-sidebar" id="piFavsSidebar">
   <div class="pi-favs-header">
     <h3>
-      <i class="fas fa-heart"></i> Mis Favoritos
+      ⭐ Mis Favoritos
       <span class="pi-favs-header-badge" id="piFavsBadgeCount">0</span>
     </h3>
     <button class="pi-favs-close" id="piFavsCloseBtn" aria-label="Cerrar favoritos">
@@ -8037,8 +8037,7 @@ body.dark-mode .anl-name { color: #e4d4c0; }
   </div>
   <div class="pi-favs-items" id="piFavsContainer">
     <div class="pi-favs-empty">
-      <span class="pi-empty-icon">💝</span>
-      Aún no tienes favoritos guardados.<br>
+      <span class="pi-empty-icon">⭐</span>
       <span style="font-size:13px;margin-top:6px;display:block;">Guarda los productos que te gustan para reservarlos fácilmente.</span>
     </div>
   </div>
@@ -8588,7 +8587,7 @@ function renderUpcomingCard(up) {
       <button class="upcoming-fav-btn ${isFav?'active':''}" id="ucfav-${up.id}"
         onclick="${isFav ? `openPiFavs()` : `ucToggleFav('${up.id}',this)`}"
         aria-label="Favoritos" aria-pressed="${isFav}">
-        <i class="${isFav?'fas':'far'} fa-heart"></i> ${isFav?'Ver favoritos':'💝 Favoritos'}
+        <i class="${isFav?'fas':'far'} fa-star"></i> ${isFav?'Ver favoritos':'⭐ Favoritos'}
       </button>
       <button class="upcoming-notify-btn ${isNotify?'active':''}" id="ucnotify-${up.id}"
         onclick="ucToggleNotify('${up.id}',this,'${ucEsc(up.name)}')"
@@ -8652,12 +8651,13 @@ function updateHomeUpcomingBtn() {
   const total = upcomingProducts.length;
   if (total > UC_HOME_MAX) {
     pill.textContent = total + '+ ingresos';
-    btn.style.display = '';
+    btn.closest('.upcoming-footer-row').style.display = '';
   } else if (total > 0) {
     pill.textContent = total + ' ingresos';
-    btn.style.display = '';
+    btn.closest('.upcoming-footer-row').style.display = '';
   } else {
-    btn.closest('.upcoming-footer-row').style.display = 'none';
+    pill.textContent = 'Ver todos';
+    btn.closest('.upcoming-footer-row').style.display = '';
   }
 }
 
@@ -8666,16 +8666,16 @@ window.ucToggleFav = function(id, btn) {
   const idx = ucFavs.indexOf(String(id));
   if (idx === -1) {
     ucFavs.push(String(id));
-    btn.innerHTML = '<i class="fas fa-heart"></i> Ver favoritos';
+    btn.innerHTML = '<i class="fas fa-star"></i> Ver favoritos';
     btn.classList.add('active');
     btn.setAttribute('aria-pressed','true');
     btn.onclick = () => openPiFavs();
-    if (typeof showToast === 'function') showToast('💝 Agregado a favoritos');
-    else { const t = document.createElement('div'); t.textContent='💝 Guardado'; t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2D2545;color:#fff;padding:10px 20px;border-radius:12px;z-index:9999;font-weight:700;font-family:Nunito,sans-serif;'; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
+    if (typeof showToast === 'function') showToast('⭐ Agregado a favoritos');
+    else { const t = document.createElement('div'); t.textContent='⭐ Guardado'; t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2D2545;color:#fff;padding:10px 20px;border-radius:12px;z-index:9999;font-weight:700;font-family:Nunito,sans-serif;'; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
     if (supabaseClient) supabaseClient.rpc('increment_favoritos', {row_id: id}).catch(()=>{});
   } else {
     ucFavs.splice(idx,1);
-    btn.innerHTML = '<i class="far fa-heart"></i> 💝 Favoritos';
+    btn.innerHTML = '<i class="far fa-star"></i> ⭐ Favoritos';
     btn.classList.remove('active');
     btn.setAttribute('aria-pressed','false');
     btn.onclick = () => ucToggleFav(id, btn);
@@ -8710,7 +8710,7 @@ function renderPiFavsDrawer() {
   if (!favItems.length) {
     container.innerHTML = `
       <div class="pi-favs-empty">
-        <span class="pi-empty-icon">💝</span>
+        <span class="pi-empty-icon">⭐</span>
         Aún no tienes favoritos guardados.<br>
         <span style="font-size:13px;margin-top:6px;display:block;">Guarda los productos que te gustan para reservarlos fácilmente.</span>
       </div>`;
@@ -11116,7 +11116,7 @@ document.getElementById('piFavsClearBtn')?.addEventListener('click', () => {
   ucFavs.forEach(id => {
     const btn = document.getElementById(`ucfav-${id}`);
     if (btn) {
-      btn.innerHTML = '<i class="far fa-heart"></i> 💝 Favoritos';
+      btn.innerHTML = '<i class="far fa-star"></i> ⭐ Favoritos';
       btn.classList.remove('active');
       btn.setAttribute('aria-pressed','false');
     }
