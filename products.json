@@ -1085,20 +1085,6 @@
     "url": "/productos/conjunto-osito-viajero.html"
   },
   {
-    "id": 1780375151271,
-    "slug": "conjunto-dino-safari",
-    "name": "Conjunto Dino Safari",
-    "price": 40,
-    "image": "https://img.kwcdn.com/product/fancy/d934510a-0e36-497f-a2a7-c3fe9aa7dc2c.jpg?imageView2/2/w/800/q/70/format/avif",
-    "categories": [
-      "Ninos",
-      "Jeans",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-dino-safari.html"
-  },
-  {
     "id": 1780375497375,
     "slug": "dino-3d-green",
     "name": "Dino 3D Green",
@@ -1123,6 +1109,22 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-gris-rosa.html"
+  },
+  {
+    "id": 1780375151271,
+    "slug": "conjunto-dino-safari",
+    "name": "Conjunto Dino Safari",
+    "price": 40,
+    "image": "https://img.kwcdn.com/product/fancy/d934510a-0e36-497f-a2a7-c3fe9aa7dc2c.jpg?imageView2/2/w/800/q/70/format/avif",
+    "categories": [
+      "Ninos",
+      "Jeans",
+      "Conjunto Pantalon",
+      "Camisas",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-dino-safari.html"
   },
   {
     "id": 1780410708945,
@@ -1527,6 +1529,20 @@
     "url": "/productos/mezclilla-conjunto-de-ropa-de-dos-piezas.html"
   },
   {
+    "id": 1782600736905,
+    "slug": "conjunto-rosa-de-flores",
+    "name": "Conjunto rosa de flores",
+    "price": 46,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas",
+      "Ninas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-rosa-de-flores.html"
+  },
+  {
     "id": 1781928490480,
     "slug": "conjunto-fucsia-floral",
     "name": "Conjunto Fucsia Floral",
@@ -1723,18 +1739,6 @@
     "url": "/productos/conjunto-marina-glam.html"
   },
   {
-    "id": 1781710591517,
-    "slug": "conjunto-tutu-flor-celeste",
-    "name": "Conjunto Tutu Flor Celeste",
-    "price": 69,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGhGpxHCIwy0eQzaJVkCAmYfDzdgoiNkRlHV3i_TSoXTDEsOC15i3gZCs_H-DAUludRPXTsp6zpFnO-nXiUY1EUwe-VUIypZAF8MjCXjY8LHY0Y0UM5bIRTVDf8wJusaZO2X0bxBIRvBqs5Gnn7UOsog50hGKJmY6TzPHxNPXGzj18nbqcduzshp-PXEc/s16000/conjunto+tutu+nina+rosaceleste1.jpg",
-    "categories": [
-      "Ninas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-tutu-flor-celeste.html"
-  },
-  {
     "id": 1781572587294,
     "slug": "conjunto-royal-vino-3-piezas",
     "name": "Conjunto Royal Vino 3 piezas",
@@ -1748,13 +1752,31 @@
     "url": "/productos/conjunto-royal-vino-3-piezas.html"
   },
   {
+    "id": 1781710591517,
+    "slug": "conjunto-tutu-flor-celeste",
+    "name": "Conjunto Tutu Flor Celeste",
+    "price": 69,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGhGpxHCIwy0eQzaJVkCAmYfDzdgoiNkRlHV3i_TSoXTDEsOC15i3gZCs_H-DAUludRPXTsp6zpFnO-nXiUY1EUwe-VUIypZAF8MjCXjY8LHY0Y0UM5bIRTVDf8wJusaZO2X0bxBIRvBqs5Gnn7UOsog50hGKJmY6TzPHxNPXGzj18nbqcduzshp-PXEc/s16000/conjunto+tutu+nina+rosaceleste1.jpg",
+    "categories": [
+      "Ninas",
+      "Conjunto 2 piezas",
+      "Conjunto Tutu",
+      "Tutus"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-tutu-flor-celeste.html"
+  },
+  {
     "id": 1781540106125,
     "slug": "cardigan-rojo-bolitas-con-tutu",
     "name": "Cardigan Rojo Bolitas con Tutu",
     "price": 65,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgfdqht_RhC8whaupkSNiPcSPHdGGHhxDa_q242QCoan-hMFaMVOqtrLQnUc2lNyEN7HlBjY6NDKcPN7FNxO9TP5VswePhG_AClECo3a9MYeWYp09sxRw-_Ddp0fYIQcQO_hcub3lmcTuV9g2h3wdZzpssKMfMH5rUdChKU5dovwMmO6XLiZDW_-RgVX0A/s16000/gg3.png",
     "categories": [
-      "Ninas"
+      "Ninas",
+      "Conjunto Tutu",
+      "Tutus",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
     "url": "/productos/cardigan-rojo-bolitas-con-tutu.html"
@@ -1769,7 +1791,8 @@
       "Conjunto Pantalon",
       "Ninos",
       "Conjunto 2 piezas",
-      "Jeans"
+      "Jeans",
+      "Camisas"
     ],
     "inStock": true,
     "url": "/productos/conjunto-lenadorcito.html"

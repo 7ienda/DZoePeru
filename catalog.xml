@@ -4,7 +4,24 @@
     <title>D'Zoe Perú — Catálogo de Productos</title>
     <link>https://dzoeperu.com</link>
     <description>Ropa infantil importada premium para bebés y niños de 0 a 14 años. Envíos a todo el Perú.</description>
-    <lastBuildDate>Sat, 27 Jun 2026 19:11:55 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jun 2026 02:54:05 GMT</lastBuildDate>
+
+  <item>
+    <g:id>1782600736905</g:id>
+    <g:title>Conjunto rosa de flores</g:title>
+    <g:description>Conjunto rosa de flores</g:description>
+    <g:link>https://dzoeperu.com/producto.html?slug=conjunto-rosa-de-flores</g:link>
+    <g:image_link>https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png</g:image_link>
+    <g:additional_image_link>https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg350LxkqAds4Iie7KQrQ7iQV6Q2hJXjrM_8FO-6L2e4U2KR7FMjHrkie4x5z1mvlJfRpKkrTo7tctFVhSuOvOoOb2HQOOTGju5DtRw3XIVMICVcVzvJ5xqsFD37_t71NyAxoI2Et8UverdTTH87AuwHbgVtEuX_XCePyVINA7p5J9rPa_zd9LfLPWGdYUr/s16000/vf1.png</g:additional_image_link>
+    <g:availability>in stock</g:availability>
+    <g:price>46.00 PEN</g:price>
+    <g:brand>D'Zoe Perú</g:brand>
+    <g:condition>new</g:condition>
+    <g:google_product_category>5323</g:google_product_category>
+    <g:product_type>Conjunto Pantalon &gt; Conjunto 2 piezas &gt; Ninas</g:product_type>
+    <g:custom_label_0>Conjunto Pantalon, Conjunto 2 piezas, Ninas</g:custom_label_0>
+    <g:custom_label_1>5-6 años</g:custom_label_1>
+  </item>
 
   <item>
     <g:id>1782526384382</g:id>
@@ -190,8 +207,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Conjunto Pantalon &gt; Ninos &gt; Conjunto 2 piezas &gt; Jeans</g:product_type>
-    <g:custom_label_0>Conjunto Pantalon, Ninos, Conjunto 2 piezas, Jeans</g:custom_label_0>
+    <g:product_type>Conjunto Pantalon &gt; Ninos &gt; Conjunto 2 piezas &gt; Jeans &gt; Camisas</g:product_type>
+    <g:custom_label_0>Conjunto Pantalon, Ninos, Conjunto 2 piezas, Jeans, Camisas</g:custom_label_0>
     <g:custom_label_1>4-5 años</g:custom_label_1>
   </item>
 
@@ -839,8 +856,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Ninas</g:product_type>
-    <g:custom_label_0>Ninas</g:custom_label_0>
+    <g:product_type>Ninas &gt; Conjunto 2 piezas &gt; Conjunto Tutu &gt; Tutus</g:product_type>
+    <g:custom_label_0>Ninas, Conjunto 2 piezas, Conjunto Tutu, Tutus</g:custom_label_0>
     <g:custom_label_1>4-5 años</g:custom_label_1>
   </item>
 
@@ -875,8 +892,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Ninas</g:product_type>
-    <g:custom_label_0>Ninas</g:custom_label_0>
+    <g:product_type>Ninas &gt; Conjunto Tutu &gt; Tutus &gt; Conjunto 2 piezas</g:product_type>
+    <g:custom_label_0>Ninas, Conjunto Tutu, Tutus, Conjunto 2 piezas</g:custom_label_0>
     <g:custom_label_1>1-2 años</g:custom_label_1>
   </item>
 
@@ -1139,8 +1156,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Ninos &gt; Jeans &gt; Conjunto Pantalon</g:product_type>
-    <g:custom_label_0>Ninos, Jeans, Conjunto Pantalon</g:custom_label_0>
+    <g:product_type>Ninos &gt; Jeans &gt; Conjunto Pantalon &gt; Camisas &gt; Conjunto 2 piezas</g:product_type>
+    <g:custom_label_0>Ninos, Jeans, Conjunto Pantalon, Camisas, Conjunto 2 piezas</g:custom_label_0>
     <g:custom_label_1>4-5 años</g:custom_label_1>
   </item>
 
