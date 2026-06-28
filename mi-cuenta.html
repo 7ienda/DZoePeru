@@ -2854,91 +2854,251 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== INTEGRACIONES ====== -->
     <div id="integraciones-section" class="page-section" style="display:none;">
-      <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;margin-bottom:4px;">🔌 Integraciones</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:24px;">Conecta tu tienda con plataformas externas</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;" id="integraciones-grid">
+      <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;margin-bottom:4px;">🔌 Integraciones</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:28px;">Exporta tu catálogo y gestiona mensajes automáticos de WhatsApp</div>
 
-        <!-- Meta Catalog -->
-        <div class="section integ-card" data-key="meta">
-          <div class="section-body">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#0082fb,#004fd4);display:flex;align-items:center;justify-content:center;font-size:24px;">📘</div>
-              <div><div style="font-weight:800;font-size:16px;">Meta Catalog</div><div style="font-size:12px;color:var(--muted);">Facebook & Instagram Shopping</div></div>
-              <div id="integ-meta-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+      <!-- ═══ GOOGLE MERCHANT ═══ -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#4285f4,#34a853);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="26" height="26" viewBox="0 0 48 48" fill="none"><path d="M24 4L4 44h40L24 4z" fill="#fff" opacity=".9"/><path d="M24 18l8 16H16l8-16z" fill="#fbbc05"/></svg>
             </div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Pixel ID</label><input type="text" id="integ-meta-pixel" placeholder="123456789012345"></div>
-            <div class="form-group" style="margin-bottom:14px;"><label>Access Token</label><input type="password" id="integ-meta-token" placeholder="EAAxxxxxxx..."></div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-primary btn-sm" onclick="saveInteg('meta')"><i class="fas fa-plug"></i> Conectar</button>
-              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('meta')"><i class="fas fa-upload"></i> Exportar catálogo</button>
+            <div>
+              <div style="font-weight:800;font-size:16px;">Google Merchant Center</div>
+              <div style="font-size:12px;color:var(--muted);">Feed XML para Google Shopping — complemento de tu workflow en GitHub</div>
+            </div>
+          </div>
+          <span id="gmc-badge" style="padding:4px 14px;border-radius:99px;font-size:11px;font-weight:800;background:var(--green-light);color:var(--green);">✅ Activo via GitHub Actions</span>
+        </div>
+        <div class="section-body">
+          <div style="background:var(--bg2);border-radius:14px;padding:16px 20px;margin-bottom:18px;border:1.5px solid var(--line2);display:flex;align-items:center;gap:14px;">
+            <i class="fas fa-circle-info" style="color:var(--rose);font-size:18px;flex-shrink:0;"></i>
+            <div style="font-size:13px;color:var(--text2);line-height:1.6;">
+              Tu feed XML ya se genera automáticamente cada 6 horas en GitHub. Este botón genera un <strong>feed manual de respaldo</strong> con todos los productos activos de Supabase — útil para subir manualmente o verificar el contenido.
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+            <div class="form-group" style="margin:0;"><label>URL base de productos</label><input type="text" id="gmc-base-url" value="https://dzoeperu.com/producto/" placeholder="https://dzoeperu.com/producto/"></div>
+            <div class="form-group" style="margin:0;"><label>Marca / Brand</label><input type="text" id="gmc-brand" value="D'Zoe Perú" placeholder="D'Zoe Perú"></div>
+          </div>
+          <!-- Stats del feed -->
+          <div style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+            <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;text-align:center;">
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--text);" id="gmc-stat-total">0</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;">Total productos</div>
+            </div>
+            <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;text-align:center;">
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="gmc-stat-instock">0</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;">En stock</div>
+            </div>
+            <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;text-align:center;">
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--orange);" id="gmc-stat-noimg">0</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;">Sin imagen</div>
+            </div>
+            <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;text-align:center;">
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--red);" id="gmc-stat-noprice">0</div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;">Sin precio</div>
+            </div>
+          </div>
+          <!-- Preview XML -->
+          <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Preview feed (primeros 3 productos)</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--text2);background:var(--bg);border-radius:12px;padding:14px;border:1.5px solid var(--line2);white-space:pre-wrap;overflow-x:auto;max-height:260px;overflow-y:auto;margin-bottom:16px;" id="gmc-preview">Cargando preview...</div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" onclick="downloadGoogleFeed()"><i class="fas fa-download"></i> Descargar feed.xml</button>
+            <button class="btn btn-ghost" onclick="refreshGmcStats()"><i class="fas fa-rotate"></i> Actualizar stats</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ META CATALOG ═══ -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#0082fb,#004fd4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:800;font-size:16px;">Meta Catalog</div>
+              <div style="font-size:12px;color:var(--muted);">Facebook Shop · Instagram Shopping · Ads de catálogo</div>
+            </div>
+          </div>
+          <span id="meta-badge" style="padding:4px 14px;border-radius:99px;font-size:11px;font-weight:800;background:var(--bg2);color:var(--muted);">Sin configurar</span>
+        </div>
+        <div class="section-body">
+          <div style="background:var(--bg2);border-radius:14px;padding:14px 18px;margin-bottom:18px;border:1.5px solid var(--line2);">
+            <div style="font-size:12px;font-weight:800;color:var(--text2);margin-bottom:6px;"><i class="fas fa-circle-info" style="color:#0082fb;"></i> ¿Cómo usar?</div>
+            <ol style="font-size:12px;color:var(--muted);padding-left:18px;line-height:2;margin:0;">
+              <li>Descarga el CSV desde aquí</li>
+              <li>Ve a <strong>Meta Business Suite → Catálogos → Fuentes de datos</strong></li>
+              <li>Sube el archivo CSV o usa la URL del feed</li>
+              <li>Meta actualizará tus productos en Facebook e Instagram automáticamente</li>
+            </ol>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+            <div class="form-group" style="margin:0;"><label>URL base de productos</label><input type="text" id="meta-base-url" value="https://dzoeperu.com/producto/" placeholder="https://..."></div>
+            <div class="form-group" style="margin:0;">
+              <label>Formato de exportación</label>
+              <select id="meta-format" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                <option value="csv">CSV (recomendado para carga manual)</option>
+                <option value="xml">XML / RSS (para URL de feed)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0;"><label>Marca / Brand</label><input type="text" id="meta-brand" value="D'Zoe Perú"></div>
+            <div class="form-group" style="margin:0;"><label>Condición por defecto</label>
+              <select id="meta-condition" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                <option value="new">Nuevo</option><option value="used">Usado</option><option value="refurbished">Reacondicionado</option>
+              </select>
+            </div>
+          </div>
+          <!-- Variantes por talla -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;background:var(--bg);border:1.5px solid var(--line2);border-radius:12px;padding:12px 16px;">
+            <input type="checkbox" id="meta-expand-sizes" style="width:16px;height:16px;accent-color:var(--rose);" checked>
+            <label for="meta-expand-sizes" style="font-size:13px;font-weight:700;cursor:pointer;">Expandir variantes por talla (genera un ítem por talla con su propio precio y stock)</label>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-primary" onclick="downloadMetaCatalog()"><i class="fas fa-download"></i> Descargar catálogo</button>
+            <button class="btn btn-ghost" onclick="previewMetaCount()"><i class="fas fa-eye"></i> Ver resumen</button>
+          </div>
+          <div id="meta-summary" style="display:none;margin-top:14px;background:var(--bg2);border-radius:12px;padding:14px;font-size:13px;color:var(--text2);border:1.5px solid var(--line2);"></div>
+        </div>
+      </div>
+
+      <!-- ═══ WHATSAPP MENSAJES ═══ -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:800;font-size:16px;">WhatsApp — Mensajes Automáticos</div>
+              <div style="font-size:12px;color:var(--muted);">Genera mensajes personalizados desde tus datos reales · No requiere API</div>
             </div>
           </div>
         </div>
+        <div class="section-body">
+          <!-- Tabs WA -->
+          <div style="display:flex;gap:6px;margin-bottom:20px;background:var(--bg2);padding:4px;border-radius:12px;width:fit-content;border:1.5px solid var(--line2);">
+            <button class="caja-tab active" id="wa-tab-carrito" onclick="switchWaTab('carrito')"><i class="fas fa-cart-xmark"></i> Carrito abandonado</button>
+            <button class="caja-tab" id="wa-tab-reingreso" onclick="switchWaTab('reingreso')"><i class="fas fa-box-open"></i> Reingreso de stock</button>
+          </div>
 
-        <!-- TikTok -->
-        <div class="section integ-card" data-key="tiktok">
-          <div class="section-body">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#010101,#2d2d2d);display:flex;align-items:center;justify-content:center;font-size:24px;">🎵</div>
-              <div><div style="font-weight:800;font-size:16px;">TikTok Catalog</div><div style="font-size:12px;color:var(--muted);">TikTok Shopping & Ads</div></div>
-              <div id="integ-tiktok-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
+          <!-- TAB: CARRITO ABANDONADO -->
+          <div id="wa-carrito-content">
+            <div style="background:var(--bg2);border-radius:14px;padding:14px 18px;margin-bottom:18px;border:1.5px solid var(--line2);font-size:12px;color:var(--muted);line-height:1.8;">
+              <i class="fas fa-circle-info" style="color:var(--rose);"></i> Detecta pedidos en estado <strong>pendiente</strong> y genera un mensaje de WhatsApp por cliente con un clic. Sin API — se abre directamente en WhatsApp.
             </div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Pixel Code</label><input type="text" id="integ-tiktok-pixel" placeholder="XXXXXXXXXXXXXXXX"></div>
-            <div class="form-group" style="margin-bottom:14px;"><label>Access Token</label><input type="password" id="integ-tiktok-token" placeholder="Token de acceso..."></div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-primary btn-sm" onclick="saveInteg('tiktok')"><i class="fas fa-plug"></i> Conectar</button>
-              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('tiktok')"><i class="fas fa-upload"></i> Exportar catálogo</button>
+
+            <!-- Plantilla editable -->
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="display:flex;align-items:center;justify-content:space-between;">
+                Plantilla del mensaje
+                <span style="font-size:11px;color:var(--muted);font-weight:400;">Variables: {nombre} {productos} {total} {tienda}</span>
+              </label>
+              <textarea id="wa-carrito-template" rows="5" style="font-family:monospace;font-size:13px;">Hola {nombre} 👋
+
+Notamos que tienes un pedido pendiente en *D'Zoe Perú* 🌸
+
+🛍️ *Productos:*
+{productos}
+
+💰 *Total: S/ {total}*
+
+¿Te ayudamos a completar tu compra? ¡Escríbenos y lo resolvemos ahora mismo! 😊
+
+👉 dzoeperu.com</textarea>
+            </div>
+
+            <!-- Lista de pedidos pendientes -->
+            <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+              Pedidos pendientes de recuperar
+            </div>
+            <div id="wa-carrito-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+              <div style="color:var(--muted);font-size:13px;padding:20px;text-align:center;background:var(--bg);border-radius:12px;border:1.5px dashed var(--line2);">
+                <i class="fas fa-rotate" style="margin-right:6px;"></i>Cargando pedidos pendientes...
+              </div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="loadWaCarrito()"><i class="fas fa-rotate"></i> Actualizar lista</button>
+          </div>
+
+          <!-- TAB: REINGRESO -->
+          <div id="wa-reingreso-content" style="display:none;">
+            <div style="background:var(--bg2);border-radius:14px;padding:14px 18px;margin-bottom:18px;border:1.5px solid var(--line2);font-size:12px;color:var(--muted);line-height:1.8;">
+              <i class="fas fa-circle-info" style="color:var(--rose);"></i> Notifica a clientes que dejaron su teléfono cuando un producto estaba agotado. Genera el mensaje listo para enviar por WhatsApp.
+            </div>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="display:flex;align-items:center;justify-content:space-between;">
+                Plantilla del mensaje
+                <span style="font-size:11px;color:var(--muted);font-weight:400;">Variables: {nombre} {producto} {talla} {precio} {tienda}</span>
+              </label>
+              <textarea id="wa-reingreso-template" rows="5" style="font-family:monospace;font-size:13px;">¡Hola {nombre}! 🌸
+
+Te escribimos de *D'Zoe Perú* con una buena noticia:
+
+✅ *{producto}* — Talla *{talla}* ya está disponible nuevamente.
+
+💰 Precio: *S/ {precio}*
+
+¡Date prisa, el stock es limitado! 🛍️
+👉 dzoeperu.com</textarea>
+            </div>
+
+            <!-- Selector de producto -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+              <div class="form-group" style="margin:0;">
+                <label>Producto reingresado</label>
+                <select id="wa-reingreso-product" onchange="loadWaReingresoAlerts()" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                  <option value="">— Selecciona producto —</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Talla</label>
+                <select id="wa-reingreso-size" style="padding:11px 15px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:14px;background:var(--bg);color:var(--text);">
+                  <option value="">Todas las tallas</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Lista de alertas guardadas -->
+            <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+              Clientes en lista de espera
+            </div>
+            <div id="wa-reingreso-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+              <div style="color:var(--muted);font-size:13px;padding:20px;text-align:center;background:var(--bg);border-radius:12px;border:1.5px dashed var(--line2);">
+                <i class="fas fa-rotate" style="margin-right:6px;"></i>Selecciona un producto para ver la lista de espera
+              </div>
+            </div>
+
+            <!-- Agregar cliente manual a lista de espera -->
+            <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:14px;padding:16px;margin-top:8px;">
+              <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;"><i class="fas fa-user-plus" style="color:var(--rose);"></i> Agregar cliente a lista de espera</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;">
+                <div class="form-group" style="margin:0;"><label>Nombre</label><input type="text" id="wa-new-nombre" placeholder="Nombre del cliente"></div>
+                <div class="form-group" style="margin:0;"><label>Teléfono (+51...)</label><input type="text" id="wa-new-phone" placeholder="987654321" maxlength="12"></div>
+                <button class="btn btn-primary btn-sm" onclick="addWaReingresoManual()"><i class="fas fa-plus"></i> Agregar</button>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Google Merchant -->
-        <div class="section integ-card" data-key="google">
-          <div class="section-body">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#ea4335,#fbbc05);display:flex;align-items:center;justify-content:center;font-size:24px;">🛒</div>
-              <div><div style="font-weight:800;font-size:16px;">Google Merchant</div><div style="font-size:12px;color:var(--muted);">Google Shopping & Ads</div></div>
-              <div id="integ-google-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
-            </div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Merchant ID</label><input type="text" id="integ-google-merchant" placeholder="123456789"></div>
-            <div class="form-group" style="margin-bottom:14px;"><label>API Key</label><input type="password" id="integ-google-key" placeholder="AIzaSy..."></div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-primary btn-sm" onclick="saveInteg('google')"><i class="fas fa-plug"></i> Conectar</button>
-              <button class="btn btn-ghost btn-sm" onclick="exportCatalog('google')"><i class="fas fa-download"></i> Descargar Feed XML</button>
-            </div>
+      <!-- ═══ OTRAS (desactivadas) ═══ -->
+      <div style="background:var(--bg2);border-radius:16px;padding:18px 22px;border:1.5px dashed var(--line2);">
+        <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;">Otras integraciones — próximamente</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div style="background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;opacity:.6;">
+            <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#010101,#2d2d2d);display:flex;align-items:center;justify-content:center;font-size:16px;">🎵</div>
+            <span style="font-weight:700;font-size:13px;">TikTok Shop</span>
+            <span style="font-size:10px;background:var(--bg2);padding:2px 8px;border-radius:99px;color:var(--muted);font-weight:700;">No disponible en Perú</span>
+          </div>
+          <div style="background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;opacity:.6;">
+            <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:16px;">📧</div>
+            <span style="font-weight:700;font-size:13px;">Email Marketing</span>
+            <span style="font-size:10px;background:var(--bg2);padding:2px 8px;border-radius:99px;color:var(--muted);font-weight:700;">Requiere backend</span>
           </div>
         </div>
-
-        <!-- WhatsApp API -->
-        <div class="section integ-card" data-key="whatsapp">
-          <div class="section-body">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;font-size:24px;">💬</div>
-              <div><div style="font-weight:800;font-size:16px;">WhatsApp API</div><div style="font-size:12px;color:var(--muted);">Mensajes automáticos & recuperación</div></div>
-              <div id="integ-whatsapp-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
-            </div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Número WhatsApp Business</label><input type="text" id="integ-wa-number" placeholder="+51 9XXXXXXXX"></div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Token API (Meta Business)</label><input type="password" id="integ-wa-token" placeholder="EAAxxxxxxx..."></div>
-            <div class="form-group" style="margin-bottom:14px;"><label>Mensaje carrito abandonado</label><textarea id="integ-wa-msg" rows="2" placeholder="Hola {nombre}, notamos que dejaste {producto} en tu carrito 🛒 ¿Te ayudamos a completar tu pedido?"></textarea></div>
-            <button class="btn btn-primary btn-sm" onclick="saveInteg('whatsapp')"><i class="fas fa-plug"></i> Conectar</button>
-          </div>
-        </div>
-
-        <!-- Email Marketing -->
-        <div class="section integ-card" data-key="email">
-          <div class="section-body">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:24px;">📧</div>
-              <div><div style="font-weight:800;font-size:16px;">Email Marketing</div><div style="font-size:12px;color:var(--muted);">Mailchimp / Brevo / SendGrid</div></div>
-              <div id="integ-email-status" style="margin-left:auto;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;background:var(--line2);color:var(--muted);">No conectado</div>
-            </div>
-            <div class="form-group" style="margin-bottom:10px;"><label>Plataforma</label><select id="integ-email-platform"><option value="mailchimp">Mailchimp</option><option value="brevo">Brevo (Sendinblue)</option><option value="sendgrid">SendGrid</option></select></div>
-            <div class="form-group" style="margin-bottom:10px;"><label>API Key</label><input type="password" id="integ-email-key" placeholder="API Key..."></div>
-            <div class="form-group" style="margin-bottom:14px;"><label>Lista / Audiencia ID</label><input type="text" id="integ-email-list" placeholder="ID de lista..."></div>
-            <button class="btn btn-primary btn-sm" onclick="saveInteg('email')"><i class="fas fa-plug"></i> Conectar</button>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -8162,57 +8322,395 @@ function generateSitemap() {
 
 
 // ── INTEGRACIONES ─────────────────────────────────────────────
+// ══════════════════════════════════════════════
+//  INTEGRACIONES — Implementación real
+// ══════════════════════════════════════════════
+
 function loadIntegraciones() {
-  const integ = JSON.parse(localStorage.getItem('dzoe_integraciones')||'{}');
-  ['meta','tiktok','google','whatsapp','email'].forEach(key=>{
-    const status = document.getElementById('integ-'+key+'-status');
-    if (status && integ[key]) {
-      status.textContent = '✅ Conectado';
-      status.style.background = 'var(--green-light)'; status.style.color = 'var(--green)';
+  refreshGmcStats();
+  loadWaCarrito();
+  loadWaReingresoProductSelect();
+}
+
+// ─── TAB helpers ────────────────────────────
+function switchWaTab(tab) {
+  ['carrito','reingreso'].forEach(t => {
+    document.getElementById('wa-tab-'+t)?.classList.toggle('active', t===tab);
+    const c = document.getElementById('wa-'+t+'-content');
+    if (c) c.style.display = t===tab ? 'block' : 'none';
+  });
+  if (tab==='reingreso') loadWaReingresoProductSelect();
+}
+
+// ══════════════════════════════════════════════
+//  GOOGLE MERCHANT — Feed XML completo
+// ══════════════════════════════════════════════
+function refreshGmcStats() {
+  const prods = window._allProducts || products || [];
+  const active = prods.filter(p => p.status !== 'inactive');
+  const inStock = active.filter(p => (p.sizes||[]).some(s=>s.stock>0));
+  const noImg = active.filter(p => !(p.image || (p.images&&p.images[0])));
+  const noPrice = active.filter(p => !(p.sizes&&p.sizes[0]&&p.sizes[0].price>0));
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('gmc-stat-total', active.length);
+  set('gmc-stat-instock', inStock.length);
+  set('gmc-stat-noimg', noImg.length);
+  set('gmc-stat-noprice', noPrice.length);
+  renderGmcPreview(active.slice(0,3));
+}
+
+function buildGoogleFeedXml() {
+  const baseUrl = (document.getElementById('gmc-base-url')?.value || 'https://dzoeperu.com/producto/').replace(/\/$/,'') + '/';
+  const brand = document.getElementById('gmc-brand')?.value || "D'Zoe Perú";
+  const prods = (window._allProducts || products || []).filter(p => p.status !== 'inactive');
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  const today = new Date().toISOString();
+
+  let items = '';
+  prods.forEach(p => {
+    const d = seoData[p.id] || {};
+    const slug = d.slug || String(p.id);
+    const url = baseUrl + slug;
+    const img = (p.images&&p.images[0]) || p.image || '';
+    const desc = (p.description || p.name || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const title = (d.title || p.name || '').replace(/&/g,'&amp;');
+    const sizes = p.sizes || [];
+    const inStock = sizes.some(s=>s.stock>0);
+    const price = sizes.length ? Math.min(...sizes.filter(s=>s.price>0).map(s=>s.price)) : 0;
+
+    if (sizes.length > 1) {
+      // Variante por talla
+      sizes.forEach(sz => {
+        if (!sz.size) return;
+        items += `
+  <item>
+    <g:id>${p.id}_${sz.size.replace(/\s/g,'_')}</g:id>
+    <g:item_group_id>${p.id}</g:item_group_id>
+    <g:title>${title} — Talla ${sz.size}</g:title>
+    <g:description>${desc}</g:description>
+    <g:link>${url}</g:link>
+    <g:image_link>${img}</g:image_link>
+    <g:price>${(sz.price||price).toFixed(2)} PEN</g:price>
+    <g:sale_price>${p.offer_price ? parseFloat(p.offer_price).toFixed(2)+' PEN' : ''}</g:sale_price>
+    <g:availability>${sz.stock>0 ? 'in stock' : 'out of stock'}</g:availability>
+    <g:brand>${brand}</g:brand>
+    <g:condition>new</g:condition>
+    <g:size>${sz.size}</g:size>
+    <g:age_group>kids</g:age_group>
+    <g:google_product_category>212</g:google_product_category>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>`;
+      });
+    } else {
+      items += `
+  <item>
+    <g:id>${p.id}</g:id>
+    <g:title>${title}</g:title>
+    <g:description>${desc}</g:description>
+    <g:link>${url}</g:link>
+    <g:image_link>${img}</g:image_link>
+    <g:price>${price.toFixed(2)} PEN</g:price>
+    ${p.offer_price ? `<g:sale_price>${parseFloat(p.offer_price).toFixed(2)} PEN</g:sale_price>` : ''}
+    <g:availability>${inStock ? 'in stock' : 'out of stock'}</g:availability>
+    <g:brand>${brand}</g:brand>
+    <g:condition>new</g:condition>
+    <g:age_group>kids</g:age_group>
+    <g:google_product_category>212</g:google_product_category>
+    <g:identifier_exists>no</g:identifier_exists>
+  </item>`;
     }
   });
-  if (integ.meta) { document.getElementById('integ-meta-pixel') && (document.getElementById('integ-meta-pixel').value=integ.meta.pixel||''); }
-  if (integ.whatsapp) { document.getElementById('integ-wa-number') && (document.getElementById('integ-wa-number').value=integ.whatsapp.number||''); document.getElementById('integ-wa-msg') && (document.getElementById('integ-wa-msg').value=integ.whatsapp.msg||''); }
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>D'Zoe Perú — Catálogo</title>
+    <link>https://dzoeperu.com</link>
+    <description>Ropa infantil importada — Perú</description>${items}
+  </channel>
+</rss>`;
 }
 
-function saveInteg(key) {
-  const integ = JSON.parse(localStorage.getItem('dzoe_integraciones')||'{}');
-  if (key==='meta') integ.meta = {pixel:document.getElementById('integ-meta-pixel')?.value||'',connected:true};
-  if (key==='tiktok') integ.tiktok = {pixel:document.getElementById('integ-tiktok-pixel')?.value||'',connected:true};
-  if (key==='google') integ.google = {merchant:document.getElementById('integ-google-merchant')?.value||'',connected:true};
-  if (key==='whatsapp') integ.whatsapp = {number:document.getElementById('integ-wa-number')?.value||'',msg:document.getElementById('integ-wa-msg')?.value||'',connected:true};
-  if (key==='email') integ.email = {platform:document.getElementById('integ-email-platform')?.value||'',list:document.getElementById('integ-email-list')?.value||'',connected:true};
-  localStorage.setItem('dzoe_integraciones', JSON.stringify(integ));
-  const status = document.getElementById('integ-'+key+'-status');
-  if (status) { status.textContent='✅ Conectado'; status.style.background='var(--green-light)'; status.style.color='var(--green)'; }
-  showAlert('✅ '+key.charAt(0).toUpperCase()+key.slice(1)+' conectado');
+function renderGmcPreview(sample) {
+  const el = document.getElementById('gmc-preview'); if (!el) return;
+  const baseUrl = (document.getElementById('gmc-base-url')?.value || 'https://dzoeperu.com/producto/').replace(/\/$/,'') + '/';
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+  let preview = '';
+  sample.forEach(p => {
+    const d = seoData[p.id]||{};
+    const price = (p.sizes&&p.sizes[0]) ? p.sizes[0].price : 0;
+    const img = (p.images&&p.images[0]) || p.image || '(sin imagen)';
+    const avail = (p.sizes||[]).some(s=>s.stock>0) ? 'in stock' : 'out of stock';
+    preview += `<item>\n  <g:id>${p.id}</g:id>\n  <g:title>${p.name}</g:title>\n  <g:link>${baseUrl+(d.slug||p.id)}</g:link>\n  <g:image_link>${img}</g:image_link>\n  <g:price>${price} PEN</g:price>\n  <g:availability>${avail}</g:availability>\n</item>\n\n`;
+  });
+  el.textContent = preview || 'Sin productos activos';
 }
 
-function exportCatalog(platform) {
-  const products = window._allProducts||[];
-  if (!products.length) { showAlert('No hay productos para exportar','error'); return; }
-  let content = '';
-  if (platform==='google') {
-    content = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n<channel>\n<title>D\u0027Zoe Perú</title>\n';
-    products.forEach(p=>{
-      const price = (p.sizes&&p.sizes[0])?p.sizes[0].price:'0';
-      content += `<item>\n<g:id>${p.id}</g:id>\n<g:title>${p.name}</g:title>\n<g:price>${price} PEN</g:price>\n<g:availability>${(p.sizes||[]).some(s=>s.stock>0)?'in stock':'out of stock'}</g:availability>\n</item>\n`;
-    });
-    content += '</channel>\n</rss>';
-    const blob = new Blob([content],{type:'application/xml'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='google-merchant-feed.xml'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+function downloadGoogleFeed() {
+  const xml = buildGoogleFeedXml();
+  const blob = new Blob([xml], {type:'application/xml;charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'feed.xml';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showAlert('✅ feed.xml descargado — ' + ((window._allProducts||products||[]).filter(p=>p.status!=='inactive').length) + ' productos');
+}
+
+// ══════════════════════════════════════════════
+//  META CATALOG — CSV + XML
+// ══════════════════════════════════════════════
+function buildMetaCatalog(format) {
+  const baseUrl = (document.getElementById('meta-base-url')?.value || 'https://dzoeperu.com/producto/').replace(/\/$/,'') + '/';
+  const brand = document.getElementById('meta-brand')?.value || "D'Zoe Perú";
+  const condition = document.getElementById('meta-condition')?.value || 'new';
+  const expandSizes = document.getElementById('meta-expand-sizes')?.checked ?? true;
+  const prods = (window._allProducts || products || []).filter(p => p.status !== 'inactive');
+  const seoData = JSON.parse(localStorage.getItem('dzoe_seo')||'{}');
+
+  const rows = [];
+  prods.forEach(p => {
+    const d = seoData[p.id]||{};
+    const slug = d.slug || String(p.id);
+    const url = baseUrl + slug;
+    const img = (p.images&&p.images[0]) || p.image || '';
+    const desc = (p.description || p.name || '').replace(/"/g,'""').replace(/\n/g,' ');
+    const title = (p.name||'').replace(/"/g,'""');
+    const inStock = (p.sizes||[]).some(s=>s.stock>0);
+    const basePrice = (p.sizes&&p.sizes.find(s=>s.price>0)) ? p.sizes.find(s=>s.price>0).price : 0;
+
+    if (expandSizes && (p.sizes||[]).length > 1) {
+      p.sizes.forEach(sz => {
+        rows.push({
+          id: `${p.id}_${(sz.size||'').replace(/\s/g,'_')}`,
+          item_group_id: p.id,
+          title: `${title} Talla ${sz.size}`,
+          description: desc, link: url, image_link: img,
+          price: `${(sz.price||basePrice).toFixed(2)} PEN`,
+          sale_price: p.offer_price ? `${parseFloat(p.offer_price).toFixed(2)} PEN` : '',
+          availability: sz.stock>0 ? 'in stock' : 'out of stock',
+          brand, condition, size: sz.size||'',
+          age_group: 'kids', gender: 'unisex',
+          google_product_category: '212'
+        });
+      });
+    } else {
+      rows.push({
+        id: p.id, item_group_id: '',
+        title, description: desc, link: url, image_link: img,
+        price: `${basePrice.toFixed(2)} PEN`,
+        sale_price: p.offer_price ? `${parseFloat(p.offer_price).toFixed(2)} PEN` : '',
+        availability: inStock ? 'in stock' : 'out of stock',
+        brand, condition, size: '',
+        age_group: 'kids', gender: 'unisex',
+        google_product_category: '212'
+      });
+    }
+  });
+
+  if (format === 'csv') {
+    const headers = ['id','item_group_id','title','description','link','image_link','price','sale_price','availability','brand','condition','size','age_group','gender','google_product_category'];
+    const csv = [headers.join(','), ...rows.map(r => headers.map(h => `"${String(r[h]||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+    return { content: '\ufeff' + csv, type: 'text/csv;charset=utf-8', ext: 'csv' };
   } else {
-    // CSV para Meta/TikTok
-    const rows = [['id','title','description','price','availability','image_link','link']];
-    products.forEach(p=>{ const price=(p.sizes&&p.sizes[0])?p.sizes[0].price:'0'; rows.push([p.id,'"'+p.name+'"','"'+(p.description||'')+'"',price+' PEN',(p.sizes||[]).some(s=>s.stock>0)?'in stock':'out of stock',p.images&&p.images[0]?p.images[0]:'','https://dzoe.pe/producto/'+p.id]); });
-    const csv = rows.map(r=>r.join(',')).join('\n');
-    const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download=platform+'-catalog.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    let items = rows.map(r => `
+  <item>
+    <g:id>${r.id}</g:id>
+    ${r.item_group_id?`<g:item_group_id>${r.item_group_id}</g:item_group_id>`:''}
+    <g:title><![CDATA[${r.title}]]></g:title>
+    <g:description><![CDATA[${r.description}]]></g:description>
+    <g:link>${r.link}</g:link>
+    <g:image_link>${r.image_link}</g:image_link>
+    <g:price>${r.price}</g:price>
+    ${r.sale_price?`<g:sale_price>${r.sale_price}</g:sale_price>`:''}
+    <g:availability>${r.availability}</g:availability>
+    <g:brand>${r.brand}</g:brand>
+    <g:condition>${r.condition}</g:condition>
+    ${r.size?`<g:size>${r.size}</g:size>`:''}
+    <g:age_group>${r.age_group}</g:age_group>
+    <g:gender>${r.gender}</g:gender>
+  </item>`).join('');
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n  <channel>\n    <title>D'Zoe Perú</title>\n    <link>https://dzoeperu.com</link>${items}\n  </channel>\n</rss>`;
+    return { content: xml, type: 'application/xml', ext: 'xml' };
   }
-  showAlert('✅ Catálogo exportado para '+platform);
 }
+
+function downloadMetaCatalog() {
+  const format = document.getElementById('meta-format')?.value || 'csv';
+  const { content, type, ext } = buildMetaCatalog(format);
+  const blob = new Blob([content], {type});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `meta-catalog.${ext}`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  const badge = document.getElementById('meta-badge');
+  if (badge) { badge.textContent = '✅ Exportado'; badge.style.background='var(--green-light)'; badge.style.color='var(--green)'; }
+  showAlert(`✅ meta-catalog.${ext} descargado`);
+}
+
+function previewMetaCount() {
+  const expandSizes = document.getElementById('meta-expand-sizes')?.checked ?? true;
+  const prods = (window._allProducts || products || []).filter(p => p.status !== 'inactive');
+  let totalItems = 0;
+  prods.forEach(p => {
+    const sz = p.sizes||[];
+    totalItems += (expandSizes && sz.length>1) ? sz.length : 1;
+  });
+  const inStock = prods.filter(p=>(p.sizes||[]).some(s=>s.stock>0)).length;
+  const noImg = prods.filter(p=>!(p.image||(p.images&&p.images[0]))).length;
+  const el = document.getElementById('meta-summary');
+  if (!el) return;
+  el.style.display = 'block';
+  el.innerHTML = `<div style="display:flex;gap:20px;flex-wrap:wrap;">
+    <div><span style="font-weight:800;font-size:18px;color:var(--text);">${totalItems}</span><br><span style="color:var(--muted);font-size:12px;">Items en catálogo</span></div>
+    <div><span style="font-weight:800;font-size:18px;color:var(--green);">${inStock}</span><br><span style="color:var(--muted);font-size:12px;">Productos en stock</span></div>
+    <div><span style="font-weight:800;font-size:18px;color:${noImg>0?'var(--red)':'var(--green)'};">${noImg}</span><br><span style="color:var(--muted);font-size:12px;">Sin imagen ${noImg>0?'⚠️':''}</span></div>
+    <div><span style="font-weight:800;font-size:18px;color:var(--rose);">${prods.length}</span><br><span style="color:var(--muted);font-size:12px;">Productos base</span></div>
+  </div>
+  ${noImg>0?`<div style="margin-top:10px;font-size:12px;color:var(--orange);"><i class="fas fa-triangle-exclamation"></i> ${noImg} productos sin imagen — Meta podría rechazarlos. Agrega imágenes desde Inventario.</div>`:''}`;
+}
+
+// ══════════════════════════════════════════════
+//  WHATSAPP — Carrito abandonado
+// ══════════════════════════════════════════════
+function loadWaCarrito() {
+  const el = document.getElementById('wa-carrito-list'); if (!el) return;
+  const pending = (window._allOrders || orders || []).filter(o => o.status === 'pending' || o.status === 'pendiente' || !o.status);
+  if (!pending.length) {
+    el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:24px;text-align:center;background:var(--bg);border-radius:12px;border:1.5px dashed var(--line2);">
+      <i class="fas fa-check-circle" style="color:var(--green);font-size:24px;display:block;margin-bottom:8px;"></i>
+      No hay pedidos pendientes de recuperar 🎉
+    </div>`;
+    return;
+  }
+  el.innerHTML = pending.map(o => {
+    const name = ((o.name||'') + ' ' + (o.lastname||'')).trim() || 'Cliente';
+    const phone = (o.phone||'').replace(/\D/g,'');
+    const items = (o.items||[]).map(i=>`• ${i.name||''} x${i.qty||1} — S/ ${parseFloat(i.price||0).toFixed(2)}`).join('\n');
+    const total = parseFloat(o.total||0).toFixed(2);
+    const template = document.getElementById('wa-carrito-template')?.value || '';
+    const msg = template
+      .replace('{nombre}', name)
+      .replace('{productos}', items)
+      .replace('{total}', total)
+      .replace('{tienda}', "D'Zoe Perú");
+    const waUrl = phone ? `https://wa.me/51${phone}?text=${encodeURIComponent(msg)}` : '';
+    const fecha = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE') : '—';
+    return `<div style="background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:800;font-size:14px;color:var(--text);">${name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 ${fecha} · 📦 ${(o.items||[]).length} ítem(s) · 💰 S/ ${total}</div>
+        ${phone?`<div style="font-size:11px;color:var(--muted);margin-top:2px;">📱 +51 ${phone}</div>`:'<div style="font-size:11px;color:var(--red);margin-top:2px;">⚠️ Sin número de teléfono</div>'}
+      </div>
+      ${waUrl ? `<a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="white-space:nowrap;text-decoration:none;background:linear-gradient(135deg,#25D366,#128C7E);border-color:transparent;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:5px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar WA
+      </a>` : `<span style="font-size:11px;color:var(--muted);font-style:italic;">Sin teléfono</span>`}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  WHATSAPP — Reingreso de stock
+// ══════════════════════════════════════════════
+function loadWaReingresoProductSelect() {
+  const sel = document.getElementById('wa-reingreso-product'); if (!sel) return;
+  const prods = window._allProducts || products || [];
+  sel.innerHTML = '<option value="">— Selecciona producto —</option>' +
+    prods.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+}
+
+async function loadWaReingresoAlerts() {
+  const el = document.getElementById('wa-reingreso-list'); if (!el) return;
+  const pid = document.getElementById('wa-reingreso-product')?.value;
+  const sizeEl = document.getElementById('wa-reingreso-size');
+
+  // Populate talla select
+  if (pid && sizeEl) {
+    const p = (window._allProducts||products||[]).find(x=>String(x.id)===String(pid));
+    sizeEl.innerHTML = '<option value="">Todas las tallas</option>' +
+      (p?.sizes||[]).map(s=>`<option value="${s.size}">${s.size}</option>`).join('');
+  }
+
+  if (!pid) { el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center;">Selecciona un producto</div>`; return; }
+
+  el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center;"><i class="fas fa-rotate fa-spin"></i> Cargando...</div>`;
+
+  let alerts = [];
+  if (supabaseClient) {
+    const { data } = await supabaseClient.from('reingreso_alerts').select('*').eq('product_id', pid).order('created_at', {ascending:false});
+    alerts = data || [];
+  } else {
+    alerts = JSON.parse(localStorage.getItem('dzoe_reingreso_alerts')||'[]').filter(a=>String(a.product_id)===String(pid));
+  }
+
+  if (!alerts.length) {
+    el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center;background:var(--bg);border-radius:12px;border:1.5px dashed var(--line2);">No hay clientes en lista de espera para este producto</div>`;
+    return;
+  }
+
+  const prod = (window._allProducts||products||[]).find(x=>String(x.id)===String(pid));
+  const template = document.getElementById('wa-reingreso-template')?.value || '';
+
+  el.innerHTML = alerts.map(a => {
+    const phone = (a.telefono||'').replace(/\D/g,'');
+    const sz = (prod?.sizes||[]).find(s=>s.size===a.size);
+    const precio = sz?.price || (prod?.sizes?.[0]?.price) || 0;
+    const msg = template
+      .replace('{nombre}', a.nombre||'Cliente')
+      .replace('{producto}', prod?.name||'Producto')
+      .replace('{talla}', a.size||'—')
+      .replace('{precio}', parseFloat(precio).toFixed(2))
+      .replace('{tienda}', "D'Zoe Perú");
+    const waUrl = phone ? `https://wa.me/51${phone}?text=${encodeURIComponent(msg)}` : '';
+    const fecha = a.created_at ? new Date(a.created_at).toLocaleDateString('es-PE') : '—';
+    return `<div style="background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:800;font-size:14px;color:var(--text);">${a.nombre||'Sin nombre'}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">
+          ${a.size ? `📏 Talla <strong>${a.size}</strong> · ` : ''}📅 ${fecha}
+          ${phone ? ` · 📱 +51 ${phone}` : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        ${waUrl ? `<a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;background:linear-gradient(135deg,#25D366,#128C7E);border-color:transparent;white-space:nowrap;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Notificar
+        </a>` : ''}
+        <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteWaReingresoAlert('${a.id}','${pid}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function addWaReingresoManual() {
+  const pid = document.getElementById('wa-reingreso-product')?.value;
+  if (!pid) { showAlert('Selecciona un producto primero','error'); return; }
+  const nombre = document.getElementById('wa-new-nombre')?.value.trim();
+  const phone = document.getElementById('wa-new-phone')?.value.trim();
+  if (!nombre && !phone) { showAlert('Ingresa nombre o teléfono','error'); return; }
+  const size = document.getElementById('wa-reingreso-size')?.value || '';
+  const record = { id: Date.now(), product_id: pid, nombre, telefono: phone, size, created_at: new Date().toISOString() };
+  if (supabaseClient) {
+    await supabaseClient.from('reingreso_alerts').insert([record]);
+  } else {
+    const list = JSON.parse(localStorage.getItem('dzoe_reingreso_alerts')||'[]');
+    list.push(record); localStorage.setItem('dzoe_reingreso_alerts', JSON.stringify(list));
+  }
+  document.getElementById('wa-new-nombre').value='';
+  document.getElementById('wa-new-phone').value='';
+  showAlert('✅ Cliente agregado a lista de espera');
+  loadWaReingresoAlerts();
+}
+
+async function deleteWaReingresoAlert(id, pid) {
+  if (supabaseClient) await supabaseClient.from('reingreso_alerts').delete().eq('id', id);
+  else {
+    const list = JSON.parse(localStorage.getItem('dzoe_reingreso_alerts')||'[]').filter(a=>String(a.id)!==String(id));
+    localStorage.setItem('dzoe_reingreso_alerts', JSON.stringify(list));
+  }
+  loadWaReingresoAlerts();
+}
+
+// ── stubs para compatibilidad con código viejo ──
+function saveInteg() {}
+function exportCatalog(p) { if(p==='google') downloadGoogleFeed(); else if(p==='meta') downloadMetaCatalog(); }
+
 
 // ── CSS EXTRA PARA NUEVOS MÓDULOS ─────────────────────────────
 (function injectStyles(){
