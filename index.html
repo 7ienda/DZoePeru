@@ -5434,7 +5434,12 @@ const QUICK_SUGGESTIONS = [
   { text: 'Abrigo invierno niña', sub: 'Abrigador y con estilo', icon: '❄️' },
   { text: 'Conjunto cumpleaños', sub: 'Brillante y especial', icon: '🎂' },
   { text: 'Overol bebé', sub: 'Estilo y comodidad', icon: '🎀' },
-  { text: 'Cardigan niño', sub: 'Tejido premium importado', icon: '🧶' }
+  { text: 'Cardigan niño', sub: 'Tejido premium importado', icon: '🧶' },
+  { text: 'Polo niño 6 años', sub: 'Ropa de niño · importada', icon: '👕' },
+  { text: 'Buzo niño 8 años', sub: 'Cómodo y moderno', icon: '🏃' },
+  { text: 'Conjunto niño 5 años', sub: 'Outfits completos para niño', icon: '👦' },
+  { text: 'Vestido niña 6 años', sub: 'Modelos exclusivos para niña', icon: '👗' },
+  { text: 'Abrigo niño 10 años', sub: 'Abrigo premium para niño', icon: '🧥' },
 ];
 
 function smartSearchHandle(val) {
@@ -5476,8 +5481,24 @@ function smartSearchHandle(val) {
     return;
   }
 
+  // Mostrar chips de filtros detectados (género + edad)
+  let detectedChips = '';
+  if (typeof parseSmartQuery === 'function') {
+    try {
+      const parsed = parseSmartQuery(val);
+      if (parsed.gender) {
+        const gLabel = parsed.gender === 'nino' ? '👦 Niño' : '👧 Niña';
+        detectedChips += `<span style="display:inline-block;background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">${gLabel}</span>`;
+      }
+      if (parsed.ageSizes && parsed.ageSizes.length) {
+        const ageLabel = parsed.ageSizes[0];
+        detectedChips += `<span style="display:inline-block;background:var(--lavender-soft,#f0ebf8);color:var(--lavender,#9c7bbf);border:1px solid #d8c9ef;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">📏 ${ageLabel}</span>`;
+      }
+    } catch(e) {}
+  }
+
   sug.innerHTML =
-    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias</div>` +
+    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias${detectedChips ? '<span style="margin-left:6px;">'+detectedChips+'</span>' : ''}</div>` +
     matches.map(m =>
       `<div class="pss-item" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
         <div class="pss-item-icon">${m.icon}</div>
@@ -9680,7 +9701,19 @@ function renderBreadcrumb() {
   let current = '🌸 Todos los productos';
   if (currentFilter && currentFilter !== 'all') current = `✨ ${currentFilter}`;
   else if (currentAgeFilter) current = `👶 ${currentAgeFilter}`;
-  else if (currentSearch)    current = `🔍 "${currentSearch}"`;
+  else if (currentSearch) {
+    // Mostrar género detectado si aplica
+    let genderTag = '';
+    if (typeof parseSmartQuery === 'function') {
+      try {
+        const parsed = parseSmartQuery(currentSearch);
+        if (parsed.gender === 'nino') genderTag = ' 👦 Niño';
+        else if (parsed.gender === 'nina') genderTag = ' 👧 Niña';
+        if (parsed.ageSizes && parsed.ageSizes.length) genderTag += ' · ' + parsed.ageSizes[0];
+      } catch(e) {}
+    }
+    current = `🔍 "${currentSearch}"${genderTag}`;
+  }
   nav.innerHTML = `
     <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
     <span class="bc-sep"><i class="fas fa-chevron-right"></i></span>
@@ -9843,14 +9876,32 @@ const MESES_EXPANSION = {
   24: ['18-24 meses','12-24 meses'],
 };
 
-// Parsea la query y extrae intenciones: edades, meses, términos, categorías
+// Parsea la query y extrae intenciones: edades, meses, términos, categorías, género
 function parseSmartQuery(raw) {
   const q = raw.toLowerCase().trim();
   const result = {
     ageSizes: null,   // array de tallas si detectó edad
     terms: [],        // palabras clave normalizadas
     original: q,
+    gender: null,     // 'nino' | 'nina' | null
   };
+
+  // 0. Detectar género ANTES de tokenizar para excluirlo de los términos
+  // Palabras que implican niño (varón)
+  const GENDER_NINO = /\b(ni[ñn]o|nino|varon|var[oó]n|chico|chicos|ni[ñn]os|ninos|var[oó]ncito|varonsito)\b/i;
+  // Palabras que implican niña (mujer)
+  const GENDER_NINA = /\b(ni[ñn]a|nina|nena|chica|chicas|ni[ñn]as|ninas|nena|nenita|chinita)\b/i;
+
+  // Evaluar género según la query original
+  const hasNino = GENDER_NINO.test(q);
+  const hasNina = GENDER_NINA.test(q);
+
+  if (hasNino && !hasNina) {
+    result.gender = 'nino';
+  } else if (hasNina && !hasNino) {
+    result.gender = 'nina';
+  }
+  // Si ambos → sin filtro de género (ej: "niño y niña")
 
   // 1. Detectar edad en años: "6 años", "6a", "de 6", "6-8 años", "6 y 7 años"
   // Rango: "6 a 8 años", "6-8 años"
@@ -9911,11 +9962,18 @@ function parseSmartQuery(raw) {
     .replace(/recien\s*nacido|newborn/gi, '')
     .replace(/\s+/g, ' ').trim();
 
-  // 5. Tokenizar y aplicar sinónimos (normalizados sin tildes)
+  // 5. Limpiar palabras de género de cleanQ (ya capturadas en result.gender)
+  const GENDER_WORDS_NORM = ['nino','nina','varon','chico','chicos','chica','chicas','nena','ninas','ninos'];
+  cleanQ = cleanQ
+    .replace(/\b(ni[ñn][oa]s?|nino|nina|varon|var[oó]n|chic[oa]s?|nena|nenas)\b/gi, '')
+    .replace(/\s+/g, ' ').trim();
+
+  // 6. Tokenizar y aplicar sinónimos (normalizados sin tildes)
   const tokens = cleanQ.split(/\s+/).filter(t => t.length > 1);
   const expanded = new Set();
   for (const t of tokens) {
     const n = normTxt(t);
+    if (GENDER_WORDS_NORM.includes(n)) continue;
     expanded.add(n);
     if (SEARCH_SYNONYMS[n]) expanded.add(SEARCH_SYNONYMS[n]);
     if (SEARCH_SYNONYMS[t]) expanded.add(SEARCH_SYNONYMS[t]);
@@ -9926,7 +9984,7 @@ function parseSmartQuery(raw) {
     if (SEARCH_SYNONYMS[bigram]) expanded.add(SEARCH_SYNONYMS[bigram]);
   }
 
-  result.terms = [...expanded].filter(t => t.length > 1);
+  result.terms = [...expanded].filter(t => t.length > 1 && !GENDER_WORDS_NORM.includes(t));
   return result;
 }
 
@@ -9969,6 +10027,15 @@ function scoreProduct(product, parsed) {
   // C. Bonus si tiene stock
   const totalStock = (product.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0);
   if (totalStock > 0) score += 5;
+
+  // D. Bonus si el género del producto coincide con el género de la query
+  if (parsed.gender) {
+    const allText = [normTxt(product.name), normTxt(product.description||''), ...(product.categories||[]).map(c=>normTxt(c))].join(' ');
+    const gKws = parsed.gender === 'nino'
+      ? ['nino', 'nino', 'varon', 'boy', 'chico']
+      : ['nina', 'nina', 'girl', 'chica', 'nena'];
+    if (gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText))) score += 20;
+  }
 
   return score;
 }
@@ -10018,6 +10085,43 @@ function filterProducts() {
       filtered = (currentFilter === 'all' ? [...products] : products.filter(p =>
         p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase())
       )).filter(p => (p.sizes||[]).some(s => parsed.ageSizes.includes(s.size)));
+    }
+
+    // 3. Filtro duro por GÉNERO detectado en la query
+    // Un producto es de un género si su categoría o nombre contiene la palabra clave
+    if (parsed.gender) {
+      const genderKeywords = parsed.gender === 'nino'
+        ? ['nino', 'niño', 'varon', 'varón', 'boy', 'chico']
+        : ['nina', 'niña', 'girl', 'chica', 'nena'];
+      // Palabras del género OPUESTO a excluir (excluyentes duros)
+      const oppositeKeywords = parsed.gender === 'nino'
+        ? ['nina', 'niña', 'girl', 'chica', 'nena']
+        : ['nino', 'niño', 'varon', 'varón', 'boy', 'chico'];
+
+      filtered = filtered.filter(p => {
+        const nameLow  = normTxt(p.name);
+        const descLow  = normTxt(p.description || '');
+        const catsLow  = (p.categories || []).map(c => normTxt(c));
+        const allText  = [nameLow, descLow, ...catsLow].join(' ');
+
+        // Si el producto menciona explícitamente el género OPUESTO → excluir
+        const hasOpposite = oppositeKeywords.some(kw => {
+          // Verificar con límites de palabra para no fallar con "abrigo"
+          return new RegExp('\\b' + kw + '\\b').test(allText);
+        });
+        if (hasOpposite) return false;
+
+        // Productos sin marcador de género → incluir (son unisex)
+        const hasGender = genderKeywords.some(kw =>
+          new RegExp('\\b' + kw + '\\b').test(allText)
+        ) || oppositeKeywords.some(kw =>
+          new RegExp('\\b' + kw + '\\b').test(allText)
+        );
+        if (!hasGender) return true;
+
+        // Tiene marcador del género correcto → incluir
+        return genderKeywords.some(kw => new RegExp('\\b' + kw + '\\b').test(allText));
+      });
     }
   }
 
