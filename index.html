@@ -1390,6 +1390,46 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .products-title{text-align:center;font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;color:var(--text);margin-bottom:20px;letter-spacing:1px;}
 .products-title span{color:var(--rose);}
 
+/* ── PRODUCTOS PREMIUM HEADER ── */
+.productos-premium-header{
+  text-align:center;
+  margin-bottom:32px;
+  padding:8px 0 4px;
+}
+.productos-premium-eyebrow{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--lavender);
+  margin-bottom:8px;
+}
+.productos-premium-title{
+  font-family:'Baloo 2',cursive;
+  font-size:38px;
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  line-height:1.1;
+}
+.productos-premium-title span{
+  color:var(--rose);
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.productos-premium-sub{
+  font-size:14px;
+  color:var(--text-soft);
+  font-family:'Nunito',sans-serif;
+  font-weight:600;
+  max-width:480px;
+  margin:0 auto;
+}
+
 /* Filtros por categoría */
 .filters-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
 .filter-btn{padding:8px 18px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--text-soft);cursor:pointer;font-size:13px;font-weight:700;transition:all 0.2s;font-family:'Nunito',sans-serif;}
@@ -1430,7 +1470,7 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .product-img-wrap{
   position:relative;
   overflow:hidden;
-  aspect-ratio:4/4.2;
+  aspect-ratio:3/4;
   background:var(--lav-light);
   border-radius:0;
 }
@@ -4606,8 +4646,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
       <button class="hdr-favs-btn" id="hdrFavsBtn" aria-label="Ver mis favoritos de próximos ingresos">
         <span aria-hidden="true" style="font-size:1.1em;">⭐</span>
         <div class="favs-info">
-          <span class="favs-label">FAVORITOS</span>
-          <span class="favs-text">✨ Guardados</span>
+          <span class="favs-text">FAVORITOS</span>
         </div>
         <span class="hdr-favs-badge" id="hdrFavsBadge" aria-live="polite">0</span>
       </button>
@@ -6391,6 +6430,13 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
     </nav>
   </div>
 </div>
+
+    <!-- Título PRODUCTOS PREMIUM -->
+    <div class="productos-premium-header">
+      <p class="productos-premium-eyebrow">✨ Colección Exclusiva 2026</p>
+      <h2 class="productos-premium-title">PRODUCTOS <span>PREMIUM</span></h2>
+      <p class="productos-premium-sub">Ropa infantil importada de alta gama para bebés y niños de 0 a 14 años</p>
+    </div>
 
     <!-- Grid de productos (dinámico desde Supabase) -->
     <div class="product-grid" id="productGrid">
