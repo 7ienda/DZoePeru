@@ -1735,60 +1735,82 @@ function piScoreProduct(p, parsed) {
   return score;
 }
 
-/* ── Filtro inteligente aplicado a products ── */
+/* ── Filtro inteligente — lógica idéntica a index.html filterProducts ── */
 function piSmartFilter(arr, raw) {
   if (!raw || raw.length < 2) return arr;
   const parsed = piParseQuery(raw);
 
-  // Filtro duro de tallas/edad
-  let base = arr;
+  let result = [...arr];
+
+  // ── 1. Filtro duro por EDAD: el producto DEBE tener exactamente esa talla ──
   if (parsed.ageSizes && parsed.ageSizes.length) {
-    const tallaSet = parsed.ageSizes.map(t => piNorm(t));
-    base = arr.filter(p => {
-      const pSizes = (p.sizes||[]).map(s => piNorm(s.size||''));
-      const pCats  = (p.categories||[]).map(c => piNorm(c));
-      return tallaSet.some(t =>
-        pSizes.some(s => s.includes(t) || t.includes(s)) ||
-        pCats.some(c => c.includes(t) || t.includes(c))
+    const ageSizeFilter = parsed.ageSizes; // array exacto, ej: ['3 años','2-3 años','3-4 años']
+
+    if (parsed.terms.length === 0 && !parsed.gender) {
+      // Query solo de edad → filtrar por talla exacta, sin score
+      result = result.filter(p =>
+        (p.sizes||[]).some(s => ageSizeFilter.includes(s.size))
       );
-    });
-    // Fallback si ningún producto tiene esa talla exacta
-    if (!base.length) base = arr;
-  }
-
-  // Filtro duro de género
-  if (parsed.gender) {
-    const gFiltered = base.filter(p => {
-      // Normalizar todo sin tildes para comparar con categorías como "nino","nina"
-      const allText = [piNorm(p.name), piNorm(p.description||''), ...(p.categories||[]).map(c=>piNorm(c))].join(' ');
-      const gKws = parsed.gender === 'nino'
-        ? ['nino','varon','boy','chico','masculin','hombre']
-        : ['nina','girl','chica','nena','femenin','mujer'];
-      return gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText) || allText.includes(kw));
-    });
-    if (gFiltered.length) base = gFiltered;
-  }
-
-  // Si hay términos adicionales → score y filtrar
-  if (parsed.terms.length) {
-    const scored = base
+    } else {
+      // Query con edad + otros términos → score + filtro duro de talla
+      result = result
+        .map(p => ({ p, score: piScoreProduct(p, parsed) }))
+        .filter(({ p, score }) => {
+          // Filtro duro: debe tener la talla
+          if (!(p.sizes||[]).some(s => ageSizeFilter.includes(s.size))) return false;
+          // Si hay términos de texto y score 0 → excluir
+          if (parsed.terms.length > 0 && score === 0) return false;
+          return true;
+        })
+        .sort((a, b) => b.score - a.score)
+        .map(({ p }) => p);
+    }
+  } else if (parsed.terms.length > 0) {
+    // Solo términos de texto, sin edad → filtrar y ordenar por score
+    result = result
       .map(p => ({ p, score: piScoreProduct(p, parsed) }))
-      .filter(x => x.score > 0)
-      .sort((a,b) => b.score - a.score)
-      .map(x => x.p);
-    if (scored.length) return scored;
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ p }) => p);
+    // Fallback si no hubo ningún match por score: búsqueda simple
+    if (!result.length) {
+      const q = piNorm(raw);
+      result = arr.filter(p =>
+        piNorm(p.name).includes(q) ||
+        (p.categories||[]).some(c => piNorm(c).includes(q)) ||
+        piNorm(p.description||'').includes(q)
+      );
+    }
   }
 
-  // Sin términos extra → devolver lo filtrado por edad/género
-  if (parsed.ageSizes || parsed.gender) return base;
+  // ── 2. Filtro duro por GÉNERO (igual que index.html) ──
+  if (parsed.gender) {
+    const gKws = parsed.gender === 'nino'
+      ? ['nino', 'niño', 'varon', 'varón', 'boy', 'chico']
+      : ['nina', 'niña', 'girl', 'chica', 'nena'];
+    const oppKws = parsed.gender === 'nino'
+      ? ['nina', 'niña', 'girl', 'chica', 'nena']
+      : ['nino', 'niño', 'varon', 'varón', 'boy', 'chico'];
 
-  // Fallback: búsqueda simple de texto
-  const q = piNorm(raw);
-  return arr.filter(p =>
-    piNorm(p.name).includes(q) ||
-    (p.categories||[]).some(c => piNorm(c).includes(q)) ||
-    piNorm(p.description||'').includes(q)
-  );
+    const gFiltered = result.filter(p => {
+      const allText = [
+        piNorm(p.name),
+        piNorm(p.description||''),
+        ...(p.categories||[]).map(c => piNorm(c))
+      ].join(' ');
+
+      // Si menciona el género OPUESTO → excluir
+      if (oppKws.some(kw => new RegExp('\\b' + kw + '\\b').test(allText))) return false;
+      // Si no tiene marcador de género → incluir (unisex)
+      const hasAnyGender = [...gKws, ...oppKws].some(kw => new RegExp('\\b' + kw + '\\b').test(allText));
+      if (!hasAnyGender) return true;
+      // Tiene marcador del género correcto → incluir
+      return gKws.some(kw => new RegExp('\\b' + kw + '\\b').test(allText));
+    });
+    if (gFiltered.length) result = gFiltered;
+  }
+
+  return result;
 }
 
 /* ── Chips de intención detectada (UI) ── */
