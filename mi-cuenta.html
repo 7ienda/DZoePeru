@@ -3203,7 +3203,92 @@ const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
 if (!supabaseUrl || !supabaseKey) console.error('❌ config.js no encontrado');
 const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
+const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
 
+// ============================================
+// FUNCIONES FALTANTES - AGREGAR AL INICIO DEL SCRIPT
+// ============================================
+
+function clearForm() {
+  editingProductId = null;
+  productImages = [];
+  productSizes = [];
+  selectedCategories = [];
+  featuredValue = false;
+  statusValue = 'active';
+  
+  ['product-name', 'product-description'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  
+  const featuredToggle = document.getElementById('featured-toggle');
+  if (featuredToggle) featuredToggle.className = 'toggle-group';
+  
+  document.querySelectorAll('.status-pill').forEach(el => {
+    el.classList.toggle('selected', el.dataset.status === 'active');
+  });
+  
+  const selectedCats = document.getElementById('selected-categories');
+  if (selectedCats) selectedCats.innerHTML = '';
+  
+  const imgContainer = document.getElementById('image-urls-container');
+  if (imgContainer) {
+    imgContainer.innerHTML = '';
+    addImageInput();
+  }
+  
+  const previewImages = document.getElementById('preview-images');
+  if (previewImages) previewImages.innerHTML = '';
+  
+  const sizesContainer = document.getElementById('sizes-container');
+  if (sizesContainer) {
+    sizesContainer.innerHTML = '<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar talla"</div>';
+  }
+  
+  const formTitle = document.getElementById('form-section-title');
+  if (formTitle) formTitle.textContent = 'Agregar producto';
+  
+  const saveBtn = document.getElementById('save-btn-text');
+  if (saveBtn) saveBtn.textContent = 'Guardar producto';
+}
+
+async function deleteProduct(id) {
+  if (!confirm('¿Eliminar este producto?')) return;
+  
+  if (supabaseClient) {
+    const { error } = await supabaseClient
+      .from('products')
+      .delete()
+      .eq('id', id);
+      
+    if (error) {
+      showAlert('Error al eliminar: ' + error.message, 'error');
+      return;
+    }
+  }
+  
+  products = products.filter(p => p.id !== id);
+  filterInventory();
+  updateStats();
+  showAlert('Producto eliminado ✅');
+}
+
+function showAlert(msg, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `alert-toast ${type}`;
+  toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ============================================
+// LOGIN
+// ============================================
+const DEFAULT_USER = 'dzoe_admin';
+const DEFAULT_PASS = 'dzoe2024';
+// ... el resto del código sigue aquí
 // ============================================
 // LOGIN
 // ============================================
