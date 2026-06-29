@@ -12286,6 +12286,20 @@ document.getElementById('hdLightbox').addEventListener('touchend', e => {
 
 })();
 </script>
-
+<script>
+// Silencia errores de recursos bloqueados por AdBlock
+window.addEventListener('error', function(e) {
+  if (e.target && e.target.tagName === 'IMG' && e.target.src && e.target.src.includes('google.com/ads')) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+  if (e.target && e.target.tagName === 'SCRIPT' && e.target.src && e.target.src.includes('google.com/ads')) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+}, true);
+</script>
 </body>
 </html>
