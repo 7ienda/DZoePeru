@@ -4034,7 +4034,7 @@ async function saveProduct() {
   const now = new Date().toISOString();
 
   const productData = {
-    id: editingProductId || Date.now(),
+    id: editingProductId || crypto.randomUUID(),
     name, description: desc, images: validImages,
     image: validImages[0]||'', featured: featuredValue, status: statusValue,
     categories: [...selectedCategories],
