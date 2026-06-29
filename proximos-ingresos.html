@@ -586,6 +586,30 @@ img{display:block;max-width:100%;}
 .pi-cd-unit{font-size:7px;font-weight:800;text-transform:uppercase;color:var(--text-soft);}
 .pi-cd-sep{font-size:14px;font-weight:800;color:var(--rose);line-height:1;}
 
+/* ── Tallas disponibles en card ── */
+.pi-card-sizes-wrap{
+  display:flex;flex-direction:column;gap:4px;
+  margin-bottom:2px;
+}
+.pi-card-sizes-label{
+  font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;
+  color:var(--text-soft);display:flex;align-items:center;gap:5px;
+}
+.pi-card-sizes-label i{color:var(--rose);font-size:9px;}
+.pi-card-sizes-list{display:flex;flex-wrap:wrap;gap:4px;}
+.pi-card-size-tag{
+  display:inline-flex;align-items:center;
+  background:var(--rose-soft);color:var(--rose-dark);
+  border:1px solid var(--rose-light);border-radius:8px;
+  font-size:10.5px;font-weight:800;padding:2px 8px;
+  transition:background 0.15s;
+}
+.pi-card-size-tag:hover{background:var(--rose-light);}
+.pi-card-size-more{
+  font-size:10.5px;font-weight:700;color:var(--text-soft);
+  padding:2px 6px;align-self:center;
+}
+
 /* Botones de acción */
 .pi-card-actions{display:flex;flex-direction:column;gap:7px;}
 .pi-btn-reservar{
@@ -1154,8 +1178,8 @@ function applyFilter(arr) {
     case 'con-reserva': return arr.filter(p => (p.reservas_count||0) > 0);
     case 'mas-esperados':return arr.filter(p => (p.favoritos_count||0) > 5 || (p.reservas_count||0) > 3);
     case 'bebes':  return arr.filter(p => (p.categories||[]).some(c => /beb[eé]|0[\-–]|reci[eé]n/i.test(c)));
-    case 'ninas':  return arr.filter(p => (p.categories||[]).some(c => /ni[ñn]a|vestido|femenin/i.test(c)));
-    case 'ninos':  return arr.filter(p => (p.categories||[]).some(c => /ni[ñn]o|masculin/i.test(c)));
+    case 'ninas':  return arr.filter(p => (p.categories||[]).some(c => /ni[ñn]a|nina|vestido|femenin/i.test(c)));
+    case 'ninos':  return arr.filter(p => (p.categories||[]).some(c => /ni[ñn]o|nino|masculin/i.test(c)));
     default:       return arr;
   }
 }
@@ -1282,6 +1306,18 @@ function buildCard(p) {
     ? cats.slice(0,3).map(c=>`<span class="pi-card-cat">${esc(c)}</span>`).join('')
     : '';
 
+  // Tallas disponibles — mostrar hasta 5, luego "+N más"
+  const sizeTags = sizes.filter(s => s.size);
+  const MAX_SIZES_SHOW = 5;
+  const sizesHtml = sizeTags.length ? `
+    <div class="pi-card-sizes-wrap">
+      <div class="pi-card-sizes-label"><i class="fas fa-ruler"></i> Tallas disponibles</div>
+      <div class="pi-card-sizes-list">
+        ${sizeTags.slice(0, MAX_SIZES_SHOW).map(s => `<span class="pi-card-size-tag">${esc(s.size)}</span>`).join('')}
+        ${sizeTags.length > MAX_SIZES_SHOW ? `<span class="pi-card-size-more">+${sizeTags.length - MAX_SIZES_SHOW} más</span>` : ''}
+      </div>
+    </div>` : '';
+
   // Badge top left
   const badgeTop = isArrived
     ? `<div class="pi-arrived-badge">✅ ¡Ya llegó!</div>`
@@ -1360,6 +1396,7 @@ function buildCard(p) {
         <i class="fas fa-calendar-check"></i>
         Llega aprox. <strong>${dateStr}</strong>
       </div>
+      ${sizesHtml}
       ${priceHtml}
       ${progressHtml}
       ${cdOrArrived}
@@ -1688,10 +1725,10 @@ function piScoreProduct(p, parsed) {
 
   // Bonus género
   if (parsed.gender) {
-    const allText = [name, desc, ...cats].join(' ');
+    const allText = [name, desc, ...cats].join(' '); // ya normalizados con piNorm
     const gKws = parsed.gender === 'nino'
-      ? ['nino','varon','boy','chico','masculin']
-      : ['nina','girl','chica','nena','femenin'];
+      ? ['nino','varon','boy','chico','masculin','hombre']
+      : ['nina','girl','chica','nena','femenin','mujer'];
     if (gKws.some(kw => allText.includes(kw))) score += 25;
   }
 
@@ -1712,21 +1749,22 @@ function piSmartFilter(arr, raw) {
       const pCats  = (p.categories||[]).map(c => piNorm(c));
       return tallaSet.some(t =>
         pSizes.some(s => s.includes(t) || t.includes(s)) ||
-        pCats.some(c => c.includes(t))
+        pCats.some(c => c.includes(t) || t.includes(c))
       );
     });
-    // Si nada tiene esa talla exacta, fallback al array completo
+    // Fallback si ningún producto tiene esa talla exacta
     if (!base.length) base = arr;
   }
 
   // Filtro duro de género
   if (parsed.gender) {
     const gFiltered = base.filter(p => {
+      // Normalizar todo sin tildes para comparar con categorías como "nino","nina"
       const allText = [piNorm(p.name), piNorm(p.description||''), ...(p.categories||[]).map(c=>piNorm(c))].join(' ');
       const gKws = parsed.gender === 'nino'
-        ? ['nino','varon','boy','chico','masculin']
-        : ['nina','girl','chica','nena','femenin'];
-      return gKws.some(kw => allText.includes(kw));
+        ? ['nino','varon','boy','chico','masculin','hombre']
+        : ['nina','girl','chica','nena','femenin','mujer'];
+      return gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText) || allText.includes(kw));
     });
     if (gFiltered.length) base = gFiltered;
   }
