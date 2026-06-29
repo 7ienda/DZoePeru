@@ -4392,8 +4392,40 @@ async function promoteUpcomingAdmin(id) {
     created_at: new Date().toISOString()
   };
 
-  const { error: ie } = await supabaseClient.from('products').insert([productData]);
-  if (ie) { showAlert('Error: ' + ie.message, 'error'); return; }
+console.log('PRODUCT DATA ANTES DE GUARDAR:', productData);
+
+// Limpieza preventiva
+if (!productData.id || productData.id === '') {
+  delete productData.id;
+}
+
+productData.price = Number(productData.price || 0);
+productData.stock = Number(productData.stock || 0);
+
+productData.images = Array.isArray(productData.images)
+  ? productData.images
+  : [];
+
+productData.sizes = Array.isArray(productData.sizes)
+  ? productData.sizes
+  : [];
+
+productData.featured = !!productData.featured;
+productData.active = !!productData.active;
+
+// Insert real
+const { data, error: ie } = await supabaseClient
+  .from('products')
+  .insert([productData])
+  .select();
+
+console.log('RESULTADO INSERT:', data);
+console.error('ERROR INSERT:', ie);
+
+if (ie) {
+  showAlert('Error: ' + ie.message, 'error');
+  return;
+}
   const { error: de } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
   if (de) { showAlert('Error al limpiar upcoming: ' + de.message, 'error'); return; }
 
