@@ -4033,15 +4033,26 @@ async function saveProduct() {
   const stockChanged = !existingProduct || newTotal !== prevTotal;
   const now = new Date().toISOString();
 
-  const productData = {
+const productData = {
     id: editingProductId || crypto.randomUUID(),
     name, description: desc, images: validImages,
-    image: validImages[0]||'', featured: featuredValue, status: statusValue,
+    image: validImages[0]||'', featured: featuredValue, status: statusValue || 'active',
     categories: [...selectedCategories],
     sizes: finalSizes.map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock })),
     created_at: existingProduct?.created_at || now,
-    stock_updated_at: stockChanged ? now : (existingProduct?.stock_updated_at || existingProduct?.created_at || now)
+    updated_at: now,
+    stock_updated_at: stockChanged ? now : (existingProduct?.stock_updated_at || existingProduct?.created_at || now),
+    // Columnas NOT NULL requeridas por Supabase
+    is_new: existingProduct?.is_new ?? false,
+    on_sale: existingProduct?.on_sale ?? false,
+    price: finalSizes[0]?.price || 0,
+    stock: finalSizes.reduce((a,s) => a + (s.stock||0), 0),
+    slug: existingProduct?.slug || name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
+    offer_price: existingProduct?.offer_price ?? null,
+    offer_label: existingProduct?.offer_label ?? null,
+    ribbon: existingProduct?.ribbon ?? null,
   };
+  
   if (editingProductId) { const idx = products.findIndex(p=>p.id===editingProductId); if(idx!==-1) products[idx]=productData; }
   else products.unshift(productData);
   if (supabaseClient) { const {error} = await supabaseClient.from('products').upsert(productData,{onConflict:'id'}); if(error) { showAlert('Error al guardar','error'); return; } }
