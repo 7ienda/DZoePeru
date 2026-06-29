@@ -1469,6 +1469,23 @@
     "url": "/productos/cardigan-acero-elegante.html"
   },
   {
+    "id": 1780089511998,
+    "slug": "conjunto-tania-3-piezas",
+    "name": "Conjunto Tania 3 Piezas",
+    "price": 80,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEicbuEJ66TS1IgD86xH1Ek-9ia2F6AyRTcCwyxeckRXs6rbz9L3A6W404YJyMPbf-NO1ogn5FkIA8B30Kqz7GiNrzYCGsJ2Nmc-Vwpl50VUbpjLu17Kkp2fbMPdjo0XtcLK4EamP8jCX9MfZdSFP0llYzuQVuVs9SIdas43XZ-61baGCnyfRlWAojXWqzbE/s16000/cb2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Nina",
+      "Jeans",
+      "Blusas",
+      "Pantalones Jeans",
+      "Chalecos"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-tania-3-piezas.html"
+  },
+  {
     "id": 1780372012487,
     "slug": "conjunto-mono-de-flor-morado",
     "name": "Conjunto moño de flor morado",
@@ -1481,23 +1498,6 @@
     ],
     "inStock": false,
     "url": "/productos/conjunto-mono-de-flor-morado.html"
-  },
-  {
-    "id": 1780089511998,
-    "slug": "conjunto-tania-3-piezas",
-    "name": "Conjunto Tania 3 Piezas",
-    "price": 80,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjs85OVE4xi6Ux2_xuKmDsyvuk3Rit4bGiHDNEY9d17g9KJPeCRV332EtOl1Vqze3OuzrWt8W6yD7KXuBMdC3ZwGQjBKWXTNvpxeOKwIvSZ3L6ZD4cKRdqgIpyP6Ewdms5osMF6SVbblEV4bKEi_fvIryxwt7Ksd5UgLXSzIXaZahchMmpL3-BkmI2yYzMf/s16000/cb2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Nina",
-      "Jeans",
-      "Blusas",
-      "Pantalones Jeans",
-      "Chalecos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-tania-3-piezas.html"
   },
   {
     "id": 1782278385623,
@@ -1969,7 +1969,7 @@
     "slug": "sueter-canastita-chicle",
     "name": "Sueter Canastita chicle",
     "price": 40,
-    "image": "http://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc809HA5z5_A_x1Cb2SiEO_kfpv3KqnRinrvnxCtt-fimtlmNZX5fMqMNJngghHFr5hEGAhTzsejhSl9EGNbz-nlG_VC3kV0ANG1xLkHS9cgNaXpZFvMaQJyWTm_7GL9nIMSBZsULPRZ4r-MDg5bKqIwNZN4tvNFtlOX3_JzKYXQSBEyA1IIDdpNGC13V9/s16000/su4.png",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc809HA5z5_A_x1Cb2SiEO_kfpv3KqnRinrvnxCtt-fimtlmNZX5fMqMNJngghHFr5hEGAhTzsejhSl9EGNbz-nlG_VC3kV0ANG1xLkHS9cgNaXpZFvMaQJyWTm_7GL9nIMSBZsULPRZ4r-MDg5bKqIwNZN4tvNFtlOX3_JzKYXQSBEyA1IIDdpNGC13V9/s16000/su4.png",
     "categories": [
       "Sueters",
       "Nina"
