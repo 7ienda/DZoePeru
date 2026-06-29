@@ -247,6 +247,7 @@ img{display:block;max-width:100%;}
   position:sticky;top:64px;z-index:90;
   box-shadow:0 4px 18px rgba(163,133,210,0.10);
 }
+
 .pi-filters-inner{
   display:flex;align-items:center;gap:8px;
   padding:14px 0;
@@ -281,6 +282,89 @@ img{display:block;max-width:100%;}
   box-shadow:0 4px 16px rgba(179,157,200,0.45);transform:translateY(-1px);
 }
 .pi-chip i{font-size:11px;}
+
+/* ══════════════════════════════
+   BUSCADOR INTELIGENTE
+══════════════════════════════ */
+.pi-search-wrap{
+  background:var(--white);
+  border-bottom:1.5px solid var(--border);
+  padding:12px 0;
+  position:sticky;top:106px;z-index:88;
+  box-shadow:0 3px 14px rgba(163,133,210,0.08);
+}
+.pi-search-box{
+  position:relative;
+  display:flex;align-items:center;gap:0;
+  max-width:680px;margin:0 auto;
+  background:var(--rose-soft);
+  border:2px solid rgba(179,157,200,0.4);
+  border-radius:50px;
+  padding:7px 7px 7px 20px;
+  transition:border-color 0.22s,box-shadow 0.22s;
+}
+.pi-search-box:focus-within{
+  border-color:var(--rose);
+  box-shadow:0 0 0 4px rgba(179,157,200,0.18);
+  background:var(--white);
+}
+.pi-search-box i.pi-search-icon{
+  color:var(--rose-dark);font-size:15px;flex-shrink:0;margin-right:10px;
+}
+.pi-search-input{
+  flex:1;border:none;background:transparent;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;
+  color:var(--text);outline:none;min-width:0;
+}
+.pi-search-input::placeholder{color:var(--text-soft);}
+.pi-search-clear{
+  background:none;border:none;cursor:pointer;
+  color:var(--text-soft);font-size:13px;padding:4px 8px;
+  display:none;transition:color 0.18s;flex-shrink:0;
+}
+.pi-search-clear.visible{display:flex;align-items:center;}
+.pi-search-clear:hover{color:var(--rose-dark);}
+.pi-search-btn{
+  background:var(--rose);color:#fff;border:none;
+  border-radius:30px;padding:7px 20px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  cursor:pointer;transition:background 0.2s;flex-shrink:0;
+  display:flex;align-items:center;gap:6px;
+}
+.pi-search-btn:hover{background:var(--rose-dark);}
+/* Sugerencias dropdown */
+.pi-search-suggestions{
+  display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:rgba(255,255,255,0.98);backdrop-filter:blur(14px);
+  border:1.5px solid var(--border);border-radius:18px;
+  box-shadow:0 12px 36px rgba(140,100,190,0.18);
+  z-index:200;overflow:hidden;
+}
+.pi-search-suggestions.has-results{display:block;}
+.pss-header{
+  font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--text-soft);padding:10px 16px 6px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;
+}
+.pss-header i{color:var(--rose);}
+.pss-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;
+  transition:background 0.15s;
+}
+.pss-item:hover{background:var(--rose-soft);}
+.pss-item-icon{font-size:18px;flex-shrink:0;}
+.pss-item-text{flex:1;min-width:0;}
+.pss-item-text strong{display:block;font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pss-item-text span{font-size:11px;color:var(--text-soft);font-weight:600;}
+.pss-item-arrow{font-size:10px;color:var(--rose-light);}
+@media(max-width:640px){
+  .pi-search-wrap{top:64px;}
+  .pi-search-box{padding:6px 6px 6px 14px;border-radius:40px;}
+  .pi-search-btn span{display:none;}
+  .pi-search-btn{padding:7px 12px;}
+}
 
 /* ══════════════════════════════
    SECCIÓN PRINCIPAL + CONTEO
@@ -801,6 +885,33 @@ img{display:block;max-width:100%;}
   </div>
 </div>
 
+<!-- ══════════ BUSCADOR INTELIGENTE ══════════ -->
+<div class="pi-search-wrap" role="search" aria-label="Buscar próximos ingresos">
+  <div class="container">
+    <div class="pi-search-box" id="piSearchBox">
+      <i class="fas fa-search pi-search-icon" aria-hidden="true"></i>
+      <input
+        type="search"
+        class="pi-search-input"
+        id="piSearchInput"
+        placeholder="Buscar vestidos, abrigos, conjunto bebé…"
+        aria-label="Buscar próximos ingresos"
+        autocomplete="off"
+        oninput="piSmartSearchHandle(this.value)"
+        onkeydown="if(event.key==='Enter'){piSmartSearchGo();} if(event.key==='Escape'){piSmartSearchClear();}"
+      >
+      <button class="pi-search-clear" id="piSearchClear" onclick="piSmartSearchClear()" aria-label="Limpiar búsqueda">
+        <i class="fas fa-times"></i>
+      </button>
+      <button class="pi-search-btn" onclick="piSmartSearchGo()" aria-label="Buscar">
+        <i class="fas fa-search"></i>
+        <span>Buscar</span>
+      </button>
+      <div class="pi-search-suggestions" id="piSearchSuggestions"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ MAIN ══════════ -->
 <main class="pi-main" id="piMain">
   <div class="container">
@@ -864,10 +975,16 @@ img{display:block;max-width:100%;}
 
     <!-- Load More -->
     <div class="pi-load-more-wrap" id="piLoadMoreWrap" style="display:none;">
-      <button class="pi-load-more-btn" id="piLoadMoreBtn" aria-label="Cargar más productos">
-        <i class="fas fa-plus-circle"></i>
-        Ver más ingresos
-      </button>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;">
+        <button class="pi-load-more-btn" id="piLoadMoreBtn" aria-label="Cargar más productos">
+          <i class="fas fa-plus-circle"></i>
+          Ver más ingresos
+        </button>
+        <button class="pi-load-more-btn" id="piLoadAllBtn" onclick="loadAll()" aria-label="Ver todos los productos" style="background:var(--rose-soft);color:var(--rose-dark);border-color:var(--rose-light);border-style:solid;">
+          <i class="fas fa-th-large"></i>
+          Ver todo
+        </button>
+      </div>
       <div class="pi-load-progress" id="piLoadProgress"></div>
     </div>
   </div>
@@ -929,6 +1046,7 @@ let filteredProds  = [];   // después de filtros/sort
 let visibleCount   = PER_PAGE;
 let activeFilter   = 'all';
 let activeSort     = 'date';
+let activeSearch   = '';   // búsqueda activa
 let cdIntervals    = {};
 let favorites      = JSON.parse(localStorage.getItem('dzoe_pi_favs') || '[]');
 let notified       = JSON.parse(localStorage.getItem('dzoe_pi_notified') || '[]');
@@ -1046,7 +1164,17 @@ function applySort(arr) {
 }
 
 function applyFiltersAndRender() {
-  filteredProds = applySort(applyFilter(allProducts));
+  let base = applyFilter(allProducts);
+  // Aplicar búsqueda de texto
+  if (activeSearch.length >= 2) {
+    const q = activeSearch.toLowerCase();
+    base = base.filter(p =>
+      (p.name||'').toLowerCase().includes(q) ||
+      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
+      (p.description||'').toLowerCase().includes(q)
+    );
+  }
+  filteredProds = applySort(base);
   visibleCount  = PER_PAGE;
   renderGrid();
   updateCountBadge();
@@ -1055,7 +1183,10 @@ function applyFiltersAndRender() {
 
 function updateCountBadge() {
   const el = document.getElementById('piCountBadge');
-  if (el) el.textContent = filteredProds.length + ' producto' + (filteredProds.length!==1?'s':'');
+  if (!el) return;
+  const n = filteredProds.length;
+  const label = n + ' producto' + (n !== 1 ? 's' : '');
+  el.textContent = activeSearch.length >= 2 ? `🔍 ${label}` : label;
 }
 
 /* ── Render grid ── */
@@ -1069,10 +1200,14 @@ function renderGrid() {
 
   const toShow = filteredProds.slice(0, visibleCount);
   if (!toShow.length) {
+    const isSearching = activeSearch.length >= 2;
     grid.innerHTML = `<div class="pi-empty" style="grid-column:1/-1;">
-      <div class="pi-empty-emoji">✈️</div>
-      <div class="pi-empty-title">Sin productos en este filtro</div>
-      <div class="pi-empty-sub">Prueba otro filtro o vuelve pronto para ver nuevos ingresos.</div>
+      <div class="pi-empty-emoji">${isSearching ? '🔍' : '✈️'}</div>
+      <div class="pi-empty-title">${isSearching ? `Sin resultados para "${activeSearch}"` : 'Sin productos en este filtro'}</div>
+      <div class="pi-empty-sub">${isSearching
+        ? 'Intenta con otra palabra o <button onclick="piSmartSearchClear()" style="background:var(--rose);color:#fff;border:none;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:\'Nunito\',sans-serif;margin-left:4px;">limpiar búsqueda</button>'
+        : 'Prueba otro filtro o vuelve pronto para ver nuevos ingresos.'
+      }</div>
     </div>`;
     return;
   }
@@ -1260,6 +1395,7 @@ function tickCD(id, target) {
 function setupLoadMore() {
   const wrap = document.getElementById('piLoadMoreWrap');
   const btn  = document.getElementById('piLoadMoreBtn');
+  const allBtn = document.getElementById('piLoadAllBtn');
   const prog = document.getElementById('piLoadProgress');
   if (!wrap||!btn||!prog) return;
 
@@ -1271,6 +1407,9 @@ function setupLoadMore() {
   const remaining = filteredProds.length - visibleCount;
   prog.textContent = `Mostrando ${Math.min(visibleCount,filteredProds.length)} de ${filteredProds.length}`;
   btn.innerHTML = `<i class="fas fa-plus-circle"></i> Ver ${Math.min(PER_PAGE,remaining)} más`;
+  if (allBtn) {
+    allBtn.style.display = filteredProds.length - visibleCount > PER_PAGE ? 'inline-flex' : 'none';
+  }
 }
 
 function loadMore() {
@@ -1362,6 +1501,111 @@ window.submitNotify = function() {
   showToast('✅ ¡Redirigiendo a WhatsApp!');
 };
 
+/* ── Ver Todo ── */
+function loadAll() {
+  const btn = document.getElementById('piLoadAllBtn');
+  if (btn) { btn.classList.add('loading'); btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Cargando…`; }
+  setTimeout(() => {
+    visibleCount = filteredProds.length;
+    renderGrid();
+    setupLoadMore();
+    if (btn) { btn.classList.remove('loading'); btn.innerHTML = `<i class="fas fa-th-large"></i> Ver todo`; }
+  }, 400);
+}
+
+/* ── Buscador Inteligente ── */
+const PI_QUICK_SUGGESTIONS = [
+  { text: 'Vestidos niña', icon: '👗' },
+  { text: 'Conjunto bebé', icon: '👶' },
+  { text: 'Abrigo invierno', icon: '🧥' },
+  { text: 'Pijama niño', icon: '😴' },
+  { text: 'Set recién nacido', icon: '🍼' },
+  { text: 'Falda niña', icon: '👒' },
+  { text: 'Pantalón niño', icon: '👦' },
+  { text: 'Ropa bebé 0-3 meses', icon: '🌸' },
+];
+
+function piSmartSearchHandle(val) {
+  const sug = document.getElementById('piSearchSuggestions');
+  const clearBtn = document.getElementById('piSearchClear');
+  if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
+
+  activeSearch = val;
+  applyFiltersAndRender();
+
+  if (!val || val.length < 2) {
+    sug.innerHTML = ''; sug.classList.remove('has-results'); return;
+  }
+
+  const q = val.toLowerCase();
+
+  // Sugerencias desde productos reales
+  const prodMatches = allProducts
+    .filter(p =>
+      (p.name||'').toLowerCase().includes(q) ||
+      (p.categories||[]).some(c => c.toLowerCase().includes(q))
+    )
+    .slice(0, 4)
+    .map(p => ({
+      text: p.name,
+      sub: (p.categories||[])[0] || 'Próximo ingreso',
+      icon: '✈️'
+    }));
+
+  // Sugerencias estáticas de relleno
+  const staticMatches = PI_QUICK_SUGGESTIONS
+    .filter(s => s.text.toLowerCase().includes(q))
+    .slice(0, 3 - Math.min(prodMatches.length, 3));
+
+  const matches = [...prodMatches, ...staticMatches].slice(0, 5);
+
+  if (!matches.length) { sug.innerHTML = ''; sug.classList.remove('has-results'); return; }
+
+  sug.innerHTML =
+    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias</div>` +
+    matches.map(m =>
+      `<div class="pss-item" onclick="piSelectSuggestion('${m.text.replace(/'/g,"\\'")}')">
+        <div class="pss-item-icon">${m.icon}</div>
+        <div class="pss-item-text">
+          <strong>${m.text}</strong>
+          <span>${m.sub}</span>
+        </div>
+        <i class="fas fa-arrow-right pss-item-arrow"></i>
+      </div>`
+    ).join('');
+  sug.classList.add('has-results');
+}
+
+function piSelectSuggestion(val) {
+  document.getElementById('piSearchInput').value = val;
+  const clearBtn = document.getElementById('piSearchClear');
+  if (clearBtn) clearBtn.classList.add('visible');
+  const sug = document.getElementById('piSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  activeSearch = val;
+  applyFiltersAndRender();
+  document.getElementById('piMain')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function piSmartSearchGo() {
+  const val = document.getElementById('piSearchInput').value;
+  const sug = document.getElementById('piSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  activeSearch = val;
+  applyFiltersAndRender();
+  document.getElementById('piMain')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function piSmartSearchClear() {
+  document.getElementById('piSearchInput').value = '';
+  const clearBtn = document.getElementById('piSearchClear');
+  if (clearBtn) clearBtn.classList.remove('visible');
+  const sug = document.getElementById('piSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  activeSearch = '';
+  applyFiltersAndRender();
+}
+
 /* ── Listeners ── */
 document.addEventListener('DOMContentLoaded', () => {
   // Chips de filtro
@@ -1370,6 +1614,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.pi-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.dataset.filter || 'all';
+      // Limpiar búsqueda al cambiar filtro
+      if (activeSearch) {
+        activeSearch = '';
+        const inp = document.getElementById('piSearchInput');
+        if (inp) inp.value = '';
+        const clr = document.getElementById('piSearchClear');
+        if (clr) clr.classList.remove('visible');
+      }
       applyFiltersAndRender();
     });
   });
@@ -1387,9 +1639,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const lmBtn = document.getElementById('piLoadMoreBtn');
   if (lmBtn) lmBtn.addEventListener('click', loadMore);
 
+  // Cerrar sugerencias al hacer clic fuera
+  document.addEventListener('click', e => {
+    const box = document.getElementById('piSearchBox');
+    if (box && !box.contains(e.target)) {
+      const sug = document.getElementById('piSearchSuggestions');
+      if (sug) { sug.innerHTML = ''; sug.classList.remove('has-results'); }
+    }
+  });
+
   // Iniciar carga
   loadData();
 });
+
+/* ── Exponer funciones al scope global (llamadas desde HTML) ── */
+window.piSmartSearchHandle = piSmartSearchHandle;
+window.piSmartSearchGo     = piSmartSearchGo;
+window.piSmartSearchClear  = piSmartSearchClear;
+window.piSelectSuggestion  = piSelectSuggestion;
+window.loadAll             = loadAll;
 
 })();
 </script>
