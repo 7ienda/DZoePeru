@@ -492,6 +492,30 @@ img{display:block;max-width:100%;}
   box-shadow:0 4px 14px rgba(76,175,114,0.45);
 }
 
+/* ── Camino a tienda badge ── */
+.pi-badge-truck{
+  position:absolute;top:12px;left:12px;z-index:10;
+  display:flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#F0B840,#e8962a);
+  color:#fff;border-radius:30px;padding:5px 12px;
+  font-size:10.5px;font-weight:800;
+  box-shadow:0 4px 14px rgba(240,184,64,0.5);
+  animation:truckBounce 2s ease-in-out infinite;
+}
+@keyframes truckBounce{
+  0%,100%{transform:translateX(0px);}
+  25%{transform:translateX(-3px);}
+  75%{transform:translateX(3px);}
+}
+
+/* ── Arrived msg truck variant ── */
+.pi-truck-msg{
+  display:flex;align-items:center;gap:7px;padding:9px 12px;
+  background:linear-gradient(135deg,rgba(240,184,64,0.12),rgba(232,150,42,0.08));
+  border:1.5px solid rgba(240,184,64,0.4);border-radius:10px;
+  font-size:12.5px;font-weight:700;color:var(--text);
+}
+
 /* ── Overlay hover glow ── */
 .pi-card-img-glow{
   position:absolute;inset:0;
@@ -905,6 +929,7 @@ img{display:block;max-width:100%;}
   <div class="container pi-filters-inner">
     <span class="pi-filter-label"><i class="fas fa-sliders-h"></i>Filtrar</span>
     <button class="pi-chip active" data-filter="all">🌟 Todos</button>
+    <button class="pi-chip" data-filter="camino-tienda">🛻 Camino a tienda</button>
     <button class="pi-chip" data-filter="esta-semana">📅 Esta semana</button>
     <button class="pi-chip" data-filter="este-mes">🗓️ Este mes</button>
     <button class="pi-chip" data-filter="con-reserva">🔥 Con reserva</button>
@@ -1173,6 +1198,7 @@ function filterByMes(arr) {
 }
 function applyFilter(arr) {
   switch(activeFilter) {
+    case 'camino-tienda': return arr.filter(p => (p.status||'').toLowerCase() === 'camino_tienda');
     case 'esta-semana': return filterBySemana(arr);
     case 'este-mes':    return filterByMes(arr);
     case 'con-reserva': return arr.filter(p => (p.reservas_count||0) > 0);
@@ -1318,13 +1344,22 @@ function buildCard(p) {
       </div>
     </div>` : '';
 
+  // ── Estado del producto ──
+  // Prioridad: p.status explícito > lógica por fecha
+  // Valores posibles en Supabase: 'en_camino' | 'camino_tienda' | 'arrived'
+  const statusExplicit = (p.status || '').toLowerCase();
+  const isCaminoTienda = statusExplicit === 'camino_tienda';
+  const isArrived      = statusExplicit === 'arrived' || (!isCaminoTienda && Date.now() >= target);
+
   // Badge top left
   const badgeTop = isArrived
     ? `<div class="pi-arrived-badge">✅ ¡Ya llegó!</div>`
-    : `<div class="pi-badge-flight">✈️ En camino</div>`;
+    : isCaminoTienda
+      ? `<div class="pi-badge-truck">🛻 Camino a tienda</div>`
+      : `<div class="pi-badge-flight">✈️ En camino</div>`;
 
-  // Badge días (top right)
-  const badgeDays = isArrived ? '' : daysLeft > 0
+  // Badge días (top right) — solo cuando está en vuelo y faltan días
+  const badgeDays = (isArrived || isCaminoTienda) ? '' : daysLeft > 0
     ? `<div class="pi-badge-days"><span class="days-num">${daysLeft}</span>días</div>`
     : '';
 
@@ -1348,27 +1383,35 @@ function buildCard(p) {
       </div>
     </div>` : '';
 
-  // Countdown o arrived
+  // Countdown / estado central
   const cdOrArrived = isArrived
     ? `<div class="pi-arrived-msg">🎉 ¡Ya llegó! Pronto en el catálogo.</div>
        <button class="pi-btn-promote" onclick="promoteProduct('${p.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar a tienda</button>`
-    : `<div class="pi-countdown" id="picd-${p.id}">
-         <span class="pi-cd-label">Llega en</span>
-         <div class="pi-cd-block"><span class="pi-cd-num" id="picd-d-${p.id}">--</span><span class="pi-cd-unit">días</span></div>
-         <span class="pi-cd-sep">:</span>
-         <div class="pi-cd-block"><span class="pi-cd-num" id="picd-h-${p.id}">--</span><span class="pi-cd-unit">hrs</span></div>
-         <span class="pi-cd-sep">:</span>
-         <div class="pi-cd-block"><span class="pi-cd-num" id="picd-m-${p.id}">--</span><span class="pi-cd-unit">min</span></div>
-       </div>`;
+    : isCaminoTienda
+      ? `<div class="pi-truck-msg">🛻 ¡Ya está en camino hacia la tienda! Llega muy pronto.</div>`
+      : `<div class="pi-countdown" id="picd-${p.id}">
+           <span class="pi-cd-label">Llega en</span>
+           <div class="pi-cd-block"><span class="pi-cd-num" id="picd-d-${p.id}">--</span><span class="pi-cd-unit">días</span></div>
+           <span class="pi-cd-sep">:</span>
+           <div class="pi-cd-block"><span class="pi-cd-num" id="picd-h-${p.id}">--</span><span class="pi-cd-unit">hrs</span></div>
+           <span class="pi-cd-sep">:</span>
+           <div class="pi-cd-block"><span class="pi-cd-num" id="picd-m-${p.id}">--</span><span class="pi-cd-unit">min</span></div>
+         </div>
+         <button class="pi-btn-promote" onclick="setCaminoTienda('${p.id}')" style="background:linear-gradient(135deg,#F0B840,#e8962a);margin-top:4px;">
+           <i class="fas fa-truck"></i> Marcar camino a tienda
+         </button>`;
 
-  // WA msg
-  const waMsg = encodeURIComponent(`Hola D'Zoe Perú 💜, me interesa reservar: *${p.name}*. Fecha estimada: ${dateStr}. ¿Cómo reservo?`);
+  // WA msg — adaptado por estado
+  const waMsgText = isCaminoTienda
+    ? `Hola D'Zoe Perú 💜, vi que *${p.name}* ya está camino a la tienda. ¿Puedo reservarlo?`
+    : `Hola D'Zoe Perú 💜, me interesa reservar: *${p.name}*. Fecha estimada: ${dateStr}. ¿Cómo reservo?`;
+  const waMsg = encodeURIComponent(waMsgText);
   const waUrl = `https://wa.me/${WA_NUM}?text=${waMsg}`;
 
-  // Botones solo si no arrived
+  // Botones — disponibles en camino_tienda también (sin countdown)
   const actionBtns = isArrived ? '' : `
     <a href="${waUrl}" target="_blank" rel="noopener" class="pi-btn-reservar">
-      <i class="fab fa-whatsapp"></i> Reservar ahora
+      <i class="fab fa-whatsapp"></i> ${isCaminoTienda ? '¡Reservar ya!' : 'Reservar ahora'}
     </a>
     <div class="pi-card-row-btns">
       <button class="pi-btn-fav ${isFav?'active':''}" id="fav-${p.id}" onclick="toggleFav('${p.id}',this)" aria-label="Agregar a favoritos" aria-pressed="${isFav}">
@@ -1414,8 +1457,8 @@ function tickCD(id, target) {
     clearInterval(cdIntervals[id]);
     const cdEl = document.getElementById(`picd-${id}`);
     if (cdEl) cdEl.outerHTML = `<div class="pi-arrived-msg">🎉 ¡Ya llegó!</div>`;
-    const badgeSoon = document.querySelector(`#pi-card-${id} .pi-badge-flight`);
-    if (badgeSoon) { badgeSoon.className='pi-arrived-badge'; badgeSoon.textContent='✅ ¡Ya llegó!'; }
+    const badgeEl = document.querySelector(`#pi-card-${id} .pi-badge-flight`);
+    if (badgeEl) { badgeEl.className='pi-arrived-badge'; badgeEl.textContent='✅ ¡Ya llegó!'; }
     return;
   }
   const d = Math.floor(diff/86400000);
@@ -1506,6 +1549,18 @@ function toggleNotify(id, btn, name) {
   }
   localStorage.setItem('dzoe_pi_notified', JSON.stringify(notified));
 }
+
+/* ── Marcar como "Camino a tienda" ── */
+window.setCaminoTienda = async function(id) {
+  if (!confirm('¿Marcar este producto como "Camino a tienda"?')) return;
+  if (!sb) { alert('Sin conexión Supabase'); return; }
+  const { error } = await sb.from('upcoming_products').update({ status: 'camino_tienda' }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  const p = allProducts.find(u => String(u.id) === String(id));
+  if (p) p.status = 'camino_tienda';
+  applyFiltersAndRender();
+  showToast('🛻 Producto marcado como Camino a tienda');
+};
 
 /* ── Promover producto ── */
 window.promoteProduct = async function(id) {
@@ -1970,6 +2025,7 @@ window.piSmartSearchGo     = piSmartSearchGo;
 window.piSmartSearchClear  = piSmartSearchClear;
 window.piSelectSuggestion  = piSelectSuggestion;
 window.loadAll             = loadAll;
+window.setCaminoTienda     = setCaminoTienda;
 
 })();
 </script>
