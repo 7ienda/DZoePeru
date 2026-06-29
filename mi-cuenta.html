@@ -4021,87 +4021,79 @@ function exportSalesCSV() {
 async function saveProduct() {
   const name = document.getElementById('product-name').value.trim();
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
+
   const desc = document.getElementById('product-description').value.trim();
   syncProductImagesFromDOM();
   const validImages = productImages.filter(img => img && img.trim() !== '');
-  const finalSizes = productSizes.filter(s => s.size && (s.price>0||s.stock>0));
-  const existingProduct = editingProductId ? products.find(p=>p.id===editingProductId) : null;
+  const finalSizes = productSizes
+    .filter(s => s.size && s.size.trim() !== '')
+    .map(s => ({
+      size: s.size.trim(),
+      price: Number(s.price) || 0,
+      cost: Number(s.cost) || 0,
+      stock: Number(s.stock) || 0
+    }));
 
-  // Detect stock change: any size with stock > 0 where previously was 0, or total stock increased
-  const prevTotal = (existingProduct?.sizes||[]).reduce((a,s)=>a+(s.stock||0),0);
-  const newTotal  = finalSizes.reduce((a,s)=>a+(s.stock||0),0);
-  const stockChanged = !existingProduct || newTotal !== prevTotal;
+  const existingProduct = editingProductId ? products.find(p => p.id === editingProductId) : null;
+  const productId = editingProductId || Number(Date.now());
+
+  // 📌 FECHA EN EL FORMATO CORRECTO PARA timestamptz
   const now = new Date().toISOString();
 
-const productData = {
-    id: editingProductId || crypto.randomUUID(),
-    name, description: desc, images: validImages,
-    image: validImages[0]||'', featured: featuredValue, status: statusValue || 'active',
-    categories: [...selectedCategories],
-    sizes: finalSizes.map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock })),
+  // 🔽 CONSTRUYE EL OBJETO CON TODOS LOS CAMPOS
+  const productData = {
+    id: productId,
+    name: name,
+    description: desc || '',
+    images: validImages,
+    image: validImages[0] || '',
+    featured: Boolean(featuredValue),
+    status: statusValue || 'active',
+    categories: selectedCategories.length ? selectedCategories : [],
+    sizes: finalSizes,
     created_at: existingProduct?.created_at || now,
-    updated_at: now,
-    stock_updated_at: stockChanged ? now : (existingProduct?.stock_updated_at || existingProduct?.created_at || now),
-    // Columnas NOT NULL requeridas por Supabase
-    is_new: existingProduct?.is_new ?? false,
-    on_sale: existingProduct?.on_sale ?? false,
-    price: finalSizes[0]?.price || 0,
-    stock: finalSizes.reduce((a,s) => a + (s.stock||0), 0),
-    slug: existingProduct?.slug || name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
-    offer_price: existingProduct?.offer_price ?? null,
-    offer_label: existingProduct?.offer_label ?? null,
-    ribbon: existingProduct?.ribbon ?? null,
+    stock_updated_at: now  // Siempre se actualiza al guardar
   };
-  
-  if (editingProductId) { const idx = products.findIndex(p=>p.id===editingProductId); if(idx!==-1) products[idx]=productData; }
-  else products.unshift(productData);
-  if (supabaseClient) { const {error} = await supabaseClient.from('products').upsert(productData,{onConflict:'id'}); if(error) { showAlert('Error al guardar','error'); return; } }
-  await loadAllData(); clearForm();
-  showAlert(editingProductId?'Producto actualizado':'Producto agregado');
+
+  // ⚠️ SI ALGÚN CAMPO NO EXISTE EN TU TABLA, ELIMÍNALO AQUÍ:
+  // 👇 Ejemplo: si no tienes 'featured', descomenta esta línea:
+  // delete productData.featured;
+
+  console.log('📤 Enviando a Supabase:', JSON.stringify(productData, null, 2));
+
+  // ACTUALIZAR MEMORIA LOCAL
+  if (editingProductId) {
+    const idx = products.findIndex(p => p.id === editingProductId);
+    if (idx !== -1) products[idx] = productData;
+  } else {
+    products.unshift(productData);
+  }
+
+  // GUARDAR EN SUPABASE
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('products')
+        .upsert(productData, { onConflict: 'id' });
+
+      if (error) {
+        console.error('❌ Error detallado:', error);
+        showAlert('Error al guardar: ' + error.message, 'error');
+        return;
+      }
+      console.log('✅ Producto guardado en Supabase');
+    } catch (err) {
+      console.error('❌ Excepción:', err);
+      showAlert('Error inesperado: ' + err.message, 'error');
+      return;
+    }
+  }
+
+  // RECARGAR Y LIMPIAR
+  await loadAllData();
+  clearForm();
+  showAlert(editingProductId ? 'Producto actualizado ✅' : 'Producto agregado ✅');
   goToSection('inventory-section');
-}
-
-async function deleteProduct(id) {
-  if (!confirm('¿Eliminar este producto?')) return;
-  if (supabaseClient) { const {error} = await supabaseClient.from('products').delete().eq('id',id); if(error){showAlert('Error','error');return;} }
-  products = products.filter(p=>p.id!==id); filterInventory(); updateStats(); showAlert('Producto eliminado');
-}
-
-function editProduct(id) {
-  const p = products.find(p=>p.id===id); if(!p) return;
-  editingProductId = id;
-  document.getElementById('product-name').value = p.name||'';
-  document.getElementById('product-description').value = p.description||'';
-  featuredValue = p.featured||false;
-  statusValue = p.status||'active';
-  document.getElementById('featured-toggle').className = 'toggle-group'+(featuredValue?' on':'');
-  document.querySelectorAll('.status-pill').forEach(el => el.classList.toggle('selected', el.dataset.status===statusValue));
-  selectedCategories = [...(p.categories||[])];
-  renderSelectedCategories();
-  productSizes = [...(p.sizes||[])];
-  document.getElementById('image-urls-container').innerHTML = '';
-  (p.images||[]).forEach(url => addImageInput(url));
-  if (!(p.images||[]).length) addImageInput();
-  renderPreviewImages();
-  renderSizesList();
-  document.getElementById('form-section-title').textContent = 'Editar producto';
-  document.getElementById('save-btn-text').textContent = 'Actualizar producto';
-  goToSection('add-product-section');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function clearForm() {
-  editingProductId = null; productImages = []; productSizes = []; selectedCategories = []; featuredValue = false; statusValue = 'active';
-  ['product-name','product-description'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('featured-toggle').className='toggle-group';
-  document.querySelectorAll('.status-pill').forEach(el=>el.classList.toggle('selected',el.dataset.status==='active'));
-  document.getElementById('selected-categories').innerHTML='';
-  document.getElementById('image-urls-container').innerHTML='';
-  document.getElementById('preview-images').innerHTML='';
-  document.getElementById('sizes-container').innerHTML='<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar talla"</div>';
-  document.getElementById('form-section-title').textContent='Agregar producto';
-  document.getElementById('save-btn-text').textContent='Guardar producto';
-  addImageInput();
 }
 
 // ============================================
@@ -4392,40 +4384,8 @@ async function promoteUpcomingAdmin(id) {
     created_at: new Date().toISOString()
   };
 
-console.log('PRODUCT DATA ANTES DE GUARDAR:', productData);
-
-// Limpieza preventiva
-if (!productData.id || productData.id === '') {
-  delete productData.id;
-}
-
-productData.price = Number(productData.price || 0);
-productData.stock = Number(productData.stock || 0);
-
-productData.images = Array.isArray(productData.images)
-  ? productData.images
-  : [];
-
-productData.sizes = Array.isArray(productData.sizes)
-  ? productData.sizes
-  : [];
-
-productData.featured = !!productData.featured;
-productData.active = !!productData.active;
-
-// Insert real
-const { data, error: ie } = await supabaseClient
-  .from('products')
-  .insert([productData])
-  .select();
-
-console.log('RESULTADO INSERT:', data);
-console.error('ERROR INSERT:', ie);
-
-if (ie) {
-  showAlert('Error: ' + ie.message, 'error');
-  return;
-}
+  const { error: ie } = await supabaseClient.from('products').insert([productData]);
+  if (ie) { showAlert('Error: ' + ie.message, 'error'); return; }
   const { error: de } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
   if (de) { showAlert('Error al limpiar upcoming: ' + de.message, 'error'); return; }
 
