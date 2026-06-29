@@ -12286,6 +12286,90 @@ document.getElementById('hdLightbox').addEventListener('touchend', e => {
 
 })();
 </script>
-
+<script>
+// ============================================================
+//  BLOQUEADOR DE RECURSOS GOOGLE ADS
+// ============================================================
+(function() {
+  // Lista de URLs a bloquear completamente
+  const BLOCKED_PATTERNS = [
+    'google.com/ads',
+    'googleadservices',
+    'doubleclick.net',
+    'googletagmanager',
+    'google-analytics',
+    'gtag/js',
+    'analytics.js'
+  ];
+  
+  function isBlocked(url) {
+    if (!url) return false;
+    return BLOCKED_PATTERNS.some(pattern => url.includes(pattern));
+  }
+  
+  // Bloquear imágenes
+  const imgProto = Object.getPrototypeOf(Image.prototype);
+  const origImgSrc = Object.getOwnPropertyDescriptor(imgProto, 'src');
+  if (origImgSrc) {
+    Object.defineProperty(Image.prototype, 'src', {
+      set: function(value) {
+        if (isBlocked(value)) {
+          // Silenciosamente no hacer nada
+          return;
+        }
+        origImgSrc.set.call(this, value);
+      },
+      get: function() {
+        return origImgSrc.get.call(this);
+      },
+      configurable: true
+    });
+  }
+  
+  // Bloquear scripts
+  const scriptProto = Object.getPrototypeOf(HTMLScriptElement.prototype);
+  const origScriptSrc = Object.getOwnPropertyDescriptor(scriptProto, 'src');
+  if (origScriptSrc) {
+    Object.defineProperty(HTMLScriptElement.prototype, 'src', {
+      set: function(value) {
+        if (isBlocked(value)) {
+          // Silenciosamente no hacer nada
+          return;
+        }
+        origScriptSrc.set.call(this, value);
+      },
+      get: function() {
+        return origScriptSrc.get.call(this);
+      },
+      configurable: true
+    });
+  }
+  
+  // Interceptar fetch
+  const origFetch = window.fetch;
+  window.fetch = function(input, init) {
+    const url = typeof input === 'string' ? input : input?.url;
+    if (isBlocked(url)) {
+      return Promise.resolve(new Response(null, { status: 200 }));
+    }
+    return origFetch.call(this, input, init);
+  };
+  
+  // Silenciar errores de consola para estas URLs
+  const origError = console.error;
+  console.error = function() {
+    const args = Array.from(arguments);
+    const msg = args.join(' ');
+    if (msg.includes('ERR_BLOCKED_BY_CLIENT') || 
+        msg.includes('Failed to load resource') ||
+        BLOCKED_PATTERNS.some(p => msg.includes(p))) {
+      return;
+    }
+    return origError.apply(console, arguments);
+  };
+  
+  console.log('✅ D\'Zoe: Bloqueador de Google Ads activo');
+})();
+</script>
 </body>
 </html>
