@@ -685,6 +685,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <button class="menu-btn active" data-section="dashboard-section"><i class="fas fa-chart-pie"></i><span>Dashboard</span></button>
     <span class="menu-label">Tienda</span>
     <button class="menu-btn" data-section="inventory-section"><i class="fas fa-boxes-stacked"></i><span>Inventario</span><span class="badge" id="badge-products">0</span></button>
+    <button class="menu-btn" data-section="almacen-section" onclick="goToSection('almacen-section');loadAlmacenList();"><i class="fas fa-warehouse" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Almacén</span><span class="badge" id="badge-almacen" style="background:rgba(124,58,237,.3);">0</span></button>
     <button class="menu-btn" data-section="sold-products-section"><i class="fas fa-bag-shopping"></i><span>Productos Vendidos</span><span class="badge" id="badge-sold-products">0</span></button>
     <button class="menu-btn" data-section="categories-section"><i class="fas fa-tags"></i><span>Categorías</span><span class="badge" id="badge-categories">0</span></button>
     <button class="menu-btn" data-section="sales-section"><i class="fas fa-receipt"></i><span>Ventas</span><span class="badge" id="badge-orders">0</span></button>
@@ -1050,6 +1051,24 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       </div>
     </div>
 
+    </div>
+
+    <!-- ====== ALMACÉN (Próximos Ingresos) ====== -->
+    <div id="almacen-section" class="page-section" style="display:none;">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-warehouse" style="color:#7c3aed"></i> Almacén — Próximos Ingresos</div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="btn btn-ghost btn-sm" onclick="loadAlmacenList()"><i class="fas fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary btn-sm" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);"><i class="fas fa-plus"></i> Agregar próximo ingreso</button>
+          </div>
+        </div>
+        <div class="section-body">
+          <div id="upcoming-list-container" style="display:grid;gap:10px;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ====== AGREGAR / EDITAR PRODUCTO ====== -->
     <div id="add-product-section" class="page-section" style="display:none;">
 
@@ -1094,7 +1113,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
               <div style="display:flex;flex-direction:column;gap:14px;">
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="featured-toggle" onclick="toggleFeatured()"><div class="toggle"></div><span>Destacar producto</span></div></div>
                 <div class="form-group"><label>Estado</label><div class="status-pills"><div class="status-pill active-pill selected" data-status="active">Activo</div><div class="status-pill inactive-pill" data-status="inactive">Inactivo</div></div></div>
-                <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
+                <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="category-search" placeholder="Buscar categoría..." oninput="filterCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
               </div>
             </div>
             <div class="form-divider">Tallas — Precio, Costo y Stock</div>
@@ -1146,7 +1165,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                   <input type="hidden" id="upcoming-date">
                 </div>
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="upcoming-featured-toggle" onclick="toggleUpcomingFeatured()"><div class="toggle"></div><span>Destacar en próximos</span></div></div>
-                <div class="form-group"><label>Categorías</label><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
+                <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="upcoming-category-search" placeholder="Buscar categoría..." oninput="filterUpcomingCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
               </div>
             </div>
 
@@ -1166,16 +1185,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           </div>
         </div>
 
-        <!-- Lista de próximos ingresos existentes -->
-        <div class="section" style="margin-top:20px;">
-          <div class="section-header">
-            <div class="section-title"><i class="fas fa-list" style="color:#7c3aed"></i> Próximos Ingresos guardados</div>
-            <button class="btn btn-ghost btn-sm" onclick="loadUpcomingList()"><i class="fas fa-rotate"></i> Actualizar</button>
-          </div>
-          <div class="section-body">
-            <div id="upcoming-list-container" style="display:grid;gap:10px;"></div>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -4447,54 +4456,21 @@ async function saveUpcomingProduct() {
 
   showAlert(editingUpcomingId ? 'Próximo Ingreso actualizado ✅' : 'Próximo Ingreso guardado ✅');
   clearUpcomingForm();
-  loadUpcomingList();
+  loadAlmacenList();
+  goToSection('almacen-section');
 }
 
 async function loadUpcomingList() {
-  const container = document.getElementById('upcoming-list-container');
-  if (!container) return;
-  container.innerHTML = '<div style="color:var(--muted);padding:12px;">Cargando...</div>';
-
-  if (!supabaseClient) { container.innerHTML = '<div style="color:var(--muted);">Sin conexión</div>'; return; }
-
-  const { data, error } = await supabaseClient
-    .from('upcoming_products')
-    .select('*')
-    .order('estimated_date', { ascending: true });
-
-  if (error || !data?.length) {
-    container.innerHTML = '<div style="color:var(--muted);padding:16px;text-align:center;">No hay próximos ingresos guardados.</div>';
-    return;
-  }
-
-  container.innerHTML = data.map(up => {
-    const date = new Date(up.estimated_date);
-    const dateStr = date.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-    const isArrived = Date.now() >= date.getTime();
-    const statusBadge = isArrived
-      ? `<span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">✅ Ya llegó</span>`
-      : `<span style="background:#ede9fe;color:#7c3aed;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">⏳ Próximamente</span>`;
-    const img = (up.images||[])[0] || up.image || '';
-    return `<div style="display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 16px;">
-      ${img ? `<img src="${img}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : '<div style="width:56px;height:56px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">📦</div>'}
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:800;font-size:14px;color:var(--text);">${up.name}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;"><i class="fas fa-calendar" style="color:#7c3aed;"></i> ${dateStr}</div>
-        ${statusBadge}
-      </div>
-      <div style="display:flex;gap:8px;flex-shrink:0;">
-        ${isArrived ? `<button class="btn btn-primary btn-sm" style="background:#16a34a;border-color:#16a34a;" onclick="promoteUpcomingAdmin('${up.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar</button>` : ''}
-        <button class="btn btn-ghost btn-sm" onclick="editUpcoming('${up.id}')"><i class="fas fa-pen"></i></button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteUpcoming('${up.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`;
-  }).join('');
+  return loadAlmacenList();
 }
 
 async function editUpcoming(id) {
   if (!supabaseClient) return;
   const { data } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
   if (!data) return;
+
+  goToSection('add-product-section');
+  switchAddTab('upcoming');
 
   editingUpcomingId = id;
   document.getElementById('upcoming-name').value = data.name || '';
@@ -4518,7 +4494,7 @@ async function editUpcoming(id) {
   (data.sizes || []).forEach(sz => addUpcomingSizeRow(sz));
   document.getElementById('upcoming-form-title').textContent = 'Editar Próximo Ingreso';
   document.getElementById('upcoming-save-btn-text').textContent = 'Actualizar';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 120);
 }
 
 async function deleteUpcoming(id) {
@@ -4830,6 +4806,59 @@ function renderCategorySelect() {
   sel.innerHTML = categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
   const invFilter = document.getElementById('inventory-cat-filter');
   if (invFilter) invFilter.innerHTML = `<option value="">Todas las categorías</option>` + categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+}
+
+function filterCategorySelect() {
+  const q = (document.getElementById('category-search')?.value || '').toLowerCase();
+  const sel = document.getElementById('category-select'); if (!sel) return;
+  const filtered = categories.filter(c => c.name.toLowerCase().includes(q));
+  sel.innerHTML = filtered.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+}
+
+function filterUpcomingCategorySelect() {
+  const q = (document.getElementById('upcoming-category-search')?.value || '').toLowerCase();
+  const sel = document.getElementById('upcoming-category-select'); if (!sel) return;
+  const filtered = (categories||[]).filter(c => (c.name||c).toLowerCase().includes(q));
+  sel.innerHTML = filtered.map(c=>`<option value="${c.name||c}">${c.emoji||''} ${c.name||c}</option>`).join('');
+}
+
+async function loadAlmacenList() {
+  const container = document.getElementById('upcoming-list-container');
+  if (!container) return;
+  container.innerHTML = '<div style="color:var(--muted);padding:12px;">Cargando...</div>';
+  if (!supabaseClient) { container.innerHTML = '<div style="color:var(--muted);">Sin conexión</div>'; return; }
+  const { data, error } = await supabaseClient
+    .from('upcoming_products')
+    .select('*')
+    .order('estimated_date', { ascending: true });
+  const badge = document.getElementById('badge-almacen');
+  if (badge) badge.textContent = data?.length || 0;
+  if (error || !data?.length) {
+    container.innerHTML = '<div style="color:var(--muted);padding:16px;text-align:center;">No hay próximos ingresos guardados.</div>';
+    return;
+  }
+  container.innerHTML = data.map(up => {
+    const date = new Date(up.estimated_date);
+    const dateStr = date.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' });
+    const isArrived = Date.now() >= date.getTime();
+    const statusBadge = isArrived
+      ? `<span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">✅ Ya llegó</span>`
+      : `<span style="background:#ede9fe;color:#7c3aed;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">⏳ Próximamente</span>`;
+    const img = (up.images||[])[0] || up.image || '';
+    return `<div style="display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 16px;">
+      ${img ? `<img src="${img}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : '<div style="width:56px;height:56px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">📦</div>'}
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:800;font-size:14px;color:var(--text);">${up.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;"><i class="fas fa-calendar" style="color:#7c3aed;"></i> ${dateStr}</div>
+        <div style="margin-top:4px;">${statusBadge}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        ${isArrived ? `<button class="btn btn-primary btn-sm" style="background:#16a34a;border-color:#16a34a;" onclick="promoteUpcomingAdmin('${up.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar a tienda</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="editUpcoming('${up.id}')"><i class="fas fa-pen"></i></button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteUpcoming('${up.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function addSelectedCategory() {
