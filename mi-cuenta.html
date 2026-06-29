@@ -1057,14 +1057,39 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
     <div id="almacen-section" class="page-section" style="display:none;">
       <div class="section">
         <div class="section-header">
-          <div class="section-title"><i class="fas fa-warehouse" style="color:#7c3aed"></i> Almacén — Próximos Ingresos</div>
-          <div style="display:flex;gap:10px;align-items:center;">
-            <button class="btn btn-ghost btn-sm" onclick="loadAlmacenList()"><i class="fas fa-rotate"></i> Actualizar</button>
-            <button class="btn btn-primary btn-sm" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);"><i class="fas fa-plus"></i> Agregar próximo ingreso</button>
+          <div class="section-title"><i class="fas fa-warehouse" style="color:#7c3aed"></i> Almacén</div>
+          <div class="inventory-controls">
+            <div class="search-input-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" class="search-input" id="almacen-search" placeholder="Buscar producto..." oninput="filterAlmacen()">
+            </div>
+            <select class="filter-select" id="almacen-cat-filter" onchange="filterAlmacen()">
+              <option value="">Todas las categorías</option>
+            </select>
+            <select class="filter-select" id="almacen-status-filter" onchange="filterAlmacen()">
+              <option value="">Todo</option>
+              <option value="upcoming">⏳ Próximamente</option>
+              <option value="arrived">✅ Ya llegó</option>
+            </select>
+            <button class="btn btn-primary btn-sm" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);"><i class="fas fa-plus"></i> Agregar</button>
           </div>
         </div>
         <div class="section-body">
-          <div id="upcoming-list-container" style="display:grid;gap:10px;"></div>
+          <div id="almacen-grid" class="products-grid"></div>
+          <div class="pagination" id="almacen-pagination">
+            <div class="pagination-info" id="almacen-pagination-info"></div>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+                Por página:
+                <select class="page-size-select" id="almacen-page-size-select" onchange="changeAlmacenPageSize()">
+                  <option value="12">12</option>
+                  <option value="24" selected>24</option>
+                  <option value="48">48</option>
+                </select>
+              </div>
+              <div class="pagination-btns" id="almacen-pagination-btns"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -4464,6 +4489,7 @@ async function loadUpcomingList() {
   return loadAlmacenList();
 }
 
+
 async function editUpcoming(id) {
   if (!supabaseClient) return;
   const { data } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
@@ -4806,6 +4832,8 @@ function renderCategorySelect() {
   sel.innerHTML = categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
   const invFilter = document.getElementById('inventory-cat-filter');
   if (invFilter) invFilter.innerHTML = `<option value="">Todas las categorías</option>` + categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+  const almFilter = document.getElementById('almacen-cat-filter');
+  if (almFilter) almFilter.innerHTML = `<option value="">Todas las categorías</option>` + categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
 }
 
 function filterCategorySelect() {
@@ -4822,43 +4850,117 @@ function filterUpcomingCategorySelect() {
   sel.innerHTML = filtered.map(c=>`<option value="${c.name||c}">${c.emoji||''} ${c.name||c}</option>`).join('');
 }
 
+// ============================================
+// ALMACÉN — datos y estado de paginación
+// ============================================
+let almacenItems = [];
+let filteredAlmacen = [];
+let almacenCurrentPage = 1;
+let almacenPageSize = 24;
+
 async function loadAlmacenList() {
-  const container = document.getElementById('upcoming-list-container');
-  if (!container) return;
-  container.innerHTML = '<div style="color:var(--muted);padding:12px;">Cargando...</div>';
-  if (!supabaseClient) { container.innerHTML = '<div style="color:var(--muted);">Sin conexión</div>'; return; }
+  if (!supabaseClient) return;
   const { data, error } = await supabaseClient
     .from('upcoming_products')
     .select('*')
     .order('estimated_date', { ascending: true });
+  almacenItems = error ? [] : (data || []);
   const badge = document.getElementById('badge-almacen');
-  if (badge) badge.textContent = data?.length || 0;
-  if (error || !data?.length) {
-    container.innerHTML = '<div style="color:var(--muted);padding:16px;text-align:center;">No hay próximos ingresos guardados.</div>';
-    return;
+  if (badge) badge.textContent = almacenItems.length;
+  // Rellenar filtro de categorías del almacén
+  const catFilter = document.getElementById('almacen-cat-filter');
+  if (catFilter) {
+    const allCats = [...new Set(almacenItems.flatMap(u => u.categories || []))].sort();
+    catFilter.innerHTML = '<option value="">Todas las categorías</option>' +
+      allCats.map(c => `<option value="${c}">${c}</option>`).join('');
   }
-  container.innerHTML = data.map(up => {
-    const date = new Date(up.estimated_date);
-    const dateStr = date.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' });
-    const isArrived = Date.now() >= date.getTime();
-    const statusBadge = isArrived
-      ? `<span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">✅ Ya llegó</span>`
-      : `<span style="background:#ede9fe;color:#7c3aed;font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;">⏳ Próximamente</span>`;
-    const img = (up.images||[])[0] || up.image || '';
-    return `<div style="display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 16px;">
-      ${img ? `<img src="${img}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;">` : '<div style="width:56px;height:56px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">📦</div>'}
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:800;font-size:14px;color:var(--text);">${up.name}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;"><i class="fas fa-calendar" style="color:#7c3aed;"></i> ${dateStr}</div>
-        <div style="margin-top:4px;">${statusBadge}</div>
+  filterAlmacen();
+}
+
+function filterAlmacen() {
+  const search = (document.getElementById('almacen-search')?.value || '').toLowerCase();
+  const cat    = document.getElementById('almacen-cat-filter')?.value || '';
+  const status = document.getElementById('almacen-status-filter')?.value || '';
+  filteredAlmacen = almacenItems.filter(u => {
+    const matchName = !search || (u.name || '').toLowerCase().includes(search);
+    const matchCat  = !cat    || (u.categories || []).includes(cat);
+    const isArrived = u.estimated_date && Date.now() >= new Date(u.estimated_date).getTime();
+    const matchStatus = !status
+      || (status === 'arrived'  &&  isArrived)
+      || (status === 'upcoming' && !isArrived);
+    return matchName && matchCat && matchStatus;
+  });
+  almacenCurrentPage = 1;
+  renderAlmacenPage();
+}
+
+function renderAlmacenPage() {
+  const grid = document.getElementById('almacen-grid');
+  if (!grid) return;
+  const size  = parseInt(document.getElementById('almacen-page-size-select')?.value || 24);
+  almacenPageSize = size;
+  const total = filteredAlmacen.length;
+  const start = (almacenCurrentPage - 1) * size;
+  const end   = Math.min(start + size, total);
+  const page  = filteredAlmacen.slice(start, end);
+
+  document.getElementById('almacen-pagination-info').textContent =
+    `Mostrando ${total ? start + 1 : 0}–${end} de ${total} productos`;
+
+  grid.innerHTML = page.length
+    ? page.map(u => upcomingCardHtml(u)).join('')
+    : `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div><h3>Sin productos</h3><p>No hay próximos ingresos que coincidan.</p></div>`;
+
+  renderPagination('almacen-pagination', 'almacen-pagination-btns', total, almacenCurrentPage, size,
+    pg => { almacenCurrentPage = pg; renderAlmacenPage(); });
+}
+
+function changeAlmacenPageSize() {
+  almacenCurrentPage = 1;
+  renderAlmacenPage();
+}
+
+function upcomingCardHtml(u) {
+  const img        = (u.images && u.images[0]) || u.image || '';
+  const cats       = (u.categories || []).slice(0, 1).join(', ');
+  const isArrived  = u.estimated_date && Date.now() >= new Date(u.estimated_date).getTime();
+  const dateStr    = u.estimated_date
+    ? new Date(u.estimated_date).toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' })
+    : '—';
+  const minPrice   = u.sizes?.length ? Math.min(...u.sizes.map(s => s.price || 0)) : (u.price || 0);
+  const totalCost  = (u.sizes || []).reduce((a, s) => a + ((s.cost || 0) * (s.stock || 0)), 0);
+  const totalStock = (u.sizes || []).reduce((a, s) => a + (s.stock || 0), 0);
+  const statusBadge = isArrived
+    ? `<div class="product-card-badge" style="background:#16a34a;color:#fff;">✅ Ya llegó</div>`
+    : `<div class="product-card-badge" style="background:#7c3aed;color:#fff;">⏳ Próximo</div>`;
+  return `<div class="product-card">
+    <div class="product-card-img">
+      ${img
+        ? `<img src="${img}" alt="${u.name}" onerror="this.style.display='none'">`
+        : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">📦</div>'}
+      ${statusBadge}
+    </div>
+    <div class="product-card-body">
+      <div class="product-name">${u.name || '—'}</div>
+      ${cats ? `<div style="font-size:10px;color:var(--muted);margin-bottom:4px;">${cats}</div>` : ''}
+      <div style="font-size:10px;color:#7c3aed;margin-bottom:6px;font-weight:600;"><i class="fas fa-calendar" style="margin-right:4px;"></i>${dateStr}</div>
+      <div class="product-metrics">
+        <div class="metric-item"><div class="metric-label">Precio desde</div><div class="metric-val rose">S/${minPrice.toFixed(2)}</div></div>
+        <div class="metric-item"><div class="metric-label">Costo total</div><div class="metric-val orange">S/${totalCost.toFixed(2)}</div></div>
+        <div class="metric-item"><div class="metric-label">Stock est.</div><div class="metric-val green">${totalStock}</div></div>
       </div>
-      <div style="display:flex;gap:8px;flex-shrink:0;">
-        ${isArrived ? `<button class="btn btn-primary btn-sm" style="background:#16a34a;border-color:#16a34a;" onclick="promoteUpcomingAdmin('${up.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar a tienda</button>` : ''}
-        <button class="btn btn-ghost btn-sm" onclick="editUpcoming('${up.id}')"><i class="fas fa-pen"></i></button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteUpcoming('${up.id}')"><i class="fas fa-trash"></i></button>
+      <div class="product-footer">
+        <div class="product-price">S/ ${minPrice.toFixed(2)}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${isArrived
+            ? `<button class="icon-btn" style="background:#dcfce7;color:#16a34a;" onclick="promoteUpcomingAdmin('${u.id}')" title="Pasar a Inventario"><i class="fas fa-arrow-up-from-bracket"></i></button>`
+            : ''}
+          <button class="icon-btn edit-btn" onclick="editUpcoming('${u.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+          <button class="icon-btn delete-btn" onclick="deleteUpcoming('${u.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+        </div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  </div>`;
 }
 
 function addSelectedCategory() {
@@ -6726,6 +6828,7 @@ goToSection = function(sectionId) {
   _origGoToSection.apply(this, arguments);
   if (sectionId === 'blog-admin-section') { renderBlogList(); const fd=document.getElementById('blog-fecha'); if(fd&&!fd.value) fd.value=new Date().toISOString().slice(0,10); }
   if (sectionId === 'digitales-admin-section') renderDigitalesList();
+  if (sectionId === 'almacen-section') loadAlmacenList();
 };
 
 // Init
