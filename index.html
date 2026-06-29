@@ -1449,7 +1449,8 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
   box-shadow:0 2px 10px rgba(0,0,0,0.13);
   transition:all 0.2s;z-index:6;opacity:0;pointer-events:none;
 }
-.product-img-wrap:hover .slider-arrow{opacity:1;pointer-events:auto;}
+.product-img-wrap:hover .slider-arrow,
+.upcoming-img-wrap:hover .slider-arrow{opacity:1;pointer-events:auto;}
 .slider-arrow.left{left:8px;}
 .slider-arrow.right{right:8px;}
 .slider-arrow:hover{background:var(--rose);color:white;transform:translateY(-50%) scale(1.1);}
@@ -6557,11 +6558,15 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
-  opacity: 0;
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22,0.9,0.36,1);
+  opacity: 1;
+  transition: transform 0.5s cubic-bezier(0.22,0.9,0.36,1);
 }
 .upcoming-img-wrap img.uc-loaded { opacity: 1; }
 .upcoming-card:hover .upcoming-img-wrap img { transform: scale(1.07); }
+/* Slider dentro de upcoming */
+.upcoming-img-wrap .img-slider { height: 100%; }
+.upcoming-img-wrap .img-slides { height: 100%; display: flex; transition: transform 0.35s cubic-bezier(0.22,0.9,0.36,1); }
+.upcoming-img-wrap .img-slides img { flex: 0 0 100%; height: 100%; object-fit: cover; opacity: 1; transform: none; }
 .upcoming-no-img {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
@@ -8528,10 +8533,47 @@ function renderUpcomingCard(up) {
   const badgeDays = isArrived || daysLeft <= 0 ? '' :
     `<div class="upcoming-badge-days"><span class="uc-days-num">${daysLeft}</span>días</div>`;
 
-  // Imagen
-  const imgHtml = img0
-    ? `<img data-src="${ucEsc(img0)}" alt="${ucEsc(up.name)}" class="uc-lazy" loading="lazy">`
-    : `<div class="upcoming-no-img" aria-hidden="true">📦</div>`;
+  // ── Imagen / Slider (igual que product card) ──
+  let imgHtml = '';
+  const ucId = 'uc-' + up.id;
+  if (images.length > 1) {
+    const slidesHtml = images.map((img, idx) =>
+      `<img src="${ucEsc(img)}" alt="${ucEsc(up.name)} foto ${idx+1}" loading="lazy">`
+    ).join('');
+    const dotsHtml = images.map((_, idx) =>
+      `<span class="dot${idx===0?' active':''}" onclick="slideProductTo('${ucId}',${idx})"></span>`
+    ).join('');
+    imgHtml = `
+      <div class="img-slider" data-id="${ucId}" data-current="0">
+        <div class="img-slides" id="slides-${ucId}">${slidesHtml}</div>
+        <button class="slider-arrow left" onclick="slideProductDir(event,'${ucId}',-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-arrow right" onclick="slideProductDir(event,'${ucId}',1)"><i class="fas fa-chevron-right"></i></button>
+        <div class="slider-dots" id="dots-${ucId}">${dotsHtml}</div>
+        <div class="photo-counter" id="counter-${ucId}"><i class="fas fa-camera"></i> 1/${images.length}</div>
+      </div>`;
+  } else if (img0) {
+    imgHtml = `<img src="${ucEsc(img0)}" alt="${ucEsc(up.name)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    imgHtml = `<div class="upcoming-no-img" aria-hidden="true">📦</div>`;
+  }
+
+  // ── Tallas (igual que product card) ──
+  const sizesHtml = sizes.length
+    ? sizes.map((sz, idx) => {
+        let cls = 'size-option';
+        if (sz.stock !== undefined && sz.stock <= 0) cls += ' out-stock';
+        else if (sz.stock !== undefined && sz.stock < 5) cls += ' low-stock';
+        let stockBadge = '';
+        if (sz.stock === undefined || sz.stock === null) stockBadge = '⏳ Por llegar';
+        else if (sz.stock <= 0)   stockBadge = '❌ Agotado';
+        else if (sz.stock < 5)    stockBadge = `⚠️ ${sz.stock} última${sz.stock===1?'':'s'}`;
+        else                      stockBadge = `✓ ${sz.stock} disp.`;
+        return `<button class="${cls}" onclick="event.stopPropagation()">
+          <span class="size-age">${ucEsc(sz.size)}</span>
+          <span class="size-stock-badge">${stockBadge}</span>
+        </button>`;
+      }).join('')
+    : '';
 
   // Precio + incentivo
   const priceHtml = minP > 0
@@ -8608,6 +8650,7 @@ function renderUpcomingCard(up) {
       <h3 class="upcoming-name">${ucEsc(up.name)}</h3>
       ${up.description ? `<div class="upcoming-desc" style="font-size:11.5px;color:var(--text-soft);font-weight:600;line-height:1.5;">${ucEsc(up.description)}</div>` : ''}
       ${dateRow}
+      ${sizesHtml ? `<div class="sizes-container" style="margin-bottom:4px;">${sizesHtml}</div>` : ''}
       ${priceHtml}
       ${progressHtml}
       ${cdOrArrived}
@@ -10261,9 +10304,17 @@ function renderProductCard(product) {
 // ═══════════════════════════════════════════════════════
 function slideProductDir(e, productId, dir) {
   e.stopPropagation && e.stopPropagation();
-  const product = products.find(p => String(p.id) === String(productId));
-  if (!product) return;
-  const images = product.images?.length ? product.images : (product.image ? [product.image] : []);
+  let images = [];
+  if (String(productId).startsWith('uc-')) {
+    const realId = String(productId).slice(3);
+    const up = (upcomingProducts || []).find(u => String(u.id) === realId);
+    if (!up) return;
+    images = up.images?.length ? up.images : (up.image ? [up.image] : []);
+  } else {
+    const product = products.find(p => String(p.id) === String(productId));
+    if (!product) return;
+    images = product.images?.length ? product.images : (product.image ? [product.image] : []);
+  }
   if (images.length <= 1) return;
   const slider = document.querySelector(`.img-slider[data-id="${productId}"]`);
   if (!slider) return;
