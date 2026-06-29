@@ -9779,8 +9779,200 @@ function filterByAge(group) {
 }
 
 // ═══════════════════════════════════════════════════════
-//  BÚSQUEDA
+//  BÚSQUEDA INTELIGENTE
 // ═══════════════════════════════════════════════════════
+
+// Mapa de sinónimos → términos canónicos que coincidan con categorías/datos reales
+const SEARCH_SYNONYMS = {
+  // Género — valores sin tilde para coincidir con categorías reales ('nino','nina')
+  'niño':'nino','nino':'nino','varon':'nino','varón':'nino','chico':'nino','chicos':'nino',
+  'niña':'nina','nina':'nina','nena':'nina','chica':'nina','chicas':'nina',
+  // Ropa
+  'chaqueta':'abrigo','chompa':'abrigo','casaca':'abrigo','saco':'abrigo','coat':'abrigo',
+  'body':'bebé','bodies':'bebé','mameluco':'bebé','pijama':'bebé','enterizo':'bebé',
+  'jean':'jeans','pantalón':'pantalon','pantalones':'pantalon',
+  'polera':'polo','buzo':'buzo','hoodie':'buzo','sudadera':'buzo',
+  'vestidito':'vestido','faldita':'falda','faldas':'falda',
+  'conjunto':'conjunto','set':'conjunto',
+  // Etapas / grupos
+  'recien nacido':'recién nacido','recien':'recién nacido','newborn':'recién nacido','bb':'bebé',
+  'bebe':'bebé','bebés':'bebé','bebes':'bebé','lactante':'bebé','infante':'bebé',
+  'niños':'nino','ninos':'nino',
+  'adolescente':'mayores','teen':'mayores','grande':'mayores',
+  // Meses / edad en texto
+  'meses':'meses','mes':'meses',
+  // Colores frecuentes
+  'rosado':'rosa','fucsia':'rosa','lila':'lila','morado':'lila','violeta':'lila',
+  'celeste':'azul','marino':'azul',
+  'beige':'beige','crema':'beige',
+  // Ocasión
+  'fiesta':'vestido','cumpleaños':'vestido','bautizo':'bautizo','bautismo':'bautizo',
+  'casual':'casual','diario':'casual','colegio':'escolar','escuela':'escolar',
+  'deportivo':'deportivo','sport':'deportivo',
+  // Tela/calidad
+  'algodon':'algodón','bambú':'bambú','bambu':'bambú','lana':'lana','polar':'polar','fleece':'polar',
+};
+
+// Mapa edad en palabras → talla canónica del sistema
+const EDAD_EXPANSION_SEARCH = {
+  0:  ['Recién nacido'],
+  1:  ['1 años','1-2 años'],
+  2:  ['2 años','1-2 años','2-3 años'],
+  3:  ['3 años','2-3 años','3-4 años'],
+  4:  ['4 años','3-4 años','4-5 años'],
+  5:  ['5 años','4-5 años','5-6 años'],
+  6:  ['6 años','5-6 años','6-7 años'],
+  7:  ['7 años','6-7 años','7-8 años'],
+  8:  ['8 años','7-8 años','8-9 años'],
+  9:  ['9 años','8-9 años','9-10 años'],
+  10: ['10 años','9-10 años','10-11 años'],
+  11: ['11 años','10-11 años','11-12 años'],
+  12: ['12 años','11-12 años','12-13 años'],
+  13: ['13 años','12-13 años'],
+  14: ['14 años'],
+  15: ['15 años'],
+  16: ['16 años'],
+};
+
+const MESES_EXPANSION = {
+  3:  ['3-6 meses'],
+  6:  ['3-6 meses','6-9 meses','6-12 meses'],
+  9:  ['6-9 meses','9-12 meses','9-18 meses','6-12 meses'],
+  12: ['9-12 meses','12-18 meses','12-24 meses','6-12 meses'],
+  18: ['12-18 meses','18-24 meses','9-18 meses','12-24 meses'],
+  24: ['18-24 meses','12-24 meses'],
+};
+
+// Parsea la query y extrae intenciones: edades, meses, términos, categorías
+function parseSmartQuery(raw) {
+  const q = raw.toLowerCase().trim();
+  const result = {
+    ageSizes: null,   // array de tallas si detectó edad
+    terms: [],        // palabras clave normalizadas
+    original: q,
+  };
+
+  // 1. Detectar edad en años: "6 años", "6a", "de 6", "6-8 años", "6 y 7 años"
+  // Rango: "6 a 8 años", "6-8 años"
+  let ageMatched = false;
+  const rangeMatch = q.match(/(\d{1,2})\s*(?:a|-|al|hasta)\s*(\d{1,2})\s*a[ñn]/i);
+  if (rangeMatch) {
+    const from = parseInt(rangeMatch[1]), to = parseInt(rangeMatch[2]);
+    const sizes = new Set();
+    for (let age = Math.min(from,to); age <= Math.max(from,to); age++) {
+      (EDAD_EXPANSION_SEARCH[age]||[]).forEach(s => sizes.add(s));
+    }
+    result.ageSizes = [...sizes];
+    ageMatched = true;
+  }
+
+  // Edad simple: "6 años", "de 6 años", "6a"
+  if (!ageMatched) {
+    const singleAge = q.match(/\b(\d{1,2})\s*a(?:ños?|$|\b)/i) || q.match(/\bde\s+(\d{1,2})\b/i);
+    if (singleAge) {
+      const age = parseInt(singleAge[1]);
+      if (EDAD_EXPANSION_SEARCH[age]) {
+        result.ageSizes = EDAD_EXPANSION_SEARCH[age];
+        ageMatched = true;
+      }
+    }
+  }
+
+  // 2. Detectar meses: "6 meses", "9 meses"
+  if (!ageMatched) {
+    const mesesMatch = q.match(/(\d{1,2})\s*meses?/i);
+    if (mesesMatch) {
+      const m = parseInt(mesesMatch[1]);
+      // Buscar el rango de meses más cercano
+      const keys = Object.keys(MESES_EXPANSION).map(Number).sort((a,b)=>a-b);
+      let best = null, bestDiff = 999;
+      for (const k of keys) {
+        const diff = Math.abs(k - m);
+        if (diff < bestDiff) { bestDiff = diff; best = k; }
+      }
+      if (best !== null && bestDiff <= 6) {
+        result.ageSizes = MESES_EXPANSION[best];
+        ageMatched = true;
+      }
+    }
+  }
+
+  // 3. Detectar "recién nacido" / "newborn"
+  if (!ageMatched && /recien\s*nacido|newborn|reci[eé]n/i.test(q)) {
+    result.ageSizes = ['Recién nacido'];
+    ageMatched = true;
+  }
+
+  // 4. Limpiar números de edad de la query para los términos restantes
+  let cleanQ = q
+    .replace(/\b\d{1,2}\s*a(?:ños?)\b/gi, '')
+    .replace(/\bde\s+\d{1,2}\b/gi, '')
+    .replace(/\b\d{1,2}\s*meses?\b/gi, '')
+    .replace(/recien\s*nacido|newborn/gi, '')
+    .replace(/\s+/g, ' ').trim();
+
+  // 5. Tokenizar y aplicar sinónimos (normalizados sin tildes)
+  const tokens = cleanQ.split(/\s+/).filter(t => t.length > 1);
+  const expanded = new Set();
+  for (const t of tokens) {
+    const n = normTxt(t);
+    expanded.add(n);
+    if (SEARCH_SYNONYMS[n]) expanded.add(SEARCH_SYNONYMS[n]);
+    if (SEARCH_SYNONYMS[t]) expanded.add(SEARCH_SYNONYMS[t]);
+  }
+  // También intentar pares de palabras (bigramas)
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const bigram = normTxt(tokens[i]) + ' ' + normTxt(tokens[i+1]);
+    if (SEARCH_SYNONYMS[bigram]) expanded.add(SEARCH_SYNONYMS[bigram]);
+  }
+
+  result.terms = [...expanded].filter(t => t.length > 1);
+  return result;
+}
+
+// Normaliza texto: minúsculas + quita tildes
+function normTxt(s) {
+  return (s||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+// Calcula score de relevancia de un producto dado la query parseada
+function scoreProduct(product, parsed) {
+  let score = 0;
+  const name = normTxt(product.name);
+  const desc = normTxt(product.description);
+  const cats = (product.categories || []).map(c => normTxt(c));
+  const sizesArr = (product.sizes || []).map(s => normTxt(s.size));
+
+  // A. Si hay filtro de edad: el producto DEBE tener esa talla (filtro duro)
+  // (se aplica fuera del score, en filterProducts)
+
+  // B. Términos de búsqueda
+  for (const term of parsed.terms) {
+    const t = normTxt(term);
+    // Nombre exacto: máxima puntuación
+    if (name === t) score += 100;
+    else if (name.startsWith(t)) score += 60;
+    else if (name.includes(t)) score += 40;
+
+    // Categorías
+    if (cats.some(c => c === t)) score += 50;
+    else if (cats.some(c => c.includes(t))) score += 30;
+
+    // Descripción
+    if (desc.includes(t)) score += 10;
+
+    // Tallas (texto de talla)
+    if (sizesArr.some(s => s.includes(t))) score += 15;
+  }
+
+  // C. Bonus si tiene stock
+  const totalStock = (product.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0);
+  if (totalStock > 0) score += 5;
+
+  return score;
+}
+
 function searchProducts() {
   currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
   currentPage = 1;
@@ -9795,30 +9987,55 @@ function filterProducts() {
   let filtered = currentFilter === 'all'
     ? [...products]
     : products.filter(p => p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase()));
-  // Búsqueda por texto (nombre, descripción, tallas)
+
+  // ── Búsqueda inteligente ──
   if (currentSearch) {
-    const q = currentSearch.toLowerCase();
-    filtered = filtered.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      (p.description||'').toLowerCase().includes(q) ||
-      (p.sizes||[]).some(s => s.size && s.size.toLowerCase().includes(q)) ||
-      (p.categories||[]).some(c => c.toLowerCase().includes(q))
-    );
+    const parsed = parseSmartQuery(currentSearch);
+
+    // 1. Filtro duro por edad detectada (en paralelo con chips de edad)
+    let ageSizeFilter = null;
+    if (parsed.ageSizes && parsed.ageSizes.length) {
+      ageSizeFilter = parsed.ageSizes;
+    }
+
+    // 2. Filtrar y puntuar
+    filtered = filtered
+      .map(p => ({ p, score: scoreProduct(p, parsed) }))
+      .filter(({ p, score }) => {
+        // Si hay términos de texto Y score 0 → excluir
+        if (parsed.terms.length > 0 && score === 0) return false;
+        // Si hay filtro de edad → el producto debe tener esa talla
+        if (ageSizeFilter) {
+          return (p.sizes||[]).some(s => ageSizeFilter.includes(s.size));
+        }
+        return true;
+      })
+      .sort((a, b) => b.score - a.score)
+      .map(({ p }) => p);
+
+    // Si la query solo tiene edad (sin otros términos), no filtramos por score
+    if (parsed.terms.length === 0 && parsed.ageSizes) {
+      filtered = (currentFilter === 'all' ? [...products] : products.filter(p =>
+        p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase())
+      )).filter(p => (p.sizes||[]).some(s => parsed.ageSizes.includes(s.size)));
+    }
   }
-  // Filtro por talla individual (chips de edad) — soporta set expandido desde el buscador
+
+  // ── Filtro por talla/edad desde chips (UI) — no pisado por búsqueda ──
   if (currentAgeFilter) {
     if (currentAgeFilterSet && currentAgeFilterSet.length > 1) {
-      // Vino del select de edad: incluir todos los rangos solapados
       filtered = filtered.filter(p => (p.sizes||[]).some(s => currentAgeFilterSet.includes(s.size) && s.stock > 0));
     } else {
       filtered = filtered.filter(p => (p.sizes||[]).some(s => s.size === currentAgeFilter && s.stock > 0));
     }
   }
-  // Filtro por grupo de edad (bebe/ninos/mayores)
+
+  // ── Filtro por grupo de edad (bebe/ninos/mayores) ──
   if (currentAgeGroup && AGE_GROUP_SIZES[currentAgeGroup]) {
     const allowed = AGE_GROUP_SIZES[currentAgeGroup];
     filtered = filtered.filter(p => (p.sizes||[]).some(s => allowed.includes(s.size)));
   }
+
   return filtered;
 }
 
