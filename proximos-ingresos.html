@@ -359,6 +359,12 @@ img{display:block;max-width:100%;}
 .pss-item-text strong{display:block;font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pss-item-text span{font-size:11px;color:var(--text-soft);font-weight:600;}
 .pss-item-arrow{font-size:10px;color:var(--rose-light);}
+.pi-intent-chip{
+  display:inline-flex;align-items:center;
+  background:var(--rose-soft);color:var(--rose-dark);
+  border:1px solid var(--rose-light);border-radius:20px;
+  font-size:10.5px;font-weight:800;padding:3px 10px;
+}
 @media(max-width:640px){
   .pi-search-wrap{top:64px;}
   .pi-search-box{padding:6px 6px 6px 14px;border-radius:40px;}
@@ -1165,14 +1171,9 @@ function applySort(arr) {
 
 function applyFiltersAndRender() {
   let base = applyFilter(allProducts);
-  // Aplicar búsqueda de texto
+  // Aplicar búsqueda inteligente
   if (activeSearch.length >= 2) {
-    const q = activeSearch.toLowerCase();
-    base = base.filter(p =>
-      (p.name||'').toLowerCase().includes(q) ||
-      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
-      (p.description||'').toLowerCase().includes(q)
-    );
+    base = piSmartFilter(base, activeSearch);
   }
   filteredProds = applySort(base);
   visibleCount  = PER_PAGE;
@@ -1513,20 +1514,263 @@ function loadAll() {
   }, 400);
 }
 
-/* ── Buscador Inteligente ── */
+/* ══════════════════════════════════════════════════
+   BUSCADOR INTELIGENTE — Parser semántico completo
+══════════════════════════════════════════════════ */
+
+/* ── Tablas de conocimiento ── */
+const PI_SYNONYMS = {
+  // Género
+  'niño':'nino','nino':'nino','varón':'nino','varon':'nino','chico':'nino','chicos':'nino','niños':'nino','ninos':'nino',
+  'niña':'nina','nina':'nina','nena':'nina','chica':'nina','chicas':'nina','niñas':'nina','ninas':'nina','nenita':'nina',
+  // Ropa
+  'chaqueta':'abrigo','chompa':'abrigo','casaca':'abrigo','saco':'abrigo','coat':'abrigo','campera':'abrigo',
+  'body':'bebé','bodies':'bebé','mameluco':'bebé','enterizo':'bebé','pijama':'pijama',
+  'jean':'jeans','pantalón':'pantalon','pantalones':'pantalon',
+  'polera':'polo','buzo':'buzo','hoodie':'buzo','sudadera':'buzo',
+  'vestidito':'vestido','faldita':'falda','faldas':'falda',
+  'conjunto':'conjunto','set':'conjunto','ajuar':'conjunto',
+  // Etapas
+  'recien nacido':'recién nacido','recien':'recién nacido','newborn':'recién nacido','bb':'bebé',
+  'bebe':'bebé','bebés':'bebé','bebes':'bebé','lactante':'bebé','infante':'bebé',
+  'adolescente':'mayores','teen':'mayores','grande':'mayores',
+  // Ocasión
+  'fiesta':'vestido','cumpleaños':'vestido','bautizo':'bautizo','bautismo':'bautizo',
+  'casual':'casual','diario':'casual','colegio':'escolar','escuela':'escolar',
+  'deportivo':'deportivo','sport':'deportivo',
+  // Telas
+  'algodon':'algodón','bambu':'bambú','bambú':'bambú','lana':'lana','polar':'polar','fleece':'polar',
+  // Colores
+  'rosado':'rosa','fucsia':'rosa','lila':'lila','morado':'lila','violeta':'lila',
+  'celeste':'azul','marino':'azul','beige':'beige','crema':'beige',
+};
+
+const PI_EDAD_MAP = {
+  0:  ['Recién nacido'],
+  1:  ['1 años','1-2 años'],
+  2:  ['2 años','1-2 años','2-3 años'],
+  3:  ['3 años','2-3 años','3-4 años'],
+  4:  ['4 años','3-4 años','4-5 años'],
+  5:  ['5 años','4-5 años','5-6 años'],
+  6:  ['6 años','5-6 años','6-7 años'],
+  7:  ['7 años','6-7 años','7-8 años'],
+  8:  ['8 años','7-8 años','8-9 años'],
+  9:  ['9 años','8-9 años','9-10 años'],
+  10: ['10 años','9-10 años','10-11 años'],
+  11: ['11 años','10-11 años','11-12 años'],
+  12: ['12 años','11-12 años','12-13 años'],
+  13: ['13 años','12-13 años'],
+  14: ['14 años'],
+};
+
+const PI_MESES_MAP = {
+  3:  ['3-6 meses'],
+  6:  ['3-6 meses','6-9 meses','6-12 meses'],
+  9:  ['6-9 meses','9-12 meses','9-18 meses'],
+  12: ['9-12 meses','12-18 meses','12-24 meses'],
+  18: ['12-18 meses','18-24 meses','9-18 meses'],
+  24: ['18-24 meses','12-24 meses'],
+};
+
 const PI_QUICK_SUGGESTIONS = [
-  { text: 'Vestidos niña', icon: '👗' },
-  { text: 'Conjunto bebé', icon: '👶' },
-  { text: 'Abrigo invierno', icon: '🧥' },
-  { text: 'Pijama niño', icon: '😴' },
-  { text: 'Set recién nacido', icon: '🍼' },
-  { text: 'Falda niña', icon: '👒' },
-  { text: 'Pantalón niño', icon: '👦' },
-  { text: 'Ropa bebé 0-3 meses', icon: '🌸' },
+  { text: 'Vestido niña 3 años',    icon: '👗', hint: 'Niñas · 3 años' },
+  { text: 'Conjunto bebé recién nacido', icon: '🍼', hint: 'Bebés · 0 meses' },
+  { text: 'Abrigo niño 5 años',     icon: '🧥', hint: 'Niños · 5 años' },
+  { text: 'Pijama niña 4 años',     icon: '😴', hint: 'Niñas · 4 años' },
+  { text: 'Ropa bebé 6 meses',      icon: '👶', hint: 'Bebés · 6 meses' },
+  { text: 'Vestido fiesta niña',    icon: '✨', hint: 'Ocasión especial' },
+  { text: 'Polo niño 7 años',       icon: '👦', hint: 'Niños · 7 años' },
+  { text: 'Conjunto bebé 9 meses',  icon: '🌸', hint: 'Bebés · 9 meses' },
 ];
 
+/* ── Normaliza texto sin tildes ── */
+function piNorm(s) {
+  return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+/* ── Parser principal de intención ── */
+function piParseQuery(raw) {
+  const q = piNorm(raw.trim());
+  const result = { gender: null, ageSizes: null, terms: [], original: q };
+
+  // 1. Detectar género
+  const reNino = /\b(ni[ñn]o|nino|varon|var[oó]n|chico|chicos|ni[ñn]os)\b/i;
+  const reNina = /\b(ni[ñn]a|nina|nena|chica|chicas|ni[ñn]as|nenita)\b/i;
+  const hasNino = reNino.test(q), hasNina = reNina.test(q);
+  if (hasNino && !hasNina) result.gender = 'nino';
+  else if (hasNina && !hasNino) result.gender = 'nina';
+
+  // 2. Detectar rango de edad "6 a 8 años" / "6-8 años"
+  let ageMatched = false;
+  const rangeMatch = q.match(/(\d{1,2})\s*(?:a|-|al|hasta)\s*(\d{1,2})\s*a[ñn]/i);
+  if (rangeMatch) {
+    const from = parseInt(rangeMatch[1]), to = parseInt(rangeMatch[2]);
+    const sizes = new Set();
+    for (let age = Math.min(from,to); age <= Math.max(from,to); age++) {
+      (PI_EDAD_MAP[age]||[]).forEach(s => sizes.add(s));
+    }
+    result.ageSizes = [...sizes]; ageMatched = true;
+  }
+
+  // 3. Edad simple "3 años" / "3a" / "de 3"
+  if (!ageMatched) {
+    const m = q.match(/\b(\d{1,2})\s*a(?:ños?|$|\b)/i) || q.match(/\bde\s+(\d{1,2})\b/i);
+    if (m) {
+      const age = parseInt(m[1]);
+      if (PI_EDAD_MAP[age]) { result.ageSizes = PI_EDAD_MAP[age]; ageMatched = true; }
+    }
+  }
+
+  // 4. Meses "6 meses"
+  if (!ageMatched) {
+    const m = q.match(/(\d{1,2})\s*meses?/i);
+    if (m) {
+      const mes = parseInt(m[1]);
+      const keys = Object.keys(PI_MESES_MAP).map(Number).sort((a,b)=>a-b);
+      let best = null, bestDiff = 999;
+      for (const k of keys) { const d = Math.abs(k-mes); if (d < bestDiff) { bestDiff = d; best = k; } }
+      if (best !== null && bestDiff <= 6) { result.ageSizes = PI_MESES_MAP[best]; ageMatched = true; }
+    }
+  }
+
+  // 5. Recién nacido
+  if (!ageMatched && /recien\s*nacido|newborn|recien/i.test(q)) {
+    result.ageSizes = ['Recién nacido']; ageMatched = true;
+  }
+
+  // 6. Limpiar números/palabras de edad y género para extraer términos restantes
+  let cleanQ = q
+    .replace(/\b\d{1,2}\s*a(?:ños?)\b/gi,'')
+    .replace(/\bde\s+\d{1,2}\b/gi,'')
+    .replace(/\b\d{1,2}\s*meses?\b/gi,'')
+    .replace(/recien\s*nacido|newborn/gi,'')
+    .replace(/\b(ni[ñn][oa]s?|nino|nina|varon|var[oó]n|chic[oa]s?|nena|nenas)\b/gi,'')
+    .replace(/\s+/g,' ').trim();
+
+  // 7. Tokenizar y expandir con sinónimos
+  const tokens = cleanQ.split(/\s+/).filter(t => t.length > 1);
+  const expanded = new Set();
+  const SKIP = ['nino','nina','varon','chico','chica','nena','ninas','ninos'];
+  for (const t of tokens) {
+    const n = piNorm(t);
+    if (SKIP.includes(n)) continue;
+    expanded.add(n);
+    if (PI_SYNONYMS[n]) expanded.add(PI_SYNONYMS[n]);
+    if (PI_SYNONYMS[t]) expanded.add(PI_SYNONYMS[t]);
+  }
+  // Bigramas
+  for (let i = 0; i < tokens.length-1; i++) {
+    const bg = piNorm(tokens[i])+' '+piNorm(tokens[i+1]);
+    if (PI_SYNONYMS[bg]) expanded.add(PI_SYNONYMS[bg]);
+  }
+  result.terms = [...expanded].filter(t => t.length > 1 && !SKIP.includes(t));
+  return result;
+}
+
+/* ── Score de relevancia ── */
+function piScoreProduct(p, parsed) {
+  let score = 0;
+  const name  = piNorm(p.name);
+  const desc  = piNorm(p.description||'');
+  const cats  = (p.categories||[]).map(c => piNorm(c));
+  const sizes = (p.sizes||[]).map(s => piNorm(s.size||''));
+
+  for (const term of parsed.terms) {
+    const t = piNorm(term);
+    if (name === t)              score += 100;
+    else if (name.startsWith(t)) score += 60;
+    else if (name.includes(t))   score += 40;
+    if (cats.some(c => c === t))        score += 50;
+    else if (cats.some(c => c.includes(t))) score += 30;
+    if (desc.includes(t))        score += 10;
+    if (sizes.some(s => s.includes(t))) score += 15;
+  }
+
+  // Bonus género
+  if (parsed.gender) {
+    const allText = [name, desc, ...cats].join(' ');
+    const gKws = parsed.gender === 'nino'
+      ? ['nino','varon','boy','chico','masculin']
+      : ['nina','girl','chica','nena','femenin'];
+    if (gKws.some(kw => allText.includes(kw))) score += 25;
+  }
+
+  return score;
+}
+
+/* ── Filtro inteligente aplicado a products ── */
+function piSmartFilter(arr, raw) {
+  if (!raw || raw.length < 2) return arr;
+  const parsed = piParseQuery(raw);
+
+  // Filtro duro de tallas/edad
+  let base = arr;
+  if (parsed.ageSizes && parsed.ageSizes.length) {
+    const tallaSet = parsed.ageSizes.map(t => piNorm(t));
+    base = arr.filter(p => {
+      const pSizes = (p.sizes||[]).map(s => piNorm(s.size||''));
+      const pCats  = (p.categories||[]).map(c => piNorm(c));
+      return tallaSet.some(t =>
+        pSizes.some(s => s.includes(t) || t.includes(s)) ||
+        pCats.some(c => c.includes(t))
+      );
+    });
+    // Si nada tiene esa talla exacta, fallback al array completo
+    if (!base.length) base = arr;
+  }
+
+  // Filtro duro de género
+  if (parsed.gender) {
+    const gFiltered = base.filter(p => {
+      const allText = [piNorm(p.name), piNorm(p.description||''), ...(p.categories||[]).map(c=>piNorm(c))].join(' ');
+      const gKws = parsed.gender === 'nino'
+        ? ['nino','varon','boy','chico','masculin']
+        : ['nina','girl','chica','nena','femenin'];
+      return gKws.some(kw => allText.includes(kw));
+    });
+    if (gFiltered.length) base = gFiltered;
+  }
+
+  // Si hay términos adicionales → score y filtrar
+  if (parsed.terms.length) {
+    const scored = base
+      .map(p => ({ p, score: piScoreProduct(p, parsed) }))
+      .filter(x => x.score > 0)
+      .sort((a,b) => b.score - a.score)
+      .map(x => x.p);
+    if (scored.length) return scored;
+  }
+
+  // Sin términos extra → devolver lo filtrado por edad/género
+  if (parsed.ageSizes || parsed.gender) return base;
+
+  // Fallback: búsqueda simple de texto
+  const q = piNorm(raw);
+  return arr.filter(p =>
+    piNorm(p.name).includes(q) ||
+    (p.categories||[]).some(c => piNorm(c).includes(q)) ||
+    piNorm(p.description||'').includes(q)
+  );
+}
+
+/* ── Chips de intención detectada (UI) ── */
+function piDetectedChips(parsed) {
+  let html = '';
+  if (parsed.gender) {
+    const label = parsed.gender === 'nino' ? '👦 Niño' : '👧 Niña';
+    html += `<span class="pi-intent-chip">${label}</span>`;
+  }
+  if (parsed.ageSizes && parsed.ageSizes.length) {
+    html += `<span class="pi-intent-chip">📏 ${parsed.ageSizes[0]}</span>`;
+  }
+  for (const t of parsed.terms.slice(0,2)) {
+    html += `<span class="pi-intent-chip">🏷️ ${t}</span>`;
+  }
+  return html;
+}
+
 function piSmartSearchHandle(val) {
-  const sug = document.getElementById('piSearchSuggestions');
+  const sug      = document.getElementById('piSearchSuggestions');
   const clearBtn = document.getElementById('piSearchClear');
   if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
 
@@ -1537,42 +1781,50 @@ function piSmartSearchHandle(val) {
     sug.innerHTML = ''; sug.classList.remove('has-results'); return;
   }
 
-  const q = val.toLowerCase();
+  const parsed = piParseQuery(val);
+  const q      = piNorm(val);
 
-  // Sugerencias desde productos reales
-  const prodMatches = allProducts
-    .filter(p =>
-      (p.name||'').toLowerCase().includes(q) ||
-      (p.categories||[]).some(c => c.toLowerCase().includes(q))
-    )
+  // Sugerencias de productos reales (usando el filtro inteligente)
+  const prodMatches = piSmartFilter(allProducts, val)
     .slice(0, 4)
     .map(p => ({
       text: p.name,
-      sub: (p.categories||[])[0] || 'Próximo ingreso',
+      sub:  (p.categories||[])[0] || 'Próximo ingreso',
       icon: '✈️'
     }));
 
-  // Sugerencias estáticas de relleno
+  // Sugerencias estáticas de completado
   const staticMatches = PI_QUICK_SUGGESTIONS
-    .filter(s => s.text.toLowerCase().includes(q))
-    .slice(0, 3 - Math.min(prodMatches.length, 3));
+    .filter(s => piNorm(s.text).includes(q) || q.split(' ').some(w => w.length > 2 && piNorm(s.text).includes(w)))
+    .slice(0, Math.max(0, 4 - prodMatches.length));
 
   const matches = [...prodMatches, ...staticMatches].slice(0, 5);
 
-  if (!matches.length) { sug.innerHTML = ''; sug.classList.remove('has-results'); return; }
+  const chips = piDetectedChips(parsed);
+  const chipsHtml = chips
+    ? `<div style="padding:4px 14px 6px;display:flex;gap:5px;flex-wrap:wrap;">${chips}</div>`
+    : '';
+
+  if (!matches.length && !chips) {
+    sug.innerHTML = ''; sug.classList.remove('has-results'); return;
+  }
 
   sug.innerHTML =
-    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias</div>` +
-    matches.map(m =>
-      `<div class="pss-item" onclick="piSelectSuggestion('${m.text.replace(/'/g,"\\'")}')">
-        <div class="pss-item-icon">${m.icon}</div>
-        <div class="pss-item-text">
-          <strong>${m.text}</strong>
-          <span>${m.sub}</span>
-        </div>
-        <i class="fas fa-arrow-right pss-item-arrow"></i>
-      </div>`
-    ).join('');
+    `<div class="pss-header"><i class="fas fa-magic"></i> Búsqueda inteligente</div>` +
+    chipsHtml +
+    (matches.length
+      ? matches.map(m =>
+          `<div class="pss-item" onclick="piSelectSuggestion('${m.text.replace(/'/g,"\\'")}')">
+            <div class="pss-item-icon">${m.icon}</div>
+            <div class="pss-item-text">
+              <strong>${m.text}</strong>
+              <span>${m.sub}</span>
+            </div>
+            <i class="fas fa-arrow-right pss-item-arrow"></i>
+          </div>`
+        ).join('')
+      : `<div style="padding:10px 16px;font-size:12px;color:var(--text-soft);font-weight:600;">Sin sugerencias — presiona Enter para buscar</div>`
+    );
   sug.classList.add('has-results');
 }
 
