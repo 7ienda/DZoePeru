@@ -3421,7 +3421,7 @@ async function loadAllData() {
     supabaseClient.from('client_overrides').select('*')
   ]);
   products = productsRes.data || [];
-  categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color }));
+  categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color, ...(c.group ? { group: c.group } : {}) }));
   orders = (ordersRes.data || []).map(o => {
     o.adelanto = parseFloat(o.adelanto) || 0;
     o.deuda = parseFloat(o.deuda) || 0;
@@ -3447,6 +3447,17 @@ async function loadAllData() {
     for (const cat of categories) await saveCategoryToSupabase(cat);
   }
   updateStats();
+  // Sincronizar grupos desde Supabase → localStorage
+  const existingGroups = loadCatGroups();
+  const existingGroupNames = new Set(existingGroups.map(g => g.name));
+  categories.forEach(c => {
+    if (c.group && !existingGroupNames.has(c.group)) {
+      existingGroups.push({ name: c.group });
+      existingGroupNames.add(c.group);
+    }
+  });
+  saveCatGroups(existingGroups);
+
   filterInventory();
   filterSales();
   renderCategoriesList();
@@ -4630,7 +4641,7 @@ async function addCategory() {
   const group = document.getElementById('new-category-group')?.value || '';
   const cat = { name, color: selectedCatColor, group: group || undefined };
   categories.push(cat);
-  if (supabaseClient) { const {error} = await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color},{onConflict:'name'}); if(error){showAlert('Error','error');return;} }
+  if (supabaseClient) { const {error} = await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color,group:cat.group||null},{onConflict:'name'}); if(error){showAlert('Error','error');return;} }
   document.getElementById('new-category-name').value='';
   renderCategoriesList(); renderCategorySelect(); updateStats(); showAlert('Categoría agregada');
 }
@@ -4642,7 +4653,7 @@ async function deleteCategory(name) {
   renderCategoriesList(); renderCategorySelect(); updateStats(); showAlert('Categoría eliminada');
 }
 
-async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color},{onConflict:'name'}); }
+async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color,group:cat.group||null},{onConflict:'name'}); }
 
 // ── Groups storage ──
 function loadCatGroups() { return JSON.parse(localStorage.getItem('dzoe_cat_groups') || '[]'); }
@@ -4661,7 +4672,7 @@ function addCategoryGroup() {
 function deleteCatGroup(gname) {
   if (!confirm(`¿Eliminar el grupo "${gname}"?\nLas categorías pasarán a "Sin grupo".`)) return;
   saveCatGroups(loadCatGroups().filter(g => g.name !== gname));
-  categories.forEach(c => { if (c.group === gname) delete c.group; });
+  categories.forEach(c => { if (c.group === gname) { delete c.group; saveCategoryToSupabase(c); } });
   renderCategoriesList();
 }
 function renameCatGroup(oldName) {
@@ -4671,7 +4682,7 @@ function renameCatGroup(oldName) {
   const g = groups.find(g => g.name === oldName); if (!g) return;
   g.name = nw.trim();
   saveCatGroups(groups);
-  categories.forEach(c => { if (c.group === oldName) c.group = nw.trim(); });
+  categories.forEach(c => { if (c.group === oldName) { c.group = nw.trim(); saveCategoryToSupabase(c); } });
   renderCategoriesList();
 }
 function updateGroupSelect() {
@@ -4782,6 +4793,7 @@ function catCardDrop(e, targetCatName) {
   mv.group = categories[ti]?.group || mv.group;
   categories.splice(ti, 0, mv);
   _draggedCat = null;
+  saveCategoryToSupabase(mv);
   renderCategoriesList(); renderCategorySelect();
 }
 // ── Drag & drop — card into group ──
@@ -4790,7 +4802,7 @@ function groupDrop(e, groupName) {
   e.preventDefault(); document.querySelectorAll('.cat-group').forEach(g=>g.classList.remove('drag-over'));
   if (!_draggedCat) return;
   const cat = categories.find(c => c.name === _draggedCat);
-  if (cat) cat.group = groupName || undefined;
+  if (cat) { cat.group = groupName || undefined; saveCategoryToSupabase(cat); }
   _draggedCat = null;
   renderCategoriesList(); renderCategorySelect();
 }
@@ -4819,7 +4831,7 @@ async function saveEditCategory(i) {
   products.forEach(p => { if (p.categories) p.categories = p.categories.map(cn => cn === oldName ? newName : cn); });
   if (supabaseClient) {
     await supabaseClient.from('categories').delete().eq('name', oldName);
-    await supabaseClient.from('categories').upsert({ name: newName, color }, { onConflict: 'name' });
+    await supabaseClient.from('categories').upsert({ name: newName, color, group: categories[i].group || null }, { onConflict: 'name' });
     const affected = products.filter(p => p.categories?.includes(newName));
     for (const p of affected) await supabaseClient.from('products').update({ categories: p.categories }).eq('id', p.id);
   }
