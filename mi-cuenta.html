@@ -3203,8 +3203,6 @@ const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
 if (!supabaseUrl || !supabaseKey) console.error('❌ config.js no encontrado');
 const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
-const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
-console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inicializado');
 
 // ============================================
 // FUNCIONES GLOBALES - LOGIN, NAVEGACIÓN Y UTILITARIAS
@@ -3354,59 +3352,7 @@ async function deleteProduct(id) {
   showAlert('Producto eliminado ✅');
 }
 
-// ============================================
-// LOGIN
-// ============================================
-const DEFAULT_USER = 'dzoe_admin';
-const DEFAULT_PASS = 'dzoe2024';
-// ... el resto del código sigue aquí
-// ============================================
-// LOGIN
-// ============================================
-const DEFAULT_USER = 'dzoe_admin';
-const DEFAULT_PASS = 'dzoe2024';
-
-function doLogin() {
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
-  const validUser = stored.user || DEFAULT_USER;
-  const validPass = stored.pass || DEFAULT_PASS;
-  if (u === validUser && p === validPass) {
-    localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
-    document.getElementById('session-user').textContent = u;
-    const screen = document.getElementById('login-screen');
-    screen.classList.add('hidden');
-    document.getElementById('main-app').style.display = 'block';
-    setTimeout(() => screen.remove(), 500);
-    loadAllData().then(() => goToSection('dashboard-section'));
-  } else {
-    const err = document.getElementById('login-error');
-    err.classList.add('show');
-    document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos.';
-    document.getElementById('login-pass').value = '';
-    document.getElementById('login-user').classList.add('shake');
-    setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
-  }
-}
-
-function togglePassVisible() {
-  const inp = document.getElementById('login-pass');
-  const ico = document.getElementById('toggle-pass');
-  if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash login-input-icon'; }
-  else { inp.type = 'password'; ico.className = 'fas fa-eye login-input-icon'; }
-}
-
-function checkSession() {
-  const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
-  if (session.ts && (Date.now() - session.ts < 8 * 60 * 60 * 1000)) {
-    document.getElementById('session-user').textContent = session.user || 'Admin';
-    const screen = document.getElementById('login-screen');
-    screen.style.display = 'none';
-    document.getElementById('main-app').style.display = 'block';
-    loadAllData().then(() => goToSection('dashboard-section'));
-  }
-}
+// (duplicados eliminados — doLogin, checkSession y DEFAULT_USER/PASS ya definidos arriba)
 
 
 // ============================================
