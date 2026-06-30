@@ -8372,8 +8372,8 @@ async function loadProductsFromSupabase() {
   try {
     const { data, error } = await supabaseClient
       .from('products')
-      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,price,stock,slug,brand,status,created_at')
-      .order('created_at', { ascending: false });
+      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,price,stock,slug,brand,status,created_at,stock_updated_at')
+      .order('stock_updated_at', { ascending: false, nullsFirst: false });
     if (error) { console.error('❌ Error Supabase:', error.message); return cached || []; }
     console.log('✅ Productos:', data?.length);
     if (data && data.length > 0) setCachedData(CACHE_KEY, data);
@@ -10245,8 +10245,8 @@ function _matchAutoRibbon(ribbon, product, allProducts) {
   switch (ribbon.autoRule) {
     case 'new_arrivals': {
       const sorted = [...allProducts].sort((a, b) => {
-        const ta = a.created_at ? new Date(a.created_at).getTime() : Number(a.id);
-        const tb = b.created_at ? new Date(b.created_at).getTime() : Number(b.id);
+        const ta = a.stock_updated_at ? new Date(a.stock_updated_at).getTime() : (a.created_at ? new Date(a.created_at).getTime() : Number(a.id));
+        const tb = b.stock_updated_at ? new Date(b.stock_updated_at).getTime() : (b.created_at ? new Date(b.created_at).getTime() : Number(b.id));
         return tb - ta;
       });
       return sorted.slice(0, param).some(p => p.id === product.id);
@@ -10311,8 +10311,12 @@ function getProductRibbonLabel(product, allProducts) {
   if (!ribbonsPro.length) {
     if (product.on_sale) return '🔥 Oferta';
     const sorted = [...allProducts]
-      .filter(p => p.created_at)
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      .filter(p => p.stock_updated_at || p.created_at)
+      .sort((a, b) => {
+        const ta = a.stock_updated_at ? new Date(a.stock_updated_at) : new Date(a.created_at);
+        const tb = b.stock_updated_at ? new Date(b.stock_updated_at) : new Date(b.created_at);
+        return tb - ta;
+      });
     const top4Ids = new Set(sorted.slice(0, 4).map(p => p.id));
     if (top4Ids.has(product.id)) return '✨ Nuevo';
   }
