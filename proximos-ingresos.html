@@ -1157,20 +1157,29 @@ async function loadData() {
     applyFiltersAndRender();
   }
 
-  if (!sb) return;
+  if (!sb) {
+    console.warn('Supabase no se inicializó (revisa que el SDK haya cargado).');
+    if (!allProducts.length) { allProducts = []; updateHeroStats(); applyFiltersAndRender(); }
+    return;
+  }
   try {
     const { data, error } = await sb
       .from('upcoming_products')
       .select('*')
       .order('estimated_date', { ascending: true });
-    if (error) { console.warn('Supabase error:', error.message); return; }
-    if (data && data.length) {
-      allProducts = data;
-      setCache(CACHE_KEY, data);
-      updateHeroStats();
-      applyFiltersAndRender();
+    if (error) {
+      console.warn('Supabase error:', error.message);
+      if (!allProducts.length) { allProducts = []; updateHeroStats(); applyFiltersAndRender(); }
+      return;
     }
-  } catch(e) { console.warn('Error cargando upcoming:', e); }
+    allProducts = data || [];
+    setCache(CACHE_KEY, allProducts);
+    updateHeroStats();
+    applyFiltersAndRender();
+  } catch(e) {
+    console.warn('Error cargando upcoming:', e);
+    if (!allProducts.length) { allProducts = []; updateHeroStats(); applyFiltersAndRender(); }
+  }
 }
 
 /* ── Hero stats ── */
@@ -1313,7 +1322,6 @@ function buildCard(p) {
   const minP   = prices.length ? Math.min(...prices) : 0;
 
   const target    = new Date(p.estimated_date).getTime();
-  const isArrived = Date.now() >= target;
   const daysLeft  = Math.ceil((target - Date.now()) / 86400000);
 
   const reservas  = p.reservas_count  || 0;
@@ -1396,10 +1404,7 @@ function buildCard(p) {
            <div class="pi-cd-block"><span class="pi-cd-num" id="picd-h-${p.id}">--</span><span class="pi-cd-unit">hrs</span></div>
            <span class="pi-cd-sep">:</span>
            <div class="pi-cd-block"><span class="pi-cd-num" id="picd-m-${p.id}">--</span><span class="pi-cd-unit">min</span></div>
-         </div>
-         <button class="pi-btn-promote" onclick="setCaminoTienda('${p.id}')" style="background:linear-gradient(135deg,#F0B840,#e8962a);margin-top:4px;">
-           <i class="fas fa-truck"></i> Marcar camino a tienda
-         </button>`;
+         </div>`;
 
   // WA msg — adaptado por estado
   const waMsgText = isCaminoTienda
