@@ -1,13 +1,15 @@
-# robots.txt — D'Zoe Perú
-# https://dzoeperu.com
-
 User-agent: *
 Allow: /
 
-# Páginas que no necesitan indexarse
-Disallow: /carrito.html
+# Privadas
+
+Disallow: /mi-cuenta
 Disallow: /mi-cuenta.html
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /crm
+Disallow: /carrito
+Disallow: /carrito.html
 Disallow: /.github/
 
-# Sitemap
 Sitemap: https://dzoeperu.com/sitemap.xml
