@@ -323,6 +323,20 @@
     "url": "/productos/casaca-flor-bordada.html"
   },
   {
+    "id": 1780351395912,
+    "slug": "casaca-jean-apeluchado",
+    "name": "Casaca Jean apeluchado",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkgAEdx23wcFk6lOMXISs2wi-IzO1wMv0O3gIWPPl9sS4ll3oE8VXXntK-5eNLVxxPIvAzY0_iyrqTWmgimMMIUWtnA9lsOJ0X4qE61HMBYVQd9POrJrc1crthibpAosxA2j7zfS49ctk9ATKsdnfBSzD3thsIe_dm2E3-H_oY-xVt4octJ3bsNROnVtg/s1600/cjn1.png",
+    "categories": [
+      "Niño",
+      "Jeans",
+      "Casacas"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-jean-apeluchado.html"
+  },
+  {
     "id": 1780326006480,
     "slug": "polo-sueter-a-rayas",
     "name": "Polo suéter a rayas",
@@ -401,20 +415,6 @@
     ],
     "inStock": true,
     "url": "/productos/vestido-rojo-coreano.html"
-  },
-  {
-    "id": 1780351395912,
-    "slug": "casaca-jean-apeluchado",
-    "name": "Casaca Jean apeluchado",
-    "price": 48,
-    "image": "https://img.kwcdn.com/thumbnail/s/9989c172b4234335d365a6310a4addd6_b412a73879e2.jpg",
-    "categories": [
-      "Niño",
-      "Jeans",
-      "Casacas"
-    ],
-    "inStock": true,
-    "url": "/productos/casaca-jean-apeluchado.html"
   },
   {
     "id": 1780348233966,
@@ -573,7 +573,7 @@
     "slug": "casaca-peluche-osito",
     "name": "Casaca Peluche Osito",
     "price": 48,
-    "image": "https://img.kwcdn.com/product/fancy/72b227b2-7ed4-46cf-99c8-a2e098bf2e99.jpg?imageMogr2/auto-orient|imageView2/2/w/800/q/70/format/webp",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhI_akP8TmaTUL4j6Qm0ych5qVevEByuYiYZCQBy5buv_A_XVBktt0LT2K5Xs0rDbu8bEEIYtswmOgRk3KD3oh18SCfhiR4i-rBIygjx6HONm9IAF5WNJri6vG0S3r-wiRZ7zp8uO_RZ89H7gwOCeE1yWo8CVn7JwIlz1Nosv9iAUiw7M2PxZhuXzibc0o-/s1600/csc1.png",
     "categories": [
       "Casacas",
       "Jeans",
@@ -907,19 +907,6 @@
     "url": "/productos/conjunto-oso-algodon-rayado.html"
   },
   {
-    "id": 1780409906826,
-    "slug": "conjunto-osito-viajero",
-    "name": "Conjunto osito viajero",
-    "price": 48,
-    "image": "https://s.alicdn.com/@sc04/kf/H24d1ae60ee14428899fed224346571bft.jpg?avif=close&webp=close",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niño"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-osito-viajero.html"
-  },
-  {
     "id": 1780375497375,
     "slug": "dino-3d-green",
     "name": "Dino 3D Green",
@@ -947,6 +934,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-dino-safari-dos-piezas.html"
+  },
+  {
+    "id": 1780409906826,
+    "slug": "conjunto-osito-viajero-2-piezas",
+    "name": "Conjunto osito viajero 2 piezas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7g8DAIE0X0TFcHP4rfeoq2J-frLUia2J-53DbfbQKriijLXKmTp26evF0n3lD3eG5khEOdUZLk74MaainV2fVBJ2LkNTGvqhKmRiyz_qzTnnenXdcpZWD2cEnJaJfOOYSFwDaeehJUiDZRs5gvG5CAmtV-OlOakv6vd1V48U1LuWohYWcG4ROXKY8oYpD/s1600/dog2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-osito-viajero-2-piezas.html"
   },
   {
     "id": 1781838740613,
@@ -1020,10 +1021,12 @@
     "slug": "conjunto-3-piezas-boy-confort",
     "name": "Conjunto 3 piezas Boy confort",
     "price": 45,
-    "image": "https://img.kwcdn.com/thumbnail/s/765c2cdc35264fc5b7fec61f97c44490_fd3385696998.jpg",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwESf7R0o_drq_27Ya1z_zwWnW5cHOE7aFElhDoMIqmRRGXGombTsULtvuon7Pq2PJmbrPjZNJUjCQOZC_ZITbkeJqYzdnjeR9yS4gCSTeH15x5_ExqT9LWx4lfpzZH8SEVWSzcoK5POD1b-xekvNK_Ok3p0yNLpTp0ryXp16598TibvfQ9vT0vgwk-JeF/s1600/pl2.png",
     "categories": [
       "Conjunto Pantalon",
-      "Niño"
+      "Niño",
+      "Conjunto 3 piezas",
+      "Chalecos"
     ],
     "inStock": true,
     "url": "/productos/conjunto-3-piezas-boy-confort.html"
@@ -1044,16 +1047,17 @@
   },
   {
     "id": 1780414311596,
-    "slug": "conjunto-brown-dog",
-    "name": "Conjunto Brown Dog",
+    "slug": "conjunto-brown-dog-2-piezas",
+    "name": "Conjunto Brown Dog 2 piezas",
     "price": 42,
-    "image": "https://s.alicdn.com/@sc04/kf/Ha51c99f7557b45618a838e8b9c7faf2bp.jpg?avif=close&webp=close",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIcCyJwzxVlMGxF8NvYKnCwF1DaY8304WnZV52PtaIrxllpHb09Tza8Y85_zcf0pLgDKOvbNDVS5e82o2pZi5eCU1XA1-iIoWkWeSsWyie8XX1DGw_DP6u580bSGJPB8POMEEQ2YZsk8f2xm_OiGG5jgipykuK9W7BEyz5rt-OZYqXxKncnnSFZONXjNrp/s1600/pm1.png",
     "categories": [
       "Niño",
-      "Conjunto Pantalon"
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-brown-dog.html"
+    "url": "/productos/conjunto-brown-dog-2-piezas.html"
   },
   {
     "id": 1780414600403,
@@ -2256,6 +2260,21 @@
     "url": "/productos/purple-cotton-bunny-2-piezas.html"
   },
   {
+    "id": 1780372374344,
+    "slug": "conjunto-mallita-fresa-3-piezas",
+    "name": "Conjunto Mallita Fresa 3 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbiDy45npCiSaEoZH6AG9ExP3jSQv-Jeo5nUl0p_dApJM1RzE-RkzWhnMlMCVYEen8UOpN5qIi3R2PLBBVN0upC-1Lq34ReDUTkmDQsj4Dae8dKd0osgW8sQx_ORe-m8wXfVSjoB9Y3sxx1_JNHNjSQ-Ssl9Vv96df8MaPDEoO_HgLUFHAwD5_5vb6SU9q/s1600/fre1.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Jeans",
+      "Niña",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": false,
+    "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
+  },
+  {
     "id": 1782710599283,
     "slug": "vestido-ruby",
     "name": "Vestido Ruby",
@@ -2281,20 +2300,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-princesa-lavanda.html"
-  },
-  {
-    "id": 1780372374344,
-    "slug": "conjunto-mallita-fresa",
-    "name": "Conjunto Mallita Fresa",
-    "price": 38,
-    "image": "https://s.alicdn.com/@sc04/kf/H3beb87e587cc46f293150360ca815aade.png?avif=close&webp=close",
-    "categories": [
-      "Conjunto Pantalon",
-      "Jeans",
-      "Niña"
-    ],
-    "inStock": false,
-    "url": "/productos/conjunto-mallita-fresa.html"
   },
   {
     "id": 1780411457176,
