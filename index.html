@@ -1523,6 +1523,23 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 }
 .product-ribbon{position:absolute;top:12px;left:12px;font-size:10px;font-weight:800;padding:4px 11px;border-radius:20px;letter-spacing:0.5px;z-index:5;}
 .product-ribbons{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:5px;z-index:5;}
+.viewers-badge{position:absolute;bottom:10px;left:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(30,20,40,0.72);backdrop-filter:blur(3px);color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:99px;z-index:6;letter-spacing:.2px;line-height:1;white-space:nowrap;}
+.viewers-badge .vb-dot{width:6px;height:6px;border-radius:50%;background:#5fd86a;flex-shrink:0;animation:vbPulse 1.6s ease-in-out infinite;}
+.viewers-badge strong{color:#ffd6e6;}
+@keyframes vbPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(.7);}}
+.viewers-badge.vb-inline{position:static;display:inline-flex;background:var(--peach-light);color:var(--peach);margin:8px 0;}
+.viewers-badge.vb-inline strong{color:var(--rose-dark);}
+.viewers-badge.vb-inline .vb-dot{background:#3fae4a;}
+body.dark-mode .viewers-badge.vb-inline{background:rgba(179,157,200,0.18);color:#e7d9f3;}
+body.dark-mode .viewers-badge.vb-inline strong{color:#ffd6e6;}
+@media (max-width:768px){.viewers-badge{font-size:9.5px;padding:4px 8px;}}
+
+.offer-cd{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#a73759,#8A6FAA);color:#fff;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:99px;margin:6px 0;letter-spacing:.2px;line-height:1;white-space:nowrap;box-shadow:0 3px 10px rgba(167,55,89,0.25);}
+.offer-cd i{font-size:10px;}
+.offer-cd .offer-cd-time{font-variant-numeric:tabular-nums;}
+.offer-cd.offer-cd-card{position:absolute;bottom:10px;right:10px;z-index:6;margin:0;}
+.offer-cd.offer-cd-inline{display:flex;width:fit-content;}
+@media (max-width:768px){.offer-cd{font-size:9.5px;padding:4px 8px;}}
 .product-ribbons .product-badge,.product-ribbons .product-ribbon{position:relative;top:auto;left:auto;}
 
 /* Agotado */
@@ -8710,6 +8727,7 @@ function renderUpcomingCard(up) {
       ${badgeTop}
       ${badgeDays}
       ${imgHtml}
+      ${viewersBadgeHtml(up.id)}
       <div class="upcoming-img-glow" aria-hidden="true"></div>
     </div>
     <div class="upcoming-body">
@@ -10537,6 +10555,87 @@ function renderProducts() {
   bindWishlistButtons();
 }
 
+// ═══════════════════════════════════════════════════════
+//  SOCIAL PROOF: "X personas viendo este producto"
+// ═══════════════════════════════════════════════════════
+function getViewersCount(id) {
+  // Cambia cada ~4 minutos para sentirse "en vivo", pero es estable
+  // durante ese lapso y distinto para cada producto.
+  const bucket = Math.floor(Date.now() / (1000 * 60 * 4));
+  const seed = String(id) + '-' + bucket;
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return 2 + (hash % 13); // rango 2–14
+}
+
+function viewersBadgeHtml(id, variant) {
+  const n = getViewersCount(id);
+  const cls = variant === 'inline' ? 'viewers-badge vb-inline' : 'viewers-badge';
+  return `<div class="${cls}"><span class="vb-dot"></span><strong>${n}</strong> persona${n === 1 ? '' : 's'} viendo esto</div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  URGENCIA: countdown de "precio especial termina en..."
+// ═══════════════════════════════════════════════════════
+// Si el producto trae `offer_ends_at` (fecha real desde Supabase), se usa
+// esa fecha tal cual y al expirar simplemente se muestra "Oferta finalizada".
+// Si NO trae esa fecha, se simula una ventana de 2–6h guardada en
+// localStorage (persiste entre recargas) que se renueva automáticamente.
+function getOfferDeadline(productId) {
+  const key = `dz_offer_end_${productId}`;
+  let end = parseInt(localStorage.getItem(key) || '0', 10);
+  if (!end || end < Date.now()) {
+    const durationMs = (2 + Math.random() * 4) * 60 * 60 * 1000; // 2–6 horas
+    end = Date.now() + durationMs;
+    try { localStorage.setItem(key, String(end)); } catch (e) {}
+  }
+  return end;
+}
+
+function offerCountdownHtml(product, variant) {
+  const productId = product.id;
+  const realEnd = product.offer_ends_at ? new Date(product.offer_ends_at).getTime() : null;
+  const isReal = !!(realEnd && !isNaN(realEnd));
+  // Si la fecha real ya pasó, no mostramos el contador (la oferta ya terminó)
+  if (isReal && realEnd <= Date.now()) return '';
+  const end = isReal ? realEnd : getOfferDeadline(productId);
+  const cls = variant === 'card' ? 'offer-cd offer-cd-card' : 'offer-cd offer-cd-inline';
+  return `<div class="${cls}" id="offercd-${productId}" data-offer-id="${productId}" data-end="${end}" data-real="${isReal ? '1' : '0'}">
+    <i class="fas fa-bolt"></i> Oferta termina en <span class="offer-cd-time">--:--:--</span>
+  </div>`;
+}
+
+function ofPad(n) { return String(n).padStart(2, '0'); }
+
+function tickOfferCountdowns() {
+  document.querySelectorAll('.offer-cd[data-end]').forEach(el => {
+    let end = parseInt(el.dataset.end, 10);
+    const isReal = el.dataset.real === '1';
+    let diff = end - Date.now();
+    if (diff <= 0) {
+      if (isReal) {
+        // Fecha real expiró: avisar y dejar de contar (no se inventa una nueva)
+        const timeEl = el.querySelector('.offer-cd-time');
+        if (timeEl) timeEl.textContent = '00:00:00';
+        el.innerHTML = `<i class="fas fa-bolt"></i> Oferta finalizada`;
+        return;
+      }
+      // Ventana simulada: renovar automáticamente
+      end = getOfferDeadline(el.dataset.offerId);
+      el.dataset.end = String(end);
+      diff = end - Date.now();
+    }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const timeEl = el.querySelector('.offer-cd-time');
+    if (timeEl) timeEl.textContent = `${ofPad(h)}:${ofPad(m)}:${ofPad(s)}`;
+  });
+}
+setInterval(tickOfferCountdowns, 1000);
+
 function renderProductCard(product) {
   const sizes = product.sizes || [];
   const hasStock = sizes.some(s => s.stock > 0);
@@ -10621,6 +10720,8 @@ function renderProductCard(product) {
     ${ribbonsInImage}
     <div class="product-img-wrap">
       ${imgHtml}
+      ${!isAgotado ? viewersBadgeHtml(product.id) : ''}
+      ${!isAgotado && hasOffer ? offerCountdownHtml(product, 'card') : ''}
       ${isAgotado ? `<div class="agotado-overlay"><i class="fas fa-clock ago-icon"></i><span class="ago-text">Agotado</span><span class="ago-sub">Avísame cuando llegue</span></div>` : ''}
       ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
@@ -11100,6 +11201,9 @@ function openProductPage(productId) {
           </div>
           <span class="pp-stock-badge ${inStock?'in':'out'}">${inStock ? '✅ En stock' : '❌ Agotado'}</span>
         </div>
+
+        ${viewersBadgeHtml(product.id, 'inline')}
+        ${ppHasOffer ? offerCountdownHtml(product, 'inline') : ''}
 
         ${sizes.length ? `
         <div class="pp-section-label"><i class="fas fa-ruler" style="color:var(--rose);margin-right:5px;"></i> Selecciona tu talla</div>
