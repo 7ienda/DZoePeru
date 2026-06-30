@@ -4561,6 +4561,7 @@ async function promoteUpcomingAdmin(id) {
   const { data: up } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
   if (!up) return;
 
+  const nowPromote = new Date().toISOString();
   const productData = {
     id: Date.now(),
     name: up.name,
@@ -4572,7 +4573,8 @@ async function promoteUpcomingAdmin(id) {
     categories: up.categories || [],
     sizes: (up.sizes||[]).map(s => ({ size:s.size, price:s.price, cost:s.cost||0, stock:s.stock||0 })),
     is_new: true,
-    created_at: new Date().toISOString()
+    created_at: nowPromote,
+    stock_updated_at: nowPromote
   };
 
   const { error: ie } = await supabaseClient.from('products').insert([productData]);
