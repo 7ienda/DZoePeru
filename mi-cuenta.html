@@ -3689,6 +3689,7 @@ function productCardHtml(p) {
       <div class="product-footer">
         <div class="product-price">S/ ${minPrice.toFixed(2)}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="icon-btn" style="background:#ede9fe;color:#7c3aed;" onclick="markAsNewArrival(${p.id})" title="Marcar como nuevo ingreso"><i class="fas fa-arrow-up-from-bracket"></i></button>
           <button class="icon-btn" style="background:var(--green-light);color:var(--green);" onclick="openManualSale(${p.id})" title="Registrar venta"><i class="fas fa-cash-register"></i></button>
           <button class="icon-btn" style="background:var(--orange-light);color:var(--orange);" onclick="openOfferModal(${p.id})" title="Poner en oferta"><i class="fas fa-tag"></i></button>
           <button class="icon-btn" style="background:var(--sky-light);color:var(--sky);" onclick="duplicateProduct(${p.id})" title="Duplicar"><i class="fas fa-copy"></i></button>
@@ -4219,6 +4220,19 @@ function editProduct(id) {
   }, 150);
 }
 
+async function markAsNewArrival(id) {
+  const idx = products.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const now = new Date().toISOString();
+  products[idx].stock_updated_at = now;
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('products').update({ stock_updated_at: now }).eq('id', id);
+    if (error) { showAlert('Error: ' + error.message, 'error'); return; }
+  }
+  showAlert('📦 Producto marcado como nuevo ingreso ✅');
+  filterInventory();
+}
+
 async function saveProduct() {
   const name = document.getElementById('product-name').value.trim();
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
@@ -4241,6 +4255,14 @@ async function saveProduct() {
   // 📌 FECHA EN EL FORMATO CORRECTO PARA timestamptz
   const now = new Date().toISOString();
 
+  // 🆕 Detectar si el stock total aumentó respecto al producto existente.
+  // Si subió (ej: 1 → 2, o 0 → 1), se marca como "nuevo ingreso" y sube al inicio.
+  // Si bajó o quedó igual (ej: por una venta), NO se toca la fecha de stock.
+  const prevStockTotal = (existingProduct?.sizes || []).reduce((a, s) => a + (Number(s.stock) || 0), 0);
+  const newStockTotal  = finalSizes.reduce((a, s) => a + (Number(s.stock) || 0), 0);
+  const stockIncreased = !existingProduct || newStockTotal > prevStockTotal;
+  const stockUpdatedAt = stockIncreased ? now : (existingProduct?.stock_updated_at || existingProduct?.created_at || now);
+
   // 🔽 CONSTRUYE EL OBJETO CON TODOS LOS CAMPOS
   const productData = {
     id: productId,
@@ -4253,7 +4275,7 @@ async function saveProduct() {
     categories: selectedCategories.length ? selectedCategories : [],
     sizes: finalSizes,
     created_at: existingProduct?.created_at || now,
-    stock_updated_at: now  // Siempre se actualiza al guardar
+    stock_updated_at: stockUpdatedAt
   };
 
   // ⚠️ SI ALGÚN CAMPO NO EXISTE EN TU TABLA, ELIMÍNALO AQUÍ:
