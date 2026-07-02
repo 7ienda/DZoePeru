@@ -855,6 +855,21 @@
     "url": "/productos/enterizo-conejita-bb.html"
   },
   {
+    "id": 1780370345736,
+    "slug": "overol-senor-gansito-2-piezas",
+    "name": "Overol Señor Gansito 2 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiza-Jv6CqC6yViIu0CUpTa9_8UHtLN599NrRMGyEMKd8PeD_TodRxWKOASosEqlvG44UoXxRh6abrCpWPOpYaGRvO2KNelIUb3G0HmnyHWbloS0Upkad8yAJM85mszgSmKyHe5xF3qXJE_RwiUMoWzIu5_MK95pO7Xn63zSSAi2UvwXnVyKoVZPZdWsX3T/s1600/gr2.png",
+    "categories": [
+      "Overoles",
+      "Niño",
+      "Conjunto 2 piezas",
+      "Conjunto Overol"
+    ],
+    "inStock": true,
+    "url": "/productos/overol-senor-gansito-2-piezas.html"
+  },
+  {
     "id": 1780409705394,
     "slug": "modelo-osito-cargo",
     "name": "Modelo Osito Cargo",
@@ -885,28 +900,15 @@
     "slug": "conjunto-rosa-crochet",
     "name": "Conjunto Rosa Crochet",
     "price": 38,
-    "image": "https://img.kwcdn.com/product/fancy/1a6d1b6b-2aa8-4d76-be81-60c24661e758.jpg?imageMogr2/auto-orient|imageView2/2/w/800/q/70/format/webp",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDSvYbOB8pmR01-05nRFM7oOkzC6zyUYHboqj6Jv4FR9hXIUbDIBq2JjEmAujJq3ZZFUcT6uWVz48l1WTAGrbib7uKnhFBwUQuROXbAMkh1L5tebEioFxbZZYMdAcAg6LU9ZX0Rn30rtsvXpOF3LJIPec9rLPcTtrGTcwq2trJhG6jgfBO2muHmZCaKeG-/s1600/fl1.png",
     "categories": [
       "Jeans",
       "Conjunto Pantalon",
-      "Niña"
+      "Niña",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
     "url": "/productos/conjunto-rosa-crochet.html"
-  },
-  {
-    "id": 1780370345736,
-    "slug": "overol-senor-gansito",
-    "name": "Overol Señor Gansito",
-    "price": 42,
-    "image": "https://s.alicdn.com/@sc04/kf/He5125ccb5efe42ffae45cbf4cfcc627bn.jpg?avif=close&webp=close",
-    "categories": [
-      "Overoles",
-      "Niño",
-      "Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/overol-senor-gansito.html"
   },
   {
     "id": 1780372958655,
@@ -1448,19 +1450,6 @@
     "url": "/productos/overol-dulce-graffiti-2-piezas.html"
   },
   {
-    "id": 1780410432585,
-    "slug": "conjunto-conejita-rose",
-    "name": "Conjunto conejita rose",
-    "price": 55,
-    "image": "https://img.kwcdn.com/product/fancy/85bc8d2f-17f6-4d4c-be7a-bbea166d7aa3.jpg?imageMogr2/auto-orient|imageView2/2/w/800/q/70/format/webp",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-conejita-rose.html"
-  },
-  {
     "id": 1781535735033,
     "slug": "conjuntoplomito-con-forrito-peluche-2-piezas",
     "name": "ConjuntoPlomito con forrito peluche 2 piezas",
@@ -1473,6 +1462,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjuntoplomito-con-forrito-peluche-2-piezas.html"
+  },
+  {
+    "id": 1780410432585,
+    "slug": "conjunto-conejita-rose-3-piezas",
+    "name": "Conjunto conejita rose 3 piezas",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6jlwzaW7jB_h6dt5WhPyZGJqJy7FeqWsWauR-m-ypV3Aj7wyJJRe5IRjzKiO50pYrHyiZLNmP6TvVlljehyS6M5LtOmHK-22mxgFabDFgj2T0jlCs9F-s2QFjtIP4BLsC9Sp8A0dVgeJghmlMlGvnpPpQeFAyl1S8CtrSQ-ge69G65oI9moxpx9dZrF8k/s1600/cnr2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niña",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-conejita-rose-3-piezas.html"
   },
   {
     "id": 1782694097408,
@@ -1631,17 +1634,18 @@
   },
   {
     "id": 1780200459448,
-    "slug": "conjunto-almu-color-rosa",
-    "name": "Conjunto Almu color rosa",
+    "slug": "conjunto-almu-color-rosa-2-piezas",
+    "name": "Conjunto Almu color rosa 2 piezas",
     "price": 50,
-    "image": "https://img.kwcdn.com/product/fancy/70f7ab85-e4a4-42bd-b589-de031255f5c7.jpg?imageView2/2/w/800/q/70/format/avif",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHAO1HyHa-T6sK6wtqlg2WUuH3qkaI1zodf8Tlwi0TYvLacAga8OLCg0wPMyb-p26nvt1SIBErxZ2NzmM4GMH5XnTNXwwvL_1MpT7p31kJOWy4l4oPJWX5-kyTbndiwgeTKR4a0wlIJJldv5lZ-vvyDeM3yA60sARRuUACLGHqg6L6MBsTtYcAc20Yczqm/s1600/dr2.png",
     "categories": [
       "Niña",
       "Conjunto Hilo",
-      "Conjunto Pantalon"
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-almu-color-rosa.html"
+    "url": "/productos/conjunto-almu-color-rosa-2-piezas.html"
   },
   {
     "id": 1782526384382,
