@@ -1706,19 +1706,6 @@
     "url": "/productos/conjunto-osito-deportivo-2-piezas.html"
   },
   {
-    "id": 1781884149855,
-    "slug": "abrigo-osita-de-nieve",
-    "name": "Abrigo Osita de nieve",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-kYVJ6U4SWAFOYWqoQD91cYOf_MIkUVL-yvLA_sLAGOCao3CQQ7qCY0GDRAlGWd64QbukQuSkTEO8DvJ9rfNlX8n2241m5Tfl-oVB3C1-P5_-giBQivbn82vu_czZuIWnO9wgmdqIagbz8eutcA3MRB0zOxuQalvD-Xdj5xHa9aHaPrnl6cpSGVCZjRA/s16000/ds1.png",
-    "categories": [
-      "Abrigos",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/abrigo-osita-de-nieve.html"
-  },
-  {
     "id": 1782315951506,
     "slug": "conjunto-lenadorcito-2-piezas",
     "name": "Conjunto Leñadorcito 2 piezas",
@@ -2420,6 +2407,19 @@
     ],
     "inStock": true,
     "url": "/productos/casaca-capucha-doble-capa-unicornio.html"
+  },
+  {
+    "id": 1781884149855,
+    "slug": "abrigo-osita-de-nieve",
+    "name": "Abrigo Osita de nieve",
+    "price": 56,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-kYVJ6U4SWAFOYWqoQD91cYOf_MIkUVL-yvLA_sLAGOCao3CQQ7qCY0GDRAlGWd64QbukQuSkTEO8DvJ9rfNlX8n2241m5Tfl-oVB3C1-P5_-giBQivbn82vu_czZuIWnO9wgmdqIagbz8eutcA3MRB0zOxuQalvD-Xdj5xHa9aHaPrnl6cpSGVCZjRA/s16000/ds1.png",
+    "categories": [
+      "Abrigos",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/abrigo-osita-de-nieve.html"
   },
   {
     "id": 1780432567040,
