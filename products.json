@@ -112,6 +112,21 @@
     "url": "/productos/conjunto-paris-verde.html"
   },
   {
+    "id": 1783126620396,
+    "slug": "conjunto-sport-blue-2-piezas",
+    "name": "Conjunto sport blue 2 piezas",
+    "price": 30,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5dzZIDPxVBcjy6SLCs6CIbEG2bXa634PRye1dZufQ0z7CcXS0wP4HTO_v6wvLhv6Jb2Lk6hb7ZPUfIYl0cgHSy6vYuwm0htWozZM7q4W29KktBXrGMPU15GljfzyWjPkZ99jZl3T-oy-tQeFI_QoD1p5YR0OfdTnjG1tApBp8PFejDepLUO2R9rbG5OxS/s1600/cjj2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Niño",
+      "Shorts",
+      "Conjunto Short"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-sport-blue-2-piezas.html"
+  },
+  {
     "id": 1780351237888,
     "slug": "chaqueta-jeans-forro-oso-polar-rosado",
     "name": "Chaqueta Jeans Forro Oso Polar rosado",
@@ -225,6 +240,20 @@
     "url": "/productos/baby-girl-floral.html"
   },
   {
+    "id": 1783126725145,
+    "slug": "conjunto-felpa-floral-2-piezas",
+    "name": "Conjunto Felpa Floral 2 piezas",
+    "price": 30,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgWha1rWtWGrshXQG-yGYGwJIdI_g9n_Lm22IwbxvNH7R92WekAkekalGI3WoR-yhZOdnkLhYU5vg_Dy0W0lTo6hF4lXvH-8EDlzlZhpHBCrw_RyF-vMeIrTdiw22cjdXWVyBMFksTatxhA884lfjcK7EckYqO7fKLSMt-acXYMD6wI1sXD756ncc7km9RQ/s1600/ffe2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Bebita",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-felpa-floral-2-piezas.html"
+  },
+  {
     "id": 1781882776830,
     "slug": "conjunto-carmin-3-piezas",
     "name": "Conjunto Carmin 3 Piezas",
@@ -281,6 +310,20 @@
     ],
     "inStock": true,
     "url": "/productos/vestido-con-chaqueta-jean-conjunto-2-piezas.html"
+  },
+  {
+    "id": 1783126798487,
+    "slug": "conjunto-felta-estrellita-2-piezas",
+    "name": "Conjunto Felta estrellita 2 piezas",
+    "price": 30,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi1kbKTKUQIg7t0HDseE-d8vmPxqsxWJRXTm9NeM1ASwllNIX_VQmqIx9owphYbJKcuGoIVVBkJ2fjpD7QVkf13H_OMSS7FmtNsdyBM4m2e6IoSnBVPnw3xqk5ZzIcwFMS9mvzhLg53aOYzXo7AbDp94FM-iYvEQT5UFm_F1Ps_333M9FpHSzCugSaN5q_N/s1600/ccd2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-felta-estrellita-2-piezas.html"
   },
   {
     "id": 1780348768766,
@@ -348,6 +391,21 @@
     ],
     "inStock": true,
     "url": "/productos/polo-sueter-a-rayas.html"
+  },
+  {
+    "id": 1783128291827,
+    "slug": "conjunto-europeo-2-piezas",
+    "name": "Conjunto europeo 2 piezas",
+    "price": 30,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhMZQqiM8YQ_13bz6_7wu2r1fQJCArWSY2PBOw8BwWbfnxKTZjFHCwp_hZxRhZHB1M_KXLl9M_RLPZGYsoZ1NVto6CSCi5Vuqnv941WZ8CVvVTyHV-mUWyqAMxcMXx8oyNcoAyLagTPemB3f29ZdVTRQfFPTUFSaU0-P-SCVtshF5049o2CJAdsKbHkCrjw/s1600/caf2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niño",
+      "Bebito"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-europeo-2-piezas.html"
   },
   {
     "id": 1780325879921,
@@ -1076,6 +1134,20 @@
     "url": "/productos/vestido-bunny-bb-3-piezas.html"
   },
   {
+    "id": 1783128539037,
+    "slug": "conjunto-catarina-rosa",
+    "name": "Conjunto catarina rosa",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjitCGFK3__STu5NaY0wXiil3A_kNBpvAODhxRmUpfaC4ibKGQtCHgHDJI-lupBubjwU0Aewy0_hkKKtwZMGNSNgaH5KvVGPFqRr0TEJR45iq8WklF1MVHzJS_2YLb2ypDy3gy94tdQnPCZFurQppYerlcxaWzosI3QwZ2VKN-mYvAmh19NZ5UDQq5l352B/s1600/f1p.png",
+    "categories": [
+      "Niña",
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-catarina-rosa.html"
+  },
+  {
     "id": 1782835363051,
     "slug": "conjunto-verano-dino-3d-2-piezas",
     "name": "Conjunto verano Dino 3D 2 piezas",
@@ -1296,6 +1368,21 @@
     "url": "/productos/vestido-pequena-dalia-choc.html"
   },
   {
+    "id": 1782600736905,
+    "slug": "conjunto-rosa-de-flores-2-piezas",
+    "name": "Conjunto rosa de flores 2 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas",
+      "Niña",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-rosa-de-flores-2-piezas.html"
+  },
+  {
     "id": 1781841935560,
     "slug": "conjunto-lady-cristal",
     "name": "Conjunto Lady Cristal",
@@ -1308,21 +1395,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-lady-cristal.html"
-  },
-  {
-    "id": 1782600736905,
-    "slug": "conjunto-rosa-de-flores-2-piezas",
-    "name": "Conjunto rosa de flores 2 piezas",
-    "price": 46,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Conjunto 2 piezas",
-      "Niña",
-      "Bebita"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-rosa-de-flores-2-piezas.html"
   },
   {
     "id": 1780413420205,
@@ -2132,7 +2204,7 @@
     "id": 1782835311475,
     "slug": "conjunto-cuadritos-formal-2-piezas",
     "name": "Conjunto cuadritos Formal 2 piezas",
-    "price": 35,
+    "price": 38,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrTlJS1S07LFtbqQkBcNPq9VpnJpP-DhIvMtOCscAln0S_3g8-0AHLmAEgrB9oM3fU9Mz_Scc3hAsrrthN8b90EVL1VBVwrq-cX53Ju0OgzZtsL8LFX5QMc9-w7HzFpGmPCDW35jWanvWCEf51dqDac3H9w0vwn3CIss1u_S9Otg3HwIO7V1pWnO7RtAAX/s16000/el1.png",
     "categories": [
       "Conjunto 2 piezas",
@@ -2295,34 +2367,6 @@
     "url": "/productos/casaca-pink-forrito-osito-bear.html"
   },
   {
-    "id": 1782835308615,
-    "slug": "conjunto-chicago-black-2-piezas",
-    "name": "Conjunto Chicago Black 2 piezas",
-    "price": 38,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPUO7qKC_6QQM4s98lXSIOCb7pSkgNfnboFfXxq1M6wPEE6WIUmb0sRApTpRWXrTvf5OqpELK_tcqBjj_KpQNkNZTPjJ6l2AFUfHwD8jypF0OyEJAwlxZozY_NSXIVwEcmbCb5UGqmcM3o5AqUWwkDznO_Bxms7lRonCvVkg9fwyEFFd6XbVVCrXwB25dt/s16000/nn2.png",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Nino"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-chicago-black-2-piezas.html"
-  },
-  {
-    "id": 1782835332310,
-    "slug": "conjunto-cat-style-2-piezas",
-    "name": "Conjunto Cat style 2 piezas",
-    "price": 35,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzY0BqL5Cxq87O6wQ4CGsj19W_f_fVhY2D1hpsAUrRPlWscRbad-X7LnvEVnJU7ueHdruSdibqwQ1UVFF8fD-ej8NR2q6wQH7pmMm1EHCLr-LopdGqvjqZci6R4KUEOkHHoBsDaxuGZOrGTmmFF-Y89qwCxAPRo-MfF6rotcdsOLJtXmopWMvIeHzU7WiT/s16000/gat2.png",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Nina"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-cat-style-2-piezas.html"
-  },
-  {
     "id": 1780086948379,
     "slug": "conjunto-rosa-3-piezas",
     "name": "Conjunto rosa 3 piezas",
@@ -2338,6 +2382,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-rosa-3-piezas.html"
+  },
+  {
+    "id": 1782835332310,
+    "slug": "conjunto-cat-style-2-piezas",
+    "name": "Conjunto Cat style 2 piezas",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEifT3FnSsdwGX4wS8N3NWX66dvuBAPUAcZki5WrcALQGV5sRc1QmXdHPVH1OxlXol1xtm06lORS9_ewec_eTeWuH3qv6xXWTM0M6tZX0BCINeFruUwM812H2uOG_rEZpLkZrfMoi7p20G9j4RLTMC9A2TmNziwKSGLKRY8-1ZZa1_1CEiOAPp04IxpmmJcl/s1600/gati1.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Nina"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-cat-style-2-piezas.html"
   },
   {
     "id": 1781815034424,
@@ -2518,6 +2576,21 @@
     "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
   },
   {
+    "id": 1783126465387,
+    "slug": "conjunto-veranito-floral-2-piezas",
+    "name": "Conjunto Veranito floral 2 piezas",
+    "price": 30,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEifbkzwzJiFEJlJmD_ij_I-2jaQsQ9kg-trUeFRzZVoAN9bOrmsuMoJD9bj_zj-cKGowQBR65TpXD-K1uPqEaqXcWNJHkbkgUumKbeRttTgA1TFRE5aBTTI5udwCcNSx4CgnqE13HLcJXWfU7BqlfIIJdDKwaSG7Fnn1lKBeXfFHyUhh-Gno7clgbjI1kpq/s1600/vt2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Short",
+      "Shorts",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-veranito-floral-2-piezas.html"
+  },
+  {
     "id": 1782710599283,
     "slug": "vestido-ruby",
     "name": "Vestido Ruby",
@@ -2588,5 +2661,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-osito-polar-jean.html"
+  },
+  {
+    "id": 1782835308615,
+    "slug": "conjunto-chicago-black-2-piezas",
+    "name": "Conjunto Chicago Black 2 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPUO7qKC_6QQM4s98lXSIOCb7pSkgNfnboFfXxq1M6wPEE6WIUmb0sRApTpRWXrTvf5OqpELK_tcqBjj_KpQNkNZTPjJ6l2AFUfHwD8jypF0OyEJAwlxZozY_NSXIVwEcmbCb5UGqmcM3o5AqUWwkDznO_Bxms7lRonCvVkg9fwyEFFd6XbVVCrXwB25dt/s16000/nn2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Nino"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-chicago-black-2-piezas.html"
   }
 ]
