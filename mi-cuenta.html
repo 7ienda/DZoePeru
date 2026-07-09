@@ -649,11 +649,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       <p>Panel Administrador — Acceso restringido</p>
     </div>
     <div class="login-error" id="login-error">
-      <i class="fas fa-exclamation-circle"></i> <span id="login-error-msg">Usuario o contraseña incorrectos</span>
+      <i class="fas fa-exclamation-circle"></i> <span id="login-error-msg">Correo o contraseña incorrectos</span>
     </div>
-    <label class="login-label">Usuario</label>
+    <label class="login-label">Correo</label>
     <div class="login-input-wrap">
-      <input type="text" class="login-input" id="login-user" placeholder="dzoe_admin" autocomplete="username">
+      <input type="email" class="login-input" id="login-user" placeholder="tu@correo.com" autocomplete="username">
       <i class="fas fa-user login-input-icon"></i>
     </div>
     <label class="login-label">Contraseña</label>
@@ -661,7 +661,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
       <input type="password" class="login-input" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
       <i class="fas fa-eye login-input-icon" id="toggle-pass" onclick="togglePassVisible()" style="cursor:pointer;"></i>
     </div>
-    <button class="login-btn" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
+    <button class="login-btn" id="login-submit-btn" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
   </div>
 </div>
 
@@ -2191,9 +2191,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line2);">
             <div style="font-weight:700;margin-bottom:14px;">🔐 Credenciales de acceso</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-              <div class="form-group"><label>Usuario admin</label><input type="text" id="settings-user" placeholder="dzoe_admin"></div>
-              <div class="form-group"><label>Contraseña</label><input type="password" id="settings-pass" placeholder="Nueva contraseña (dejar vacío = no cambiar)"></div>
+              <div class="form-group"><label>Correo de acceso</label><input type="email" id="settings-user" disabled style="opacity:.65;"></div>
+              <div class="form-group"><label>Nueva contraseña</label><input type="password" id="settings-pass" placeholder="Dejar vacío = no cambiar" autocomplete="new-password"></div>
             </div>
+            <div style="margin-top:10px;"><button class="btn btn-secondary" onclick="changeAdminPassword()"><i class="fas fa-key"></i> Cambiar contraseña</button></div>
           </div>
           <div style="margin-top:24px;"><button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
         </div>
@@ -3242,32 +3243,61 @@ console.log(supabaseClient ? '✅ Supabase inicializado' : '❌ Supabase no inic
 // FUNCIONES GLOBALES - LOGIN, NAVEGACIÓN Y UTILITARIAS
 // ============================================
 
-// ─── LOGIN ──────────────────────────────────
-const DEFAULT_USER = 'dzoe_admin';
-const DEFAULT_PASS = 'dzoe2024';
-
-function doLogin() {
+// ─── LOGIN (Supabase Auth real) ──────────────────────────────
+async function doLogin() {
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
-  const stored = JSON.parse(localStorage.getItem('dzoe_credentials') || '{}');
-  const validUser = stored.user || DEFAULT_USER;
-  const validPass = stored.pass || DEFAULT_PASS;
-  
-  if (u === validUser && p === validPass) {
-    localStorage.setItem('dzoe_session', JSON.stringify({ user: u, ts: Date.now() }));
-    document.getElementById('session-user').textContent = u;
+  const btn = document.getElementById('login-submit-btn');
+  const err = document.getElementById('login-error');
+  err.classList.remove('show');
+
+  if (!u || !p) {
+    document.getElementById('login-error-msg').textContent = 'Ingresa tu correo y contraseña.';
+    err.classList.add('show');
+    return;
+  }
+  if (!supabaseClient) {
+    document.getElementById('login-error-msg').textContent = 'No hay conexión con el servidor. Intenta de nuevo.';
+    err.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email: u, password: p });
+    if (error) throw error;
+
+    // Verificar que este usuario esté en la tabla admins (no cualquier cuenta autenticada)
+    const { data: adminRow, error: adminErr } = await supabaseClient
+      .from('admins')
+      .select('user_id')
+      .eq('user_id', data.user.id)
+      .maybeSingle();
+
+    if (adminErr || !adminRow) {
+      await supabaseClient.auth.signOut();
+      throw new Error('Esta cuenta no tiene permisos de administrador.');
+    }
+
+    document.getElementById('session-user').textContent = data.user.email;
     const screen = document.getElementById('login-screen');
     screen.classList.add('hidden');
     document.getElementById('main-app').style.display = 'block';
     setTimeout(() => screen.remove(), 500);
     loadAllData().then(() => goToSection('dashboard-section'));
-  } else {
-    const err = document.getElementById('login-error');
+  } catch (e) {
+    document.getElementById('login-error-msg').textContent = e.message.includes('Invalid')
+      ? 'Correo o contraseña incorrectos.'
+      : e.message;
     err.classList.add('show');
-    document.getElementById('login-error-msg').textContent = 'Usuario o contraseña incorrectos.';
     document.getElementById('login-pass').value = '';
     document.getElementById('login-user').classList.add('shake');
     setTimeout(() => document.getElementById('login-user').classList.remove('shake'), 400);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel';
   }
 }
 
@@ -3283,22 +3313,33 @@ function togglePassVisible() {
   }
 }
 
-function checkSession() {
-  const session = JSON.parse(localStorage.getItem('dzoe_session') || '{}');
-  if (session.ts && (Date.now() - session.ts < 8 * 60 * 60 * 1000)) {
-    document.getElementById('session-user').textContent = session.user || 'Admin';
-    const screen = document.getElementById('login-screen');
-    screen.style.display = 'none';
-    document.getElementById('main-app').style.display = 'block';
-    loadAllData().then(() => goToSection('dashboard-section'));
-  }
+async function checkSession() {
+  if (!supabaseClient) return;
+  const { data } = await supabaseClient.auth.getSession();
+  const session = data?.session;
+  if (!session) return;
+
+  // Verificar admin también al recargar la página
+  const { data: adminRow } = await supabaseClient
+    .from('admins')
+    .select('user_id')
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  if (!adminRow) { await supabaseClient.auth.signOut(); return; }
+
+  document.getElementById('session-user').textContent = session.user.email || 'Admin';
+  const screen = document.getElementById('login-screen');
+  screen.style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  loadAllData().then(() => goToSection('dashboard-section'));
 }
 
 function logout() {
   if (confirm('¿Cerrar sesión?')) {
-    localStorage.removeItem('dzoe_session');
-    location.reload();
+    supabaseClient?.auth.signOut().then(() => location.reload());
   }
+
 }
 
 // ─── NAVEGACIÓN ─────────────────────────────
@@ -5096,23 +5137,33 @@ function removeSizeRow(i) { productSizes.splice(i,1); renderSizesList(); }
 // SETTINGS
 // ============================================
 function saveSettings() {
-  const u = document.getElementById('settings-user').value.trim();
-  const p = document.getElementById('settings-pass').value;
-  const stored = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
-  if (u) stored.user = u;
-  if (p) stored.pass = p;
-  localStorage.setItem('dzoe_credentials', JSON.stringify(stored));
   const settings = { whatsapp: document.getElementById('settings-whatsapp').value, email: document.getElementById('settings-email').value };
   localStorage.setItem('dzoe_settings', JSON.stringify(settings));
   showAlert('Configuración guardada ✅');
 }
 
-function loadSettings() {
+async function changeAdminPassword() {
+  const p = document.getElementById('settings-pass').value;
+  if (!p) { showAlert('Escribe una nueva contraseña primero'); return; }
+  if (p.length < 8) { showAlert('La contraseña debe tener al menos 8 caracteres'); return; }
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password: p });
+    if (error) throw error;
+    document.getElementById('settings-pass').value = '';
+    showAlert('✅ Contraseña actualizada');
+  } catch (e) {
+    showAlert('❌ ' + e.message);
+  }
+}
+
+async function loadSettings() {
   const settings = JSON.parse(localStorage.getItem('dzoe_settings')||'{}');
-  const creds = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
   if (document.getElementById('settings-whatsapp')) document.getElementById('settings-whatsapp').value = settings.whatsapp||'';
   if (document.getElementById('settings-email')) document.getElementById('settings-email').value = settings.email||'';
-  if (document.getElementById('settings-user')) document.getElementById('settings-user').value = creds.user||DEFAULT_USER;
+  if (document.getElementById('settings-user')) {
+    const { data } = await supabaseClient.auth.getSession();
+    document.getElementById('settings-user').value = data?.session?.user?.email || '';
+  }
 }
 
 // ============================================
@@ -5700,10 +5751,6 @@ function updateClock() {
 
 function openMobileSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); }
 function closeMobileSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); }
-
-function logout() {
-  if (confirm('¿Cerrar sesión?')) { localStorage.removeItem('dzoe_session'); location.reload(); }
-}
 
 // ============================================
 // CLOSE MODAL OUTSIDE CLICK
@@ -7492,32 +7539,6 @@ function getClientScore(cl) {
   if (cl.total >= 200 || cl.count >= 3) return {label:'Frecuente ⭐', color:'#c97010', bg:'#fef0c7'};
   if (cl.count === 1 && cl.lastDate && (Date.now()-cl.lastDate)>30*86400000) return {label:'Dormido 😴', color:'#8A80A8', bg:'#F3EEFA'};
   return {label:'Nuevo 🌱', color:'#1f9e6e', bg:'#d0f2e6'};
-}
-
-// SETTINGS MEJORADO
-const _origSaveSettings = typeof saveSettings !== 'undefined' ? saveSettings : null;
-function saveSettings() {
-  const u = document.getElementById('settings-user')?.value.trim();
-  const p = document.getElementById('settings-pass')?.value;
-  const stored = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
-  if (u) stored.user = u;
-  if (p) stored.pass = p;
-  localStorage.setItem('dzoe_credentials', JSON.stringify(stored));
-  const settings = {
-    whatsapp: document.getElementById('settings-whatsapp')?.value || '',
-    email: document.getElementById('settings-email')?.value || '',
-  };
-  localStorage.setItem('dzoe_settings', JSON.stringify(settings));
-  showAlert('✅ Configuración guardada');
-}
-
-// BACKUP rápido desde settings
-function loadSettings() {
-  const settings = JSON.parse(localStorage.getItem('dzoe_settings')||'{}');
-  const creds = JSON.parse(localStorage.getItem('dzoe_credentials')||'{}');
-  if (document.getElementById('settings-whatsapp')) document.getElementById('settings-whatsapp').value = settings.whatsapp||'';
-  if (document.getElementById('settings-email')) document.getElementById('settings-email').value = settings.email||'';
-  if (document.getElementById('settings-user')) document.getElementById('settings-user').value = creds.user||DEFAULT_USER;
 }
 
 // Hint Ctrl+K en topbar
