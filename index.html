@@ -8946,13 +8946,14 @@ async function loadTrustStats() {
 
   try {
     // 1. Total de pedidos → "Familias satisfechas"
+    //    (usa la vista segura, NO la tabla orders directamente)
     const { count: totalPedidos, error: e1 } = await supabaseClient
-      .from('orders')
+      .from('orders_public_stats')
       .select('*', { count: 'exact', head: true });
 
     // 2. Ciudades únicas con envío → contar destinos distintos
     const { data: destData, error: e2 } = await supabaseClient
-      .from('orders')
+      .from('orders_public_stats')
       .select('destination')
       .not('destination', 'is', null)
       .neq('destination', '');
