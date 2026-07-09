@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Cuenta | D'Zoe Perú</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Configuración Supabase (misma que index.html / mi-cuenta.html) -->
+<script>
+window.SUPABASE_CONFIG = {
+  URL: 'https://uxwmodnadidlsfwtshcq.supabase.co',
+  ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4d21vZG5hZGlkbHNmd3RzaGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNzY0MjAsImV4cCI6MjA5NTY1MjQyMH0.V3tNuv2iT9J2WbZbs7bzxf9j9RwF2r-Li4KO_1qQWRo'
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --rose:        #B39DC8;
+  --rose-dark:   #8A6FAA;
+  --rose-light:  #D8C8E8;
+  --rose-soft:   #F3EEFA;
+  --mint:        #7DC4A8;
+  --mint-light:  #B8E0D0;
+  --mint-soft:   #E8F7F2;
+  --peach:       #a73759;
+  --peach-light: #FBE8D0;
+  --cream:       #FBF7FF;
+  --text:        #2D2545;
+  --text-soft:   #5C4E7A;
+  --white:       #FFFFFF;
+  --border:      #DDD0EE;
+  --shadow-sm:   0 2px 12px rgba(140,100,190,0.10);
+  --shadow-md:   0 8px 28px rgba(140,100,190,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* ── Loading / Gate ── */
+#gate{position:fixed;inset:0;background:var(--cream);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:9999;}
+#gate i{font-size:36px;color:var(--rose);}
+#gate p{color:var(--text-soft);font-weight:700;}
+#gate.hidden{display:none;}
+
+/* ── Header ── */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-brand{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;color:var(--text);}
+.topbar-brand i{color:var(--rose);}
+.topbar-back{font-size:13px;font-weight:700;color:var(--text-soft);display:flex;align-items:center;gap:6px;transition:.2s;}
+.topbar-back:hover{color:var(--rose-dark);}
+
+/* ── Layout ── */
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px 60px;display:grid;grid-template-columns:230px 1fr;gap:24px;}
+@media (max-width:760px){.wrap{grid-template-columns:1fr;}}
+
+/* ── Sidebar ── */
+.sidebar{background:var(--white);border-radius:24px;padding:18px;box-shadow:var(--shadow-sm);height:fit-content;}
+.user-card{text-align:center;padding:14px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.user-avatar{width:56px;height:56px;border-radius:50%;background:var(--rose-soft);color:var(--rose-dark);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:0 auto 10px;}
+.user-name{font-weight:800;font-size:14px;}
+.user-email{font-size:11px;color:var(--text-soft);margin-top:2px;word-break:break-all;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;font-weight:700;font-size:13px;color:var(--text-soft);cursor:pointer;transition:.2s;margin-bottom:4px;}
+.nav-item i{width:18px;text-align:center;color:var(--rose);}
+.nav-item:hover{background:var(--rose-soft);color:var(--text);}
+.nav-item.active{background:var(--rose);color:white;}
+.nav-item.active i{color:white;}
+.nav-item.logout{color:var(--peach);margin-top:10px;border-top:1px solid var(--border);padding-top:14px;border-radius:0 0 14px 14px;}
+.nav-item.logout i{color:var(--peach);}
+
+/* ── Content ── */
+.panel{background:var(--white);border-radius:24px;padding:26px;box-shadow:var(--shadow-sm);min-height:400px;}
+.panel h2{font-family:'Baloo 2',cursive;font-size:22px;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.panel h2 i{color:var(--rose);}
+.panel-sub{font-size:12px;color:var(--text-soft);margin-bottom:22px;}
+.section{display:none;}
+.section.active{display:block;}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--text-soft);}
+.empty-state i{font-size:40px;color:var(--rose-light);display:block;margin-bottom:12px;}
+
+/* ── Cards genéricas para items ── */
+.item-row{display:flex;align-items:center;gap:14px;padding:14px;background:var(--rose-soft);border-radius:16px;margin-bottom:10px;border:1.5px solid var(--rose-light);flex-wrap:wrap;}
+.item-thumb{width:52px;height:52px;border-radius:12px;background:var(--rose-light);flex-shrink:0;object-fit:cover;}
+.item-info{flex:1;min-width:140px;}
+.item-name{font-weight:800;font-size:13px;}
+.item-meta{font-size:11.5px;color:var(--text-soft);margin-top:2px;}
+.item-price{font-weight:800;color:var(--rose-dark);font-size:14px;}
+.item-actions{display:flex;gap:6px;align-items:center;}
+.btn-mini{border:none;border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:.2s;white-space:nowrap;}
+.btn-mini.primary{background:var(--rose);color:white;}
+.btn-mini.primary:hover{background:var(--rose-dark);}
+.btn-mini.ghost{background:white;color:var(--text-soft);border:1px solid var(--border);}
+.btn-mini.ghost:hover{color:var(--peach);border-color:var(--peach);}
+
+/* ── Compras ── */
+.order-card{border:1.5px solid var(--border);border-radius:18px;padding:16px 18px;margin-bottom:14px;}
+.order-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.order-id{font-weight:800;font-size:13px;color:var(--text-soft);}
+.status-pill{font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;}
+.status-pending{background:var(--peach-light);color:var(--peach);}
+.status-confirmed{background:var(--mint-soft);color:#3d7a5c;}
+.order-items{font-size:12.5px;color:var(--text-soft);margin-bottom:8px;line-height:1.6;}
+.order-total{font-weight:800;font-size:14px;text-align:right;}
+
+/* ── Perfil ── */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:480px;}
+@media (max-width:520px){.profile-grid{grid-template-columns:1fr;}}
+.field label{font-size:11px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:block;}
+.field .val{background:var(--rose-soft);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div id="gate"><i class="fas fa-spinner fa-spin"></i><p>Cargando tu cuenta...</p></div>
+
+<div class="topbar">
+  <div class="topbar-brand"><i class="fas fa-heart"></i> D'Zoe Perú</div>
+  <a class="topbar-back" href="index.html"><i class="fas fa-arrow-left"></i> Volver a la tienda</a>
+</div>
+
+<div class="wrap" id="mainApp" style="display:none;">
+
+  <div class="sidebar">
+    <div class="user-card">
+      <div class="user-avatar" id="userInitial">?</div>
+      <div class="user-name" id="userName">—</div>
+      <div class="user-email" id="userEmail">—</div>
+    </div>
+    <div class="nav-item active" data-tab="favoritos"><i class="fas fa-star"></i> Favoritos</div>
+    <div class="nav-item" data-tab="deseos"><i class="fas fa-heart"></i> Lista de Deseos</div>
+    <div class="nav-item" data-tab="compras"><i class="fas fa-shopping-bag"></i> Mis Compras</div>
+    <div class="nav-item" data-tab="carrito"><i class="fas fa-shopping-cart"></i> Mi Carrito</div>
+    <div class="nav-item" data-tab="perfil"><i class="fas fa-user"></i> Mis Datos</div>
+    <div class="nav-item logout" id="logoutBtn"><i class="fas fa-arrow-right-from-bracket"></i> Cerrar sesión</div>
+  </div>
+
+  <div class="panel">
+
+    <div class="section active" id="tab-favoritos">
+      <h2><i class="fas fa-star"></i> Favoritos</h2>
+      <div class="panel-sub">Próximos ingresos que marcaste para no perderte cuando lleguen</div>
+      <div id="favoritosList"><div class="empty-state"><i class="fas fa-star"></i><p>Cargando...</p></div></div>
+    </div>
+
+    <div class="section" id="tab-deseos">
+      <h2><i class="fas fa-heart"></i> Lista de Deseos</h2>
+      <div class="panel-sub">Productos que guardaste para comprar más adelante</div>
+      <div id="deseosList"><div class="empty-state"><i class="fas fa-heart"></i><p>Cargando...</p></div></div>
+    </div>
+
+    <div class="section" id="tab-compras">
+      <h2><i class="fas fa-shopping-bag"></i> Mis Compras</h2>
+      <div class="panel-sub">Historial de tus pedidos realizados</div>
+      <div id="comprasList"><div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Cargando...</p></div></div>
+    </div>
+
+    <div class="section" id="tab-carrito">
+      <h2><i class="fas fa-shopping-cart"></i> Mi Carrito</h2>
+      <div class="panel-sub">Lo que tienes listo para comprar ahora mismo</div>
+      <div id="carritoList"><div class="empty-state"><i class="fas fa-shopping-cart"></i><p>Cargando...</p></div></div>
+    </div>
+
+    <div class="section" id="tab-perfil">
+      <h2><i class="fas fa-user"></i> Mis Datos</h2>
+      <div class="panel-sub">Información de tu cuenta</div>
+      <div class="profile-grid">
+        <div class="field"><label>Nombre</label><div class="val" id="profNombre">—</div></div>
+        <div class="field"><label>Correo</label><div class="val" id="profEmail">—</div></div>
+        <div class="field"><label>Miembro desde</label><div class="val" id="profDesde">—</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const supabaseUrl = window.SUPABASE_CONFIG?.URL;
+const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
+const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+
+let currentUser = null;
+
+function esc(s){ return String(s ?? '').replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+async function init() {
+  if (!supabaseClient) { window.location.href = 'index.html'; return; }
+  const { data } = await supabaseClient.auth.getSession();
+  if (!data?.session?.user) { window.location.href = 'index.html'; return; }
+  currentUser = data.session.user;
+
+  const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Cliente';
+  document.getElementById('userInitial').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userEmail').textContent = currentUser.email || '';
+  document.getElementById('profNombre').textContent = name;
+  document.getElementById('profEmail').textContent = currentUser.email || '—';
+  document.getElementById('profDesde').textContent = currentUser.created_at
+    ? new Date(currentUser.created_at).toLocaleDateString('es-PE', { year:'numeric', month:'long', day:'numeric' })
+    : '—';
+
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('mainApp').style.display = 'grid';
+
+  loadFavoritos();
+  loadDeseos();
+  loadCompras();
+  loadCarrito();
+}
+
+// ── Tabs ──
+document.querySelectorAll('.nav-item[data-tab]').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item[data-tab]').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + el.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (!confirm('¿Cerrar sesión?')) return;
+  await supabaseClient.auth.signOut();
+  window.location.href = 'index.html';
+});
+
+// ── Favoritos ──
+async function loadFavoritos() {
+  const box = document.getElementById('favoritosList');
+  try {
+    const { data, error } = await supabaseClient.from('favorites')
+      .select('product_id,product_name,created_at').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || !data.length) {
+      box.innerHTML = `<div class="empty-state"><i class="fas fa-star"></i><p>Aún no tienes favoritos guardados</p></div>`;
+      return;
+    }
+    box.innerHTML = data.map(f => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">${esc(f.product_name || 'Producto #' + f.product_id)}</div>
+          <div class="item-meta">Próximo ingreso</div>
+        </div>
+        <div class="item-actions">
+          <button class="btn-mini ghost" onclick="removeFavorito('${f.product_id}')"><i class="fas fa-times"></i> Quitar</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    box.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>No se pudieron cargar tus favoritos</p></div>`;
+  }
+}
+window.removeFavorito = async function(id) {
+  await supabaseClient.from('favorites').delete().eq('user_id', currentUser.id).eq('product_id', id);
+  loadFavoritos();
+};
+
+// ── Lista de Deseos ──
+async function loadDeseos() {
+  const box = document.getElementById('deseosList');
+  try {
+    const { data, error } = await supabaseClient.from('wishlist_items')
+      .select('product_id,name,price,created_at').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || !data.length) {
+      box.innerHTML = `<div class="empty-state"><i class="fas fa-heart"></i><p>Tu lista de deseos está vacía</p></div>`;
+      return;
+    }
+    box.innerHTML = data.map(w => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">${esc(w.name || 'Producto #' + w.product_id)}</div>
+          <div class="item-price">S/ ${parseFloat(w.price || 0).toFixed(2)}</div>
+        </div>
+        <div class="item-actions">
+          <button class="btn-mini ghost" onclick="removeDeseo('${w.product_id}')"><i class="fas fa-times"></i> Quitar</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    box.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>No se pudo cargar tu lista de deseos</p></div>`;
+  }
+}
+window.removeDeseo = async function(id) {
+  await supabaseClient.from('wishlist_items').delete().eq('user_id', currentUser.id).eq('product_id', id);
+  loadDeseos();
+};
+
+// ── Compras ──
+async function loadCompras() {
+  const box = document.getElementById('comprasList');
+  try {
+    const { data, error } = await supabaseClient.from('orders')
+      .select('id,items,total,status,created_at').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || !data.length) {
+      box.innerHTML = `<div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Todavía no tienes compras registradas</p></div>`;
+      return;
+    }
+    box.innerHTML = data.map(o => {
+      const fecha = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE', { year:'numeric', month:'short', day:'numeric' }) : '';
+      const items = Array.isArray(o.items) ? o.items : [];
+      const itemsHtml = items.map(it => `${esc(it.name)} ${it.size ? '(Talla ' + esc(it.size) + ')' : ''} x${it.qty || 1}`).join('<br>');
+      const statusClass = o.status === 'confirmed' ? 'status-confirmed' : 'status-pending';
+      const statusLabel = o.status === 'confirmed' ? 'Confirmado' : 'Pendiente';
+      return `
+      <div class="order-card">
+        <div class="order-head">
+          <span class="order-id">Pedido — ${fecha}</span>
+          <span class="status-pill ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="order-items">${itemsHtml || 'Sin detalle de productos'}</div>
+        <div class="order-total">Total: S/ ${parseFloat(o.total || 0).toFixed(2)}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    box.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>No se pudo cargar tu historial de compras</p></div>`;
+  }
+}
+
+// ── Carrito ──
+async function loadCarrito() {
+  const box = document.getElementById('carritoList');
+  try {
+    const { data, error } = await supabaseClient.from('cart_items')
+      .select('id,product_id,name,size,price,qty,image').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || !data.length) {
+      box.innerHTML = `<div class="empty-state"><i class="fas fa-shopping-cart"></i><p>Tu carrito está vacío</p><a href="index.html" class="btn-mini primary" style="display:inline-block;margin-top:10px;">Ir a la tienda</a></div>`;
+      return;
+    }
+    const total = data.reduce((s,i) => s + (parseFloat(i.price||0) * (i.qty||1)), 0);
+    box.innerHTML = data.map(i => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">${esc(i.name)}</div>
+          <div class="item-meta">${i.size ? 'Talla ' + esc(i.size) + ' · ' : ''}Cantidad: ${i.qty || 1}</div>
+        </div>
+        <div class="item-price">S/ ${(parseFloat(i.price||0) * (i.qty||1)).toFixed(2)}</div>
+      </div>`).join('') + `
+      <div style="text-align:right;margin-top:14px;font-weight:800;font-size:15px;">Total: S/ ${total.toFixed(2)}</div>
+      <div style="text-align:right;margin-top:10px;"><a href="index.html" class="btn-mini primary">Continuar compra en la tienda</a></div>`;
+  } catch(e) {
+    box.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>No se pudo cargar tu carrito</p></div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
