@@ -484,6 +484,20 @@ if (!supabaseUrl || !supabaseKey) {
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 console.log('✅ Checkout conectado a Supabase');
 
+// Usuario logueado (si existe) — permite asociar el pedido a su cuenta para "Mis Compras"
+let checkoutUser = null;
+(async () => {
+  try {
+    const { data } = await supabaseClient.auth.getSession();
+    checkoutUser = data?.session?.user || null;
+    if (checkoutUser) {
+      const nameEl = document.getElementById('f-name');
+      const fullName = checkoutUser.user_metadata?.full_name || '';
+      if (nameEl && !nameEl.value && fullName) nameEl.value = fullName.split(' ')[0] || '';
+    }
+  } catch(e) { /* invitado sin cuenta: se sigue permitiendo comprar sin loguearse */ }
+})();
+
 // ============================================
 // LISTA DE AGENCIAS SHALOM
 // ============================================
@@ -1442,6 +1456,7 @@ async function confirmOrder() {
     
     const orderData = {
       id: orderId,
+      user_id: checkoutUser ? checkoutUser.id : null,
       name: name,
       lastname: lastname,
       dni: id,
@@ -1483,6 +1498,9 @@ async function confirmOrder() {
     // Limpiar carrito
     localStorage.removeItem('dzoe_cart');
     localStorage.removeItem('checkout_cart');
+    if (checkoutUser) {
+      supabaseClient.from('cart_items').delete().eq('user_id', checkoutUser.id).then(()=>{}).catch(()=>{});
+    }
     
     // Actualizar pasos
     const step1 = document.getElementById('step1');
