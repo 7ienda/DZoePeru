@@ -8328,6 +8328,7 @@ let products = [];
 let categories = [];
 let cart = JSON.parse(localStorage.getItem('dzoe_cart') || localStorage.getItem('dzoeCart') || '[]');
 let wishlist = JSON.parse(localStorage.getItem('dzoeWishlist') || '[]');
+let currentUser = null; // usuario logueado (Supabase Auth) — null si es visitante anónimo
 let currentFilter = 'all';
 let currentSearch = '';
 let currentAgeFilter = null;
@@ -8801,12 +8802,14 @@ window.ucToggleFav = function(id, btn) {
     if (typeof showToast === 'function') showToast('⭐ Agregado a favoritos');
     else { const t = document.createElement('div'); t.textContent='⭐ Guardado'; t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2D2545;color:#fff;padding:10px 20px;border-radius:12px;z-index:9999;font-weight:700;font-family:Nunito,sans-serif;'; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
     if (supabaseClient) supabaseClient.rpc('increment_favoritos', {row_id: id}).catch(()=>{});
+    syncFavoriteAdd(id, btn?.dataset?.name);
   } else {
     ucFavs.splice(idx,1);
     btn.innerHTML = '<i class="far fa-star"></i> ⭐ Favoritos';
     btn.classList.remove('active');
     btn.setAttribute('aria-pressed','false');
     btn.onclick = () => ucToggleFav(id, btn);
+    syncFavoriteRemove(id);
   }
   localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
   renderPiFavsDrawer();
@@ -8896,6 +8899,7 @@ function renderPiFavsDrawer() {
 window.ucRemoveFav = function(id) {
   ucFavs = ucFavs.filter(f => f !== String(id));
   localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+  syncFavoriteRemove(id);
   // Actualizar botón en la card del home si existe
   const btn = document.getElementById(`ucfav-${id}`);
   if (btn) {
@@ -8906,6 +8910,41 @@ window.ucRemoveFav = function(id) {
   renderPiFavsDrawer();
   updatePiFavsBadge();
 };
+
+// ═══════════════════════════════════════════════════════
+//  FAVORITOS — SINCRONIZACIÓN CON CUENTA (Supabase)
+// ═══════════════════════════════════════════════════════
+async function syncFavoriteAdd(id, name) {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    await supabaseClient.from('favorites').upsert(
+      { user_id: currentUser.id, product_id: String(id), product_name: name || null },
+      { onConflict: 'user_id,product_id' }
+    );
+  } catch(e) { /* silencioso — localStorage es el fallback */ }
+}
+async function syncFavoriteRemove(id) {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    await supabaseClient.from('favorites').delete()
+      .eq('user_id', currentUser.id).eq('product_id', String(id));
+  } catch(e) {}
+}
+async function mergeAndLoadFavorites() {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    // 1) Subir lo que tenía en este navegador (visitante) a su cuenta
+    for (const id of ucFavs) { await syncFavoriteAdd(id); }
+    // 2) Traer la lista completa ya fusionada desde la cuenta
+    const { data, error } = await supabaseClient.from('favorites').select('product_id').eq('user_id', currentUser.id);
+    if (!error && data) {
+      ucFavs = data.map(r => String(r.product_id));
+      localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+      updatePiFavsBadge();
+      if (typeof renderPiFavsDrawer === 'function') renderPiFavsDrawer();
+    }
+  } catch(e) {}
+}
 
 function updatePiFavsBadge() {
   const count = ucFavs.length;
@@ -10815,9 +10854,10 @@ function addToCart(product, sizeIndex) {
     const cartPrice = (product.offer_price && parseFloat(product.offer_price) > 0 && parseFloat(product.offer_price) < Number(size.price))
       ? parseFloat(product.offer_price)
       : Number(size.price);
-    cart.push({ name: product.name, size: size.size, price: cartPrice, img: product.images?.[0] || product.image || '', qty: 1 });
+    cart.push({ pid: product.id, name: product.name, size: size.size, price: cartPrice, img: product.images?.[0] || product.image || '', qty: 1 });
   }
   saveCart(); updateUI(); renderCart();
+  syncCartToSupabase();
   showNotif(`✨ <strong>${product.name}</strong> — Talla ${size.size} agregado`);
 }
 
@@ -10876,12 +10916,60 @@ function changeQty(idx, delta) {
   if (qty <= 0) cart.splice(idx, 1);
   else { cart[idx].qty = qty; cart[idx].quantity = qty; }
   saveCart(); updateUI(); renderCart();
+  syncCartToSupabase();
 }
 
 function removeFromCart(idx) {
   cart.splice(idx, 1);
   saveCart(); updateUI(); renderCart();
+  syncCartToSupabase();
   showNotif('🗑️ Producto eliminado');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CARRITO — SINCRONIZACIÓN CON CUENTA (Supabase)
+// ═══════════════════════════════════════════════════════
+async function syncCartToSupabase() {
+  if (!supabaseClient || !currentUser) return; // visitantes: solo localStorage
+  try {
+    // Reemplaza todo el carrito guardado del usuario por el estado actual (simple y consistente)
+    await supabaseClient.from('cart_items').delete().eq('user_id', currentUser.id);
+    if (cart.length) {
+      const rows = cart.map(i => ({
+        user_id: currentUser.id,
+        product_id: i.pid ? String(i.pid) : null,
+        name: i.name, size: i.size || null, price: i.price || 0,
+        qty: i.qty || i.quantity || 1, image: i.img || null
+      }));
+      await supabaseClient.from('cart_items').insert(rows);
+    }
+  } catch(e) {}
+}
+async function mergeAndLoadCart() {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    const localHadItems = cart.length > 0;
+    const { data, error } = await supabaseClient.from('cart_items')
+      .select('product_id,name,size,price,qty,image').eq('user_id', currentUser.id);
+    if (!error && data && data.length) {
+      // Ya tenía carrito guardado en su cuenta: lo usamos como base y le sumamos lo del navegador si no está repetido
+      const merged = data.map(r => ({ pid: r.product_id, name: r.name, size: r.size, price: r.price, qty: r.qty, img: r.image }));
+      if (localHadItems) {
+        cart.forEach(localItem => {
+          const dup = merged.find(m => m.name === localItem.name && m.size === localItem.size);
+          if (!dup) merged.push(localItem);
+        });
+      }
+      cart = merged;
+      localStorage.setItem('dzoe_cart', JSON.stringify(cart));
+      localStorage.setItem('dzoeCart', JSON.stringify(cart));
+      updateUI(); renderCart();
+      await syncCartToSupabase();
+    } else if (localHadItems) {
+      // No tenía nada guardado: subimos lo que trae del navegador
+      await syncCartToSupabase();
+    }
+  } catch(e) {}
 }
 
 function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('cartOverlay').classList.add('active'); renderCart(); }
@@ -10905,6 +10993,8 @@ function saveWishlist() {
 
 async function syncWishlistToSupabase() {
   if (!supabaseClient) return;
+  // Si está logueado, la wishlist vive por cuenta (wishlist_items). Si es visitante, por sesión anónima (wishlists).
+  if (currentUser) return; // los cambios por usuario logueado se sincronizan item por item (ver toggleWishlistItem)
   try {
     const sid = getWishlistSessionId();
     await supabaseClient.from('wishlists').upsert(
@@ -10915,7 +11005,7 @@ async function syncWishlistToSupabase() {
 }
 
 async function loadWishlistFromSupabase() {
-  if (!supabaseClient) return;
+  if (!supabaseClient || currentUser) return; // usuarios logueados se cargan en mergeAndLoadWishlist()
   try {
     const sid = getWishlistSessionId();
     const { data } = await supabaseClient.from('wishlists').select('items').eq('session_id', sid).maybeSingle();
@@ -10928,6 +11018,43 @@ async function loadWishlistFromSupabase() {
   } catch(e) { /* usa localStorage */ }
 }
 
+// ── Wishlist por cuenta (wishlist_items) — cuando el usuario está logueado ──
+async function syncWishlistItemAdd(item) {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    await supabaseClient.from('wishlist_items').upsert({
+      user_id: currentUser.id,
+      product_id: String(item.id),
+      name: item.name || null,
+      price: item.price || null,
+      categories: item.categories || []
+    }, { onConflict: 'user_id,product_id' });
+  } catch(e) {}
+}
+async function syncWishlistItemRemove(id) {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    await supabaseClient.from('wishlist_items').delete()
+      .eq('user_id', currentUser.id).eq('product_id', String(id));
+  } catch(e) {}
+}
+async function mergeAndLoadWishlist() {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    // 1) Subir lo que tenía como visitante a su cuenta
+    for (const item of wishlist) { await syncWishlistItemAdd(item); }
+    // 2) Traer la lista completa fusionada desde la cuenta
+    const { data, error } = await supabaseClient.from('wishlist_items')
+      .select('product_id,name,price,categories').eq('user_id', currentUser.id);
+    if (!error && data) {
+      wishlist = data.map(r => ({ id: r.product_id, name: r.name, price: r.price, categories: r.categories || [] }));
+      localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist));
+      updateWishlistBadge();
+      renderWishlist();
+    }
+  } catch(e) {}
+}
+
 function updateWishlistBadge() {
   const badge = document.getElementById('wishlistFabBadge');
   if (!badge) return;
@@ -10937,12 +11064,18 @@ function updateWishlistBadge() {
 
 function toggleWishlistItem(id, name, price) {
   const idx = wishlist.findIndex(i => String(i.id) === String(id));
-  if (idx > -1) { wishlist.splice(idx, 1); saveWishlist(); updateWishlistBadge(); renderWishlist(); return false; }
-  else {
+  if (idx > -1) {
+    wishlist.splice(idx, 1); saveWishlist(); updateWishlistBadge(); renderWishlist();
+    if (currentUser) syncWishlistItemRemove(id);
+    return false;
+  } else {
     const product = products.find(p => String(p.id) === String(id));
     const categories = product?.categories || [];
-    wishlist.push({ id, name, price, categories });
-    saveWishlist(); updateWishlistBadge(); renderWishlist(); return true;
+    const item = { id, name, price, categories };
+    wishlist.push(item);
+    saveWishlist(); updateWishlistBadge(); renderWishlist();
+    if (currentUser) syncWishlistItemAdd(item);
+    return true;
   }
 }
 
@@ -11793,8 +11926,14 @@ function showRegisterPanel() {
   document.getElementById('loginModalTitle').textContent='Crear cuenta';
 }
 
-loginBtn?.addEventListener('click', () => { showLoginPanel(); loginModal.classList.add('active'); });
-document.getElementById('loginMenuBtn') && document.getElementById('loginMenuBtn').addEventListener('click', () => { showLoginPanel(); loginModal.classList.add('active'); });
+loginBtn?.addEventListener('click', () => {
+  if (currentUser) { window.location.href = 'mi-cuenta-cliente.html'; return; }
+  showLoginPanel(); loginModal.classList.add('active');
+});
+document.getElementById('loginMenuBtn') && document.getElementById('loginMenuBtn').addEventListener('click', () => {
+  if (currentUser) { window.location.href = 'mi-cuenta-cliente.html'; return; }
+  showLoginPanel(); loginModal.classList.add('active');
+});
 closeLoginBtn?.addEventListener('click', () => loginModal.classList.remove('active'));
 loginModal?.addEventListener('click', e => { if (e.target === loginModal) loginModal.classList.remove('active'); });
 
@@ -11818,7 +11957,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async e => {
     if (error) throw error;
     showNotif(`🌸 ¡Bienvenida, ${data.user?.email?.split('@')[0] || ''}!`);
     loginModal.classList.remove('active');
-    updateLoginUI(data.user);
+    await onAccountReady(data.user);
   } catch(err) {
     errEl.textContent = err.message.includes('Invalid') ? '❌ Correo o contraseña incorrectos' : '❌ ' + err.message;
     errEl.style.display='block';
@@ -11884,13 +12023,26 @@ function updateLoginUI(user) {
   }
 }
 
+// Al iniciar sesión: fusiona lo que tenía como visitante (favoritos, wishlist, carrito) con su cuenta
+async function onAccountReady(user) {
+  currentUser = user;
+  updateLoginUI(user);
+  if (!user) return;
+  await Promise.all([
+    mergeAndLoadFavorites(),
+    mergeAndLoadWishlist(),
+    mergeAndLoadCart()
+  ]);
+}
+
 // Verificar sesión al cargar
 (async () => {
   if (!supabaseClient) return;
   const { data } = await supabaseClient.auth.getSession();
-  if (data?.session?.user) updateLoginUI(data.session.user);
+  if (data?.session?.user) await onAccountReady(data.session.user);
   supabaseClient.auth.onAuthStateChange((_event, session) => {
-    updateLoginUI(session?.user || null);
+    if (session?.user) { onAccountReady(session.user); }
+    else { currentUser = null; updateLoginUI(null); }
   });
 })();
 
