@@ -84,6 +84,20 @@
     "url": "/productos/conjunto-mickey-rayitas-2-piezas.html"
   },
   {
+    "id": 1780259715575,
+    "slug": "vestido-destello-de-mariposa",
+    "name": "Vestido Destello de Mariposa",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjV_FvT4eEotDLLY1xl1R1tFBIkT9uSN9cG4yn7gxz6KUBjVRpmourSzfrkD4wEAoim-PPDbYY-HxuBHLd4kP_5rD7fouv_LllF5DW7xe7RH7xUmrBe21OWrmDYaT6rDVuKRaQQT9j6epxH7QrrfmXJ4yiqDSEO9dOxuQDfJ4znEL-lxb6VSfBfsjuDUdw-/s1600/vvd2.png",
+    "categories": [
+      "Vestidos",
+      "Niña",
+      "Vestilo Hilo"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-destello-de-mariposa.html"
+  },
+  {
     "id": 1783126620396,
     "slug": "conjunto-sport-blue-2-piezas",
     "name": "Conjunto sport blue 2 piezas",
@@ -139,20 +153,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-paris-verde.html"
-  },
-  {
-    "id": 1780259715575,
-    "slug": "destello-de-mariposa",
-    "name": "Destello de Mariposa",
-    "price": 55,
-    "image": "https://katitaimportaciones.com/api/scrooge/file/FL-7A82628E?v=-1&optimized=true",
-    "categories": [
-      "Vestidos",
-      "Niña",
-      "Conjunto Hilo"
-    ],
-    "inStock": false,
-    "url": "/productos/destello-de-mariposa.html"
   },
   {
     "id": 1780258754512,
@@ -933,6 +933,20 @@
     "url": "/productos/conjunto-lazo-negro-2-piezas.html"
   },
   {
+    "id": 1780409906826,
+    "slug": "conjunto-osito-viajero-white-2-piezas",
+    "name": "Conjunto osito viajero white 2 piezas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7g8DAIE0X0TFcHP4rfeoq2J-frLUia2J-53DbfbQKriijLXKmTp26evF0n3lD3eG5khEOdUZLk74MaainV2fVBJ2LkNTGvqhKmRiyz_qzTnnenXdcpZWD2cEnJaJfOOYSFwDaeehJUiDZRs5gvG5CAmtV-OlOakv6vd1V48U1LuWohYWcG4ROXKY8oYpD/s1600/dog2.png",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-osito-viajero-white-2-piezas.html"
+  },
+  {
     "id": 1780375151271,
     "slug": "conjunto-dino-safari-dos-piezas",
     "name": "Conjunto Dino Safari dos piezas",
@@ -947,20 +961,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-dino-safari-dos-piezas.html"
-  },
-  {
-    "id": 1780409906826,
-    "slug": "conjunto-osito-viajero-2-piezas",
-    "name": "Conjunto osito viajero 2 piezas",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7g8DAIE0X0TFcHP4rfeoq2J-frLUia2J-53DbfbQKriijLXKmTp26evF0n3lD3eG5khEOdUZLk74MaainV2fVBJ2LkNTGvqhKmRiyz_qzTnnenXdcpZWD2cEnJaJfOOYSFwDaeehJUiDZRs5gvG5CAmtV-OlOakv6vd1V48U1LuWohYWcG4ROXKY8oYpD/s1600/dog2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niño",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-osito-viajero-2-piezas.html"
   },
   {
     "id": 1781838740613,
@@ -2083,8 +2083,8 @@
   },
   {
     "id": 1781897862434,
-    "slug": "conjunto-orejitas-kids-2-piezas",
-    "name": "Conjunto orejitas kids 2 piezas",
+    "slug": "conjunto-orejitas-kids-caqui-2-piezas",
+    "name": "Conjunto orejitas kids Caqui 2 piezas",
     "price": 46,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgO1OuCLSis3daLiHo1JaRf8PJA6NRAebmFAJO4p4nOjVyZa20cLAHFWW31LmcQrvrq7g6GRPVtSIuvHl_GZar98_0eGveFDPiCN9pbY1ZXrFARaHiTnssmUSB3tAuh7xdkLZf9ogqrwI_i6LNCemW8GWEBxxLdMpFOutdycL1pupq670W4H6uEA2ovVsA/s16000/xz2.png",
     "categories": [
@@ -2093,7 +2093,7 @@
       "Conjunto 2 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-orejitas-kids-2-piezas.html"
+    "url": "/productos/conjunto-orejitas-kids-caqui-2-piezas.html"
   },
   {
     "id": 1782838175455,
