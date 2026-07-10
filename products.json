@@ -447,20 +447,6 @@
     "url": "/productos/conjunto-camisero-celeste.html"
   },
   {
-    "id": 1780200948472,
-    "slug": "vestido-rojo-coreano",
-    "name": "Vestido rojo  coreano",
-    "price": 55,
-    "image": "https://img.kwcdn.com/product/fancy/ce329e3d-c611-4424-a0db-cd002a5b0bea.jpg?imageView2/2/w/800/q/70/format/avif",
-    "categories": [
-      "Niña",
-      "Vestidos",
-      "Conjunto Hilo"
-    ],
-    "inStock": true,
-    "url": "/productos/vestido-rojo-coreano.html"
-  },
-  {
     "id": 1780348233966,
     "slug": "cardigan-corazones-expuestos",
     "name": "Cardigan corazones expuestos",
@@ -2347,6 +2333,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-catarina-blanco-2-piezas.html"
+  },
+  {
+    "id": 1780200948472,
+    "slug": "vestido-rojo-coreano",
+    "name": "Vestido rojo coreano",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEisp_3Z_yZWw2Om7d2RSKT8X6dgQrqWG6Q7V8suV0WqSAZnhG5THryphe9Uw8KbWq5KWPJ9sq__uBilrjvmG9s84PktMAnDkCdfgeVvLo77rHAF-Au7R1sb1ojg8E542lKDW28G1P0Uc3MZ_t7FrWxEnKX9bIG1ll60Qd1jliGezn2C8YLbULb7IaUfy8su/s1600/vj1.png",
+    "categories": [
+      "Niña",
+      "Vestidos",
+      "Conjunto Hilo"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-rojo-coreano.html"
   },
   {
     "id": 1781926088935,
