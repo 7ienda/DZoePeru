@@ -994,7 +994,6 @@ body.dark-mode .hdr-favs-btn:hover { border-color: var(--rose); }
   border: 2px solid white;
 }
 /* Aliases para compatibilidad con JS existente */
-.cart-btn { display: none; } /* reemplazado por .hdr-cart-btn */
 
 /* Hamburguesa animada */
 .hdr-hamburger {
@@ -1973,12 +1972,6 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .wishlist-body{overflow-y:auto;padding:18px;flex:1;}
 .wishlist-empty{text-align:center;padding:50px 20px;color:var(--text-soft);}
 .wishlist-empty .empty-heart{font-size:52px;display:block;margin-bottom:12px;}
-.wishlist-item{display:flex;align-items:center;gap:14px;padding:12px;background:var(--rose-soft);border-radius:16px;margin-bottom:10px;border:1.5px solid var(--rose-light);transition:0.2s;}
-.wishlist-item:hover{border-color:var(--rose);}
-.wishlist-item-name{flex:1;font-weight:700;font-size:13px;color:var(--text);}
-.wishlist-item-price{font-weight:800;color:var(--rose-dark);font-size:14px;}
-.wishlist-item-remove{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:14px;padding:4px;border-radius:50%;transition:0.2s;}
-.wishlist-item-remove:hover{color:var(--rose);background:white;}
 
 /* ── Ver producto btn ── */
 .view-product-btn{width:100%;background:var(--lav-light);color:var(--text);border:1.5px solid var(--lavender);padding:9px;border-radius:30px;font-weight:800;font-size:12px;cursor:pointer;transition:0.2s;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;}
@@ -2043,6 +2036,27 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .pp-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
 .pp-feature{background:var(--rose-soft);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text);}
 .pp-feature i{color:var(--rose);font-size:15px;flex-shrink:0;}
+
+/* ── También te puede gustar (cross-sell) ── */
+.pp-related{grid-column:1/-1;padding:22px 28px 26px;border-top:2px solid var(--border);}
+.pp-related-title{font-family:'Baloo 2',cursive;font-size:18px;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.pp-related-grid{display:grid;grid-auto-flow:column;grid-auto-columns:132px;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;}
+.pp-related-grid::-webkit-scrollbar{height:5px;}
+.pp-related-grid::-webkit-scrollbar-thumb{background:var(--rose-light);border-radius:10px;}
+.pp-related-card{scroll-snap-align:start;background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:8px;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:0.2s;display:flex;flex-direction:column;gap:6px;}
+.pp-related-card:hover{border-color:var(--rose-light);transform:translateY(-3px);box-shadow:0 8px 20px rgba(179,157,200,0.25);}
+.pp-related-img-wrap{position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--rose-soft);}
+.pp-related-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.pp-related-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.pp-related-out{position:absolute;bottom:5px;left:5px;background:rgba(255,255,255,0.92);color:var(--text-soft);font-size:8.5px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;padding:2px 7px;border-radius:20px;}
+.pp-related-name{font-size:11.5px;font-weight:700;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pp-related-price{font-size:12.5px;font-weight:800;color:var(--rose-dark);}
+body.dark-mode .pp-related{border-color:#5a4838;}
+body.dark-mode .pp-related-card{background:#3a2c20;border-color:#5a4838;}
+body.dark-mode .pp-related-img-wrap{background:#4a3828;}
+@media(max-width:680px){
+  .pp-related{padding:18px 16px 22px;}
+}
 @media(max-width:680px){
   .pp-body{grid-template-columns:1fr;}
   .pp-info{max-height:none;padding:20px 16px;}
@@ -2222,6 +2236,8 @@ body.dark-mode .wa-menu-item:hover{background:#243228;}
 /* ═══ WISHLIST: ETIQUETAS, BOTÓN COMPRAR, BOTÓN COMPRAR TODO ═══ */
 .wishlist-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--rose-soft);border-radius:16px;margin-bottom:10px;border:1.5px solid var(--rose-light);transition:0.2s;flex-wrap:wrap;}
 .wishlist-item:hover{border-color:var(--rose);}
+.wishlist-item-img{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light,#e9e2f7));overflow:hidden;flex-shrink:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.wishlist-item-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .wishlist-item-main{flex:1;min-width:0;}
 .wishlist-item-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px;}
 .wishlist-item-price{font-weight:800;color:var(--rose-dark);font-size:14px;margin-bottom:4px;}
@@ -2381,7 +2397,6 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   .add-to-cart{font-size:11.5px;padding:8px 10px;}
   .whatsapp-btn{font-size:11px;padding:7px 8px;}
   .header-icons{gap:6px;}
-  .cart-btn{padding:6px 12px;}
   .ages{padding:16px 0;}
   .search-bar-inner{padding:6px 14px;}
   .products-title{font-size:20px;}
@@ -2484,7 +2499,6 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 @media(max-width:380px){
   .logo-text h1 { font-size: 20px !important; }
   .header-icons { gap: 4px; }
-  .cart-btn { padding: 5px 10px; font-size: 12px; }
   .dark-mode-btn { width: 30px; height: 30px; font-size: 12px; }
 }
 
@@ -2636,17 +2650,6 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   letter-spacing: 0.1px;
 }
 .menu a::after { height: 2.5px; background: var(--rose); }
-
-/* ── CART BTN PREMIUM ── */
-.cart-btn {
-  background: var(--cream) !important;
-  border: 1.5px solid rgba(179,157,200,0.4) !important;
-  box-shadow: 0 2px 12px rgba(179,157,200,0.15) !important;
-}
-.cart-btn:hover {
-  background: var(--rose-soft) !important;
-  box-shadow: 0 6px 20px rgba(179,157,200,0.3) !important;
-}
 
 /* ── HERO STRIP UPGRADE ── */
 .hero-strip {
@@ -3625,7 +3628,6 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .header-wrapper { height: 62px !important; }
   .hamburger-btn { display: flex !important; }
   .cart-label { display: none !important; }
-  .cart-btn { padding: 6px 10px !important; }
   .login-btn span { display: none !important; }
   .login-btn { padding: 7px 10px !important; }
   .dark-mode-btn { width: 34px !important; height: 34px !important; font-size: 13px !important; }
@@ -3706,7 +3708,6 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .logo-text h1, .logo-text .logo-brand-text { font-size: 23px !important; }
   .header-icons { gap: 5px !important; }
   .dark-mode-btn { width: 30px !important; height: 30px !important; font-size: 12px !important; }
-  .cart-btn { padding: 5px 8px !important; }
 }
 
 /* ═══════════════════════════════════════════
@@ -10948,31 +10949,43 @@ async function syncCartToSupabase() {
 async function mergeAndLoadCart() {
   if (!supabaseClient || !currentUser) return;
   try {
-    const localHadItems = cart.length > 0;
+    // La fusión de lo que había como visitante en ESTE navegador solo debe pasar
+    // UNA vez por cuenta. Si no, cada login volvería a subir/revivir items locales
+    // desactualizados (ej: algo que el cliente ya quitó desde el celular) y el
+    // carrito local y el de Supabase terminan "pisándose" entre sí.
+    const mergeFlagKey = 'dzoe_cart_merged_' + currentUser.id;
+    const isFirstMergeOnThisBrowser = localStorage.getItem(mergeFlagKey) !== '1';
+    const localHadItems = cart.length > 0 && isFirstMergeOnThisBrowser;
+
     const { data, error } = await supabaseClient.from('cart_items')
       .select('product_id,name,size,price,qty,image').eq('user_id', currentUser.id);
-    if (!error && data && data.length) {
-      // Ya tenía carrito guardado en su cuenta: lo usamos como base y le sumamos lo del navegador si no está repetido
-      let merged = data.map(r => ({ pid: r.product_id, name: r.name, size: r.size, price: r.price, qty: r.qty, img: r.image }));
-      // Descarta productos "fantasma" que ya no existen en el catálogo actual
-      if (Array.isArray(products) && products.length) {
-        merged = merged.filter(m => products.some(p => String(p.id) === String(m.pid)));
-      }
-      if (localHadItems) {
-        cart.forEach(localItem => {
-          const dup = merged.find(m => m.name === localItem.name && m.size === localItem.size);
-          if (!dup) merged.push(localItem);
-        });
-      }
-      cart = merged;
-      localStorage.setItem('dzoe_cart', JSON.stringify(cart));
-      localStorage.setItem('dzoeCart', JSON.stringify(cart));
-      updateUI(); renderCart();
-      await syncCartToSupabase(); // reescribe la tabla ya limpia de productos fantasma
-    } else if (localHadItems) {
-      // No tenía nada guardado: subimos lo que trae del navegador
-      await syncCartToSupabase();
+
+    if (error) {
+      // No se pudo consultar Supabase: no tocamos el carrito local para no perderlo por un error de red
+      if (localHadItems) await syncCartToSupabase();
+      return;
     }
+
+    // A partir de aquí, Supabase es la fuente de verdad: lo que traiga la cuenta
+    // reemplaza por completo al carrito local (ya no solo se "suma").
+    let serverCart = data.map(r => ({ pid: r.product_id, name: r.name, size: r.size, price: r.price, qty: r.qty, img: r.image }));
+    // Descarta productos "fantasma" que ya no existen en el catálogo actual
+    if (Array.isArray(products) && products.length) {
+      serverCart = serverCart.filter(m => products.some(p => String(p.id) === String(m.pid)));
+    }
+    if (localHadItems) {
+      // Primera vez que este navegador entra a esta cuenta: sube lo que tenía como visitante
+      cart.forEach(localItem => {
+        const dup = serverCart.find(m => m.name === localItem.name && m.size === localItem.size);
+        if (!dup) serverCart.push(localItem);
+      });
+    }
+    cart = serverCart;
+    localStorage.setItem('dzoe_cart', JSON.stringify(cart));
+    localStorage.setItem('dzoeCart', JSON.stringify(cart));
+    localStorage.setItem(mergeFlagKey, '1');
+    updateUI(); renderCart();
+    await syncCartToSupabase(); // Supabase queda como única fuente de verdad de aquí en adelante
   } catch(e) {}
 }
 
@@ -11045,17 +11058,31 @@ async function syncWishlistItemRemove(id) {
 async function mergeAndLoadWishlist() {
   if (!supabaseClient || !currentUser) return;
   try {
-    // 1) Subir lo que tenía como visitante a su cuenta
-    for (const item of wishlist) { await syncWishlistItemAdd(item); }
-    // 2) Traer la lista completa fusionada desde la cuenta
+    // Igual que en el carrito: solo subimos lo que había como visitante en ESTE
+    // navegador la PRIMERA vez que entra a esta cuenta. Si no, cada login volvería
+    // a subir ítems locales viejos aunque el cliente ya los haya quitado desde otro
+    // dispositivo, y la wishlist local y la de Supabase terminan "pisándose".
+    const mergeFlagKey = 'dzoe_wishlist_merged_' + currentUser.id;
+    const isFirstMergeOnThisBrowser = localStorage.getItem(mergeFlagKey) !== '1';
+    if (isFirstMergeOnThisBrowser && wishlist.length) {
+      for (const item of wishlist) { await syncWishlistItemAdd(item); }
+    }
+    // A partir de aquí, Supabase manda: traemos la lista completa de la cuenta
     const { data, error } = await supabaseClient.from('wishlist_items')
       .select('product_id,name,price,categories').eq('user_id', currentUser.id);
     if (!error && data) {
-      wishlist = data.map(r => ({ id: r.product_id, name: r.name, price: r.price, categories: r.categories || [] }));
+      let serverWishlist = data.map(r => ({ id: r.product_id, name: r.name, price: r.price, categories: r.categories || [] }));
+      // Descarta productos descontinuados que ya no existen en el catálogo
+      if (Array.isArray(products) && products.length) {
+        serverWishlist = serverWishlist.filter(w => products.some(p => String(p.id) === String(w.id)));
+      }
+      wishlist = serverWishlist;
       localStorage.setItem('dzoeWishlist', JSON.stringify(wishlist));
+      localStorage.setItem(mergeFlagKey, '1');
       updateWishlistBadge();
       renderWishlist();
     }
+    // Si hubo error de red, no tocamos la wishlist local para no perderla
   } catch(e) {}
 }
 
@@ -11075,7 +11102,8 @@ function toggleWishlistItem(id, name, price) {
   } else {
     const product = products.find(p => String(p.id) === String(id));
     const categories = product?.categories || [];
-    const item = { id, name, price, categories };
+    const img = product?.images?.[0] || product?.image || '';
+    const item = { id, name, price, categories, img };
     wishlist.push(item);
     saveWishlist(); updateWishlistBadge(); renderWishlist();
     if (currentUser) syncWishlistItemAdd(item);
@@ -11098,8 +11126,12 @@ function renderWishlist() {
     const product = products.find(p => String(p.id) === String(item.id));
     const tags = product?.categories || item.categories || [];
     const tagsHtml = tags.length ? `<div class="wishlist-item-tags">${tags.map(t=>`<span class="wishlist-tag">${t}</span>`).join('')}</div>` : '';
+    const img = product?.images?.[0] || product?.image || item.img || '';
+    const imgHtml = img
+      ? `<img src="${img}" alt="${esc(item.name)}" onerror="this.parentElement.innerHTML='💝'">`
+      : '💝';
     return `<div class="wishlist-item">
-      <span style="font-size:20px;flex-shrink:0;">💝</span>
+      <div class="wishlist-item-img">${imgHtml}</div>
       <div class="wishlist-item-main">
         <div class="wishlist-item-name">${esc(item.name)}</div>
         <div class="wishlist-item-price">S/ ${parseFloat(item.price||0).toFixed(2)}</div>
@@ -11226,6 +11258,65 @@ function showNotif(msg) {
 // ═══════════════════════════════════════════════════════
 let ppSelectedSize = {};   // { productId: sizeIndex }
 
+// ═══════════════════════════════════════════════════════
+//  PRODUCTOS RELACIONADOS ("También te puede gustar")
+// ═══════════════════════════════════════════════════════
+function getRelatedProducts(product, limit = 8) {
+  const cats = product.categories || [];
+  const stockOf = p => (p.sizes || []).reduce((s, sz) => s + (sz.stock || 0), 0);
+
+  // 1) Prioriza productos que comparten categoría (ej: "Vestidos" + "Niña" → diadema o calzado de niña)
+  const scored = products
+    .filter(p => String(p.id) !== String(product.id))
+    .map(p => ({
+      p,
+      shared: (p.categories || []).filter(c => cats.includes(c)).length,
+      stock: stockOf(p)
+    }))
+    .filter(x => x.shared > 0)
+    .sort((a, b) => (b.shared - a.shared) || ((b.stock > 0) - (a.stock > 0)));
+
+  let picks = scored.slice(0, limit).map(x => x.p);
+
+  // 2) Si no alcanzan, completa con otros productos en stock (para que la sección nunca salga vacía)
+  if (picks.length < limit) {
+    const usedIds = new Set([String(product.id), ...picks.map(p => String(p.id))]);
+    const fallback = products.filter(p => !usedIds.has(String(p.id)) && stockOf(p) > 0);
+    for (let i = fallback.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [fallback[i], fallback[j]] = [fallback[j], fallback[i]];
+    }
+    picks = picks.concat(fallback.slice(0, limit - picks.length));
+  }
+  return picks;
+}
+
+function renderRelatedProductsHtml(product) {
+  const related = getRelatedProducts(product, 8);
+  if (!related.length) return '';
+  const cards = related.map(p => {
+    const sizes = p.sizes || [];
+    const minPrice = sizes.length ? Math.min(...sizes.filter(s => s.price > 0).map(s => s.price)) : 0;
+    const offerPrice = p.offer_price ? parseFloat(p.offer_price) : null;
+    const hasOffer = offerPrice && offerPrice > 0 && offerPrice < minPrice;
+    const displayPrice = hasOffer ? offerPrice : minPrice;
+    const img = p.images?.[0] || p.image || '';
+    const inStock = sizes.some(s => s.stock > 0);
+    return `<button type="button" class="pp-related-card" onclick="openProductPage('${p.id}')" aria-label="Ver ${esc(p.name)}">
+      <div class="pp-related-img-wrap">
+        ${img ? `<img src="${img}" alt="${buildProductAltText(p, 0)}" loading="lazy">` : `<div class="pp-related-placeholder">🌸</div>`}
+        ${!inStock ? `<span class="pp-related-out">Agotado</span>` : ''}
+      </div>
+      <div class="pp-related-name">${esc(p.name)}</div>
+      <div class="pp-related-price">${displayPrice > 0 ? `S/ ${displayPrice.toFixed(2)}` : 'Consultar'}</div>
+    </button>`;
+  }).join('');
+  return `<div class="pp-related">
+    <div class="pp-related-title"><i class="fas fa-wand-magic-sparkles" style="color:var(--rose);"></i> También te puede gustar</div>
+    <div class="pp-related-grid">${cards}</div>
+  </div>`;
+}
+
 function openProductPage(productId) {
   const product = products.find(p => String(p.id) === String(productId));
   if (!product) return;
@@ -11346,7 +11437,8 @@ function openProductPage(productId) {
           <div class="pp-feature"><i class="fab fa-whatsapp"></i> Atención inmediata</div>
         </div>
       </div>
-    </div>`;
+    </div>
+    ${renderRelatedProductsHtml(product)}`;
 
   const modal = document.getElementById('productPageModal');
   modal.classList.add('open');
