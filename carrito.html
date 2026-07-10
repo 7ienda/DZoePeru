@@ -1469,7 +1469,8 @@ async function confirmOrder() {
         price: item.price,
         qty: item.qty,
         size: item.size || '',
-        img: item.img || ''
+        img: item.img || '',
+        image: item.img || item.image || ''
       })),
       total: subtotal,
       status: 'pending',
