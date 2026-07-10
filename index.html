@@ -10953,7 +10953,11 @@ async function mergeAndLoadCart() {
       .select('product_id,name,size,price,qty,image').eq('user_id', currentUser.id);
     if (!error && data && data.length) {
       // Ya tenía carrito guardado en su cuenta: lo usamos como base y le sumamos lo del navegador si no está repetido
-      const merged = data.map(r => ({ pid: r.product_id, name: r.name, size: r.size, price: r.price, qty: r.qty, img: r.image }));
+      let merged = data.map(r => ({ pid: r.product_id, name: r.name, size: r.size, price: r.price, qty: r.qty, img: r.image }));
+      // Descarta productos "fantasma" que ya no existen en el catálogo actual
+      if (Array.isArray(products) && products.length) {
+        merged = merged.filter(m => products.some(p => String(p.id) === String(m.pid)));
+      }
       if (localHadItems) {
         cart.forEach(localItem => {
           const dup = merged.find(m => m.name === localItem.name && m.size === localItem.size);
@@ -10964,7 +10968,7 @@ async function mergeAndLoadCart() {
       localStorage.setItem('dzoe_cart', JSON.stringify(cart));
       localStorage.setItem('dzoeCart', JSON.stringify(cart));
       updateUI(); renderCart();
-      await syncCartToSupabase();
+      await syncCartToSupabase(); // reescribe la tabla ya limpia de productos fantasma
     } else if (localHadItems) {
       // No tenía nada guardado: subimos lo que trae del navegador
       await syncCartToSupabase();
@@ -11125,6 +11129,7 @@ function clearCart() {
   if (!confirm('¿Deseas vaciar todo el carrito?')) return;
   cart = [];
   saveCart(); updateUI(); renderCart();
+  syncCartToSupabase(); // también borra el carrito guardado en la cuenta del usuario
   showNotif('🗑️ Carrito vaciado');
 }
 
