@@ -181,7 +181,9 @@ a{text-decoration:none;color:inherit;}
 <script>
 const supabaseUrl = window.SUPABASE_CONFIG?.URL;
 const supabaseKey = window.SUPABASE_CONFIG?.ANON_KEY;
-const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+const supabaseClient = (supabaseUrl && supabaseKey) ? window.supabase.createClient(supabaseUrl, supabaseKey, {
+  auth: { storageKey: 'dzoeperu-auth' }
+}) : null;
 
 let currentUser = null;
 
