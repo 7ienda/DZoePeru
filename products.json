@@ -155,21 +155,6 @@
     "url": "/productos/conjunto-paris-verde.html"
   },
   {
-    "id": 1783629744477,
-    "slug": "vestido-osito-vintage",
-    "name": "Vestido osito vintage",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgeZM41NTg3a_sqA-KsP92JhPpgd_88D2ftIcS2Eh9X5XWWlzSrYBKJBASagqj7dQUGSvlVY9DlO7bMgfzHENWuER4nMmTtlpzvFQgon1gaditb64BA4hXMAUjkkcAByztBzOlLhXJ1epyYC_xCHMppIXS5zdNCjwW0Fj_I2w0iWKHSJD9h6hVz4XHb5Gpi/s16000/cj2.png",
-    "categories": [
-      "Vestidos",
-      "Conjunto 2 piezas",
-      "Ninas",
-      "Bebes"
-    ],
-    "inStock": true,
-    "url": "/productos/vestido-osito-vintage.html"
-  },
-  {
     "id": 1780258754512,
     "slug": "vestido-sueter-con-cuello-de-muneca",
     "name": "Vestido suéter con Cuello de Muñeca",
@@ -337,6 +322,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-de-dos-piezas-conejo-de-dibujos.html"
+  },
+  {
+    "id": 1780412330679,
+    "slug": "baseball-bear-blue-2-piezas",
+    "name": "Baseball Bear blue 2 piezas",
+    "price": 45,
+    "image": "https://img.kwcdn.com/product/fancy/6a73483e-b8dd-4533-a1d3-a4120210cc16.jpg?imageView2/2/w/800/q/70/format/avif",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": false,
+    "url": "/productos/baseball-bear-blue-2-piezas.html"
   },
   {
     "id": 1780351395912,
@@ -990,19 +989,6 @@
     "url": "/productos/conjunto-bunny-felpa.html"
   },
   {
-    "id": 1780412330679,
-    "slug": "baseball-bear",
-    "name": "Baseball Bear",
-    "price": 45,
-    "image": "https://img.kwcdn.com/product/fancy/6a73483e-b8dd-4533-a1d3-a4120210cc16.jpg?imageView2/2/w/800/q/70/format/avif",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niño"
-    ],
-    "inStock": false,
-    "url": "/productos/baseball-bear.html"
-  },
-  {
     "id": 1780411939135,
     "slug": "sleep-rose-bunny",
     "name": "Sleep Rose Bunny",
@@ -1281,21 +1267,6 @@
     "url": "/productos/conjunto-lady-cristal.html"
   },
   {
-    "id": 1782600736905,
-    "slug": "conjunto-rosa-de-flores-2-piezas",
-    "name": "Conjunto rosa de flores 2 piezas",
-    "price": 42,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Conjunto 2 piezas",
-      "Niña",
-      "Bebita"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-rosa-de-flores-2-piezas.html"
-  },
-  {
     "id": 1783175940846,
     "slug": "conjunto-hilo-floral-2-piezas",
     "name": "Conjunto Hilo Floral 2 piezas",
@@ -1310,18 +1281,19 @@
     "url": "/productos/conjunto-hilo-floral-2-piezas.html"
   },
   {
-    "id": 1783629772719,
-    "slug": "conjunto-tazmania",
-    "name": "Conjunto TAZmania",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDUhP7lCyd3xQCgeEUM5Rl4Lqoz0ov2ALeZbC9ARUEqXgHHeBl2XTz2UbLuR4buNQ-DDqg00ZwGdSVsxeh9PGvPyZbfbLTOYMUQc3o4IWmftQCBjghcL10TwmNN9YoXNWenpuVa-hcd7DwCMR1gTotqq0MR7_gPe6gI4uz42Nx9zMkBeudXwKnukuK_emk/s16000/tz1.png",
+    "id": 1782600736905,
+    "slug": "conjunto-rosa-de-flores-2-piezas",
+    "name": "Conjunto rosa de flores 2 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTy62Y_JKkvF9bvQ-37xZKTo5YXd0L1eAQQv6sDkzLE-VKRVrgx_u8v6UfrZejLIPU7hcWzPWd2H7Qa22uqilBiZos9NHnjxAXntwd57PMiPNI9QTZzaNAlpti5YpKpL45sYsCyM2x9dv5cc2v2y8wiPyvWOY0i40e9BE-mp_IgtMkUtklzRy6TXOL8rQj/s16000/vf2.png",
     "categories": [
-      "Ninos",
+      "Conjunto Pantalon",
       "Conjunto 2 piezas",
-      "Conjunto Pantalon"
+      "Niña",
+      "Bebita"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-tazmania.html"
+    "url": "/productos/conjunto-rosa-de-flores-2-piezas.html"
   },
   {
     "id": 1780413420205,
@@ -1508,20 +1480,6 @@
     "url": "/productos/conjuntoplomito-con-forrito-peluche-2-piezas.html"
   },
   {
-    "id": 1783629840197,
-    "slug": "overol-kitty",
-    "name": "Overol Kitty",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJqzU_pa45ucCcc1Ubqaq-MuBDzweMCE5EsT_RIANvuueIRI2-wFo-bAN6i1Xb3f-wr7amTvCeCjRUyIz5f6xWpjOBLo7JFKCLGoYCZIgxA1fEf7y4o0DOPDl2whYiIh9nndF5QSIfWJTw5WdCMmVGKc_y0shT151ZcKormfZaeQChpNZq6ouz5kNx0wsM/s16000/oo2.png",
-    "categories": [
-      "Overoles",
-      "Ninas",
-      "Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/overol-kitty.html"
-  },
-  {
     "id": 1780410432585,
     "slug": "conjunto-conejita-rose-3-piezas",
     "name": "Conjunto conejita rose 3 piezas",
@@ -1575,20 +1533,6 @@
     ],
     "inStock": true,
     "url": "/productos/cardigan-rojo-bolitas-con-tutu-2-piezas.html"
-  },
-  {
-    "id": 1780375497375,
-    "slug": "dino-3d-green-3-piezas",
-    "name": "Dino 3D Green 3 piezas",
-    "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgX0SXyCVEQvyTZAY5oczlW2Z2vE1MIcz4igHG4t0EmGxG_j9xR1oWQ7qYSGHEplbQ0RsCsRt-tTbFThRHWxrk3ydQhfm8qQqtq8CJFP15gYkW3lCQDv5_OWQ7teVFTIPbfjZK0tiZV3RJhsuw68q3TnAVlQd4RY85kl-sjeQDo8bGGPCx0xqgxaKY2_Fp_/s16000/did2.png",
-    "categories": [
-      "Niño",
-      "Conjunto Pantalon",
-      "Conjunto 3 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/dino-3d-green-3-piezas.html"
   },
   {
     "id": 1780350233775,
@@ -1765,20 +1709,6 @@
     "url": "/productos/conjunto-paris-rosado.html"
   },
   {
-    "id": 1783629843911,
-    "slug": "overol-primavera-rosalia",
-    "name": "Overol primavera rosalia",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS93hSU4JLTF1x8zDYuKu2FKWiES0ZsT-Rh7aFgvjklXfN0OjH-_T9ehvz5kpqTZxqm6fsR1tOTBKWTno3gh2xM-WJJYAoKIUXCyC1aah9D3ag6PmfOVs9YvphqJrgXKI4wzT3DvNtbN852N-1Z8bXhNrChiICVyLGPiFHeaHHqyXTbH6Perb4JZyBoO08/s16000/ov2.png",
-    "categories": [
-      "Overoles",
-      "Ninas",
-      "Bebes"
-    ],
-    "inStock": true,
-    "url": "/productos/overol-primavera-rosalia.html"
-  },
-  {
     "id": 1782277783918,
     "slug": "conjunto-americano-ny-2-piezas",
     "name": "Conjunto Americano NY 2 piezas",
@@ -1864,20 +1794,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-paris-marron.html"
-  },
-  {
-    "id": 1783629884066,
-    "slug": "pantalon-jean-hello-kitty",
-    "name": "Pantalon Jean Hello Kitty",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUfxAz7yylltwpM3qS_nUKnMP43CuOUJb3RaMpH-DZLWib9wybIKmw0N4FV2DHL3sgxpPGk6N7jEQfk34gyVfoVcg9mxjNgfRQrkdPes18KfwWoO9LeUXU73VR-ZH_DbiQ93l7Nccbj5lOqyFBcx2OEQxr18O2K4cZK-nEUEVAMPshTn7oa-S4rYH6S6F9/s16000/jk2.png",
-    "categories": [
-      "Jeans",
-      "Ninas",
-      "Pantalones Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/pantalon-jean-hello-kitty.html"
   },
   {
     "id": 1782315951506,
@@ -2749,21 +2665,6 @@
     "url": "/productos/conjunto-veranito-floral-2-piezas.html"
   },
   {
-    "id": 1783629718897,
-    "slug": "conjunto-gatita-purpura",
-    "name": "Conjunto Gatita Purpura",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8QdmWuPxs4LBYwL3bA0n4AtuTjzfiQjQIXH3DhkFpuYZ8I6nScPTsAoU1TOTCYNoLsx1b3HT21dT24YqgC3bQI5IHyFqi8huvNhJeTawrkvurvMn8AUs1rvZnhfNdsDZFLbaF3F0Q9VTeEsuF0XbZGOePuTBTrswAHO4FJz3xrtG47mRCQaiPrFm7hcPZ/s16000/ba1.png",
-    "categories": [
-      "Bebes",
-      "Ninas",
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-gatita-purpura.html"
-  },
-  {
     "id": 1780423308768,
     "slug": "conjunto-princesa-lavanda",
     "name": "Conjunto princesa Lavanda",
@@ -2791,6 +2692,20 @@
     "url": "/productos/vestido-ruby.html"
   },
   {
+    "id": 1783629718897,
+    "slug": "conjunto-gatita-purpura",
+    "name": "Conjunto Gatita Purpura",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8QdmWuPxs4LBYwL3bA0n4AtuTjzfiQjQIXH3DhkFpuYZ8I6nScPTsAoU1TOTCYNoLsx1b3HT21dT24YqgC3bQI5IHyFqi8huvNhJeTawrkvurvMn8AUs1rvZnhfNdsDZFLbaF3F0Q9VTeEsuF0XbZGOePuTBTrswAHO4FJz3xrtG47mRCQaiPrFm7hcPZ/s16000/ba1.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-gatita-purpura.html"
+  },
+  {
     "id": 1780411457176,
     "slug": "baby-corazon-brown-2-piezas",
     "name": "baby corazon brown 2 piezas",
@@ -2803,34 +2718,6 @@
     ],
     "inStock": true,
     "url": "/productos/baby-corazon-brown-2-piezas.html"
-  },
-  {
-    "id": 1783629732156,
-    "slug": "conjunto-dinooon",
-    "name": "Conjunto Dinooon",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3f7DaEPoOqL0FmovbYwfdi2ZxmsFwthV84fcYVtBwCzo5RVUDfR9t2hwgvYV2v16iW9HRTLZrYI2a155SH70SvVF_5mjVBScesX0ANlfYrffHvtHApwmvOwcK5eatYIIAKwTgpN01jZQF3OYf83dTI8lBdDPOvzg4K8MtpI4TlkK4bKwCAVjppD38LD_8/s16000/di1.png",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-dinooon.html"
-  },
-  {
-    "id": 1783629784933,
-    "slug": "conjunto-verano-kids",
-    "name": "Conjunto Verano kids",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8lnPxOsSksqqxlAQ9ShY0SQy_apFYyZseDZpPvjqRQN5wrDLYkkbxbLrt_Zszu_usVgO5VVcZFuZurp6TiC8IVst2PWVqPklSpvxOH5UgJU3JlAZe5BDNqPXFvH1MM2E_wGaGrzfg9QGTVxce6OS0bxGNRHmmUBMUIMkP36i3tl8bNFnP4FD1Zcw0p-1M/s16000/g1x.png",
-    "categories": [
-      "Conjunto Short",
-      "Conjunto 2 piezas",
-      "Ninos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-verano-kids.html"
   },
   {
     "id": 1780411167528,
@@ -2859,6 +2746,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-chicago-black-2-piezas.html"
+  },
+  {
+    "id": 1783629732156,
+    "slug": "conjunto-dinooon",
+    "name": "Conjunto Dinooon",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3f7DaEPoOqL0FmovbYwfdi2ZxmsFwthV84fcYVtBwCzo5RVUDfR9t2hwgvYV2v16iW9HRTLZrYI2a155SH70SvVF_5mjVBScesX0ANlfYrffHvtHApwmvOwcK5eatYIIAKwTgpN01jZQF3OYf83dTI8lBdDPOvzg4K8MtpI4TlkK4bKwCAVjppD38LD_8/s16000/di1.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Bebito"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-dinooon.html"
   },
   {
     "id": 1783711993941,
@@ -3142,5 +3043,102 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-love-rosa-lila-2-piezas.html"
+  },
+  {
+    "id": 1783629840197,
+    "slug": "overol-kitty",
+    "name": "Overol Kitty",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJqzU_pa45ucCcc1Ubqaq-MuBDzweMCE5EsT_RIANvuueIRI2-wFo-bAN6i1Xb3f-wr7amTvCeCjRUyIz5f6xWpjOBLo7JFKCLGoYCZIgxA1fEf7y4o0DOPDl2whYiIh9nndF5QSIfWJTw5WdCMmVGKc_y0shT151ZcKormfZaeQChpNZq6ouz5kNx0wsM/s16000/oo2.png",
+    "categories": [
+      "Overoles",
+      "Ninas",
+      "Jeans"
+    ],
+    "inStock": true,
+    "url": "/productos/overol-kitty.html"
+  },
+  {
+    "id": 1783629772719,
+    "slug": "conjunto-tazmania",
+    "name": "Conjunto TAZmania",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDUhP7lCyd3xQCgeEUM5Rl4Lqoz0ov2ALeZbC9ARUEqXgHHeBl2XTz2UbLuR4buNQ-DDqg00ZwGdSVsxeh9PGvPyZbfbLTOYMUQc3o4IWmftQCBjghcL10TwmNN9YoXNWenpuVa-hcd7DwCMR1gTotqq0MR7_gPe6gI4uz42Nx9zMkBeudXwKnukuK_emk/s16000/tz1.png",
+    "categories": [
+      "Ninos",
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-tazmania.html"
+  },
+  {
+    "id": 1783629784933,
+    "slug": "conjunto-verano-kids",
+    "name": "Conjunto Verano kids",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8lnPxOsSksqqxlAQ9ShY0SQy_apFYyZseDZpPvjqRQN5wrDLYkkbxbLrt_Zszu_usVgO5VVcZFuZurp6TiC8IVst2PWVqPklSpvxOH5UgJU3JlAZe5BDNqPXFvH1MM2E_wGaGrzfg9QGTVxce6OS0bxGNRHmmUBMUIMkP36i3tl8bNFnP4FD1Zcw0p-1M/s16000/g1x.png",
+    "categories": [
+      "Conjunto Short",
+      "Conjunto 2 piezas",
+      "Niño"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-verano-kids.html"
+  },
+  {
+    "id": 1783629744477,
+    "slug": "vestido-osito-vintage",
+    "name": "Vestido osito vintage",
+    "price": 25,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgeZM41NTg3a_sqA-KsP92JhPpgd_88D2ftIcS2Eh9X5XWWlzSrYBKJBASagqj7dQUGSvlVY9DlO7bMgfzHENWuER4nMmTtlpzvFQgon1gaditb64BA4hXMAUjkkcAByztBzOlLhXJ1epyYC_xCHMppIXS5zdNCjwW0Fj_I2w0iWKHSJD9h6hVz4XHb5Gpi/s16000/cj2.png",
+    "categories": [
+      "Vestidos",
+      "Conjunto 2 piezas",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-osito-vintage.html"
+  },
+  {
+    "id": 1783629843911,
+    "slug": "overol-primavera-rosalia",
+    "name": "Overol primavera rosalia",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS93hSU4JLTF1x8zDYuKu2FKWiES0ZsT-Rh7aFgvjklXfN0OjH-_T9ehvz5kpqTZxqm6fsR1tOTBKWTno3gh2xM-WJJYAoKIUXCyC1aah9D3ag6PmfOVs9YvphqJrgXKI4wzT3DvNtbN852N-1Z8bXhNrChiICVyLGPiFHeaHHqyXTbH6Perb4JZyBoO08/s16000/ov2.png",
+    "categories": [
+      "Overoles",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/overol-primavera-rosalia.html"
+  },
+  {
+    "id": 1783629884066,
+    "slug": "pantalon-jean-hello-kitty",
+    "name": "Pantalon Jean Hello Kitty",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUfxAz7yylltwpM3qS_nUKnMP43CuOUJb3RaMpH-DZLWib9wybIKmw0N4FV2DHL3sgxpPGk6N7jEQfk34gyVfoVcg9mxjNgfRQrkdPes18KfwWoO9LeUXU73VR-ZH_DbiQ93l7Nccbj5lOqyFBcx2OEQxr18O2K4cZK-nEUEVAMPshTn7oa-S4rYH6S6F9/s16000/jk2.png",
+    "categories": [
+      "Jeans",
+      "Ninas",
+      "Pantalones Jeans"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-hello-kitty.html"
+  },
+  {
+    "id": 1780375497375,
+    "slug": "dino-3d-green-3-piezas",
+    "name": "Dino 3D Green 3 piezas",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgX0SXyCVEQvyTZAY5oczlW2Z2vE1MIcz4igHG4t0EmGxG_j9xR1oWQ7qYSGHEplbQ0RsCsRt-tTbFThRHWxrk3ydQhfm8qQqtq8CJFP15gYkW3lCQDv5_OWQ7teVFTIPbfjZK0tiZV3RJhsuw68q3TnAVlQd4RY85kl-sjeQDo8bGGPCx0xqgxaKY2_Fp_/s16000/did2.png",
+    "categories": [
+      "Niño",
+      "Conjunto Pantalon",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/dino-3d-green-3-piezas.html"
   }
 ]
