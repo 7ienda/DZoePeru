@@ -331,6 +331,7 @@ html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;width:100%;max-wid
   --rose-dark:   #8A6FAA;   /* lila oscuro */
   --rose-light:  #D8C8E8;   /* lila claro */
   --rose-soft:   #F3EEFA;   /* lila muy suave */
+  --fav-gold:    #FFB300;   /* dorado/amarillo — activo en favoritos y lista de deseos */
   --cta:         #C8A0D8;   /* lila CTA */
   --cta-dark:    #9A72B8;   /* lila CTA hover */
   --cta-glow:    rgba(180,140,210,0.30);
@@ -1569,7 +1570,20 @@ body.dark-mode .viewers-badge.vb-inline strong{color:#ffd6e6;}
   transition:all 0.22s;z-index:6;font-size:15px;color:#ccc;
 }
 .wishlist-btn:hover{transform:scale(1.18);color:var(--rose);}
-.wishlist-btn.active{color:var(--rose);}
+.wishlist-btn.active{color:var(--fav-gold);}
+
+/* Favoritos (estrella) — mismo estilo y tamaño que wishlist, debajo del corazón */
+.favorites-btn{
+  position:absolute;top:56px;right:12px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,0.12);
+  transition:all 0.22s;z-index:6;font-size:15px;color:#ccc;
+}
+.favorites-btn:hover{transform:scale(1.18);color:var(--fav-gold);}
+.favorites-btn.active{color:var(--fav-gold);}
 
 /* Quick hover bar (bottom of image) */
 .product-quick{
@@ -1856,6 +1870,8 @@ body.dark-mode .sk-img,body.dark-mode .sk-line,body.dark-mode .sk-sz{background:
 .pi-fav-cats{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px;}
 .pi-fav-cat{font-size:8.5px;font-weight:800;text-transform:uppercase;color:var(--rose-dark);background:var(--rose-soft);border:1px solid var(--rose-light);border-radius:20px;padding:1px 7px;}
 .pi-fav-name{font-family:'Baloo 2',cursive;font-size:13.5px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:4px;}
+.pi-fav-name-link{cursor:pointer;transition:color 0.2s;}
+.pi-fav-name-link:hover{color:var(--rose-dark);text-decoration:underline;}
 .pi-fav-date{font-size:10.5px;font-weight:700;color:var(--text-soft);display:flex;align-items:center;gap:4px;margin-bottom:6px;}
 .pi-fav-date i{color:var(--rose);font-size:9px;}
 .pi-fav-date strong{color:var(--rose-dark);}
@@ -1891,8 +1907,14 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .empty-cart-msg .empty-icon{font-size:52px;display:block;margin-bottom:12px;}
 .cart-item{background:white;border-radius:16px;padding:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);transition:0.2s;}
 .cart-item:hover{border-color:var(--rose-light);}
-.cart-item-info{flex:2;}
+.cart-item-img{width:56px;height:56px;border-radius:12px;overflow:hidden;flex-shrink:0;background:var(--rose-soft);display:flex;align-items:center;justify-content:center;}
+.cart-item-img img{width:100%;height:100%;object-fit:cover;}
+.cart-item-img .cart-img-fallback{font-size:22px;}
+.cart-item-info{flex:2;display:flex;align-items:center;gap:10px;}
+.cart-item-info-text{flex:1;min-width:0;}
 .cart-item-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px;}
+.cart-item-name-link{cursor:pointer;transition:color 0.2s;}
+.cart-item-name-link:hover{color:var(--rose-dark);text-decoration:underline;}
 .cart-item-size{font-size:11px;color:var(--text);}
 .cart-item-price{font-size:12px;color:var(--text);font-weight:700;}
 .cart-item-controls{display:flex;align-items:center;gap:8px;}
@@ -2242,6 +2264,8 @@ body.dark-mode .wa-menu-item:hover{background:#243228;}
 .wishlist-item-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .wishlist-item-main{flex:1;min-width:0;}
 .wishlist-item-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px;}
+.wishlist-item-name-link{cursor:pointer;transition:color 0.2s;}
+.wishlist-item-name-link:hover{color:var(--rose-dark);text-decoration:underline;}
 .wishlist-item-price{font-weight:800;color:var(--rose-dark);font-size:14px;margin-bottom:4px;}
 .wishlist-item-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
 .wishlist-tag{background:rgba(179,157,200,0.25);color:var(--rose-dark);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.3px;border:1px solid var(--rose-light);}
@@ -2866,6 +2890,17 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   transform: scale(1.2);
   color: var(--rose);
   box-shadow: 0 6px 18px rgba(179,157,200,0.4);
+}
+.favorites-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  transition: transform 0.25s var(--ease-bounce), color 0.2s;
+}
+.favorites-btn:hover {
+  transform: scale(1.2);
+  color: var(--fav-gold);
+  box-shadow: 0 6px 18px rgba(255,179,0,0.35);
 }
 
 /* Badges premium */
@@ -3818,6 +3853,13 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
     height: 28px !important;
     font-size: 13px !important;
   }
+  .favorites-btn {
+    top: 42px !important;
+    right: 6px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 13px !important;
+  }
   .product-body {
     padding: 12px 14px 12px !important;
     display: flex !important;
@@ -4087,6 +4129,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .product-card:hover .img-slides img { transform: none !important; }
   .category-card:hover { transform: none !important; }
   .wishlist-btn:hover { transform: none !important; }
+  .favorites-btn:hover { transform: none !important; }
   .benefit-item:hover { transform: none !important; }
 }
 
@@ -9352,11 +9395,14 @@ function renderPiFavsDrawer() {
   const badge     = document.getElementById('piFavsBadgeCount');
   if (!container) return;
 
-  const favItems = upcomingProducts.filter(up => ucFavs.includes(String(up.id)));
+  const upcomingIds = new Set((upcomingProducts || []).map(up => String(up.id)));
+  const favUpcoming = (upcomingProducts || []).filter(up => ucFavs.includes(String(up.id)));
+  const favRegular  = (products || []).filter(p => ucFavs.includes(String(p.id)) && !upcomingIds.has(String(p.id)));
+  const totalFav    = favUpcoming.length + favRegular.length;
 
-  if (badge) badge.textContent = favItems.length;
+  if (badge) badge.textContent = totalFav;
 
-  if (!favItems.length) {
+  if (!totalFav) {
     container.innerHTML = `
       <div class="pi-favs-empty">
         <span class="pi-empty-icon">⭐</span>
@@ -9366,7 +9412,7 @@ function renderPiFavsDrawer() {
     return;
   }
 
-  container.innerHTML = favItems.map(up => {
+  const upcomingHtml = favUpcoming.map(up => {
     const images    = up.images || (up.image ? [up.image] : []);
     const img0      = images[0] || '';
     const sizes     = up.sizes || [];
@@ -9412,6 +9458,50 @@ function renderPiFavsDrawer() {
       </button>
     </div>`;
   }).join('');
+
+  const regularHtml = favRegular.map(p => {
+    const images = p.images || (p.image ? [p.image] : []);
+    const img0   = images[0] || '';
+    const sizes  = p.sizes || [];
+    const prices = sizes.filter(s=>s.price>0).map(s=>Number(s.price)||0);
+    const minP   = prices.length ? Math.min(...prices) : 0;
+    const cats   = (p.categories || []).slice(0,2);
+    const hasStock = sizes.some(s=>s.stock>0);
+
+    const imgEl = img0
+      ? `<img src="${ucEsc(img0)}" alt="${ucEsc(p.name)}" class="pi-fav-img" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="pi-fav-img-placeholder">📦</div>`;
+
+    const catsHtml = cats.length
+      ? `<div class="pi-fav-cats">${cats.map(c=>`<span class="pi-fav-cat">${ucEsc(c)}</span>`).join('')}</div>`
+      : '';
+
+    const priceHtml = minP > 0
+      ? `<div class="pi-fav-price">S/ ${minP.toFixed(2)}</div>` : '';
+
+    const stockBadge = hasStock
+      ? `<span class="pi-fav-badge arrived">✅ En stock</span>`
+      : `<span class="pi-fav-badge flight">⏳ Agotado</span>`;
+
+    return `
+    <div class="pi-fav-card" id="pifavcard-${p.id}">
+      <div onclick="closePiFavs();openProductPage('${p.id}');" style="cursor:pointer;flex-shrink:0;" title="Ver producto">${imgEl}</div>
+      <div class="pi-fav-info">
+        ${catsHtml}
+        <div class="pi-fav-name pi-fav-name-link" onclick="closePiFavs();openProductPage('${p.id}');" title="Ver producto">${ucEsc(p.name)}</div>
+        ${priceHtml}
+        ${stockBadge}
+        <a href="#" onclick="closePiFavs();openProductPage('${p.id}');return false;" class="pi-fav-wa">
+          <i class="fas fa-eye"></i> Ver producto
+        </a>
+      </div>
+      <button class="pi-fav-remove" onclick="ucRemoveFav('${p.id}')" aria-label="Quitar de favoritos">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = upcomingHtml + regularHtml;
 }
 
 window.ucRemoveFav = function(id) {
@@ -9425,6 +9515,9 @@ window.ucRemoveFav = function(id) {
     btn.classList.remove('active');
     btn.setAttribute('aria-pressed','false');
   }
+  // Actualizar botón de estrella en la tarjeta del catálogo si existe
+  const favBtn = document.querySelector(`.favorites-btn[data-fid="${id}"]`);
+  if (favBtn) { favBtn.classList.remove('active'); favBtn.querySelector('i').className = 'far fa-star'; }
   renderPiFavsDrawer();
   updatePiFavsBadge();
 };
@@ -11157,6 +11250,7 @@ function renderProducts() {
 
   // Re-bind wishlist buttons
   bindWishlistButtons();
+  bindFavoritesButtons();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -11333,6 +11427,9 @@ function renderProductCard(product) {
       ${isAgotado ? `<div class="agotado-overlay"><i class="fas fa-clock ago-icon"></i><span class="ago-text">Agotado</span><span class="ago-sub">Avísame cuando llegue</span></div>` : ''}
       ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
+      </button>` : ''}
+      ${!isAgotado ? `<button class="favorites-btn" data-fid="${product.id}" title="Favoritos">
+        <i class="${ucFavs.includes(String(product.id)) ? 'fas' : 'far'} fa-star"></i>
       </button>` : ''}
       <div class="product-quick">
         <button class="btn-sm btn-sm-ghost" onclick="openProductPage('${product.id}')"><i class="fas fa-eye"></i> Ver</button>
@@ -11541,11 +11638,17 @@ function renderCart() {
   cartItems.innerHTML = cart.map((item, idx) => {
     const qty = item.qty || item.quantity || 1;
     const sub = (item.price * qty).toFixed(2);
+    const imgHtml = item.img
+      ? `<img src="${item.img}" alt="${esc(item.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=&quot;cart-img-fallback&quot;>📦</span>'">`
+      : `<span class="cart-img-fallback">📦</span>`;
     return `<div class="cart-item">
       <div class="cart-item-info">
-        <div class="cart-item-name">${esc(item.name)}</div>
-        <div class="cart-item-size">Talla: ${item.size || '-'}</div>
-        <div class="cart-item-price">S/ ${Number(item.price).toFixed(2)} c/u</div>
+        <div class="cart-item-img" onclick="closeCart();openProductPage('${item.pid}');" title="Ver producto" style="cursor:pointer;">${imgHtml}</div>
+        <div class="cart-item-info-text">
+          <div class="cart-item-name cart-item-name-link" onclick="closeCart();openProductPage('${item.pid}');" title="Ver producto">${esc(item.name)}</div>
+          <div class="cart-item-size">Talla: ${item.size || '-'}</div>
+          <div class="cart-item-price">S/ ${Number(item.price).toFixed(2)} c/u</div>
+        </div>
       </div>
       <div class="cart-item-controls">
         <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
@@ -11783,9 +11886,9 @@ function renderWishlist() {
       ? `<img src="${img}" alt="${esc(item.name)}" onerror="this.parentElement.innerHTML='💝'">`
       : '💝';
     return `<div class="wishlist-item">
-      <div class="wishlist-item-img">${imgHtml}</div>
+      <div class="wishlist-item-img" onclick="document.getElementById('wishlistModal').classList.remove('active');openProductPage('${item.id}');" style="cursor:pointer;" title="Ver producto">${imgHtml}</div>
       <div class="wishlist-item-main">
-        <div class="wishlist-item-name">${esc(item.name)}</div>
+        <div class="wishlist-item-name wishlist-item-name-link" onclick="document.getElementById('wishlistModal').classList.remove('active');openProductPage('${item.id}');" title="Ver producto">${esc(item.name)}</div>
         <div class="wishlist-item-price">S/ ${parseFloat(item.price||0).toFixed(2)}</div>
         ${tagsHtml}
       </div>
@@ -11888,6 +11991,37 @@ function bindWishlistButtons() {
       } else {
         btn.classList.remove('active'); btn.querySelector('i').className = 'far fa-heart';
       }
+    };
+  });
+}
+
+// ═══ FAVORITOS (estrella) — usa el mismo sistema del panel ⭐ del header ═══
+function bindFavoritesButtons() {
+  document.querySelectorAll('.favorites-btn').forEach(btn => {
+    const id = btn.dataset.fid;
+    if (!id) return;
+    const inList = ucFavs.includes(String(id));
+    if (inList) { btn.classList.add('active'); btn.querySelector('i').className = 'fas fa-star'; }
+    else { btn.classList.remove('active'); btn.querySelector('i').className = 'far fa-star'; }
+    btn.onclick = e => {
+      e.stopPropagation();
+      const product = products.find(p => String(p.id) === String(id));
+      const name = product ? product.name : id;
+      const idx = ucFavs.indexOf(String(id));
+      if (idx === -1) {
+        ucFavs.push(String(id));
+        btn.classList.add('active'); btn.querySelector('i').className = 'fas fa-star';
+        btn.style.transform = 'scale(1.4)'; setTimeout(() => { btn.style.transform=''; }, 300);
+        showNotif('⭐ Agregado a tus favoritos');
+        syncFavoriteAdd(id, name);
+      } else {
+        ucFavs.splice(idx, 1);
+        btn.classList.remove('active'); btn.querySelector('i').className = 'far fa-star';
+        syncFavoriteRemove(id);
+      }
+      localStorage.setItem('dzoe_pi_favs', JSON.stringify(ucFavs));
+      renderPiFavsDrawer();
+      updatePiFavsBadge();
     };
   });
 }
@@ -12080,7 +12214,7 @@ function openProductPage(productId) {
             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
           </a>
           ${inStock ? `<button class="pp-btn-wish" onclick="ppToggleWishlist('${productId}')">
-            <i class="${wishlist.find(w=>String(w.id)===String(productId))?'fas':'far'} fa-heart" style="color:var(--rose);"></i>
+            <i class="${wishlist.find(w=>String(w.id)===String(productId))?'fas':'far'} fa-heart" style="color:var(--fav-gold);"></i>
             ${wishlist.find(w=>String(w.id)===String(productId)) ? 'En tu lista de deseos' : 'Agregar a lista de deseos'}
           </button>` : ''}
         </div>
@@ -12175,7 +12309,7 @@ function ppToggleWishlist(productId) {
   const btn = document.querySelector('.pp-btn-wish');
   if (btn) {
     const inList = wishlist.find(w => String(w.id) === String(productId));
-    btn.innerHTML = `<i class="${inList?'fas':'far'} fa-heart" style="color:var(--rose);"></i> ${inList ? 'En tu lista de deseos' : 'Agregar a lista de deseos'}`;
+    btn.innerHTML = `<i class="${inList?'fas':'far'} fa-heart" style="color:var(--fav-gold);"></i> ${inList ? 'En tu lista de deseos' : 'Agregar a lista de deseos'}`;
     if (added) { btn.style.transform='scale(1.05)'; setTimeout(()=>{btn.style.transform='';},300); showNotif('💝 Agregado a tu lista de deseos'); }
   }
 }
