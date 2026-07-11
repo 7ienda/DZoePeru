@@ -4681,6 +4681,11 @@ body.dark-mode #megaPanelNinos .dzn-age-menu-lead { color: #b8a8cc; }
     width: min(360px, 92vw) !important;
     background: var(--cream) !important;
     display: flex !important; flex-direction: column;
+    /* Fix: #main-header tiene backdrop-filter, lo que lo convierte en el
+       "containing block" de este elemento position:fixed (spec CSS).
+       Sin esto, el drawer queda comprimido a la altura del header (62px)
+       en vez de ocupar toda la pantalla. Forzamos altura real de viewport. */
+    top: 0 !important; bottom: auto !important; height: 100dvh !important;
   }
 
   .dzn-drawer-head {
@@ -5323,7 +5328,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   <div class="hero-slider-track" id="heroTrack">
     <div class="hero-slide">
       <img
-        src="http://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvc_F6YQYjscM5qCsKP7BCW0tbqxwcdfyqFLLrqtSufjx2CCSX39SDWeZL9GEpa4MtYUjlCVb4MApVMgaKo9abEe77hMeE8t0oXOXV3tHGunD3yFV7fMmPSlvZLZOej8ICC7Zlb2cFof_ZKouBm1TwzAHShkuOS2iAN1cCOIZZNqXnXgu29emobznVxEkE/s1600/dzoe-ropa-ni%C3%B1as-ni%C3%B1os-bebes-importada-coleccion-premium.webp"
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdDpla_9iZun5GZGStMfqV1PbZ8xytaAOILODOVxJrVISWW6lV9qh0IbwKvWhbzUwMeQlPVt7k8MOUE3TPB5ImteEcrMgtPj57uA2lZgPvmCjIoC-4gS2edn7f7yiy53fAAiMxkcleioDBc5Ig8Q_hJ12bYqMMfzzN3KQguPTJk8kDeD9aSRU9JiplwTHZ/s1600/dzoe-ropa-ni%C3%B1as-ni%C3%B1os-bebes-importada-coleccion-premium%20(1)%20(1).webp"
         alt="Banner principal"
         loading="eager"
         fetchpriority="high"
