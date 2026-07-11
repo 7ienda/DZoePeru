@@ -1981,10 +1981,10 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .wishlist-fab{position:fixed;bottom:28px;left:28px;z-index:900;background:var(--rose);color:white;border:none;width:60px;height:60px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 6px 24px rgba(179,157,200,0.55);transition:0.3s;display:flex;align-items:center;justify-content:center;}
 .wishlist-fab:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 10px 28px rgba(179,157,200,0.65);}
 .wishlist-fab-badge{position:absolute;top:-4px;right:-4px;background:var(--rose-dark);color:white;font-size:10px;font-weight:800;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid white;}
-.wishlist-modal{position:fixed;inset:0;background:rgba(45,37,69,0.5);backdrop-filter:blur(4px);z-index:2000;display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:0.3s;}
+.wishlist-modal{position:fixed;inset:0;background:rgba(45,37,69,0.35);backdrop-filter:blur(3px);z-index:2000;visibility:hidden;opacity:0;transition:0.3s;}
 .wishlist-modal.active{visibility:visible;opacity:1;}
-.wishlist-modal-content{background:white;width:500px;max-width:92%;max-height:85vh;border-radius:28px;overflow:hidden;box-shadow:0 20px 60px rgba(163,133,210,0.4);display:flex;flex-direction:column;transform:scale(0.92) translateY(20px);transition:0.3s;}
-.wishlist-modal.active .wishlist-modal-content{transform:scale(1) translateY(0);}
+.wishlist-modal-content{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100%;max-height:100vh;background:white;border-radius:0;overflow:hidden;box-shadow:-10px 0 40px rgba(163,133,210,0.25);display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);}
+.wishlist-modal.active .wishlist-modal-content{right:0;}
 .wishlist-modal-header{padding:22px 24px 18px;background:var(--lav-light);border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 .wishlist-modal-header h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--text);display:flex;align-items:center;gap:8px;}
 .wishlist-modal-header h3 i{color:var(--rose);}
@@ -3121,7 +3121,7 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 
 /* ── WISHLIST MODAL PREMIUM ── */
 .wishlist-modal-content {
-  border-radius: 28px 0 0 28px !important;
+  border-radius: 0 !important;
 }
 
 /* ── LOGIN MODAL PREMIUM ── */
@@ -4069,18 +4069,16 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .pp-features { grid-template-columns: 1fr !important; }
 }
 
-/* ── WISHLIST MODAL: ancho completo en mobile ── */
+/* ── WISHLIST MODAL: panel de ancho completo en mobile, igual que ⭐ Favoritos ── */
 @media (max-width: 600px) {
   .wishlist-modal-content {
     width: 100% !important;
     max-width: 100% !important;
-    max-height: 92vh !important;
-    border-radius: 20px 20px 0 0 !important;
-    margin-top: auto !important;
+    right: -100% !important;
+    border-radius: 0 !important;
   }
-  .wishlist-modal {
-    align-items: flex-end !important;
-    padding: 0 !important;
+  .wishlist-modal.active .wishlist-modal-content {
+    right: 0 !important;
   }
 }
 
@@ -6164,6 +6162,7 @@ function smartSearchClear() {
   sug.innerHTML = ''; sug.classList.remove('has-results');
   const catSel = document.getElementById('premCatSelect');
   if (catSel) catSel.value = '';
+  currentGenderCats = null;
   if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
   document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
 }
@@ -8891,11 +8890,13 @@ let categories = [];
 let cart = JSON.parse(localStorage.getItem('dzoe_cart') || localStorage.getItem('dzoeCart') || '[]');
 let wishlist = JSON.parse(localStorage.getItem('dzoeWishlist') || '[]');
 let currentUser = null; // usuario logueado (Supabase Auth) — null si es visitante anónimo
+let currentAccessToken = null; // token de sesión, cacheado para peticiones keepalive (sobreviven a un F5)
 let currentFilter = 'all';
 let currentSearch = '';
 let currentAgeFilter = null;
 let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
+let currentGenderCats = null;   // categorías EXACTAS de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 12;
 let selectedSizes = {};
@@ -10404,6 +10405,7 @@ function renderBreadcrumb() {
 
 function filterByCategory(cat) {
   if (cat === 'all') { currentFilter = 'all'; } else { currentFilter = cat; }
+  currentGenderCats = null; // elegir una categoría del listado reemplaza el filtro del menú BEBE/NIÑA/NIÑO
   currentPage = 1;
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === currentFilter));
   document.querySelectorAll('.hero-cat-chip').forEach(chip => {
@@ -10461,6 +10463,7 @@ function clearAgeFilter() {
   currentAgeFilter = null;
   currentAgeGroup = null;
   currentAgeFilterSet = null;
+  currentGenderCats = null;
   const sel = document.getElementById('afpEdad');
   if (sel) sel.value = '';
   renderAgeChips();
@@ -10526,14 +10529,31 @@ const AGE_MENU_MAP = {
   '16 años': ['16 años','15-16 años'],
 };
 
+// Mapa de género del menú → categorías EXACTAS reales guardadas en Supabase.
+// Esto reemplaza la antigua búsqueda por palabras (heurística), que fallaba
+// cuando un producto no repetía "niño"/"niña" en el nombre o descripción.
+const GENDER_CATEGORY_MAP = {
+  'bebé': ['Bebita', 'Bebito'],
+  'bebe': ['Bebita', 'Bebito'],
+  'niña': ['Niña'],
+  'nina': ['Niña'],
+  'niño': ['Niño'],
+  'nino': ['Niño'],
+};
+
 function goAgeGender(genderWord, edad) {
   currentAgeGroup = null;
   currentAgeFilter = edad;
   currentAgeFilterSet = AGE_MENU_MAP[edad] || [edad];
+  currentGenderCats = GENDER_CATEGORY_MAP[genderWord] || null;
   currentPage = 1;
+  // Ya no metemos la palabra de género en el buscador de texto libre:
+  // el filtro estricto por categoría (currentGenderCats) es el que manda.
   const input = document.getElementById('searchInput');
-  if (input) input.value = genderWord;
-  if (typeof searchProducts === 'function') searchProducts();
+  if (input) input.value = '';
+  currentSearch = '';
+  renderProducts();
+  renderBreadcrumb();
   if (typeof renderAgeChips === 'function') renderAgeChips();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
@@ -10542,26 +10562,14 @@ function goAgeGender(genderWord, edad) {
 function goGenderAll(genderWord) {
   currentAgeFilter = null;
   currentAgeFilterSet = null;
+  currentAgeGroup = null;
+  currentGenderCats = GENDER_CATEGORY_MAP[genderWord] || null;
   currentPage = 1;
   const input = document.getElementById('searchInput');
-
-  // "Bebé" no es un género, es un grupo de EDAD (0-24 meses). Si lo tratamos
-  // como búsqueda de texto libre (como niño/niña), se cuelan prendas de niñas
-  // u niños mayores cuyo nombre/descripción solo menciona la palabra "bebé".
-  // Por eso aquí filtramos de forma estricta por las tallas reales del grupo
-  // "bebe" (ver AGE_GROUP_SIZES), igual que hacen los chips de edad.
-  if (genderWord === 'bebé' || genderWord === 'bebe') {
-    if (input) input.value = '';
-    currentSearch = '';
-    currentAgeGroup = 'bebe';
-    currentPage = 1;
-    renderProducts();
-    renderBreadcrumb();
-  } else {
-    currentAgeGroup = null;
-    if (input) input.value = genderWord;
-    if (typeof searchProducts === 'function') searchProducts();
-  }
+  if (input) input.value = '';
+  currentSearch = '';
+  renderProducts();
+  renderBreadcrumb();
 
   if (typeof renderAgeChips === 'function') renderAgeChips();
   const sec = document.getElementById('productos');
@@ -10799,6 +10807,7 @@ function scoreProduct(product, parsed) {
 
 function searchProducts() {
   currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+  currentGenderCats = null; // una búsqueda escrita a mano reemplaza el filtro estricto del menú
   currentPage = 1;
   renderProducts();
   renderBreadcrumb();
@@ -10895,6 +10904,16 @@ function filterProducts() {
   if (currentAgeGroup && AGE_GROUP_SIZES[currentAgeGroup]) {
     const allowed = AGE_GROUP_SIZES[currentAgeGroup];
     filtered = filtered.filter(p => (p.sizes||[]).some(s => allowed.includes(s.size)));
+  }
+
+  // ── Filtro ESTRICTO por categoría de género (viene del menú BEBE/NIÑA/NIÑO) ──
+  // A diferencia del filtro de género por texto (arriba, para búsquedas escritas),
+  // este exige que el producto tenga literalmente la categoría exacta asignada
+  // en Supabase (Bebita/Bebito/Niña/Niño). No hay "modo unisex" aquí: si el
+  // producto no tiene esa categoría, no aparece. Esto evita que se cuelen
+  // modelos de otro género cuyo nombre/descripción no menciona el género.
+  if (currentGenderCats) {
+    filtered = filtered.filter(p => (p.categories || []).some(c => currentGenderCats.includes(c)));
   }
 
   return filtered;
@@ -11219,7 +11238,7 @@ function renderProducts() {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);">
       <div style="font-size:52px;margin-bottom:16px;">🔍</div>
       <p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>
-      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();"
+      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;currentGenderCats=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();"
         style="margin-top:16px;background:var(--rose);color:white;border:none;padding:10px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:14px;">
         Ver todos los productos
       </button>
@@ -11757,15 +11776,38 @@ function saveWishlist() {
   syncWishlistToSupabase();
 }
 
+// Petición directa a la API REST de Supabase con keepalive:true.
+// A diferencia de las llamadas normales del SDK (supabaseClient.from(...)),
+// una petición con keepalive NO se cancela si el usuario recarga (F5) o cierra
+// la pestaña justo después de hacer clic — el navegador la termina de enviar
+// igual. Esto es lo que evita que un borrado "se pierda" y el ítem reaparezca.
+function supabaseKeepaliveRequest(pathAndQuery, method, body, useAuthToken) {
+  if (!supabaseUrl || !supabaseKey) return Promise.resolve();
+  const token = (useAuthToken && currentAccessToken) ? currentAccessToken : supabaseKey;
+  return fetch(supabaseUrl + pathAndQuery, {
+    method,
+    keepalive: true,
+    headers: {
+      'apikey': supabaseKey,
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'DELETE' ? 'return=minimal' : 'resolution=merge-duplicates,return=minimal'
+    },
+    body: body ? JSON.stringify(body) : undefined
+  }).catch(() => {});
+}
+
 async function syncWishlistToSupabase() {
   if (!supabaseClient) return;
   // Si está logueado, la wishlist vive por cuenta (wishlist_items). Si es visitante, por sesión anónima (wishlists).
   if (currentUser) return; // los cambios por usuario logueado se sincronizan item por item (ver toggleWishlistItem)
   try {
     const sid = getWishlistSessionId();
-    await supabaseClient.from('wishlists').upsert(
-      { session_id: sid, items: wishlist, updated_at: new Date().toISOString() },
-      { onConflict: 'session_id' }
+    await supabaseKeepaliveRequest(
+      '/rest/v1/wishlists?on_conflict=session_id',
+      'POST',
+      [{ session_id: sid, items: wishlist, updated_at: new Date().toISOString() }],
+      false
     );
   } catch(e) { /* silencioso — localStorage es el fallback */ }
 }
@@ -11788,20 +11830,29 @@ async function loadWishlistFromSupabase() {
 async function syncWishlistItemAdd(item) {
   if (!supabaseClient || !currentUser) return;
   try {
-    await supabaseClient.from('wishlist_items').upsert({
-      user_id: currentUser.id,
-      product_id: String(item.id),
-      name: item.name || null,
-      price: item.price || null,
-      categories: item.categories || []
-    }, { onConflict: 'user_id,product_id' });
+    await supabaseKeepaliveRequest(
+      '/rest/v1/wishlist_items?on_conflict=user_id,product_id',
+      'POST',
+      [{
+        user_id: currentUser.id,
+        product_id: String(item.id),
+        name: item.name || null,
+        price: item.price || null,
+        categories: item.categories || []
+      }],
+      true
+    );
   } catch(e) {}
 }
 async function syncWishlistItemRemove(id) {
   if (!supabaseClient || !currentUser) return;
   try {
-    await supabaseClient.from('wishlist_items').delete()
-      .eq('user_id', currentUser.id).eq('product_id', String(id));
+    await supabaseKeepaliveRequest(
+      '/rest/v1/wishlist_items?user_id=eq.' + encodeURIComponent(currentUser.id) + '&product_id=eq.' + encodeURIComponent(String(id)),
+      'DELETE',
+      null,
+      true
+    );
   } catch(e) {}
 }
 async function mergeAndLoadWishlist() {
@@ -11904,6 +11955,7 @@ function renderWishlist() {
 function removeWishlistItem(id) {
   wishlist = wishlist.filter(i => String(i.id) !== String(id));
   saveWishlist(); updateWishlistBadge(); renderWishlist();
+  if (currentUser) syncWishlistItemRemove(id); // faltaba: si no, la fila seguía viva en Supabase y volvía al hacer F5
   const btn = document.querySelector(`.wishlist-btn[data-wid="${id}"]`);
   if (btn) { btn.classList.remove('active'); btn.querySelector('i').className = 'far fa-heart'; }
 }
@@ -12945,8 +12997,10 @@ async function onAccountReady(user) {
 (async () => {
   if (!supabaseClient) return;
   const { data } = await supabaseClient.auth.getSession();
+  currentAccessToken = data?.session?.access_token || null;
   if (data?.session?.user) await onAccountReady(data.session.user);
   supabaseClient.auth.onAuthStateChange((_event, session) => {
+    currentAccessToken = session?.access_token || null;
     if (session?.user) { onAccountReady(session.user); }
     else { currentUser = null; updateLoginUI(null); }
   });
