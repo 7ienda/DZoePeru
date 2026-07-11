@@ -8960,9 +8960,8 @@ function paintHighlights(tab) {
 
   grid.innerHTML = filtered.map(p => {
     const img = (p.images && p.images[0]) || p.image || '';
-    const minP = p.sizes && p.sizes.length
-      ? Math.min(...p.sizes.filter(s => s.stock > 0).map(s => Number(s.price) || 0))
-      : 0;
+    const hlPricedSizes = (p.sizes || []).filter(s => s.stock > 0 && Number(s.price) > 0);
+    const minP = hlPricedSizes.length ? Math.min(...hlPricedSizes.map(s => Number(s.price))) : 0;
     const price = minP ? 'S/ ' + minP.toFixed(0) : '';
     return '<div class="highlight-card" onclick="openProductPage(\'' + p.id + '\')" style="cursor:pointer;">' +
       (img ? '<img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">' : '') +
@@ -11270,21 +11269,25 @@ function renderProductCard(product) {
 
   // Tallas con edad + estado de stock
   const sizesHtml = sizes.map((sz, idx) => {
+    const hasPrice = sz.price && Number(sz.price) > 0;
     let cls = 'size-option';
-    if (sz.stock <= 0) cls += ' out-stock';
+    if (sz.stock <= 0 || !hasPrice) cls += ' out-stock';
     else if (sz.stock < 5) cls += ' low-stock';
     if (selectedSizes[product.id] === idx) cls += ' selected';
     let stockBadge = '';
-    if (sz.stock <= 0)      stockBadge = '\u274c Agotado';
-    else if (sz.stock < 5)  stockBadge = `\u26a0\ufe0f ${sz.stock} \u00faltima${sz.stock===1?'':'s'}`;
-    else                    stockBadge = `\u2713 ${sz.stock} disp.`;
-    return `<button class="${cls}" onclick="selectSize('${product.id}',${idx})">
+    if (!hasPrice)           stockBadge = '\u26a0\ufe0f Sin precio';
+    else if (sz.stock <= 0)  stockBadge = '\u274c Agotado';
+    else if (sz.stock < 5)   stockBadge = `\u26a0\ufe0f ${sz.stock} \u00faltima${sz.stock===1?'':'s'}`;
+    else                     stockBadge = `\u2713 ${sz.stock} disp.`;
+    const disabled = sz.stock <= 0 || !hasPrice;
+    return `<button class="${cls}" ${disabled?'disabled':''} onclick="${disabled?'':`selectSize('${product.id}',${idx})`}">
       <span class="size-age">${sz.size}</span>
       <span class="size-stock-badge">${stockBadge}</span>
     </button>`;
   }).join('');
 
-  const minP = sizes.length ? Math.min(...sizes.filter(s=>s.price).map(s=>s.price)) : 0;
+  const pricedSizes = sizes.filter(s => s.stock > 0 && s.price && Number(s.price) > 0);
+  const minP = pricedSizes.length ? Math.min(...pricedSizes.map(s=>Number(s.price))) : 0;
   const offerPrice = product.offer_price ? parseFloat(product.offer_price) : null;
   const hasOffer = offerPrice && offerPrice > 0 && offerPrice < minP;
   const displayPrice = hasOffer ? offerPrice : minP;
@@ -11414,6 +11417,9 @@ function slideProductTo(productId, index) {
 //  TALLAS — selección
 // ═══════════════════════════════════════════════════════
 function selectSize(productId, idx) {
+  const product = products.find(p => String(p.id) === String(productId));
+  const sz = product?.sizes?.[idx];
+  if (!sz || sz.stock <= 0 || !(sz.price && Number(sz.price) > 0)) return;
   selectedSizes[productId] = idx;
   document.querySelectorAll(`.product-card[data-product-id="${productId}"] .size-option`).forEach((btn, i) => {
     btn.classList.toggle('selected', i === idx);
@@ -11443,7 +11449,7 @@ function addToCart(product, sizeIndex) {
   const sizes = product.sizes || [];
   const si = sizeIndex !== undefined ? sizeIndex : (selectedSizes[product.id] || 0);
   const size = sizes[si];
-  if (!size || size.stock <= 0) { showNotif('⚠️ Selecciona una talla disponible'); return; }
+  if (!size || size.stock <= 0 || !(size.price && Number(size.price) > 0)) { showNotif('⚠️ Selecciona una talla disponible'); return; }
   const exist = cart.find(i => i.name === product.name && i.size === size.size);
   if (exist) { exist.qty = (exist.qty || 1) + 1; }
   else {
@@ -11826,7 +11832,9 @@ function bindWishlistButtons() {
       const name = product ? product.name : id;
       const sizes = product?.sizes || [];
       const si = selectedSizes[id] || 0;
-      const price = sizes[si]?.price || (product ? Math.min(...sizes.filter(s=>s.price).map(s=>s.price)||[0]) : 0);
+      const wbPricedSizes = sizes.filter(s=>s.stock>0 && s.price>0);
+      const selSize = sizes[si];
+      const price = (selSize && selSize.stock>0 && selSize.price>0) ? selSize.price : (wbPricedSizes.length ? Math.min(...wbPricedSizes.map(s=>s.price)) : 0);
       const added = toggleWishlistItem(id, name, price);
       if (added) {
         btn.classList.add('active'); btn.querySelector('i').className = 'fas fa-heart';
@@ -11897,7 +11905,8 @@ function renderRelatedProductsHtml(product) {
   if (!related.length) return '';
   const cards = related.map(p => {
     const sizes = p.sizes || [];
-    const minPrice = sizes.length ? Math.min(...sizes.filter(s => s.price > 0).map(s => s.price)) : 0;
+    const relPricedSizes = sizes.filter(s => s.stock > 0 && s.price > 0);
+    const minPrice = relPricedSizes.length ? Math.min(...relPricedSizes.map(s => s.price)) : 0;
     const offerPrice = p.offer_price ? parseFloat(p.offer_price) : null;
     const hasOffer = offerPrice && offerPrice > 0 && offerPrice < minPrice;
     const displayPrice = hasOffer ? offerPrice : minPrice;
@@ -11925,7 +11934,8 @@ function openProductPage(productId) {
   const sizes = product.sizes || [];
   const imgs  = product.images?.length ? product.images : (product.image ? [product.image] : []);
   const hasStock = sizes.some(s => s.stock > 0);
-  const minP = sizes.length ? Math.min(...sizes.filter(s=>s.price>0).map(s=>s.price)) : 0;
+  const ppPricedSizes = sizes.filter(s => s.stock > 0 && s.price > 0);
+  const minP = ppPricedSizes.length ? Math.min(...ppPricedSizes.map(s=>s.price)) : 0;
   const ppOfferPrice = product.offer_price ? parseFloat(product.offer_price) : null;
   const ppHasOffer = ppOfferPrice && ppOfferPrice > 0 && ppOfferPrice < minP;
   const ppDisplayPrice = ppHasOffer ? ppOfferPrice : minP;
@@ -11937,8 +11947,8 @@ function openProductPage(productId) {
   const desc = product.description || `${product.name} — ropa infantil importada premium de alta gama. D'Zoe Perú.`;
   const waMsg = encodeURIComponent(`Hola D'Zoe Perú 🌸 me interesa el producto: *${product.name}*. ¿Tienen disponibilidad?`);
 
-  // Seleccionar primera talla con stock
-  const firstAvail = sizes.findIndex(s => s.stock > 0);
+  // Seleccionar primera talla con stock y precio
+  const firstAvail = sizes.findIndex(s => s.stock > 0 && s.price && Number(s.price) > 0);
   ppSelectedSize[productId] = firstAvail >= 0 ? firstAvail : 0;
   window._ppCurrentImgIdx = 0;
 
@@ -11955,11 +11965,15 @@ function openProductPage(productId) {
 
   // Tallas
   const sizesHtml = sizes.map((sz, idx) => {
-    const avail = sz.stock > 0;
+    const hasPrice = sz.price && Number(sz.price) > 0;
+    const avail = sz.stock > 0 && hasPrice;
     const isSel = ppSelectedSize[productId] === idx;
-    return `<button class="pp-size-btn${isSel?' selected':''}" ${!avail?'disabled':''} onclick="ppSelectSize('${productId}',${idx},this)">
+    let badge = '❌ Agotado';
+    if (!hasPrice) badge = '⚠️ Sin precio';
+    else if (sz.stock > 0) badge = `📦 ${sz.stock}`;
+    return `<button class="pp-size-btn${isSel?' selected':''}" ${!avail?'disabled':''} onclick="${avail?`ppSelectSize('${productId}',${idx},this)`:''}">
       ${esc(sz.size)}
-      <span class="pp-sz-stock">${avail ? `📦 ${sz.stock}` : '❌ Agotado'}</span>
+      <span class="pp-sz-stock">${badge}</span>
     </button>`;
   }).join('');
 
@@ -12105,7 +12119,9 @@ function ppToggleWishlist(productId) {
   if (!product) return;
   const sizes = product.sizes || [];
   const si = ppSelectedSize[productId] ?? 0;
-  const price = sizes[si]?.price || (sizes.length ? Math.min(...sizes.filter(s=>s.price>0).map(s=>s.price)) : 0);
+  const wishPricedSizes = sizes.filter(s => s.stock > 0 && s.price > 0);
+  const ppSelSize = sizes[si];
+  const price = (ppSelSize && ppSelSize.stock>0 && ppSelSize.price>0) ? ppSelSize.price : (wishPricedSizes.length ? Math.min(...wishPricedSizes.map(s=>s.price)) : 0);
   const added = toggleWishlistItem(productId, product.name, price);
   // Re-render solo el botón
   const btn = document.querySelector('.pp-btn-wish');
