@@ -612,14 +612,16 @@ img{display:block;max-width:100%;}
 /* Botón del dropdown */
 .nav-mega-btn {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
-  padding: 7px 13px;
+  gap: 5px;
+  row-gap: 3px;
+  padding: 6px 10px;
   border-radius: 10px;
   background: transparent;
   border: 1.5px solid transparent;
   font-family: 'Nunito', sans-serif;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
@@ -632,6 +634,19 @@ img{display:block;max-width:100%;}
   background: var(--rose-soft);
   color: var(--rose-dark);
   border-color: var(--rose-light);
+}
+/* La etiqueta (nav-badge) baja a su propia fila, debajo del ícono+nombre;
+   el chevron se queda arriba junto al nombre. ".dzn-btn-break" fuerza el
+   salto de línea sin obligar a la etiqueta a estirarse todo el ancho. */
+.nav-mega-btn .nav-arrow { order: 1; }
+.nav-mega-btn .dzn-btn-break { order: 2; flex-basis: 100%; width: 0; height: 0; }
+.nav-mega-btn .nav-badge {
+  order: 3;
+  flex: 0 0 auto;
+  width: fit-content;
+  margin-left: 0;
+  font-size: 8px;
+  padding: 1.5px 6px;
 }
 .nav-arrow {
   font-size: 9px !important;
@@ -4361,7 +4376,7 @@ body.dark-mode #main-header.scrolled { background: rgba(20,15,26,0.98) !importan
   display: flex; align-items: center; gap: 28px;
   position: relative;
 }
-#main-header .header-actions { margin-left: auto; }
+#main-header .header-actions { margin-left: 12px !important; }
 
 /* ── 1.5 SUBNAV — barra secundaria de ayuda / tallas ───────────────── */
 .dzn-subnav {
@@ -4410,10 +4425,47 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 }
 
 /* ── 2. NAV DESKTOP — fila de accesos ──────────────────────────────── */
-#mainMenu.dzn-nav { display: flex; flex: 0 0 auto; justify-content: flex-start; }
+#mainMenu.dzn-nav { display: flex !important; flex: 0 0 auto !important; justify-content: flex-start !important; }
+
+/* La caja real del botón (.dzn-mega-btn) tenía altura fija de 44px, lo que
+   sacaba la etiqueta (badge) fuera del recuadro. Se libera la altura y se
+   reordena: ícono+nombre+flecha arriba, etiqueta chica abajo. */
+#mainMenu .nav-mega-btn.dzn-mega-btn,
+#mainMenu .dzn-link--stack {
+  height: auto;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 1px;
+  gap: 2px;
+  padding: 5px 2px;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+#mainMenu .nav-mega-btn .dzn-emoji,
+#mainMenu .dzn-link--stack .dzn-emoji { font-size: 11px; }
+#mainMenu .nav-mega-btn .dzn-arrow { order: 1; margin-left: 0; }
+#mainMenu .nav-mega-btn .dzn-btn-break,
+#mainMenu .dzn-link--stack .dzn-btn-break { order: 2; flex-basis: 100%; width: 0; height: 0; }
+#mainMenu .nav-mega-btn .nav-badge.dzn-badge,
+#mainMenu .dzn-link--stack .nav-badge.dzn-badge {
+  order: 3;
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: 0;
+  margin: 0 auto;
+  font-size: 7px;
+  padding: 1px 4px;
+  white-space: nowrap;
+}
+#mainMenu .nav-mega-btn::after,
+#mainMenu .dzn-link--stack::after { bottom: 3px; }
+
 .dzn-nav .dzn-list {
-  display: flex; align-items: stretch; gap: 2px;
-  list-style: none; margin: 0 auto; padding: 0;
+  display: flex; align-items: stretch; gap: 0;
+  list-style: none; margin: 0 !important; padding: 0;
 }
 .dzn-nav .dzn-drawer-head,
 .dzn-nav .dzn-drawer-search,
@@ -4421,8 +4473,8 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 
 .dzn-link, .dzn-mega-btn {
   position: relative;
-  display: flex; align-items: center; gap: 7px;
-  height: 44px; padding: 0 15px;
+  display: flex; align-items: center; gap: 6px;
+  height: 44px; padding: 0 8px;
   font-family: 'Nunito', sans-serif; font-size: 13.5px; font-weight: 800;
   letter-spacing: .01em;
   color: var(--dzn-ink); text-decoration: none;
@@ -4436,7 +4488,7 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 
 /* Subrayado degradé — se dibuja de izquierda a derecha en hover/foco */
 .dzn-link::after, .dzn-mega-btn::after {
-  content: ''; position: absolute; left: 15px; right: 15px; bottom: 5px; height: 2px;
+  content: ''; position: absolute; left: 8px; right: 8px; bottom: 5px; height: 2px;
   background: linear-gradient(90deg, var(--rose), var(--dzn-gold));
   border-radius: 2px; transform: scaleX(0); transform-origin: left;
   transition: transform .35s var(--dzn-ease);
@@ -4991,7 +5043,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
                   aria-controls="megaPanelBebes" id="megaBtnBebes">
             <span class="dzn-emoji" aria-hidden="true">🍼</span>
             <span>BEBE</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i>
+            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
           </button>
 
           <div class="mega-panel dzn-panel" id="megaPanelBebes" role="menu" aria-labelledby="megaBtnBebes">
@@ -5048,7 +5100,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
                   aria-controls="megaPanelNinas" id="megaBtnNinas">
             <span class="dzn-emoji" aria-hidden="true">👧</span>
             <span>NIÑA</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">2-7 años</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i>
+            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
           </button>
 
           <div class="mega-panel dzn-panel" id="megaPanelNinas" role="menu" aria-labelledby="megaBtnNinas">
@@ -5094,7 +5146,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
                   aria-controls="megaPanelNinos" id="megaBtnNinos">
             <span class="dzn-emoji" aria-hidden="true">👦</span>
             <span>NIÑO</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">2-7 años</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i>
+            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
           </button>
 
           <div class="mega-panel dzn-panel" id="megaPanelNinos" role="menu" aria-labelledby="megaBtnNinos">
@@ -5134,11 +5186,43 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
           </div>
         </div>
 
+        <!-- === ACCESORIOS — mega === -->
+        <div class="nav-mega dzn-mega" id="megaAccesorios">
+          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
+                  aria-controls="megaPanelAccesorios" id="megaBtnAccesorios">
+            <span class="dzn-emoji" aria-hidden="true">🎀</span>
+            <span>ACCESORIO</span><span class="nav-badge dzn-badge" aria-label="Categoría de accesorios">PARA TU OUTFIT</span>
+            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
+          </button>
+
+          <div class="mega-panel dzn-panel" id="megaPanelAccesorios" role="menu" aria-labelledby="megaBtnAccesorios">
+            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
+                    onclick="this.closest('.nav-mega').classList.remove('open')">
+              <i class="fas fa-arrow-left" aria-hidden="true"></i> Accesorios
+            </button>
+
+            <div class="dzn-panel-inner">
+              <div class="dzn-ninas-title">Accesorio</div>
+              <div class="dzn-age-menu">
+                <p class="dzn-age-menu-lead"><i class="fas fa-gem" aria-hidden="true"></i> Complementa el look</p>
+                <div class="dzn-age-grid">
+                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
+                    <i class="fas fa-gem" aria-hidden="true"></i>
+                    <span class="dzn-age-pill-num">Ver todo Accesorios</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- === NUEVOS INGRESOS === -->
-        <a href="#proximos-ingresos" class="nav-link dzn-link" itemprop="url"
+        <a href="#proximos-ingresos" class="nav-link dzn-link dzn-link--stack" itemprop="url"
            onclick="closeMobileMenu();document.getElementById('proximos-ingresos')?.scrollIntoView({behavior:'smooth'});return false;">
           <span class="dzn-emoji" aria-hidden="true">✈️</span>
           <span itemprop="name">Proximos</span>
+          <span class="dzn-btn-break" aria-hidden="true"></span>
+          <span class="nav-badge dzn-badge" aria-label="Sección de próximos ingresos">INGRESOS</span>
         </a>
 
         <!-- === GUÍA DE TALLAS (incluye Ayuda / legal) — mega === -->
@@ -9096,6 +9180,40 @@ function sortByPriority(arr) {
   });
 }
 
+// ── Filtra próximos ingresos con los MISMOS criterios que el catálogo
+//    (género/categoría, edad y texto de búsqueda), para que la búsqueda
+//    del menú (BEBE/NIÑA/NIÑO/ACCESORIO) y el buscador sean más completos ──
+function getFilteredUpcoming() {
+  let filtered = [...upcomingProducts];
+  const hasFilter = !!(currentGenderCats || currentAgeFilter || currentSearch);
+
+  if (currentGenderCats) {
+    filtered = filtered.filter(up => (up.categories || []).some(c => currentGenderCats.includes(c)));
+  }
+
+  if (currentAgeFilter) {
+    if (currentAgeFilterSet && currentAgeFilterSet.length > 1) {
+      filtered = filtered.filter(up => (up.sizes || []).some(s => currentAgeFilterSet.includes(s.size)));
+    } else {
+      filtered = filtered.filter(up => (up.sizes || []).some(s => s.size === currentAgeFilter));
+    }
+  }
+
+  if (currentSearch) {
+    const terms = normTxt(currentSearch).split(/\s+/).filter(Boolean);
+    filtered = filtered.filter(up => {
+      const haystack = normTxt([
+        up.name || '',
+        up.description || '',
+        ...((up.categories || []))
+      ].join(' '));
+      return terms.every(t => haystack.includes(t));
+    });
+  }
+
+  return { filtered, hasFilter };
+}
+
 // ── Render principal ─────────────────────────────────────────
 function renderUpcomingSection() {
   const section = document.getElementById('proximos-ingresos');
@@ -9103,17 +9221,34 @@ function renderUpcomingSection() {
   if (!section || !grid) return;
 
   if (!upcomingProducts.length) { section.style.display = 'none'; return; }
+
+  const { filtered, hasFilter } = getFilteredUpcoming();
+
+  if (hasFilter && !filtered.length) {
+    // Hay un filtro activo (edad/género/búsqueda) pero ningún próximo ingreso coincide: ocultar.
+    section.style.display = 'none';
+    return;
+  }
   section.style.display = '';
 
   // Limpiar timers
   Object.values(countdownIntervals).forEach(clearInterval);
   countdownIntervals = {};
 
-  // Ordenar y limitar a UC_HOME_MAX
-  const sorted   = sortByPriority(upcomingProducts);
-  const toRender = sorted.slice(0, UC_HOME_MAX);
+  // Ordenar y limitar a UC_HOME_MAX (si hay filtro activo, mostrar hasta el doble para no recortar de más)
+  const sorted   = sortByPriority(filtered);
+  const toRender = hasFilter ? sorted.slice(0, UC_HOME_MAX * 2) : sorted.slice(0, UC_HOME_MAX);
+
+  // Título/eyebrow dinámico según si hay filtro activo
+  const eyebrowEl = section.querySelector('.upcoming-eyebrow');
+  if (eyebrowEl) {
+    eyebrowEl.innerHTML = hasFilter
+      ? '<i class="fas fa-plane-arrival" aria-hidden="true"></i> Próximos ingresos que coinciden con tu búsqueda'
+      : '<i class="fas fa-plane-arrival" aria-hidden="true"></i> Próximos ingresos';
+  }
 
   grid.innerHTML = toRender.map(up => renderUpcomingCard(up)).join('');
+
 
   // Lazy load de imágenes
   grid.querySelectorAll('.uc-lazy').forEach(img => {
@@ -10539,6 +10674,8 @@ const GENDER_CATEGORY_MAP = {
   'nina': ['Niña'],
   'niño': ['Niño'],
   'nino': ['Niño'],
+  'accesorio': ['Accesorios'],
+  'accesorios': ['Accesorios'],
 };
 
 function goAgeGender(genderWord, edad) {
@@ -10555,6 +10692,7 @@ function goAgeGender(genderWord, edad) {
   renderProducts();
   renderBreadcrumb();
   if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
@@ -10572,6 +10710,7 @@ function goGenderAll(genderWord) {
   renderBreadcrumb();
 
   if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
@@ -10811,6 +10950,7 @@ function searchProducts() {
   currentPage = 1;
   renderProducts();
   renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -11238,7 +11378,7 @@ function renderProducts() {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);">
       <div style="font-size:52px;margin-bottom:16px;">🔍</div>
       <p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>
-      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;currentGenderCats=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();"
+      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;currentGenderCats=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();if(typeof renderUpcomingSection==='function')renderUpcomingSection();"
         style="margin-top:16px;background:var(--rose);color:white;border:none;padding:10px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:14px;">
         Ver todos los productos
       </button>
