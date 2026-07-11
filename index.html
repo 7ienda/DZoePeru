@@ -4376,7 +4376,7 @@ body.dark-mode #main-header.scrolled { background: rgba(20,15,26,0.98) !importan
   display: flex; align-items: center; gap: 28px;
   position: relative;
 }
-#main-header .header-actions { margin-left: 12px !important; }
+#main-header .header-actions { margin-left: auto !important; }
 
 /* ── 1.5 SUBNAV — barra secundaria de ayuda / tallas ───────────────── */
 .dzn-subnav {
@@ -4436,18 +4436,17 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  row-gap: 1px;
-  gap: 2px;
-  padding: 5px 2px;
-  font-size: 11px;
-  letter-spacing: 0;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 5px 8px;
+  font-size: 13.5px;
+  letter-spacing: .01em;
 }
 #mainMenu .nav-mega-btn .dzn-emoji,
-#mainMenu .dzn-link--stack .dzn-emoji { font-size: 11px; }
-#mainMenu .nav-mega-btn .dzn-arrow { order: 1; margin-left: 0; }
+#mainMenu .dzn-link--stack .dzn-emoji { font-size: 15px; }
+#mainMenu .nav-mega-btn .dzn-arrow { order: 1; margin-left: 1px; }
 #mainMenu .nav-mega-btn .dzn-btn-break,
-#mainMenu .dzn-link--stack .dzn-btn-break { order: 2; flex-basis: 100%; width: 0; height: 0; }
+#mainMenu .dzn-link--stack .dzn-btn-break { display: none; }
 #mainMenu .nav-mega-btn .nav-badge.dzn-badge,
 #mainMenu .dzn-link--stack .nav-badge.dzn-badge {
   order: 3;
@@ -4462,6 +4461,11 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 }
 #mainMenu .nav-mega-btn::after,
 #mainMenu .dzn-link--stack::after { bottom: 3px; }
+
+/* Se ocultan las etiquetas pequeñas bajo cada categoría (0-24 meses, 2-7 años,
+   PARA TU OUTFIT, INGRESOS) para que el menú principal se vea más compacto
+   y limpio. La info de edades/categoría sigue disponible en los desplegables. */
+#mainMenu .nav-badge.dzn-badge { display: none !important; }
 
 .dzn-nav .dzn-list {
   display: flex; align-items: stretch; gap: 0;
