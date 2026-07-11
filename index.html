@@ -4556,10 +4556,12 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 /* Panel Niñas: layout tipo imagen de referencia — barra rosa "Niña" + 2 columnas
    (Vestuario a la izquierda, Calzado y Accesorios apilados a la derecha), sin banner */
 #mainMenu #megaPanelNinas.mega-panel.dzn-panel,
-#mainMenu #megaPanelBebes.mega-panel.dzn-panel,
+#mainMenu #megaPanelBebito.mega-panel.dzn-panel,
+#mainMenu #megaPanelBebita.mega-panel.dzn-panel,
 #mainMenu #megaPanelNinos.mega-panel.dzn-panel { width: min(760px, 94vw) !important; max-width: 94vw !important; }
 #megaPanelNinas .dzn-panel-inner,
-#megaPanelBebes .dzn-panel-inner,
+#megaPanelBebito .dzn-panel-inner,
+#megaPanelBebita .dzn-panel-inner,
 #megaPanelNinos .dzn-panel-inner { display: block !important; padding: 0 !important; }
 .dzn-ninas-title {
   background: var(--rose-soft); color: var(--rose-dark);
@@ -4571,20 +4573,24 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 .dzn-ninas-stack { display: flex; flex-direction: column; }
 .dzn-ninas-stack .dzn-col:first-child { border-bottom: 1px solid var(--border); }
 #megaPanelNinas .dzn-col-title-icon i,
-#megaPanelBebes .dzn-col-title-icon i,
+#megaPanelBebito .dzn-col-title-icon i,
+#megaPanelBebita .dzn-col-title-icon i,
 #megaPanelNinos .dzn-col-title-icon i { font-size: 13px; }
 #megaPanelNinas .dzn-cat-link,
-#megaPanelBebes .dzn-cat-link,
+#megaPanelBebito .dzn-cat-link,
+#megaPanelBebita .dzn-cat-link,
 #megaPanelNinos .dzn-cat-link { position: relative; padding-left: 20px; }
 #megaPanelNinas .dzn-cat-link::before,
-#megaPanelBebes .dzn-cat-link::before,
+#megaPanelBebito .dzn-cat-link::before,
+#megaPanelBebita .dzn-cat-link::before,
 #megaPanelNinos .dzn-cat-link::before {
   content: '\2192'; position: absolute; left: 2px; top: 8px;
   color: var(--rose); font-weight: 700; font-size: 12px;
 }
 @media (max-width: 1024px) {
   #mainMenu #megaPanelNinas.mega-panel.dzn-panel,
-  #mainMenu #megaPanelBebes.mega-panel.dzn-panel,
+  #mainMenu #megaPanelBebito.mega-panel.dzn-panel,
+  #mainMenu #megaPanelBebita.mega-panel.dzn-panel,
   #mainMenu #megaPanelNinos.mega-panel.dzn-panel { width: min(600px, 94vw) !important; }
   .dzn-ninas-title { display: none; }
   .dzn-ninas-cols { grid-template-columns: 1fr; }
@@ -4594,11 +4600,13 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 /* ── SUBMENÚ PREMIUM POR EDAD — Bebé / Niña / Niño ─────────────────
    Reemplaza las categorías de ropa por selección directa de edad,
    con chips tipo joyería: shine dorado diagonal + elevación al hover. */
-#megaPanelBebes .dzn-age-menu,
+#megaPanelBebito .dzn-age-menu,
+#megaPanelBebita .dzn-age-menu,
 #megaPanelNinas .dzn-age-menu,
 #megaPanelNinos .dzn-age-menu { padding: 22px 26px 26px; }
 
-#megaPanelBebes .dzn-age-menu-lead,
+#megaPanelBebito .dzn-age-menu-lead,
+#megaPanelBebita .dzn-age-menu-lead,
 #megaPanelNinas .dzn-age-menu-lead,
 #megaPanelNinos .dzn-age-menu-lead {
   display: flex; align-items: center; justify-content: center; gap: 7px;
@@ -4606,15 +4614,18 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
   letter-spacing: .06em; text-transform: uppercase;
   color: var(--text-soft); text-align: center; margin: 0 0 16px;
 }
-#megaPanelBebes .dzn-age-menu-lead i,
+#megaPanelBebito .dzn-age-menu-lead i,
+#megaPanelBebita .dzn-age-menu-lead i,
 #megaPanelNinas .dzn-age-menu-lead i,
 #megaPanelNinos .dzn-age-menu-lead i { color: var(--dzn-gold); font-size: 11px; }
-#megaPanelBebes .dzn-age-menu-lead::before, #megaPanelBebes .dzn-age-menu-lead::after,
+#megaPanelBebito .dzn-age-menu-lead::before, #megaPanelBebito .dzn-age-menu-lead::after,
+#megaPanelBebita .dzn-age-menu-lead::before, #megaPanelBebita .dzn-age-menu-lead::after,
 #megaPanelNinas .dzn-age-menu-lead::before, #megaPanelNinas .dzn-age-menu-lead::after,
 #megaPanelNinos .dzn-age-menu-lead::before, #megaPanelNinos .dzn-age-menu-lead::after {
   content: ''; width: 20px; height: 1px; background: linear-gradient(90deg, transparent, var(--border));
 }
-#megaPanelBebes .dzn-age-menu-lead::after,
+#megaPanelBebito .dzn-age-menu-lead::after,
+#megaPanelBebita .dzn-age-menu-lead::after,
 #megaPanelNinas .dzn-age-menu-lead::after,
 #megaPanelNinos .dzn-age-menu-lead::after { background: linear-gradient(90deg, var(--border), transparent); }
 
@@ -4670,7 +4681,8 @@ body.dark-mode .dzn-subnav-wa { background: rgba(255,255,255,0.06); border-color
 body.dark-mode .dzn-age-pill { background: linear-gradient(160deg, #241C30, #2c2138); border-color: rgba(90,72,56,.5); }
 body.dark-mode .dzn-age-pill-num { color: #e8d9f0; }
 body.dark-mode .dzn-age-pill-unit { color: #b8a8cc; }
-body.dark-mode #megaPanelBebes .dzn-age-menu-lead,
+body.dark-mode #megaPanelBebito .dzn-age-menu-lead,
+body.dark-mode #megaPanelBebita .dzn-age-menu-lead,
 body.dark-mode #megaPanelNinas .dzn-age-menu-lead,
 body.dark-mode #megaPanelNinos .dzn-age-menu-lead { color: #b8a8cc; }
 
@@ -4679,7 +4691,8 @@ body.dark-mode #megaPanelNinos .dzn-age-menu-lead { color: #b8a8cc; }
   .dzn-age-pill { padding: 18px 6px 15px; border-radius: 16px; }
   .dzn-age-pill-num { font-size: 20px; }
   .dzn-age-pill-unit { font-size: 11px; }
-  #megaPanelBebes .dzn-age-menu-lead,
+  #megaPanelBebito .dzn-age-menu-lead,
+  #megaPanelBebita .dzn-age-menu-lead,
   #megaPanelNinas .dzn-age-menu-lead,
   #megaPanelNinos .dzn-age-menu-lead { margin-bottom: 18px; }
 }
@@ -5041,56 +5054,113 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 
       <div class="dzn-list">
 
-        <!-- === BEBÉS — mega === -->
-        <div class="nav-mega dzn-mega" id="megaBebes">
+        <!-- === BEBITO — mega === -->
+        <div class="nav-mega dzn-mega" id="megaBebito">
           <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelBebes" id="megaBtnBebes">
+                  aria-controls="megaPanelBebito" id="megaBtnBebito">
             <span class="dzn-emoji" aria-hidden="true">🍼</span>
-            <span>BEBE</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
+            <span>BEBITO</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
             <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
           </button>
 
-          <div class="mega-panel dzn-panel" id="megaPanelBebes" role="menu" aria-labelledby="megaBtnBebes">
+          <div class="mega-panel dzn-panel" id="megaPanelBebito" role="menu" aria-labelledby="megaBtnBebito">
             <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
                     onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Bebés
+              <i class="fas fa-arrow-left" aria-hidden="true"></i> Bebito
             </button>
 
             <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Bebé</div>
+              <div class="dzn-ninas-title">Bebito</div>
               <div class="dzn-age-menu">
                 <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
                 <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','1-3 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','1-3 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">1-3</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','3-6 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','3-6 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">3-6</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','6-9 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','6-9 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">6-9</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','6-12 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','6-12 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">6-12</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','9-12 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','9-12 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">9-12</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','9-18 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','9-18 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">9-18</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','12-18 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','12-18 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">12-18</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','12-24 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','12-24 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">12-24</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebé','18-24 meses');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','18-24 meses');closeMobileMenu();return false;">
                     <span class="dzn-age-pill-num">18-24</span><span class="dzn-age-pill-unit">meses</span>
                   </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('bebé');closeMobileMenu();return false;">
+                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('bebito');closeMobileMenu();return false;">
                     <i class="fas fa-baby-carriage" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Bebé</span>
+                    <span class="dzn-age-pill-num">Ver todo Bebito</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === BEBITA — mega === -->
+        <div class="nav-mega dzn-mega" id="megaBebita">
+          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
+                  aria-controls="megaPanelBebita" id="megaBtnBebita">
+            <span class="dzn-emoji" aria-hidden="true">🍼</span>
+            <span>BEBITA</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
+            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
+          </button>
+
+          <div class="mega-panel dzn-panel" id="megaPanelBebita" role="menu" aria-labelledby="megaBtnBebita">
+            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
+                    onclick="this.closest('.nav-mega').classList.remove('open')">
+              <i class="fas fa-arrow-left" aria-hidden="true"></i> Bebita
+            </button>
+
+            <div class="dzn-panel-inner">
+              <div class="dzn-ninas-title">Bebita</div>
+              <div class="dzn-age-menu">
+                <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
+                <div class="dzn-age-grid">
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','1-3 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">1-3</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','3-6 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">3-6</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','6-9 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">6-9</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','6-12 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">6-12</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','9-12 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">9-12</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','9-18 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">9-18</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','12-18 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">12-18</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','12-24 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">12-24</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','18-24 meses');closeMobileMenu();return false;">
+                    <span class="dzn-age-pill-num">18-24</span><span class="dzn-age-pill-unit">meses</span>
+                  </button>
+                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('bebita');closeMobileMenu();return false;">
+                    <i class="fas fa-baby-carriage" aria-hidden="true"></i>
+                    <span class="dzn-age-pill-num">Ver todo Bebita</span>
                   </button>
                 </div>
               </div>
@@ -10674,6 +10744,8 @@ const AGE_MENU_MAP = {
 const GENDER_CATEGORY_MAP = {
   'bebé': ['Bebita', 'Bebito'],
   'bebe': ['Bebita', 'Bebito'],
+  'bebito': ['Bebito'],
+  'bebita': ['Bebita'],
   'niña': ['Niña'],
   'nina': ['Niña'],
   'niño': ['Niño'],
