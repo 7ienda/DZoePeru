@@ -323,7 +323,7 @@ window.SUPABASE_CONFIG = {
    D'ZOE PERU — PASTEL EDITION (self-contained)
 ========================= */
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%;max-width:100%;}
 
 :root {
   /* ── STAY COOL KIDS PALETTE — lila, menta, beige, coral pastel ── */
@@ -1251,8 +1251,10 @@ body.dark-mode .main-nav { background: #2A1810; }
   .logo-brand-text { font-size: 20px !important; }
   .topbar-inner { height: 34px; }
   .topbar-ticker-inner { font-size: 11px; }
-  .header-actions { gap: 4px; }
+  .header-actions { gap: 3px !important; }
   .hdr-cart-btn { padding: 5px 8px; }
+  #main-header .header-inner { gap: 5px !important; }
+  .hdr-favs-btn.hdr-wish-btn, .hdr-favs-btn { padding: 5px 7px !important; }
 }
 
 /* ── TOPBAR MOBILE SIMPLIFICADO ── */
@@ -4670,8 +4672,17 @@ body.dark-mode #megaPanelNinos .dzn-age-menu-lead { color: #b8a8cc; }
      el contenido y se convierte cada mega-panel en una vista de nivel 2
      (estilo Zara) que ocupa toda la pantalla con botón "← Volver". */
 
-  #main-header .header-inner { height: 62px; }
+  #main-header .header-inner { height: 62px; gap: 8px; }
   #main-header.scrolled .header-inner { height: 58px; }
+
+  /* Fila de acciones del header: que quepa completa (incluida la
+     hamburguesa) sin obligar a hacer scroll horizontal para verla */
+  .header-actions { gap: 3px !important; }
+  .hdr-icon-btn, .hdr-search-btn { width: 34px !important; height: 34px !important; }
+  .dark-mode-btn { display: none !important; } /* prescindible en mobile, libera espacio */
+  .hdr-favs-btn.hdr-wish-btn, .hdr-favs-btn { padding: 6px 8px !important; }
+  .hdr-cart-btn { padding: 5px 7px !important; }
+  .hdr-hamburger { width: 36px !important; height: 36px !important; flex-shrink: 0; }
 
   .dzn-nav .dzn-drawer-head,
   .dzn-nav .dzn-drawer-search,
