@@ -10448,13 +10448,29 @@ function goAgeGender(genderWord, edad) {
 }
 
 function goGenderAll(genderWord) {
-  currentAgeGroup = null;
   currentAgeFilter = null;
   currentAgeFilterSet = null;
   currentPage = 1;
   const input = document.getElementById('searchInput');
-  if (input) input.value = genderWord;
-  if (typeof searchProducts === 'function') searchProducts();
+
+  // "Bebé" no es un género, es un grupo de EDAD (0-24 meses). Si lo tratamos
+  // como búsqueda de texto libre (como niño/niña), se cuelan prendas de niñas
+  // u niños mayores cuyo nombre/descripción solo menciona la palabra "bebé".
+  // Por eso aquí filtramos de forma estricta por las tallas reales del grupo
+  // "bebe" (ver AGE_GROUP_SIZES), igual que hacen los chips de edad.
+  if (genderWord === 'bebé' || genderWord === 'bebe') {
+    if (input) input.value = '';
+    currentSearch = '';
+    currentAgeGroup = 'bebe';
+    currentPage = 1;
+    renderProducts();
+    renderBreadcrumb();
+  } else {
+    currentAgeGroup = null;
+    if (input) input.value = genderWord;
+    if (typeof searchProducts === 'function') searchProducts();
+  }
+
   if (typeof renderAgeChips === 'function') renderAgeChips();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
