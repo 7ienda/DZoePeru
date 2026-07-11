@@ -11416,6 +11416,42 @@ function slideProductTo(productId, index) {
 // ═══════════════════════════════════════════════════════
 //  TALLAS — selección
 // ═══════════════════════════════════════════════════════
+// ── Precio dinámico según talla seleccionada ──
+function computeProductPriceInfo(product, sizePrice) {
+  const basePrice = Number(sizePrice) || 0;
+  const offerPrice = product.offer_price ? parseFloat(product.offer_price) : null;
+  const hasOffer = !!(offerPrice && offerPrice > 0 && basePrice > 0 && offerPrice < basePrice);
+  const displayPrice = hasOffer ? offerPrice : basePrice;
+  const discountPct = hasOffer ? Math.round((1 - offerPrice / basePrice) * 100) : 0;
+  return { hasOffer, displayPrice, discountPct, basePrice };
+}
+
+function buildCardPriceBlockHtml(info) {
+  const priceDisplay = info.displayPrice > 0 ? `S/ ${info.displayPrice.toFixed(2)}` : 'Consultar';
+  if (info.hasOffer) {
+    return `<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+         <div class="product-price">${priceDisplay}</div>
+         <div style="text-decoration:line-through;font-size:13px;color:var(--text-soft);opacity:.6;font-family:'Nunito',sans-serif;">S/ ${info.basePrice.toFixed(2)}</div>
+         <div style="background:var(--rose-dark);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;">\u2212${info.discountPct}%</div>
+       </div>`;
+  }
+  return `<div class="product-price">${priceDisplay}</div>`;
+}
+
+function buildPpPriceBlockHtml(info) {
+  const priceDisplay = info.displayPrice > 0 ? `S/ ${info.displayPrice.toFixed(2)}` : 'Consultar';
+  const label = info.hasOffer ? 'Precio de oferta' : 'Precio';
+  if (info.hasOffer) {
+    return `<div class="pp-price-from">${label}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div class="pp-price" style="color:var(--rose-dark);">${priceDisplay}</div>
+        <div style="text-decoration:line-through;font-size:14px;color:var(--text-soft);opacity:.65;">S/ ${info.basePrice.toFixed(2)}</div>
+        <div style="background:var(--rose-dark);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;">-${info.discountPct}%</div>
+      </div>`;
+  }
+  return `<div class="pp-price-from">${label}</div><div class="pp-price">${priceDisplay}</div>`;
+}
+
 function selectSize(productId, idx) {
   const product = products.find(p => String(p.id) === String(productId));
   const sz = product?.sizes?.[idx];
@@ -11424,6 +11460,15 @@ function selectSize(productId, idx) {
   document.querySelectorAll(`.product-card[data-product-id="${productId}"] .size-option`).forEach((btn, i) => {
     btn.classList.toggle('selected', i === idx);
   });
+  const info = computeProductPriceInfo(product, sz.price);
+  const card = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+  if (card) {
+    const label = card.querySelector('.product-price-label');
+    if (label) label.textContent = info.hasOffer ? '\u2728 Precio especial' : 'Precio';
+    const priceWrap = card.querySelector('.product-price-label')?.nextElementSibling;
+    if (priceWrap) priceWrap.outerHTML = buildCardPriceBlockHtml(info);
+    card.dataset.price = info.displayPrice || 0;
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -12004,14 +12049,9 @@ function openProductPage(productId) {
         <h1 class="pp-name">${esc(seoTitle.replace(" | D'Zoe Perú", ''))}</h1>
         <p class="pp-desc">${esc(desc)}</p>
 
-        <div class="pp-price-block">
+        <div class="pp-price-block" id="pp-pricebox-${productId}">
           <div>
-            <div class="pp-price-from">${ppHasOffer ? 'Precio de oferta' : 'Precio desde'}</div>
-            ${ppHasOffer ? `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <div class="pp-price" style="color:var(--rose-dark);">S/ ${ppDisplayPrice.toFixed(2)}</div>
-              <div style="text-decoration:line-through;font-size:14px;color:var(--text-soft);opacity:.65;">S/ ${minP.toFixed(2)}</div>
-              <div style="background:var(--rose-dark);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;">-${ppDiscountPct}%</div>
-            </div>` : `<div class="pp-price">${ppDisplayPrice > 0 ? `S/ ${ppDisplayPrice.toFixed(2)}` : 'Consultar'}</div>`}
+            ${buildPpPriceBlockHtml(computeProductPriceInfo(product, (sizes[ppSelectedSize[productId]]?.price) || minP))}
           </div>
           <span class="pp-stock-badge ${inStock?'in':'out'}">${inStock ? '✅ En stock' : '❌ Agotado'}</span>
         </div>
@@ -12103,6 +12143,14 @@ function ppSelectSize(productId, idx, btn) {
   ppSelectedSize[productId] = idx;
   const container = document.getElementById(`ppSizes-${productId}`);
   if (container) container.querySelectorAll('.pp-size-btn').forEach((b,i) => b.classList.toggle('selected', i===idx));
+  const product = products.find(p => String(p.id) === String(productId));
+  const sz = product?.sizes?.[idx];
+  const priceBox = document.getElementById(`pp-pricebox-${productId}`);
+  if (priceBox && sz) {
+    const info = computeProductPriceInfo(product, sz.price);
+    const inner = priceBox.querySelector('div');
+    if (inner) inner.innerHTML = buildPpPriceBlockHtml(info);
+  }
 }
 
 function ppAddToCart(productId) {
