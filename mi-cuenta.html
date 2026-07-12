@@ -1139,6 +1139,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="featured-toggle" onclick="toggleFeatured()"><div class="toggle"></div><span>Destacar producto</span></div></div>
                 <div class="form-group"><label>Estado</label><div class="status-pills"><div class="status-pill active-pill selected" data-status="active">Activo</div><div class="status-pill inactive-pill" data-status="inactive">Inactivo</div></div></div>
                 <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="category-search" placeholder="Buscar categoría..." oninput="filterCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
+                <div class="form-group"><label>Color</label><input type="text" id="product-color" placeholder="Ej: Celeste"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Se usa en el SEO (alt, título, Schema.org) de la tienda.</div></div>
+                <div class="form-group"><label>🔒 Origen (privado)</label><input type="text" id="product-origen" placeholder="Ej: Proveedor China - Contacto María"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Solo para ti. Nunca se muestra en la tienda pública.</div></div>
               </div>
             </div>
             <div class="form-divider">Tallas — Precio, Costo y Stock</div>
@@ -1191,6 +1193,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 </div>
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="upcoming-featured-toggle" onclick="toggleUpcomingFeatured()"><div class="toggle"></div><span>Destacar en próximos</span></div></div>
                 <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="upcoming-category-search" placeholder="Buscar categoría..." oninput="filterUpcomingCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
+                <div class="form-group"><label>Color</label><input type="text" id="upcoming-color" placeholder="Ej: Celeste"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Se usa en el SEO (alt, título, Schema.org) de la tienda.</div></div>
+                <div class="form-group"><label>🔒 Origen (privado)</label><input type="text" id="upcoming-origen" placeholder="Ej: Proveedor China - Contacto María"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Solo para ti. Nunca se muestra en la tienda pública.</div></div>
               </div>
             </div>
 
@@ -3370,7 +3374,7 @@ function clearForm() {
   featuredValue = false;
   statusValue = 'active';
   
-  ['product-name', 'product-description'].forEach(id => {
+  ['product-name', 'product-description', 'product-color', 'product-origen'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -4216,6 +4220,8 @@ function editProduct(id) {
   // ── Campos de texto ──────────────────────────────────────────
   document.getElementById('product-name').value        = p.name        || '';
   document.getElementById('product-description').value = p.description || '';
+  document.getElementById('product-color').value        = p.color       || '';
+  document.getElementById('product-origen').value       = p.origen      || '';
 
   // ── Imágenes ─────────────────────────────────────────────────
   const imgContainer = document.getElementById('image-urls-container');
@@ -4279,6 +4285,8 @@ async function saveProduct() {
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
 
   const desc = document.getElementById('product-description').value.trim();
+  const color = document.getElementById('product-color').value.trim();
+  const origen = document.getElementById('product-origen').value.trim();
   syncProductImagesFromDOM();
   const validImages = productImages.filter(img => img && img.trim() !== '');
   const finalSizes = productSizes
@@ -4309,6 +4317,8 @@ async function saveProduct() {
     id: productId,
     name: name,
     description: desc || '',
+    color: color || '',
+    origen: origen || '',
     images: validImages,
     image: validImages[0] || '',
     featured: Boolean(featuredValue),
@@ -4410,7 +4420,7 @@ function initUpcomingDateSelects() {
 function clearUpcomingForm() {
   editingUpcomingId = null;
   upcomingImages = []; upcomingSizes = []; upcomingCategories = []; upcomingFeatured = false;
-  ['upcoming-name','upcoming-description'].forEach(id => {
+  ['upcoming-name','upcoming-description','upcoming-color','upcoming-origen'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   const dayEl = document.getElementById('upcoming-date-day');
@@ -4529,6 +4539,8 @@ async function saveUpcomingProduct() {
     id: editingUpcomingId || Date.now(),
     name,
     description: document.getElementById('upcoming-description').value.trim(),
+    color: document.getElementById('upcoming-color').value.trim(),
+    origen: document.getElementById('upcoming-origen').value.trim(),
     images: upcomingImages,
     image: upcomingImages[0] || '',
     featured: upcomingFeatured,
@@ -4565,6 +4577,8 @@ async function editUpcoming(id) {
   editingUpcomingId = id;
   document.getElementById('upcoming-name').value = data.name || '';
   document.getElementById('upcoming-description').value = data.description || '';
+  document.getElementById('upcoming-color').value = data.color || '';
+  document.getElementById('upcoming-origen').value = data.origen || '';
   if (data.estimated_date) {
     // Format for datetime-local input
     const d = new Date(data.estimated_date);
@@ -4607,6 +4621,8 @@ async function promoteUpcomingAdmin(id) {
     id: Date.now(),
     name: up.name,
     description: up.description || '',
+    color: up.color || '',
+    origen: up.origen || '',
     images: up.images || [],
     image: (up.images||[])[0] || up.image || '',
     featured: up.featured || false,
