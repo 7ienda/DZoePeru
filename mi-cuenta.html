@@ -371,6 +371,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .product-card:hover .product-card-img img { transform: scale(1.04); }
 .product-card-badge { position: absolute; bottom: 10px; left: 10px; background: var(--rose); color: #fff; font-size: 9px; padding: 3px 10px; border-radius: 99px; font-weight: 800; letter-spacing: .04em; }
 .product-card-badge.inactive { background: var(--muted); }
+.product-seo-badge { position: absolute; bottom: 10px; right: 10px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+.product-seo-badge.seo-ok { color: var(--green); }
+.product-seo-badge.seo-bad { color: var(--orange); }
 .product-ribbon { position: absolute; top: 12px; left: -6px; padding: 4px 12px 4px 10px; font-size: 10px; font-weight: 800; border-radius: 0 99px 99px 0; letter-spacing: .04em; text-transform: uppercase; box-shadow: 2px 2px 10px rgba(0,0,0,.20); }
 .product-ribbon::before { content:''; position:absolute; left:0; bottom:-5px; border-width:5px 0 0 6px; border-style:solid; border-color:transparent; filter:brightness(.6); }
 .product-card-body { padding: 16px 17px; }
@@ -3708,6 +3711,22 @@ function renderPagination(containerId, btnContainerId, total, current, size, onP
   btnContainer.innerHTML = btns;
 }
 
+// Estado SEO de TODAS las imágenes de un producto, para mostrar en la tarjeta del inventario.
+// true = todas bien | false = alguna mal | null = sin imágenes.
+function productImagesSeoStatus(p) {
+  const imgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
+  if (!imgs.length) return null;
+  return imgs.every(url => isSeoFriendlyImageUrl(url) === true);
+}
+
+function productSeoBadgeHtml(p) {
+  const status = productImagesSeoStatus(p);
+  if (status === null) return '';
+  return status
+    ? `<div class="product-seo-badge seo-ok" title="Todas las imágenes tienen nombre bueno para SEO"><i class="fas fa-circle-check"></i></div>`
+    : `<div class="product-seo-badge seo-bad" title="Alguna imagen tiene un nombre de archivo poco descriptivo para SEO"><i class="fas fa-triangle-exclamation"></i></div>`;
+}
+
 function productCardHtml(p) {
   const img = (p.images&&p.images[0]) || p.image || '';
   const minPrice = p.sizes?.length ? Math.min(...p.sizes.map(s=>s.price||0)) : 0;
@@ -3723,6 +3742,7 @@ function productCardHtml(p) {
       ${ribbonLabel ? `<div class="product-ribbon" style="${ribbonStyle}">${ribbonLabel}</div>` : ''}
       ${p.featured?'<div style="position:absolute;top:10px;right:10px;background:#fef3c7;color:#d97706;font-size:9px;padding:3px 8px;border-radius:99px;font-weight:700;">⭐ Destacado</div>':''}
       <div class="product-card-badge ${p.status==='inactive'?'inactive':''}">${p.status==='inactive'?'Inactivo':'Activo'}</div>
+      ${productSeoBadgeHtml(p)}
     </div>
     <div class="product-card-body">
       <div class="product-name">${p.name}</div>
