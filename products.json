@@ -2829,21 +2829,6 @@
     "url": "/productos/conjunto-verde-limon-f-2-piezas.html"
   },
   {
-    "id": 1783712017060,
-    "slug": "conjunto-lazo-celeste-2-piezas",
-    "name": "Conjunto Lazo Celeste 2 piezas",
-    "price": 55,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRXHRtiGsuLS4tYgKHgBEWTx3_0k7Eh3nIXvkkuFs6TxjoOvLtIRPo9_2DDoyXZ5qb0iSvVnSG2Pp1Ag5Z5I05r5bn9Rq5XO-SkffJ-WwCKE00D-WS-2TRLdwytbwa4u2xsKyLycuCdUINfqOInKvAIx9tZ8MlY24pNNQx81P1oHly_K_P7bSlKbUM49xk/s1600/tjd2.png",
-    "categories": [
-      "Bebita",
-      "Conjunto 2 piezas",
-      "Conjunto Hilo",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-lazo-celeste-2-piezas.html"
-  },
-  {
     "id": 1783711755366,
     "slug": "conjunto-top-lazo-2-piezas",
     "name": "Conjunto Top Lazo 2 piezas",
@@ -3559,5 +3544,20 @@
     ],
     "inStock": true,
     "url": "/productos/enterizo-chaleco-osito-2-piezas.html"
+  },
+  {
+    "id": 1783712017060,
+    "slug": "conjunto-lazo-celeste-2-piezas",
+    "name": "Conjunto Lazo Celeste 2 piezas",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRXHRtiGsuLS4tYgKHgBEWTx3_0k7Eh3nIXvkkuFs6TxjoOvLtIRPo9_2DDoyXZ5qb0iSvVnSG2Pp1Ag5Z5I05r5bn9Rq5XO-SkffJ-WwCKE00D-WS-2TRLdwytbwa4u2xsKyLycuCdUINfqOInKvAIx9tZ8MlY24pNNQx81P1oHly_K_P7bSlKbUM49xk/s1600/tjd2.png",
+    "categories": [
+      "Bebita",
+      "Conjunto 2 piezas",
+      "Conjunto Hilo",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-lazo-celeste-2-piezas.html"
   }
 ]
