@@ -521,6 +521,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .image-url-box { background: var(--bg); border-radius: 14px; padding: 16px; border: 1.5px solid var(--line2); }
 .image-url-row { display: flex; gap: 10px; margin-bottom: 12px; }
 .image-url-row input { flex: 1; }
+.seo-check-icon { width: 30px; height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: default; }
+.seo-check-icon.seo-ok { color: var(--green); }
+.seo-check-icon.seo-bad { color: var(--orange); }
 .remove-image-btn { width: 44px; border: none; border-radius: 12px; background: var(--red-light); color: var(--red); cursor: pointer; flex-shrink: 0; }
 .add-image-btn { background: var(--rose-dark); color: #fff; padding: 10px 18px; border-radius: 14px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(138,111,170,.3); }
 .preview-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; margin-top: 16px; }
@@ -4452,9 +4455,10 @@ function addUpcomingImageInput(prefillUrl) {
   const idx = container.children.length;
   const wrap = document.createElement('div');
   wrap.className = 'image-url-row';
-  wrap.innerHTML = `<input type="text" placeholder="https://..." value="${prefillUrl||''}" oninput="syncUpcomingImages()" style="flex:1">
+  wrap.innerHTML = `<input type="text" placeholder="https://..." value="${prefillUrl||''}" oninput="syncUpcomingImages();updateImgSeoCheckIcon(this)" style="flex:1"><span class="seo-check-icon"></span>
     <button type="button" class="remove-image-btn" onclick="this.parentElement.remove();syncUpcomingImages();renderUpcomingPreview()"><i class="fas fa-times"></i></button>`;
   container.appendChild(wrap);
+  updateImgSeoCheckIcon(wrap.querySelector('input'));
   if (prefillUrl) syncUpcomingImages();
 }
 
@@ -5087,6 +5091,57 @@ function renderSelectedCategories() {
 // IMAGES & SIZES
 // ============================================
 // ── Imagen helpers: sin índices hardcodeados ──
+// Evalúa si el NOMBRE DE ARCHIVO de la URL es bueno para SEO
+// (ej: "vestido-celeste-niña.jpg" = bien, "IMG_2481.jpg" o "a8f3c9.png" = mal).
+function isSeoFriendlyImageUrl(url) {
+  try {
+    const clean = (url || '').split('?')[0].split('#')[0].trim();
+    if (!clean) return null; // sin URL aún
+    const parts = clean.split('/');
+    let filename = decodeURIComponent(parts[parts.length - 1] || '');
+    const dot = filename.lastIndexOf('.');
+    const ext = dot > -1 ? filename.slice(dot + 1).toLowerCase() : '';
+    const validExt = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+    if (!validExt.includes(ext)) return false;
+    const base = (dot > -1 ? filename.slice(0, dot) : filename).trim();
+    // Nombres genéricos que no dicen nada de la foto
+    const badPatterns = [
+      /^img[-_]?\d*$/i, /^image[-_]?\d*$/i, /^dsc[-_]?\d*$/i, /^photo[-_]?\d*$/i,
+      /^foto[-_]?\d*$/i, /^screenshot/i, /^captura/i, /^whatsapp[-_ ]?image/i,
+      /^untitled/i, /^unnamed/i, /^sin[-_ ]?t[ií]tulo/i, /^copia[-_ ]?de/i,
+      /^\d+$/, /^[a-f0-9]{8,}$/i, /^[a-f0-9-]{16,}$/i
+    ];
+    if (badPatterns.some(rx => rx.test(base))) return false;
+    // Debe tener al menos una palabra alfabética descriptiva de 3+ letras
+    if (!/[a-zA-Zà-úÀ-Ú]{3,}/.test(base)) return false;
+    if (base.replace(/[-_\s]/g, '').length < 4) return false;
+    return true;
+  } catch (e) { return false; }
+}
+
+// Pinta el ícono de check/aviso junto al input, sin usar rojo ni "X"
+// para que no se confunda con el botón de eliminar la imagen.
+function updateImgSeoCheckIcon(inputEl) {
+  const icon = inputEl.parentElement.querySelector('.seo-check-icon');
+  if (!icon) return;
+  const result = isSeoFriendlyImageUrl(inputEl.value);
+  if (result === null) {
+    icon.className = 'seo-check-icon';
+    icon.innerHTML = '';
+    icon.title = '';
+    return;
+  }
+  if (result) {
+    icon.className = 'seo-check-icon seo-ok';
+    icon.innerHTML = '<i class="fas fa-circle-check"></i>';
+    icon.title = 'Nombre de archivo bueno para SEO';
+  } else {
+    icon.className = 'seo-check-icon seo-bad';
+    icon.innerHTML = '<i class="fas fa-triangle-exclamation"></i>';
+    icon.title = 'Nombre de archivo poco descriptivo. Ej: usa "vestido-celeste-niña.jpg" en vez de "IMG_2481.jpg"';
+  }
+}
+
 function syncProductImagesFromDOM() {
   // Lee los valores actuales del DOM → productImages
   productImages = Array.from(document.querySelectorAll('.image-url-input')).map(i => i.value.trim());
@@ -5097,11 +5152,13 @@ function addImageInput(prefillUrl) {
   if (!container) return;
   const row = document.createElement('div');
   row.className = 'image-url-row';
-  row.innerHTML = `<input type="text" class="image-url-input" placeholder="https://..." value="${prefillUrl||''}"><button class="remove-image-btn" onclick="removeThisImageRow(this)"><i class="fas fa-times"></i></button>`;
-  row.querySelector('.image-url-input').addEventListener('input', () => { syncProductImagesFromDOM(); renderPreviewImages(); });
-  row.querySelector('.image-url-input').addEventListener('blur', renderPreviewImages);
+  row.innerHTML = `<input type="text" class="image-url-input" placeholder="https://..." value="${prefillUrl||''}"><span class="seo-check-icon"></span><button class="remove-image-btn" onclick="removeThisImageRow(this)"><i class="fas fa-times"></i></button>`;
+  const inputEl = row.querySelector('.image-url-input');
+  inputEl.addEventListener('input', () => { syncProductImagesFromDOM(); renderPreviewImages(); updateImgSeoCheckIcon(inputEl); });
+  inputEl.addEventListener('blur', renderPreviewImages);
   container.appendChild(row);
   syncProductImagesFromDOM();
+  updateImgSeoCheckIcon(inputEl);
 }
 
 function removeThisImageRow(btn) {
