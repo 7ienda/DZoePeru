@@ -9101,7 +9101,7 @@ async function loadProductsFromSupabase() {
   try {
     const { data, error } = await supabaseClient
       .from('products')
-      .select('id,name,description,categories,images,image,sizes,is_new,on_sale,featured,price,stock,slug,brand,status,created_at,stock_updated_at')
+      .select('id,name,description,color,categories,images,image,sizes,is_new,on_sale,featured,price,stock,slug,brand,status,created_at,stock_updated_at')
       .order('stock_updated_at', { ascending: false, nullsFirst: false });
     if (error) { console.error('❌ Error Supabase:', error.message); return cached || []; }
     console.log('✅ Productos:', data?.length);
@@ -9160,13 +9160,13 @@ function paintHighlights(tab) {
     filtered = products.slice(0, 4);
   }
 
-  grid.innerHTML = filtered.map(p => {
+  grid.innerHTML = filtered.map((p, idx) => {
     const img = (p.images && p.images[0]) || p.image || '';
     const hlPricedSizes = (p.sizes || []).filter(s => s.stock > 0 && Number(s.price) > 0);
     const minP = hlPricedSizes.length ? Math.min(...hlPricedSizes.map(s => Number(s.price))) : 0;
     const price = minP ? 'S/ ' + minP.toFixed(0) : '';
     return '<div class="highlight-card" onclick="openProductPage(\'' + p.id + '\')" style="cursor:pointer;">' +
-      (img ? '<img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">' : '') +
+      (img ? '<img src="' + img + '" ' + buildProductImgAttrs(p, 0, idx) + ' style="width:100%;height:180px;object-fit:cover;border-radius:14px 14px 0 0;">' : '') +
       '<div style="padding:12px 14px 14px;">' +
       '<div style="font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px;">' + esc(p.name) + '</div>' +
       (price ? '<div style="font-weight:900;font-size:15px;color:var(--rose-dark);">' + price + '</div>' : '') +
@@ -11319,18 +11319,39 @@ function buildProductSeoTitle(product) {
 
 function buildProductAltText(product, imageIndex) {
   const name = product.name || '';
-  const sizes = product.sizes || [];
-  // Determine age range from available sizes
-  const availableSizes = sizes.filter(s => s.stock > 0).map(s => s.size);
-  const allSizes = sizes.map(s => s.size);
-  const sizeList = (availableSizes.length ? availableSizes : allSizes).slice(0, 3);
-  const sizeStr = sizeList.length ? ` talla ${sizeList.join('/')}` : '';
-  // Get primary category
+  // Género según categoría, para dar contexto útil sin relleno tipo "importado"
   const cats = product.categories || [];
-  const cat = cats[0] || '';
-  const catStr = cat ? ` ${cat}` : '';
-  const suffix = imageIndex > 0 ? ` foto ${imageIndex + 1}` : '';
-  return `${name}${catStr}${sizeStr} importado D'Zoe Perú${suffix}`.trim();
+  let genderStr = '';
+  if (cats.some(c => /niñas?/i.test(c))) genderStr = ' para niña';
+  else if (cats.some(c => /niños?/i.test(c))) genderStr = ' para niño';
+  else if (cats.some(c => /beb[eé]s?/i.test(c))) genderStr = ' para bebé';
+  const photoSuffix = imageIndex > 0 ? ` – foto ${imageIndex + 1}` : '';
+  return `${name}${genderStr} | D'Zoe Perú${photoSuffix}`.trim();
+}
+
+function buildProductTitleText(product) {
+  const name = product.name || '';
+  return `${name} | D'Zoe Perú`.trim();
+}
+
+// Genera alt + title + width + height + loading/fetchpriority listos para pegar en un <img>.
+// En mi-cuenta.html solo pegas la URL de la imagen; todo el SEO/rendimiento se arma
+// automáticamente aquí a partir de los datos del producto y de la posición de la imagen.
+//
+// - imageIndex: posición de la foto DENTRO de la galería del producto (0 = foto principal)
+// - cardIndex:  posición de la TARJETA dentro de la grilla/página (0 = primera visible)
+//
+// Solo la foto principal de las primeras tarjetas visibles (above the fold) se marca
+// como prioritaria (carga inmediata + fetchpriority alto). El resto va lazy/low para
+// no competir por ancho de banda con lo que el usuario sí ve al entrar.
+function buildProductImgAttrs(product, imageIndex, cardIndex = 0) {
+  const alt = esc(buildProductAltText(product, imageIndex));
+  const title = esc(buildProductTitleText(product));
+  const isPriority = imageIndex === 0 && cardIndex < 4;
+  const loading = isPriority ? 'eager' : 'lazy';
+  const fetchPriority = isPriority ? 'high' : 'low';
+  // Ajusta 1200x1200 si tus fotos no son cuadradas / no miden 1200px
+  return `alt="${alt}" title="${title}" width="1200" height="1200" loading="${loading}" decoding="async" fetchpriority="${fetchPriority}"`;
 }
 
 function buildProductSlug(product) {
@@ -11341,6 +11362,25 @@ function buildProductSlug(product) {
     .replace(/^-|-$/g,'');
 }
 
+// Intenta detectar el color a partir del nombre del producto (ej: "Conjunto Lazo Celeste" -> "Celeste").
+// No reemplaza tener un campo de color real en el producto, pero mientras no exista,
+// esto le da algo de valor a "color" en el Schema.org sin pedirte campos nuevos en mi-cuenta.html.
+const PRODUCT_COLOR_WORDS = ['celeste','rosado','rosa','blanco','negro','azul','rojo','verde','amarillo',
+  'morado','lila','beige','gris','crema','coral','fucsia','dorado','plateado','marrón','marron','café','cafe',
+  'turquesa','mostaza','vinotinto','salmón','salmon','naranja','violeta','durazno','menta','lavanda'];
+
+function extractColorFromName(name) {
+  const lower = (name || '').toLowerCase();
+  const found = PRODUCT_COLOR_WORDS.find(c => lower.includes(c));
+  return found ? found.charAt(0).toUpperCase() + found.slice(1) : undefined;
+}
+
+// Color real del campo "Color" (mi-cuenta.html) si existe; si no, intenta
+// deducirlo del nombre como respaldo.
+function getProductColor(product) {
+  return (product.color && product.color.trim()) || extractColorFromName(product.name);
+}
+
 function injectProductSchema(productList) {
   // Eliminar schema anterior
   document.querySelectorAll('script[data-product-schema]').forEach(el => el.remove());
@@ -11349,19 +11389,24 @@ function injectProductSchema(productList) {
     const sizes = product.sizes || [];
     const minPrice = sizes.reduce((m,s)=>s.price&&s.price<m?s.price:m, Infinity);
     const hasStock = sizes.some(s => s.stock > 0);
-    const img = product.images?.[0] || product.image || '';
+    const productImages = product.images && product.images.length ? product.images : (product.image ? [product.image] : []);
     const slug = buildProductSlug(product);
     const seoTitle = buildProductSeoTitle(product);
     const desc = product.description || `${product.name} — ropa infantil importada premium de alta gama. D'Zoe Perú.`;
+    const color = getProductColor(product);
+    const availableSizes = sizes.filter(s => s.stock > 0).map(s => s.size);
+    const sizeText = (availableSizes.length ? availableSizes : sizes.map(s => s.size)).join(', ');
 
     const schema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": seoTitle,
       "description": desc,
-      "image": img ? [img] : undefined,
+      "image": productImages.length ? productImages : undefined,
       "brand": { "@type": "Brand", "name": "D'Zoe Perú" },
       "sku": String(product.id),
+      "color": color,
+      "size": sizeText || undefined,
       "url": `https://dzoeperu.com/producto.html?slug=${slug}`,
       "category": product.categories?.join(' > ') || 'Ropa Infantil',
       "offers": {
@@ -11466,7 +11511,7 @@ function renderProducts() {
   const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
   const paged = filtered.slice(start, start + PRODUCTS_PER_PAGE);
 
-  grid.innerHTML = paged.map(product => renderProductCard(product)).join('');
+  grid.innerHTML = paged.map((product, idx) => renderProductCard(product, idx)).join('');
   renderPagination(filtered.length);
 
   // Inyectar Schema.org Product para los productos en pantalla (SEO)
@@ -11569,7 +11614,7 @@ function tickOfferCountdowns() {
 }
 setInterval(tickOfferCountdowns, 1000);
 
-function renderProductCard(product) {
+function renderProductCard(product, cardIndex = 0) {
   const sizes = product.sizes || [];
   const hasStock = sizes.some(s => s.stock > 0);
   const productImages = product.images && product.images.length ? product.images : (product.image ? [product.image] : []);
@@ -11579,7 +11624,7 @@ function renderProductCard(product) {
   let imgHtml = '';
   if (tieneMultiplesImagenes) {
     const slidesHtml = productImages.map((img, idx) =>
-      `<img src="${img}" alt="${buildProductAltText(product, idx)}" loading="lazy">`
+      `<img src="${img}" ${buildProductImgAttrs(product, idx, cardIndex)}>`
     ).join('');
     const dotsHtml = productImages.map((_, idx) =>
       `<span class="dot${idx===0?' active':''}" onclick="slideProductTo('${product.id}',${idx})"></span>`
@@ -11593,7 +11638,7 @@ function renderProductCard(product) {
         <div class="photo-counter" id="counter-${product.id}"><i class="fas fa-camera"></i> 1/${productImages.length}</div>
       </div>`;
   } else {
-    imgHtml = `<img src="${productImages[0] || 'https://placehold.co/400x300'}" alt="${buildProductAltText(product, 0)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+    imgHtml = `<img src="${productImages[0] || 'https://placehold.co/400x300'}" ${buildProductImgAttrs(product, 0, cardIndex)} style="width:100%;height:100%;object-fit:cover;">`;
   }
 
   // Tallas con edad + estado de stock
@@ -12403,11 +12448,11 @@ function openProductPage(productId) {
   window._ppCurrentImgs = imgs;
 
   const mainImgHtml = imgs.length
-    ? `<img src="${imgs[0]}" alt="${buildProductAltText(product, 0)}" class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'" onclick="hdOpenLightbox(window._ppCurrentImgs, window._ppCurrentImgIdx||0)" style="cursor:zoom-in;">`
+    ? `<img src="${imgs[0]}" ${buildProductImgAttrs(product, 0, 0)} class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'" onclick="hdOpenLightbox(window._ppCurrentImgs, window._ppCurrentImgIdx||0)" style="cursor:zoom-in;">`
     : `<div class="pp-img-placeholder">🌸</div>`;
 
   const thumbsHtml = imgs.length > 1 ? imgs.map((img, i) =>
-    `<img src="${img}" class="pp-thumb${i===0?' active':''}" alt="${buildProductAltText(product, i)}" data-idx="${i}" onclick="ppSwitchImg(this, '${img.replace(/'/g,"\\'")}', ${i})">`
+    `<img src="${img}" ${buildProductImgAttrs(product, i, 99)} class="pp-thumb${i===0?' active':''}" data-idx="${i}" onclick="ppSwitchImg(this, '${img.replace(/'/g,"\\'")}', ${i})">`
   ).join('') : '';
 
   // Tallas
@@ -12596,7 +12641,7 @@ function openCatPage(catName) {
     `${catProducts.length} producto${catProducts.length!==1?'s':''} importado${catProducts.length!==1?'s':''} — D'Zoe Perú`;
   document.getElementById('catPageGrid').innerHTML =
     catProducts.length
-      ? catProducts.map(p => renderProductCard(p)).join('')
+      ? catProducts.map((p, idx) => renderProductCard(p, idx)).join('')
       : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-soft);font-size:15px;font-weight:600;">🔍 No hay productos en esta categoría aún.</div>`;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
