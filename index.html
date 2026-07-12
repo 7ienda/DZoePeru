@@ -11312,13 +11312,22 @@ function goToPage(page) {
 // ═══════════════════════════════════════════════════════
 //  SEO — SCHEMA.ORG PRODUCT DINÁMICO + TÍTULOS ÚNICOS
 // ═══════════════════════════════════════════════════════
+// Agrega el color al texto SEO solo si no está ya mencionado en el nombre
+// (para no repetir, ej: "Vestido Celeste Celeste").
+function seoColorSuffix(product, baseText) {
+  const color = getProductColor(product);
+  if (!color) return '';
+  return baseText.toLowerCase().includes(color.toLowerCase()) ? '' : ` ${color}`;
+}
+
 function buildProductSeoTitle(product) {
   const name = product.name || '';
-  return `${name} | D'Zoe Perú`;
+  return `${name}${seoColorSuffix(product, name)} | D'Zoe Perú`;
 }
 
 function buildProductAltText(product, imageIndex) {
   const name = product.name || '';
+  const colorStr = seoColorSuffix(product, name);
   // Género según categoría, para dar contexto útil sin relleno tipo "importado"
   const cats = product.categories || [];
   let genderStr = '';
@@ -11326,12 +11335,12 @@ function buildProductAltText(product, imageIndex) {
   else if (cats.some(c => /niños?/i.test(c))) genderStr = ' para niño';
   else if (cats.some(c => /beb[eé]s?/i.test(c))) genderStr = ' para bebé';
   const photoSuffix = imageIndex > 0 ? ` – foto ${imageIndex + 1}` : '';
-  return `${name}${genderStr} | D'Zoe Perú${photoSuffix}`.trim();
+  return `${name}${colorStr}${genderStr} | D'Zoe Perú${photoSuffix}`.trim();
 }
 
 function buildProductTitleText(product) {
   const name = product.name || '';
-  return `${name} | D'Zoe Perú`.trim();
+  return `${name}${seoColorSuffix(product, name)} | D'Zoe Perú`.trim();
 }
 
 // Genera alt + title + width + height + loading/fetchpriority listos para pegar en un <img>.
@@ -11363,8 +11372,8 @@ function buildProductSlug(product) {
 }
 
 // Intenta detectar el color a partir del nombre del producto (ej: "Conjunto Lazo Celeste" -> "Celeste").
-// No reemplaza tener un campo de color real en el producto, pero mientras no exista,
-// esto le da algo de valor a "color" en el Schema.org sin pedirte campos nuevos en mi-cuenta.html.
+// Se usa como respaldo solo si el producto no tiene el campo "Color" lleno en mi-cuenta.html.
+// El color (real o detectado) alimenta el alt, el title y el Schema.org de cada producto.
 const PRODUCT_COLOR_WORDS = ['celeste','rosado','rosa','blanco','negro','azul','rojo','verde','amarillo',
   'morado','lila','beige','gris','crema','coral','fucsia','dorado','plateado','marrón','marron','café','cafe',
   'turquesa','mostaza','vinotinto','salmón','salmon','naranja','violeta','durazno','menta','lavanda'];
