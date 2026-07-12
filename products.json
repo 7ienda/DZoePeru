@@ -3372,22 +3372,6 @@
     "url": "/productos/conjunto-helado-palo-rosa-2-piezas.html"
   },
   {
-    "id": 1783785182654,
-    "slug": "enterizo-chaleco-osito-2-piezas",
-    "name": "Enterizo chaleco osito 2 piezas",
-    "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9WTnOs7nXjrZlTjjRJQOFW7PUHwrKmNHPq2Ww9lSygyQFJRpDx8AlA7hsetgYsTezy_KEWCDX9f-IxMBeAFW55gdklBNSqZVrxc-9_gN62OOggKZPt-F__qjnspj05DQvxAVM_tFfZwpcpbhFYBxBHEumkerm-tk3r2mMpflFL0Bi_0smZSDi0e1sJ3ji/s1600/td1.png",
-    "categories": [
-      "Enterizos",
-      "Chalecos",
-      "Conjunto Hilo",
-      "Bebito",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/enterizo-chaleco-osito-2-piezas.html"
-  },
-  {
     "id": 1783785254571,
     "slug": "conjunto-lazo-primavera-2-piezas",
     "name": "Conjunto Lazo primavera 2 piezas",
@@ -3560,5 +3544,20 @@
     ],
     "inStock": true,
     "url": "/productos/enterizo-bb-rabbit.html"
+  },
+  {
+    "id": 1783785182654,
+    "slug": "enterizo-chaleco-osito-2-piezas",
+    "name": "Enterizo chaleco osito 2 piezas",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIK_TzvBWjeiTFi_XzggQim-htCW3IOfRyGIfr9JlDCVB_X6uCL6x0eMg9CYxZSSle7nfW7LNhNY-Lbvo9pP2UGxf6rBU7NttkvILFsktg6qhcwJlIRO3Y1vUY1gSSSnKSUHE9vbrWoaxPqdupg-LWAtYNFBeVdjVmofm2tQpSe1JxNfJUogVEQVKN5N8o/s1600/osito1.png",
+    "categories": [
+      "Conjunto Hilo",
+      "Bebito",
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/enterizo-chaleco-osito-2-piezas.html"
   }
 ]
