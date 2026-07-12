@@ -349,11 +349,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
    SIZES
    ============================================ */
 .sizes-section { background: var(--bg); border-radius: 14px; padding: 18px; margin-top: 10px; border: 1.5px solid var(--line2); }
-.size-row { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr 1.1fr 44px; gap: 8px; align-items: center; margin-bottom: 8px; padding: 12px 14px; background: var(--card); border-radius: 10px; border: 1px solid var(--line2); }
+.size-row { display: grid; grid-template-columns: 1.5fr 0.9fr 0.9fr 0.9fr 1.5fr 44px; gap: 8px; align-items: center; margin-bottom: 8px; padding: 12px 14px; background: var(--card); border-radius: 10px; border: 1px solid var(--line2); }
 .remove-size { background: var(--red-light); border: none; width: 36px; height: 36px; border-radius: 9px; cursor: pointer; color: var(--red); transition: all .2s; }
 .add-size-btn { background: transparent; border: 1.5px dashed var(--rose-mid); padding: 9px 18px; border-radius: 99px; cursor: pointer; margin-top: 8px; color: var(--rose); font-weight: 700; transition: all .2s; font-family: 'Nunito', sans-serif; }
 .add-size-btn:hover { background: var(--rose-xlight); border-color: var(--rose); }
-.size-header { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr 1.1fr 44px; gap: 8px; padding: 0 14px 8px; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.size-header { display: grid; grid-template-columns: 1.5fr 0.9fr 0.9fr 0.9fr 1.5fr 44px; gap: 8px; padding: 0 14px 8px; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 
 /* ============================================
    INVENTORY GRID + PAGINATION
@@ -1140,12 +1140,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 <div class="form-group"><label>Estado</label><div class="status-pills"><div class="status-pill active-pill selected" data-status="active">Activo</div><div class="status-pill inactive-pill" data-status="inactive">Inactivo</div></div></div>
                 <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="category-search" placeholder="Buscar categoría..." oninput="filterCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addSelectedCategory()">+</button></div><div id="selected-categories" class="tags-container"></div></div>
                 <div class="form-group"><label>Color</label><input type="text" id="product-color" placeholder="Ej: Celeste"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Se usa en el SEO (alt, título, Schema.org) de la tienda.</div></div>
-                <div class="form-group"><label>🔒 Origen (privado)</label><input type="text" id="product-origen" placeholder="Ej: Proveedor China - Contacto María"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Solo para ti. Nunca se muestra en la tienda pública.</div></div>
               </div>
             </div>
             <div class="form-divider">Tallas — Precio, Costo y Stock</div>
             <div class="sizes-section">
-              <div class="size-header"><span>Talla</span><span>Precio venta</span><span>Costo compra</span><span>Stock</span><span></span></div>
+              <div class="size-header"><span>Talla</span><span>Precio venta</span><span>Costo compra</span><span>Stock</span><span>🔒 Origen</span><span></span></div>
               <div id="sizes-container"></div>
               <button class="add-size-btn" onclick="addSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
@@ -1194,13 +1193,12 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 <div class="form-group"><label>¿Destacado?</label><div class="toggle-group" id="upcoming-featured-toggle" onclick="toggleUpcomingFeatured()"><div class="toggle"></div><span>Destacar en próximos</span></div></div>
                 <div class="form-group"><label>Categorías</label><div style="position:relative;margin-bottom:6px;"><i class="fas fa-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i><input type="text" id="upcoming-category-search" placeholder="Buscar categoría..." oninput="filterUpcomingCategorySelect()" style="padding:9px 12px 9px 30px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;width:100%;background:var(--bg);color:var(--text);font-family:Nunito,sans-serif;"></div><div style="display:flex;gap:8px;"><select id="upcoming-category-select" style="flex:1"></select><button class="btn btn-ghost btn-sm" onclick="addUpcomingCategory()">+</button></div><div id="upcoming-selected-categories" class="tags-container"></div></div>
                 <div class="form-group"><label>Color</label><input type="text" id="upcoming-color" placeholder="Ej: Celeste"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Se usa en el SEO (alt, título, Schema.org) de la tienda.</div></div>
-                <div class="form-group"><label>🔒 Origen (privado)</label><input type="text" id="upcoming-origen" placeholder="Ej: Proveedor China - Contacto María"><div style="font-size:11px;color:var(--muted);margin-top:4px;">Solo para ti. Nunca se muestra en la tienda pública.</div></div>
               </div>
             </div>
 
             <div class="form-divider">Tallas — Precio referencial y Costo</div>
             <div class="sizes-section">
-              <div class="size-header"><span>Talla</span><span>Precio ref.</span><span>Costo compra</span><span>Stock est.</span><span></span></div>
+              <div class="size-header"><span>Talla</span><span>Precio ref.</span><span>Costo compra</span><span>Stock est.</span><span>🔒 Origen</span><span></span></div>
               <div id="upcoming-sizes-container"></div>
               <button class="add-size-btn" onclick="addUpcomingSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
@@ -3374,7 +3372,7 @@ function clearForm() {
   featuredValue = false;
   statusValue = 'active';
   
-  ['product-name', 'product-description', 'product-color', 'product-origen'].forEach(id => {
+  ['product-name', 'product-description', 'product-color'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -4207,7 +4205,7 @@ function editProduct(id) {
 
   // ── Estado global ────────────────────────────────────────────
   editingProductId   = id;
-  productSizes       = (p.sizes || []).map(s => ({ ...s }));
+  productSizes       = (p.sizes || []).map(s => ({ ...s, origen: (p.size_origins || {})[s.size] || '' }));
   productImages      = Array.isArray(p.images) && p.images.length ? [...p.images] : (p.image ? [p.image] : []);
   featuredValue      = Boolean(p.featured);
   statusValue        = p.status || 'active';
@@ -4221,7 +4219,6 @@ function editProduct(id) {
   document.getElementById('product-name').value        = p.name        || '';
   document.getElementById('product-description').value = p.description || '';
   document.getElementById('product-color').value        = p.color       || '';
-  document.getElementById('product-origen').value       = p.origen      || '';
 
   // ── Imágenes ─────────────────────────────────────────────────
   const imgContainer = document.getElementById('image-urls-container');
@@ -4286,7 +4283,6 @@ async function saveProduct() {
 
   const desc = document.getElementById('product-description').value.trim();
   const color = document.getElementById('product-color').value.trim();
-  const origen = document.getElementById('product-origen').value.trim();
   syncProductImagesFromDOM();
   const validImages = productImages.filter(img => img && img.trim() !== '');
   const finalSizes = productSizes
@@ -4297,6 +4293,14 @@ async function saveProduct() {
       cost: Number(s.cost) || 0,
       stock: Number(s.stock) || 0
     }));
+  // 🔒 Origen por talla — se guarda aparte, NUNCA en "sizes" (esa columna sí es
+  // pública y la lee la tienda), para que jamás se filtre al frontend.
+  const sizeOrigins = {};
+  productSizes.forEach(s => {
+    if (s.size && s.size.trim() && s.origen && s.origen.trim()) {
+      sizeOrigins[s.size.trim()] = s.origen.trim();
+    }
+  });
 
   const existingProduct = editingProductId ? products.find(p => p.id === editingProductId) : null;
   const productId = editingProductId || Number(Date.now());
@@ -4318,7 +4322,7 @@ async function saveProduct() {
     name: name,
     description: desc || '',
     color: color || '',
-    origen: origen || '',
+    size_origins: sizeOrigins,
     images: validImages,
     image: validImages[0] || '',
     featured: Boolean(featuredValue),
@@ -4420,7 +4424,7 @@ function initUpcomingDateSelects() {
 function clearUpcomingForm() {
   editingUpcomingId = null;
   upcomingImages = []; upcomingSizes = []; upcomingCategories = []; upcomingFeatured = false;
-  ['upcoming-name','upcoming-description','upcoming-color','upcoming-origen'].forEach(id => {
+  ['upcoming-name','upcoming-description','upcoming-color'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   const dayEl = document.getElementById('upcoming-date-day');
@@ -4480,6 +4484,7 @@ function addUpcomingSizeRow(sz) {
     <input type="number" placeholder="0" value="${sz?.price||''}" class="up-sz-price" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.cost||''}" class="up-sz-cost" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.stock||''}" class="up-sz-stock" oninput="syncUpcomingSizes()">
+    <input type="text" placeholder="Ej: Proveedor China" value="${sz?.origen||''}" class="up-sz-origen" oninput="syncUpcomingSizes()">
     <button class="remove-size-btn" onclick="this.parentElement.remove();syncUpcomingSizes()"><i class="fas fa-times"></i></button>`;
   c.appendChild(row);
   syncUpcomingSizes();
@@ -4491,6 +4496,7 @@ function syncUpcomingSizes() {
     price: parseFloat(row.querySelector('.up-sz-price')?.value) || 0,
     cost:  parseFloat(row.querySelector('.up-sz-cost')?.value)  || 0,
     stock: parseInt(row.querySelector('.up-sz-stock')?.value)   || 0,
+    origen: row.querySelector('.up-sz-origen')?.value?.trim()   || '',
   })).filter(s => s.size);
 }
 
@@ -4535,17 +4541,24 @@ async function saveUpcomingProduct() {
   syncUpcomingImages();
   syncUpcomingSizes();
 
+  // 🔒 Origen por talla — aparte de "sizes" (esa sí la puede leer la tienda)
+  const upSizeOrigins = {};
+  upcomingSizes.forEach(s => {
+    if (s.size && s.origen && s.origen.trim()) upSizeOrigins[s.size] = s.origen.trim();
+  });
+  const cleanUpcomingSizes = upcomingSizes.map(({ size, price, cost, stock }) => ({ size, price, cost, stock }));
+
   const data = {
     id: editingUpcomingId || Date.now(),
     name,
     description: document.getElementById('upcoming-description').value.trim(),
     color: document.getElementById('upcoming-color').value.trim(),
-    origen: document.getElementById('upcoming-origen').value.trim(),
+    size_origins: upSizeOrigins,
     images: upcomingImages,
     image: upcomingImages[0] || '',
     featured: upcomingFeatured,
     categories: [...upcomingCategories],
-    sizes: upcomingSizes,
+    sizes: cleanUpcomingSizes,
     estimated_date: dateVal,
     created_at: new Date().toISOString()
   };
@@ -4578,7 +4591,6 @@ async function editUpcoming(id) {
   document.getElementById('upcoming-name').value = data.name || '';
   document.getElementById('upcoming-description').value = data.description || '';
   document.getElementById('upcoming-color').value = data.color || '';
-  document.getElementById('upcoming-origen').value = data.origen || '';
   if (data.estimated_date) {
     // Format for datetime-local input
     const d = new Date(data.estimated_date);
@@ -4595,7 +4607,7 @@ async function editUpcoming(id) {
   upcomingImages.forEach(url => addUpcomingImageInput(url));
   renderUpcomingPreview();
   document.getElementById('upcoming-sizes-container').innerHTML = '';
-  (data.sizes || []).forEach(sz => addUpcomingSizeRow(sz));
+  (data.sizes || []).forEach(sz => addUpcomingSizeRow({ ...sz, origen: (data.size_origins || {})[sz.size] || '' }));
   document.getElementById('upcoming-form-title').textContent = 'Editar Próximo Ingreso';
   document.getElementById('upcoming-save-btn-text').textContent = 'Actualizar';
   setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 120);
@@ -4622,7 +4634,7 @@ async function promoteUpcomingAdmin(id) {
     name: up.name,
     description: up.description || '',
     color: up.color || '',
-    origen: up.origen || '',
+    size_origins: up.size_origins || {},
     images: up.images || [],
     image: (up.images||[])[0] || up.image || '',
     featured: up.featured || false,
@@ -5138,15 +5150,17 @@ function renderSizesList() {
     <input type="number" class="size-price" data-i="${i}" value="${s.price||0}" placeholder="Precio" step="0.01">
     <input type="number" class="size-cost" data-i="${i}" value="${s.cost||0}" placeholder="Costo" step="0.01">
     <input type="number" class="size-stock" data-i="${i}" value="${s.stock||0}" placeholder="Stock" min="0">
+    <input type="text" class="size-origen" data-i="${i}" value="${s.origen||''}" placeholder="Ej: Proveedor China">
     <button class="remove-size" onclick="removeSizeRow(${i})"><i class="fas fa-trash"></i></button>
   </div>`).join('');
   document.querySelectorAll('.size-select').forEach(el=>el.addEventListener('change',function(){productSizes[this.dataset.i].size=this.value;}));
   document.querySelectorAll('.size-price').forEach(el=>el.addEventListener('input',function(){productSizes[this.dataset.i].price=parseFloat(this.value)||0;}));
   document.querySelectorAll('.size-cost').forEach(el=>el.addEventListener('input',function(){productSizes[this.dataset.i].cost=parseFloat(this.value)||0;}));
   document.querySelectorAll('.size-stock').forEach(el=>el.addEventListener('input',function(){productSizes[this.dataset.i].stock=parseInt(this.value)||0;}));
+  document.querySelectorAll('.size-origen').forEach(el=>el.addEventListener('input',function(){productSizes[this.dataset.i].origen=this.value;}));
 }
 
-function addSizeRow() { productSizes.push({size:sizeOptions[0],price:0,cost:0,stock:0}); renderSizesList(); }
+function addSizeRow() { productSizes.push({size:sizeOptions[0],price:0,cost:0,stock:0,origen:''}); renderSizesList(); }
 function removeSizeRow(i) { productSizes.splice(i,1); renderSizesList(); }
 
 // ============================================
