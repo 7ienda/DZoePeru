@@ -5112,8 +5112,12 @@ function isSeoFriendlyImageUrl(url) {
       /^\d+$/, /^[a-f0-9]{8,}$/i, /^[a-f0-9-]{16,}$/i
     ];
     if (badPatterns.some(rx => rx.test(base))) return false;
-    // Debe tener al menos una palabra alfabética descriptiva de 3+ letras
-    if (!/[a-zA-Zà-úÀ-Ú]{3,}/.test(base)) return false;
+    // Debe tener al menos una PALABRA completa (entre guiones/guion bajo/espacios) de 3+ letras.
+    // Así "hil2.png" o "rosa24.jpg" (letras y números pegados, sin separar) NO pasan:
+    // "hil2" no es una palabra real, es un código/abreviatura con un número pegado.
+    const words = base.split(/[-_\s]+/).filter(Boolean);
+    const hasRealWord = words.some(w => /^[a-zA-Zà-úÀ-Ú]{3,}$/.test(w));
+    if (!hasRealWord) return false;
     if (base.replace(/[-_\s]/g, '').length < 4) return false;
     return true;
   } catch (e) { return false; }
