@@ -1419,7 +1419,7 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 /* ── PRODUCTOS PREMIUM HEADER ── */
 .productos-premium-header{
   text-align:center;
-  margin-bottom:32px;
+  margin-bottom:8px;
   padding:8px 0 4px;
 }
 .productos-premium-eyebrow{
@@ -5384,7 +5384,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
       <label for="hdrSearchInput" class="sr-only">Buscar ropa infantil importada</label>
       <i class="fas fa-search" aria-hidden="true"></i>
       <input type="search" id="hdrSearchInput" name="q" autocomplete="off"
-             placeholder="Buscar vestidos, abrigos, conjuntos bebé…"
+             placeholder="Buscador"
              aria-label="Buscar productos en D'Zoe Perú"
              oninput="document.getElementById('searchInput').value=this.value;searchProducts();"
              onkeydown="if(event.key==='Escape'){closeHdrSearch();}">
@@ -5609,9 +5609,8 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
    BUSCADOR PREMIUM — D'ZOE PERÚ 2026
 ═══════════════════════════════════════════════════════ */
 .prem-search-section {
-  background: var(--lav-light);
-  padding: 28px 0 22px;
-  border-bottom: 1px solid rgba(163,133,210,0.2);
+  background: #ffffff;
+  padding: 10px 0 22px;
   position: relative;
   overflow: hidden;
 }
@@ -5620,7 +5619,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   position: absolute;
   top: -60px; right: -80px;
   width: 280px; height: 280px;
-  background: rgba(179,157,200,0.15);
+  background: transparent;
   pointer-events: none;
 }
 .prem-search-section::after {
@@ -5628,7 +5627,7 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   position: absolute;
   bottom: -40px; left: -60px;
   width: 200px; height: 200px;
-  background: rgba(163,133,210,0.12);
+  background: transparent;
   pointer-events: none;
 }
 
@@ -5742,6 +5741,12 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   transition: color 0.18s;
 }
 .prem-search-cat-select:focus { color: var(--rose-dark); }
+.prem-search-cat-select:disabled,
+.prem-mobile-filters select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 /* Contenedor inline de filtro (Edad / Categoría) */
 .prem-inline-filter {
   display: flex;
@@ -5767,12 +5772,13 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   /* Fila de filtros debajo del buscador en mobile */
   .prem-mobile-filters {
     display: flex !important;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
     width: 100%;
   }
   .prem-mobile-filters select {
-    flex: 1;
+    flex: 1 1 90px;
     font-size: 12px;
     padding: 8px 10px;
     border: 1.5px solid var(--border);
@@ -6067,141 +6073,6 @@ body.dark-mode .prem-filter-toggle:hover { background: #4a3828; }
 }
 </style>
 
-<section class="prem-search-section" aria-label="Buscador de productos D'Zoe Perú">
-  <div class="container">
-    <div class="prem-search-wrap">
-
-
-    <div class="products-title-block">
-
-	      <div class="products-title-divider"><span></span><i class="fas fa-heart"></i><span></span></div>
-    </div>
-      <!-- Caja principal -->
-      <div class="prem-search-box" id="smartSearchBox">
-        <i class="fas fa-search prem-search-icon" aria-hidden="true"></i>
-
-        <input
-          type="search"
-          class="prem-search-input"
-          id="searchInput"
-          placeholder="Buscar vestidos, abrigos, conjuntos bebé…"
-          aria-label="Buscar productos en D'Zoe Perú"
-          autocomplete="off"
-          oninput="smartSearchHandle(this.value)"
-          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
-        >
-
-        <!-- Limpiar -->
-        <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
-          <i class="fas fa-times"></i>
-        </button>
-
-        <!-- Separador + Edad -->
-        <div class="prem-search-sep"></div>
-        <div class="prem-inline-filter">
-          <span class="prem-inline-label"><i class="fas fa-baby"></i></span>
-          <select class="prem-search-cat-select" id="afpEdad" onchange="applyAdvancedFilter()" aria-label="Filtrar por edad">
-            <option value="">Todas las edades</option>
-            <optgroup label="— Bebés —">
-              <option value="Recién nacido">Recién nacido</option>
-              <option value="3-6 meses">3-6 meses</option>
-              <option value="6-9 meses">6-9 meses</option>
-              <option value="9-12 meses">9-12 meses</option>
-              <option value="12-18 meses">12-18 meses</option>
-              <option value="18-24 meses">18-24 meses</option>
-              <option value="1 años">1 año</option>
-              <option value="2 años">2 años</option>
-            </optgroup>
-            <optgroup label="— Niños —">
-              <option value="3 años">3 años</option>
-              <option value="4 años">4 años</option>
-              <option value="5 años">5 años</option>
-              <option value="6 años">6 años</option>
-              <option value="7 años">7 años</option>
-              <option value="8 años">8 años</option>
-            </optgroup>
-            <optgroup label="— Mayores —">
-              <option value="9 años">9 años</option>
-              <option value="10 años">10 años</option>
-              <option value="11 años">11 años</option>
-              <option value="12 años">12 años</option>
-              <option value="13 años">13 años</option>
-              <option value="14 años">14 años</option>
-              <option value="15 años">15 años</option>
-              <option value="16 años">16 años</option>
-            </optgroup>
-          </select>
-        </div>
-
-        <!-- Separador + Categorías -->
-        <div class="prem-search-sep"></div>
-        <div class="prem-inline-filter">
-          <span class="prem-inline-label"><i class="fas fa-tags"></i></span>
-          <select class="prem-search-cat-select" id="premCatSelect" onchange="premCatSelectChange()" aria-label="Filtrar por categoría">
-            <option value="">Todas</option>
-          </select>
-        </div>
-
-        <!-- Botón buscar -->
-        <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
-          <i class="fas fa-search"></i>
-          <span>Buscar</span>
-        </button>
-
-        <!-- Sugerencias -->
-        <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
-      </div>
-
-      <!-- Filtros mobile (debajo del buscador) -->
-      <div class="prem-mobile-filters">
-        <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
-          <option value="">🍼 Todas las edades</option>
-          <optgroup label="— Bebés —">
-            <option value="Recién nacido">Recién nacido</option>
-            <option value="3-6 meses">3-6 meses</option>
-            <option value="6-9 meses">6-9 meses</option>
-            <option value="9-12 meses">9-12 meses</option>
-            <option value="12-18 meses">12-18 meses</option>
-            <option value="18-24 meses">18-24 meses</option>
-            <option value="1 años">1 año</option>
-            <option value="2 años">2 años</option>
-          </optgroup>
-          <optgroup label="— Niños —">
-            <option value="3 años">3 años</option>
-            <option value="4 años">4 años</option>
-            <option value="5 años">5 años</option>
-            <option value="6 años">6 años</option>
-            <option value="7 años">7 años</option>
-            <option value="8 años">8 años</option>
-          </optgroup>
-          <optgroup label="— Mayores —">
-            <option value="9 años">9 años</option>
-            <option value="10 años">10 años</option>
-            <option value="11 años">11 años</option>
-            <option value="12 años">12 años</option>
-            <option value="13 años">13 años</option>
-            <option value="14 años">14 años</option>
-            <option value="15 años">15 años</option>
-            <option value="16 años">16 años</option>
-          </optgroup>
-        </select>
-        <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
-          <option value="">🏷️ Todas</option>
-        </select>
-      </div>
-
-      <!-- Chips rápidos -->
-      <div class="prem-chips-row" id="quickChipsRow" aria-label="Filtros rápidos">
-        <button class="prem-chip" onclick="quickChipSearch(this,'bautizo')">🕊️ Bautizo</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'cumpleaños')">🎂 Cumpleaños</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'recién nacido')">👶 Recién nacido</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'abrigo')">🧥 Abrigos</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'conjunto')">✨ Conjuntos</button>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <script>
 /* ── BUSCADOR PREMIUM ── */
@@ -6320,7 +6191,10 @@ function smartSearchClear() {
   sug.innerHTML = ''; sug.classList.remove('has-results');
   const catSel = document.getElementById('premCatSelect');
   if (catSel) catSel.value = '';
+  const catSelM = document.getElementById('premCatSelectMobile');
+  if (catSelM) catSelM.value = '';
   currentGenderCats = null;
+  syncTipoSelectUI(null);
   if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
   document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
 }
@@ -6328,24 +6202,107 @@ function smartSearchClear() {
 function premCatSelectChange() {
   const cat = document.getElementById('premCatSelect')?.value || '';
   if (typeof filterByCategory === 'function') {
-    filterByCategory(cat || 'all');
+    filterByCategory(cat || 'all', true); // true = combinar con Tipo/Edad activos, no reemplazarlos
     if (cat) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
   }
 }
 
+/* ── Box "Tipo" (Bebita / Bebito / Niño / Niña / Accesorios) ── */
+// Mapea el valor del select a las categorías EXACTAS de Supabase (filtro estricto)
+const TIPO_CATEGORY_MAP = {
+  'bebita': ['Bebita'],
+  'bebito': ['Bebito'],
+  'nino':   ['Niño'],
+  'nina':   ['Niña'],
+  'accesorios': ['Accesorios'],
+};
+
+// Bloquea (deshabilita) los selects de Edad y Categoría cuando Tipo = Accesorios,
+// ya que los accesorios no se filtran por edad ni por categoría de prenda.
+function updateFilterLockState() {
+  const val = document.getElementById('premTipoSelect')?.value || '';
+  const lock = val === 'accesorios';
+
+  const edadSel  = document.getElementById('afpEdad');
+  const edadSelM = document.getElementById('afpEdadMobile');
+  const catSel   = document.getElementById('premCatSelect');
+  const catSelM  = document.getElementById('premCatSelectMobile');
+
+  [edadSel, edadSelM, catSel, catSelM].forEach(el => {
+    if (!el) return;
+    el.disabled = lock;
+    if (lock) el.value = '';
+  });
+
+  if (lock) {
+    currentAgeFilter = null;
+    currentAgeFilterSet = null;
+    currentAgeGroup = null;
+  }
+}
+
+function premTipoSelectChange() {
+  const val = document.getElementById('premTipoSelect')?.value || '';
+  currentGenderCats = TIPO_CATEGORY_MAP[val] || null;
+  currentPage = 1;
+  // Mantener sincronizado el select gemelo de mobile
+  const mobileSel = document.getElementById('premTipoSelectMobile');
+  if (mobileSel && mobileSel.value !== val) mobileSel.value = val;
+  updateFilterLockState();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
+  if (val) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Refleja en el select el filtro de género/tipo activo, venga de donde venga
+// (menú BEBE/NIÑA/NIÑO, búsqueda por texto, etc.) para que la UI nunca quede desfasada
+function syncTipoSelectUI(cats) {
+  let val = '';
+  if (cats && cats.length) {
+    val = Object.keys(TIPO_CATEGORY_MAP).find(k =>
+      TIPO_CATEGORY_MAP[k].length === cats.length && TIPO_CATEGORY_MAP[k].every(c => cats.includes(c))
+    ) || '';
+  }
+  const sel = document.getElementById('premTipoSelect');
+  const selM = document.getElementById('premTipoSelectMobile');
+  if (sel) sel.value = val;
+  if (selM) selM.value = val;
+  updateFilterLockState();
+}
+
+// Categorías que ya se cubren desde el select "Tipo" (Bebita/Bebito/Niño/Niña/Accesorios)
+// y por lo tanto no deben duplicarse en el select de Categorías.
+// La comparación es tolerante a singular/plural y tildes/mayúsculas (ver catNamesMatch),
+// así sigue funcionando aunque en Supabase estén guardadas como "Niños"/"Niñas", etc.
+const CATEGORIAS_EXCLUIDAS_DE_CATSELECT = ['Bebita', 'Bebito', 'Niño', 'Niña', 'Accesorios'];
+function isExcludedFromCatSelect(catName) {
+  return CATEGORIAS_EXCLUIDAS_DE_CATSELECT.some(excl => catNamesMatch(catName, excl));
+}
+
 // Rellena dinámicamente los selects de categoría con los datos reales de Supabase
 function populateCategorySelects() {
-  const cats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
+  const allCats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
+  const cats = allCats.filter(c => !isExcludedFromCatSelect(c));
   const selects = ['premCatSelect', 'premCatSelectMobile'];
   selects.forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     const current = sel.value;
-    sel.innerHTML = '<option value="">Todas las categorías</option>' +
+    sel.innerHTML = '<option value="">Categorías</option>' +
       cats.map(c => `<option value="${c}">${c}</option>`).join('');
-    // Restaurar valor si sigue siendo válido
-    if (current && cats.includes(current)) sel.value = current;
+    // Restaurar valor si sigue siendo válido (comparación exacta primero,
+    // y si no, tolerante a singular/plural/tildes para no perder la selección)
+    if (current) {
+      if (cats.includes(current)) sel.value = current;
+      else {
+        const match = cats.find(c => catNamesMatch(c, current));
+        if (match) sel.value = match;
+      }
+    }
   });
+  updateFilterLockState();
 }
 
 function quickChipSearch(el, term) {
@@ -6366,80 +6323,25 @@ function toggleAdvancedFilters() {
 }
 
 function applyAdvancedFilter() {
-  const talla = document.getElementById('afpTalla')?.value || '';
   const edad  = document.getElementById('afpEdad')?.value  || '';
-  const cat   = document.getElementById('afpCategoria')?.value || '';
 
-  // Mapa de expansión: cada edad "simple" del select incluye también los rangos solapados de la BD
-  const EDAD_EXPANSION = {
-    'Recién nacido': ['Recién nacido'],
-    '3-6 meses':  ['3-6 meses'],
-    '6-9 meses':  ['6-9 meses','6-12 meses'],
-    '9-12 meses': ['9-12 meses','9-18 meses','6-12 meses'],
-    '12-18 meses':['12-18 meses','12-24 meses','9-18 meses'],
-    '18-24 meses':['18-24 meses','12-24 meses'],
-    '1 años':  ['1 años','1-2 años'],
-    '2 años':  ['2 años','1-2 años','2-3 años'],
-    '3 años':  ['3 años','2-3 años','3-4 años'],
-    '4 años':  ['4 años','3-4 años','4-5 años'],
-    '5 años':  ['5 años','4-5 años','5-6 años'],
-    '6 años':  ['6 años','5-6 años','6-7 años'],
-    '7 años':  ['7 años','6-7 años','7-8 años'],
-    '8 años':  ['8 años','7-8 años','8-9 años'],
-    '9 años':  ['9 años','8-9 años','9-10 años'],
-    '10 años': ['10 años','9-10 años','10-11 años'],
-    '11 años': ['11 años','10-11 años','11-12 años'],
-    '12 años': ['12 años','11-12 años','12-13 años'],
-    '13 años': ['13 años','12-13 años'],
-    '14 años': ['14 años'],
-    '15 años': ['15 años'],
-    '16 años': ['16 años'],
-  };
+  currentAgeGroup = null;
+  currentPage = 1;
 
-  // Categoría
-  if (typeof filterByCategory === 'function') {
-    filterByCategory(cat || 'all');
-  }
-
-  // Sin edad → mostrar todo (limpiar filtro)
   if (!edad) {
-    currentAgeGroup = null;
+    // Sin edad → limpiar filtro de edad, sin tocar categoría/tipo/género
     currentAgeFilter = null;
     currentAgeFilterSet = null;
-    currentPage = 1;
-    if (typeof renderAgeChips === 'function') renderAgeChips();
-    if (typeof renderProducts === 'function') renderProducts();
-    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
-    if (!talla) {
-      document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-      return;
-    }
-  }
-
-  // Edad seleccionada → expandir a todos los rangos solapados
-  if (edad) {
-    currentAgeGroup = null;
+  } else {
+    // Edad seleccionada → expandir a todos los rangos solapados (mapa completo, ver EDAD_EXPANSION_MAP)
     currentAgeFilter = edad;
-    currentAgeFilterSet = EDAD_EXPANSION[edad] || [edad];
-    currentPage = 1;
-    if (typeof renderAgeChips === 'function') renderAgeChips();
-    if (typeof renderProducts === 'function') renderProducts();
-    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
-    document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-    return;
+    currentAgeFilterSet = (typeof EDAD_EXPANSION_MAP !== 'undefined' && EDAD_EXPANSION_MAP[edad]) || [edad];
   }
 
-  // Talla exacta del otro select
-  if (talla) {
-    currentAgeGroup = null;
-    currentAgeFilter = talla;
-    currentAgeFilterSet = [talla];
-    currentPage = 1;
-    if (typeof renderAgeChips === 'function') renderAgeChips();
-    if (typeof renderProducts === 'function') renderProducts();
-    if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
-  }
-
+  if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -7180,6 +7082,204 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
       <h2 class="productos-premium-title">PRODUCTOS <span>PREMIUM</span></h2>
       <p class="productos-premium-sub">Ropa infantil importada de alta gama para bebés y niños de 0 a 14 años</p>
     </div>
+
+    <!-- Buscador inteligente reubicado dentro de PRODUCTOS PREMIUM -->
+    <section class="prem-search-section" aria-label="Buscador de productos D'Zoe Perú">
+  <div class="container">
+    <div class="prem-search-wrap">
+
+      <!-- Caja principal -->
+      <div class="prem-search-box" id="smartSearchBox">
+        <i class="fas fa-search prem-search-icon" aria-hidden="true"></i>
+
+        <input
+          type="search"
+          class="prem-search-input"
+          id="searchInput"
+          placeholder="Buscador"
+          aria-label="Buscar productos en D'Zoe Perú"
+          autocomplete="off"
+          oninput="smartSearchHandle(this.value)"
+          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
+        >
+
+        <!-- Limpiar -->
+        <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Separador + Tipo (Bebita/Bebito/Niño/Niña/Accesorios) -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-child"></i></span>
+          <select class="prem-search-cat-select" id="premTipoSelect" onchange="premTipoSelectChange()" aria-label="Filtrar por tipo">
+            <option value="">Genero</option>
+            <option value="bebita">👧🏻 Bebita</option>
+            <option value="bebito">👦🏻 Bebito</option>
+            <option value="nino">👦 Niño</option>
+            <option value="nina">👧 Niña</option>
+            <option value="accesorios">🎀 Accesorios</option>
+          </select>
+        </div>
+
+        <!-- Separador + Edad -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-baby"></i></span>
+          <select class="prem-search-cat-select" id="afpEdad" onchange="applyAdvancedFilter()" aria-label="Filtrar por edad">
+            <option value="">Edades</option>
+            <optgroup label="— Bebés —">
+              <option value="Recién nacido">Recién nacido</option>
+              <option value="1-3 meses">1-3 meses</option>
+              <option value="3-6 meses">3-6 meses</option>
+              <option value="6-9 meses">6-9 meses</option>
+              <option value="6-12 meses">6-12 meses</option>
+              <option value="9-12 meses">9-12 meses</option>
+              <option value="9-18 meses">9-18 meses</option>
+              <option value="12-18 meses">12-18 meses</option>
+              <option value="12-24 meses">12-24 meses</option>
+              <option value="18-24 meses">18-24 meses</option>
+            </optgroup>
+            <optgroup label="— Niños pequeños —">
+              <option value="1 años">1 año</option>
+              <option value="1-2 años">1-2 años</option>
+              <option value="2 años">2 años</option>
+              <option value="2-3 años">2-3 años</option>
+              <option value="3 años">3 años</option>
+              <option value="3-4 años">3-4 años</option>
+              <option value="4 años">4 años</option>
+              <option value="4-5 años">4-5 años</option>
+              <option value="5 años">5 años</option>
+              <option value="5-6 años">5-6 años</option>
+            </optgroup>
+            <optgroup label="— Niños —">
+              <option value="6 años">6 años</option>
+              <option value="6-7 años">6-7 años</option>
+              <option value="7 años">7 años</option>
+              <option value="7-8 años">7-8 años</option>
+              <option value="8 años">8 años</option>
+              <option value="8-9 años">8-9 años</option>
+            </optgroup>
+            <optgroup label="— Mayores —">
+              <option value="9 años">9 años</option>
+              <option value="9-10 años">9-10 años</option>
+              <option value="10 años">10 años</option>
+              <option value="10-11 años">10-11 años</option>
+              <option value="11 años">11 años</option>
+              <option value="11-12 años">11-12 años</option>
+              <option value="12 años">12 años</option>
+              <option value="12-13 años">12-13 años</option>
+              <option value="13 años">13 años</option>
+              <option value="13-14 años">13-14 años</option>
+              <option value="14 años">14 años</option>
+              <option value="14-15 años">14-15 años</option>
+              <option value="15 años">15 años</option>
+              <option value="15-16 años">15-16 años</option>
+              <option value="16 años">16 años</option>
+              <option value="16-17 años">16-17 años</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Separador + Categorías -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-tags"></i></span>
+          <select class="prem-search-cat-select" id="premCatSelect" onchange="premCatSelectChange()" aria-label="Filtrar por categoría">
+            <option value="">Todas</option>
+          </select>
+        </div>
+
+        <!-- Botón buscar -->
+        <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
+          <i class="fas fa-search"></i>
+          <span>Buscar</span>
+        </button>
+
+        <!-- Sugerencias -->
+        <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
+      </div>
+
+      <!-- Filtros mobile (debajo del buscador) -->
+      <div class="prem-mobile-filters">
+        <select id="premTipoSelectMobile" onchange="document.getElementById('premTipoSelect').value=this.value;premTipoSelectChange();" aria-label="Filtrar por tipo">
+          <option value="">🧒 Genero</option>
+          <option value="bebita">👧🏻 Bebita</option>
+          <option value="bebito">👦🏻 Bebito</option>
+          <option value="nino">👦 Niño</option>
+          <option value="nina">👧 Niña</option>
+          <option value="accesorios">🎀 Accesorios</option>
+        </select>
+        <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
+          <option value="">🍼 Edades</option>
+          <optgroup label="— Bebés —">
+            <option value="Recién nacido">Recién nacido</option>
+            <option value="1-3 meses">1-3 meses</option>
+            <option value="3-6 meses">3-6 meses</option>
+            <option value="6-9 meses">6-9 meses</option>
+            <option value="6-12 meses">6-12 meses</option>
+            <option value="9-12 meses">9-12 meses</option>
+            <option value="9-18 meses">9-18 meses</option>
+            <option value="12-18 meses">12-18 meses</option>
+            <option value="12-24 meses">12-24 meses</option>
+            <option value="18-24 meses">18-24 meses</option>
+          </optgroup>
+          <optgroup label="— Niños pequeños —">
+            <option value="1 años">1 año</option>
+            <option value="1-2 años">1-2 años</option>
+            <option value="2 años">2 años</option>
+            <option value="2-3 años">2-3 años</option>
+            <option value="3 años">3 años</option>
+            <option value="3-4 años">3-4 años</option>
+            <option value="4 años">4 años</option>
+            <option value="4-5 años">4-5 años</option>
+            <option value="5 años">5 años</option>
+            <option value="5-6 años">5-6 años</option>
+          </optgroup>
+          <optgroup label="— Niños —">
+            <option value="6 años">6 años</option>
+            <option value="6-7 años">6-7 años</option>
+            <option value="7 años">7 años</option>
+            <option value="7-8 años">7-8 años</option>
+            <option value="8 años">8 años</option>
+            <option value="8-9 años">8-9 años</option>
+          </optgroup>
+          <optgroup label="— Mayores —">
+            <option value="9 años">9 años</option>
+            <option value="9-10 años">9-10 años</option>
+            <option value="10 años">10 años</option>
+            <option value="10-11 años">10-11 años</option>
+            <option value="11 años">11 años</option>
+            <option value="11-12 años">11-12 años</option>
+            <option value="12 años">12 años</option>
+            <option value="12-13 años">12-13 años</option>
+            <option value="13 años">13 años</option>
+            <option value="13-14 años">13-14 años</option>
+            <option value="14 años">14 años</option>
+            <option value="14-15 años">14-15 años</option>
+            <option value="15 años">15 años</option>
+            <option value="15-16 años">15-16 años</option>
+            <option value="16 años">16 años</option>
+            <option value="16-17 años">16-17 años</option>
+          </optgroup>
+        </select>
+        <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
+          <option value="">🏷️ Todas</option>
+        </select>
+      </div>
+
+      <!-- Chips rápidos -->
+      <div class="prem-chips-row" id="quickChipsRow" aria-label="Filtros rápidos">
+        <button class="prem-chip" onclick="quickChipSearch(this,'bautizo')">🕊️ Bautizo</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'cumpleaños')">🎂 Cumpleaños</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'recién nacido')">👶 Recién nacido</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'abrigo')">🧥 Abrigos</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'conjunto')">✨ Conjuntos</button>
+      </div>
+
+    </div>
+  </div>
+</section>
 
     <!-- Grid de productos (dinámico desde Supabase) -->
     <div class="product-grid" id="productGrid">
@@ -9054,12 +9154,68 @@ let currentSearch = '';
 let currentAgeFilter = null;
 let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
-let currentGenderCats = null;   // categorías EXACTAS de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
+let currentGenderCats = null;   // categorías de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 12;
 let selectedSizes = {};
 
-const ALL_SIZES = ["Recién nacido","3-6 meses","6-9 meses","6-12 meses","9-12 meses","9-18 meses","12-18 meses","12-24 meses","18-24 meses","1 años","1-2 años","2 años","2-3 años","3 años","3-4 años","4 años","4-5 años","5 años","5-6 años","6 años","6-7 años","7 años","7-8 años","8 años","8-9 años","9 años","9-10 años","10 años","10-11 años","11 años","11-12 años","12 años","12-13 años","13 años"];
+// ── Comparación robusta de nombres de categoría ──
+// Ignora tildes/mayúsculas y tolera singular/plural ("Niño" vs "Niños",
+// "Bebita" vs "Bebitas") para que los filtros nunca se rompan si el nombre
+// exacto guardado en Supabase cambia de forma (p.ej. al pluralizarlo desde
+// el panel de administración).
+function catNamesMatch(a, b) {
+  if (!a || !b) return false;
+  const na = normTxt(a).trim().replace(/s$/, '');
+  const nb = normTxt(b).trim().replace(/s$/, '');
+  return na === nb;
+}
+// ¿El producto (por su array de categorías) pertenece a alguna de las
+// categorías de género objetivo? Comparación tolerante a singular/plural.
+function productMatchesGenderCats(productCats, genderCats) {
+  if (!genderCats || !genderCats.length) return true;
+  const pc = productCats || [];
+  return genderCats.some(g => pc.some(c => catNamesMatch(c, g)));
+}
+
+// Lista COMPLETA de tallas/edades — igual a `sizeOptions` en mi-cuenta.html (panel admin),
+// para que el buscador de la tienda reconozca exactamente las mismas tallas que se
+// pueden asignar a un producto. "Talla única" se maneja aparte (no es una edad).
+const ALL_SIZES = ["Recién nacido","1-3 meses","3-6 meses","6-9 meses","6-12 meses","9-12 meses","9-18 meses","12-18 meses","12-24 meses","18-24 meses","1 años","1-2 años","2 años","2-3 años","3 años","3-4 años","4 años","4-5 años","5 años","5-6 años","6 años","6-7 años","7 años","7-8 años","8 años","8-9 años","9 años","9-10 años","10 años","10-11 años","11 años","11-12 años","12 años","12-13 años","13 años","13-14 años","14 años","14-15 años","15 años","15-16 años","16 años","16-17 años"];
+
+// Convierte una talla/edad de texto a un rango en meses [min,max], para poder
+// calcular automáticamente qué tallas se "solapan" entre sí (p.ej. "4 años"
+// se solapa con "3-4 años" y "4-5 años"). Esto reemplaza mapas manuales que
+// quedaban incompletos cada vez que se agregaba una talla nueva en el panel.
+function sizeToMonthsRange(size) {
+  if (!size) return null;
+  const s = size.trim();
+  if (/^rec[ié]e?n\s*nacido$/i.test(s)) return [0, 1];
+  let m = s.match(/^(\d+)\s*-\s*(\d+)\s*meses$/i);
+  if (m) return [parseInt(m[1], 10), parseInt(m[2], 10)];
+  m = s.match(/^(\d+)\s*meses$/i);
+  if (m) return [parseInt(m[1], 10), parseInt(m[1], 10)];
+  m = s.match(/^(\d+)\s*-\s*(\d+)\s*años$/i);
+  if (m) return [parseInt(m[1], 10) * 12, parseInt(m[2], 10) * 12];
+  m = s.match(/^(\d+)\s*años$/i);
+  if (m) { const y = parseInt(m[1], 10); return [y * 12, y * 12 + 11]; }
+  return null; // "Talla única" u otro valor no relacionado a edad
+}
+
+// Mapa de expansión de edades: para cada talla, todas las tallas cuyo rango
+// de meses se solapa con ella. Se calcula UNA vez a partir de ALL_SIZES,
+// así siempre queda completo aunque se agreguen tallas nuevas en el panel.
+const EDAD_EXPANSION_MAP = (() => {
+  const ranges = ALL_SIZES.map(s => [s, sizeToMonthsRange(s)]);
+  const map = {};
+  ranges.forEach(([size, range]) => {
+    if (!range) { map[size] = [size]; return; }
+    map[size] = ranges
+      .filter(([, r2]) => r2 && range[0] <= r2[1] && r2[0] <= range[1])
+      .map(([s2]) => s2);
+  });
+  return map;
+})();
 
 
 // ═══════════════════════════════════════════════════════
@@ -9259,10 +9415,16 @@ function sortByPriority(arr) {
 //    del menú (BEBE/NIÑA/NIÑO/ACCESORIO) y el buscador sean más completos ──
 function getFilteredUpcoming() {
   let filtered = [...upcomingProducts];
-  const hasFilter = !!(currentGenderCats || currentAgeFilter || currentSearch);
+  const hasCategoryFilter = !!(currentFilter && currentFilter !== 'all');
+  const hasFilter = hasCategoryFilter || !!(currentGenderCats || currentAgeFilter || currentSearch);
+
+  // Categoría específica elegida en "Todas las categorías" (misma que aplica al catálogo)
+  if (hasCategoryFilter) {
+    filtered = filtered.filter(up => (up.categories || []).some(c => catNamesMatch(c, currentFilter)));
+  }
 
   if (currentGenderCats) {
-    filtered = filtered.filter(up => (up.categories || []).some(c => currentGenderCats.includes(c)));
+    filtered = filtered.filter(up => productMatchesGenderCats(up.categories, currentGenderCats));
   }
 
   if (currentAgeFilter) {
@@ -10590,6 +10752,7 @@ function renderBreadcrumb() {
   if (!nav) return;
   let current = '🌸 Todos los productos';
   if (currentFilter && currentFilter !== 'all') current = `✨ ${currentFilter}`;
+  else if (currentGenderCats && currentGenderCats.length) current = `👶 ${currentGenderCats.join(' / ')}`;
   else if (currentAgeFilter) current = `👶 ${currentAgeFilter}`;
   else if (currentSearch) {
     // Mostrar género detectado si aplica
@@ -10612,9 +10775,16 @@ function renderBreadcrumb() {
     <span class="bc-current" aria-current="page">${current}</span>`;
 }
 
-function filterByCategory(cat) {
+// preserveFilters=true → usado por el select avanzado "Categorías" para COMBINAR
+// con Tipo/Edad ya elegidos (AND), en vez de reemplazarlos. Sin ese flag (uso normal:
+// pastillas de categoría, menú, breadcrumb "Tienda") sigue reemplazando el filtro
+// de género, como antes.
+function filterByCategory(cat, preserveFilters) {
   if (cat === 'all') { currentFilter = 'all'; } else { currentFilter = cat; }
-  currentGenderCats = null; // elegir una categoría del listado reemplaza el filtro del menú BEBE/NIÑA/NIÑO
+  if (!preserveFilters) {
+    currentGenderCats = null; // elegir una categoría del listado (navegación) reemplaza el filtro del menú BEBE/NIÑA/NIÑO
+    if (typeof syncTipoSelectUI === 'function') syncTipoSelectUI(null);
+  }
   currentPage = 1;
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === currentFilter));
   document.querySelectorAll('.hero-cat-chip').forEach(chip => {
@@ -10624,6 +10794,7 @@ function filterByCategory(cat) {
   renderCategoriesFromData();
   renderProducts();
   renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   // Actualizar URL para SEO
   const catSlug = cat === 'all' ? '' : cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-');
   const newUrl = catSlug ? '/categoria/' + catSlug : '/';
@@ -10645,11 +10816,13 @@ function filterByCategory(cat) {
 // ═══════════════════════════════════════════════════════
 function renderAgeChips() {
   const usedSizes = new Set();
-  products.forEach(p => (p.sizes||[]).forEach(s => { if(s.stock > 0) usedSizes.add(s.size); }));
+  // Incluye tallas agotadas también, para que esos productos sigan siendo
+  // encontrables por edad (se muestran marcados como "Agotado").
+  products.forEach(p => (p.sizes||[]).forEach(s => { if (s && s.size) usedSizes.add(s.size); }));
   const container = document.getElementById('age-chips');
   if (!container) return;
   const ordered = ALL_SIZES.filter(s => usedSizes.has(s));
-  const allChip = `<div class="age-card${!currentAgeFilter?' active-age':''}" onclick="clearAgeFilter()">Todas las edades</div>`;
+  const allChip = `<div class="age-card${!currentAgeFilter?' active-age':''}" onclick="clearAgeFilter()">Edades</div>`;
   container.innerHTML = allChip + ordered.map(size =>
     `<div class="age-card${currentAgeFilter===size?' active-age':''}" onclick="setAgeFilter('${size}')">${size}</div>`
   ).join('');
@@ -10664,6 +10837,7 @@ function setAgeFilter(age) {
   renderAgeChips();
   renderProducts();
   renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
@@ -10675,9 +10849,41 @@ function clearAgeFilter() {
   currentGenderCats = null;
   const sel = document.getElementById('afpEdad');
   if (sel) sel.value = '';
+  const selM = document.getElementById('afpEdadMobile');
+  if (selM) selM.value = '';
   renderAgeChips();
   renderProducts();
   renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
+}
+
+// Limpia TODOS los filtros (texto, edad, tipo, categoría, género) y también
+// resincroniza los <select> visibles, para que nunca queden "desfasados"
+// mostrando una edad/tipo que ya no está realmente aplicada.
+function resetAllFilters() {
+  currentFilter = 'all';
+  currentSearch = '';
+  currentAgeFilter = null;
+  currentAgeGroup = null;
+  currentAgeFilterSet = null;
+  currentGenderCats = null;
+  currentPage = 1;
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.remove('visible');
+
+  ['afpEdad', 'afpEdadMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['premTipoSelect', 'premTipoSelectMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['premCatSelect', 'premCatSelectMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+
+  if (typeof renderFilters === 'function') renderFilters();
+  if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -10699,6 +10905,7 @@ function filterByAge(group) {
   renderAgeChips();
   renderProducts();
   renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
   const sec = document.getElementById('productos');
   if (sec) sec.scrollIntoView({ behavior: 'smooth' });
 }
@@ -10706,37 +10913,9 @@ function filterByAge(group) {
 // ═══════════════════════════════════════════════════════
 //  SUBMENÚ PREMIUM POR EDAD (mega menú Bebé / Niña / Niño)
 //  Cada chip = género (búsqueda inteligente) + edad exacta,
-//  expandida a las tallas solapadas reales de la BD.
+//  expandida a las tallas solapadas reales de la BD usando
+//  el mismo mapa completo EDAD_EXPANSION_MAP (ver más arriba).
 // ═══════════════════════════════════════════════════════
-const AGE_MENU_MAP = {
-  // Bebé
-  '1-3 meses':   ['1-3 meses','Recién nacido','3-6 meses'],
-  '3-6 meses':   ['3-6 meses','1-3 meses'],
-  '6-9 meses':   ['6-9 meses','6-12 meses'],
-  '6-12 meses':  ['6-12 meses','6-9 meses','9-12 meses'],
-  '9-12 meses':  ['9-12 meses','9-18 meses','6-12 meses'],
-  '9-18 meses':  ['9-18 meses','9-12 meses','12-18 meses'],
-  '12-18 meses': ['12-18 meses','12-24 meses','9-18 meses'],
-  '12-24 meses': ['12-24 meses','12-18 meses','18-24 meses'],
-  '18-24 meses': ['18-24 meses','12-24 meses'],
-  // Niña / Niño
-  '1 años':  ['1 años','1-2 años'],
-  '2 años':  ['2 años','1-2 años','2-3 años'],
-  '3 años':  ['3 años','2-3 años','3-4 años'],
-  '4 años':  ['4 años','3-4 años','4-5 años'],
-  '5 años':  ['5 años','4-5 años','5-6 años'],
-  '6 años':  ['6 años','5-6 años','6-7 años'],
-  '7 años':  ['7 años','6-7 años','7-8 años'],
-  '8 años':  ['8 años','7-8 años','8-9 años'],
-  '9 años':  ['9 años','8-9 años','9-10 años'],
-  '10 años': ['10 años','9-10 años','10-11 años'],
-  '11 años': ['11 años','10-11 años','11-12 años'],
-  '12 años': ['12 años','11-12 años','12-13 años'],
-  '13 años': ['13 años','12-13 años','13-14 años'],
-  '14 años': ['14 años','13-14 años','14-15 años'],
-  '15 años': ['15 años','14-15 años','15-16 años'],
-  '16 años': ['16 años','15-16 años'],
-};
 
 // Mapa de género del menú → categorías EXACTAS reales guardadas en Supabase.
 // Esto reemplaza la antigua búsqueda por palabras (heurística), que fallaba
@@ -10757,14 +10936,16 @@ const GENDER_CATEGORY_MAP = {
 function goAgeGender(genderWord, edad) {
   currentAgeGroup = null;
   currentAgeFilter = edad;
-  currentAgeFilterSet = AGE_MENU_MAP[edad] || [edad];
+  currentAgeFilterSet = (typeof EDAD_EXPANSION_MAP !== 'undefined' && EDAD_EXPANSION_MAP[edad]) || [edad];
   currentGenderCats = GENDER_CATEGORY_MAP[genderWord] || null;
   currentPage = 1;
   // Ya no metemos la palabra de género en el buscador de texto libre:
+
   // el filtro estricto por categoría (currentGenderCats) es el que manda.
   const input = document.getElementById('searchInput');
   if (input) input.value = '';
   currentSearch = '';
+  if (typeof syncTipoSelectUI === 'function') syncTipoSelectUI(currentGenderCats);
   renderProducts();
   renderBreadcrumb();
   if (typeof renderAgeChips === 'function') renderAgeChips();
@@ -10782,6 +10963,7 @@ function goGenderAll(genderWord) {
   const input = document.getElementById('searchInput');
   if (input) input.value = '';
   currentSearch = '';
+  if (typeof syncTipoSelectUI === 'function') syncTipoSelectUI(currentGenderCats);
   renderProducts();
   renderBreadcrumb();
 
@@ -10824,6 +11006,12 @@ const SEARCH_SYNONYMS = {
   'deportivo':'deportivo','sport':'deportivo',
   // Tela/calidad
   'algodon':'algodón','bambú':'bambú','bambu':'bambú','lana':'lana','polar':'polar','fleece':'polar',
+  // Accesorios
+  'gorro':'accesorios','gorra':'accesorios','cintillo':'accesorios','diadema':'accesorios',
+  'moño':'accesorios','mono':'accesorios','mitones':'accesorios','guantes':'accesorios',
+  'medias':'accesorios','calcetines':'accesorios','babero':'accesorios','manta':'accesorios',
+  'chalina':'accesorios','bufanda':'accesorios','sandalias':'accesorios','zapatos':'accesorios',
+  'zapatitos':'accesorios','cinturon':'accesorios','correa':'accesorios',
 };
 
 // Mapa edad en palabras → talla canónica del sistema
@@ -10842,6 +11030,29 @@ const EDAD_EXPANSION_SEARCH = {
   11: ['11 años','10-11 años','11-12 años'],
   12: ['12 años','11-12 años','12-13 años'],
   13: ['13 años','12-13 años'],
+  14: ['14 años'],
+  15: ['15 años'],
+  16: ['16 años'],
+};
+
+// Coincidencia EXACTA de edad para la búsqueda por texto libre (a diferencia de
+// EDAD_EXPANSION_SEARCH, que incluye rangos vecinos). Así "4 años" solo trae
+// productos de talla "4 años", sin mezclar "3-4 años" ni "4-5 años".
+const EDAD_EXACT_SEARCH = {
+  0:  ['Recién nacido'],
+  1:  ['1 años'],
+  2:  ['2 años'],
+  3:  ['3 años'],
+  4:  ['4 años'],
+  5:  ['5 años'],
+  6:  ['6 años'],
+  7:  ['7 años'],
+  8:  ['8 años'],
+  9:  ['9 años'],
+  10: ['10 años'],
+  11: ['11 años'],
+  12: ['12 años'],
+  13: ['13 años'],
   14: ['14 años'],
   15: ['15 años'],
   16: ['16 años'],
@@ -10891,7 +11102,7 @@ function parseSmartQuery(raw) {
     const from = parseInt(rangeMatch[1]), to = parseInt(rangeMatch[2]);
     const sizes = new Set();
     for (let age = Math.min(from,to); age <= Math.max(from,to); age++) {
-      (EDAD_EXPANSION_SEARCH[age]||[]).forEach(s => sizes.add(s));
+      (EDAD_EXACT_SEARCH[age]||[]).forEach(s => sizes.add(s));
     }
     result.ageSizes = [...sizes];
     ageMatched = true;
@@ -10902,8 +11113,8 @@ function parseSmartQuery(raw) {
     const singleAge = q.match(/\b(\d{1,2})\s*a(?:ños?|$|\b)/i) || q.match(/\bde\s+(\d{1,2})\b/i);
     if (singleAge) {
       const age = parseInt(singleAge[1]);
-      if (EDAD_EXPANSION_SEARCH[age]) {
-        result.ageSizes = EDAD_EXPANSION_SEARCH[age];
+      if (EDAD_EXACT_SEARCH[age]) {
+        result.ageSizes = EDAD_EXACT_SEARCH[age];
         ageMatched = true;
       }
     }
@@ -10974,6 +11185,39 @@ function normTxt(s) {
     .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 }
 
+// Distancia de edición simple (Levenshtein) — permite tolerar errores de tipeo
+// ("vestdo" ≈ "vestido") para un buscador más inteligente / premium.
+function levenshtein(a, b) {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const prev = new Array(b.length + 1);
+  for (let j = 0; j <= b.length; j++) prev[j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    let prevDiag = prev[0];
+    prev[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const tmp = prev[j];
+      prev[j] = Math.min(
+        prev[j] + 1,
+        prev[j - 1] + 1,
+        prevDiag + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+      prevDiag = tmp;
+    }
+  }
+  return prev[b.length];
+}
+
+// ¿El término aparece "casi" dentro del texto (tolerando 1-2 errores de tipeo)?
+// Compara contra cada palabra del texto para evitar comparar el término entero contra un párrafo.
+function fuzzyIncludes(text, term) {
+  if (term.length < 4) return false; // términos muy cortos no toleran fuzzy (demasiado ruido)
+  const maxDist = term.length <= 5 ? 1 : 2;
+  const words = text.split(/[^a-z0-9ñ]+/i).filter(Boolean);
+  return words.some(w => Math.abs(w.length - term.length) <= maxDist && levenshtein(w, term) <= maxDist);
+}
+
 // Calcula score de relevancia de un producto dado la query parseada
 function scoreProduct(product, parsed) {
   let score = 0;
@@ -10988,20 +11232,29 @@ function scoreProduct(product, parsed) {
   // B. Términos de búsqueda
   for (const term of parsed.terms) {
     const t = normTxt(term);
+    let hit = false;
+
     // Nombre exacto: máxima puntuación
-    if (name === t) score += 100;
-    else if (name.startsWith(t)) score += 60;
-    else if (name.includes(t)) score += 40;
+    if (name === t) { score += 100; hit = true; }
+    else if (name.startsWith(t)) { score += 60; hit = true; }
+    else if (name.includes(t)) { score += 40; hit = true; }
 
     // Categorías
-    if (cats.some(c => c === t)) score += 50;
-    else if (cats.some(c => c.includes(t))) score += 30;
+    if (cats.some(c => c === t)) { score += 50; hit = true; }
+    else if (cats.some(c => c.includes(t))) { score += 30; hit = true; }
 
     // Descripción
-    if (desc.includes(t)) score += 10;
+    if (desc.includes(t)) { score += 10; hit = true; }
 
     // Tallas (texto de talla)
-    if (sizesArr.some(s => s.includes(t))) score += 15;
+    if (sizesArr.some(s => s.includes(t))) { score += 15; hit = true; }
+
+    // Fuzzy fallback: tolera errores de tipeo si no hubo match exacto/parcial
+    if (!hit) {
+      if (fuzzyIncludes(name, t)) score += 25;
+      if (fuzzyIncludes(desc, t)) score += 6;
+      if (cats.some(c => fuzzyIncludes(c, t))) score += 20;
+    }
   }
 
   // C. Bonus si tiene stock
@@ -11022,7 +11275,8 @@ function scoreProduct(product, parsed) {
 
 function searchProducts() {
   currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-  currentGenderCats = null; // una búsqueda escrita a mano reemplaza el filtro estricto del menú
+  // El filtro de Tipo (Bebita/Bebito/Niño/Niña/Accesorios) ya NO se borra al escribir:
+  // ahora texto libre + Tipo se combinan (ej: "vestido" + Niña) para un buscador más inteligente.
   currentPage = 1;
   renderProducts();
   renderBreadcrumb();
@@ -11108,11 +11362,13 @@ function filterProducts() {
   }
 
   // ── Filtro por talla/edad desde chips (UI) — no pisado por búsqueda ──
+  // Nota: ya NO exige stock > 0, para que los productos agotados en esa talla
+  // también aparezcan (se muestran con su badge "Agotado" / "Avísame cuando llegue").
   if (currentAgeFilter) {
     if (currentAgeFilterSet && currentAgeFilterSet.length > 1) {
-      filtered = filtered.filter(p => (p.sizes||[]).some(s => currentAgeFilterSet.includes(s.size) && s.stock > 0));
+      filtered = filtered.filter(p => (p.sizes||[]).some(s => currentAgeFilterSet.includes(s.size)));
     } else {
-      filtered = filtered.filter(p => (p.sizes||[]).some(s => s.size === currentAgeFilter && s.stock > 0));
+      filtered = filtered.filter(p => (p.sizes||[]).some(s => s.size === currentAgeFilter));
     }
   }
 
@@ -11129,7 +11385,7 @@ function filterProducts() {
   // producto no tiene esa categoría, no aparece. Esto evita que se cuelen
   // modelos de otro género cuyo nombre/descripción no menciona el género.
   if (currentGenderCats) {
-    filtered = filtered.filter(p => (p.categories || []).some(c => currentGenderCats.includes(c)));
+    filtered = filtered.filter(p => productMatchesGenderCats(p.categories, currentGenderCats));
   }
 
   return filtered;
@@ -11508,7 +11764,7 @@ function renderProducts() {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);">
       <div style="font-size:52px;margin-bottom:16px;">🔍</div>
       <p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>
-      <button onclick="currentFilter='all';currentSearch='';currentAgeFilter=null;currentAgeGroup=null;currentGenderCats=null;document.getElementById('searchInput').value='';renderFilters();renderAgeChips();renderProducts();if(typeof renderUpcomingSection==='function')renderUpcomingSection();"
+      <button onclick="resetAllFilters()"
         style="margin-top:16px;background:var(--rose);color:white;border:none;padding:10px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:14px;">
         Ver todos los productos
       </button>
