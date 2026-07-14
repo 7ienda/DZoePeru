@@ -853,7 +853,7 @@ img{display:block;max-width:100%;}
   border-top: 1.5px solid var(--border);
   border-bottom: 1.5px solid var(--border);
   padding: 10px 0;
-  z-index: 999;
+  z-index: 1002;
   display: none;
   box-shadow: 0 8px 30px rgba(163,133,210,0.2);
 }
@@ -1262,9 +1262,6 @@ body.dark-mode .main-nav { background: #2A1810; }
   }
   .drawer-social-btn:hover { background: var(--rose); color: white; border-color: var(--rose); }
 
-  /* Ocultar búsqueda desktop */
-  .hdr-search-btn { display: none; }
-  .hdr-search-bar { display: none !important; }
 }
 
 @media (max-width: 480px) {
@@ -5113,7 +5110,8 @@ body.dark-mode .dzn-subnav-link:hover { background: rgba(201,168,118,0.10) !impo
   --lulu-line:       rgba(45,37,69,0.12);
   --lulu-line-soft:  rgba(45,37,69,0.06);
   --lulu-font:       'Playfair Display', Georgia, serif;
-  --hdr-coral:       #E8917A;   /* acento coral del header */
+  --hdr-coral:       #A9803F;   /* acento dorado premium del header (antes coral/naranja) */
+  --hdr-coral-light: #C9A876;   /* variante clara del dorado, para degradados */
   --hdr-mint:        #3FAE8A;   /* acento menta del header */
 }
 
@@ -5141,9 +5139,10 @@ body.dark-mode .dzn-subnav-link:hover { background: rgba(201,168,118,0.10) !impo
 body.dark-mode #main-header { background: #201812 !important; border-bottom-color: rgba(201,168,118,0.2) !important; }
 body.dark-mode #main-header .header-inner { background: transparent; }
 
-/* Logo centrado, acciones ancladas a la derecha */
+/* Logo centrado, acciones ancladas a la derecha, buscador anclado a la izquierda */
 .logo { margin: 0 auto !important; }
 .header-actions { position: absolute !important; right: 0; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
+#main-header .hdr-search-btn--lulu { position: absolute !important; left: 0; top: 50%; transform: translateY(-50%); z-index: 2; }
 
 /* ── LOGO — mucha más presencia, tipografía serif elegante ─────────── */
 .logo-icon {
@@ -5174,38 +5173,51 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
   .logo-tagline--lulu { font-size: 10px !important; letter-spacing: .16em !important; }
 }
 
-/* ── NAV — fila propia debajo del header, texto plano estilo Luluki ── */
+/* ── NAV — fila propia debajo del header, estilo premium boutique ── */
 #mainMenu.dzn-nav--lulu {
   background: var(--lulu-paper) !important;
   border-bottom: 1px solid var(--lulu-line) !important;
   display: flex !important; justify-content: center !important;
   padding: 0 !important;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(45,37,69,0.05);
 }
-.dzn-nav--lulu .dzn-list { display: flex !important; justify-content: center; gap: 2px; }
+#mainMenu.dzn-nav--lulu::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--hdr-coral-light), var(--hdr-coral), var(--hdr-coral-light), transparent);
+  opacity: 0.55;
+}
+.dzn-nav--lulu .dzn-list { display: flex !important; justify-content: center; gap: 4px; }
 .dzn-link--lulu {
   position: relative;
   font-family: 'Nunito', sans-serif !important;
-  font-size: 14.5px !important; font-weight: 800 !important;
-  letter-spacing: .04em !important; text-transform: none;
-  color: var(--lulu-brown) !important; padding: 16px 18px !important;
-  height: auto !important; background: transparent !important; border-radius: 0 !important;
+  font-size: 13.5px !important; font-weight: 700 !important;
+  letter-spacing: .06em !important; text-transform: uppercase;
+  color: var(--lulu-brown) !important; padding: 17px 17px !important;
+  height: auto !important; background: transparent !important; border-radius: 30px !important;
+  margin: 10px 1px; transition: background .22s ease, color .22s ease, transform .22s ease;
 }
 .dzn-link--lulu::after {
-  content: ''; position: absolute; left: 18px; right: 18px; bottom: 10px; height: 2px;
-  background: var(--hdr-coral); transform: scaleX(0); transform-origin: left;
+  content: ''; position: absolute; left: 22px; right: 22px; bottom: 9px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light));
+  transform: scaleX(0); transform-origin: center;
   transition: transform .35s var(--dzn-ease);
 }
 .dzn-link--lulu:hover, .dzn-link--lulu:focus-visible,
-.dzn-link--lulu.active { background: transparent !important; color: var(--hdr-coral) !important; }
+.dzn-link--lulu.active {
+  background: var(--lulu-line-soft) !important; color: var(--hdr-coral) !important;
+  transform: translateY(-1px);
+}
 .dzn-link--lulu:hover::after, .dzn-link--lulu:focus-visible::after,
 .dzn-link--lulu.active::after { transform: scaleX(1); }
-.dzn-link--lulu-accent { color: var(--hdr-coral) !important; }
-.dzn-link--lulu-accent::after { background: var(--hdr-coral); }
+.dzn-link--lulu-accent { color: var(--hdr-coral) !important; font-weight: 800 !important; }
+.dzn-link--lulu-accent::after { background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light)); }
 .dzn-nav--lulu .dzn-link--action { display: inline-flex !important; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif !important; width: auto !important; height: auto !important; }
 @media (max-width: 768px) {
   .dzn-nav--lulu .dzn-link--action { width: 100% !important; justify-content: flex-start !important; }
 }
-.dzn-link--action i { font-size: 14px; color: var(--hdr-mint); }
+.dzn-link--action i { color: var(--hdr-coral); }
 .dzn-link--action .dzn-action-badge {
   display: none; background: var(--hdr-coral); color: #fff; font-size: 10px; font-weight: 800;
   border-radius: 20px; padding: 1px 6px; line-height: 1.4; min-width: 16px; text-align: center;
@@ -5213,17 +5225,23 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
 }
 body.dark-mode #mainMenu.dzn-nav--lulu { background: #1c1510 !important; border-color: rgba(201,168,118,0.18) !important; }
 body.dark-mode .dzn-link--lulu { color: #f0e8d8 !important; }
-body.dark-mode .dzn-link--lulu::after { background: var(--hdr-coral); }
-body.dark-mode .dzn-link--action i { color: var(--hdr-mint); }
+body.dark-mode .dzn-link--lulu:hover, body.dark-mode .dzn-link--lulu.active { background: rgba(201,168,118,0.1) !important; }
+body.dark-mode .dzn-link--lulu::after { background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light)); }
+body.dark-mode .dzn-link--action i { color: var(--hdr-coral-light); }
 
 @media (max-width: 1080px) {
-  .dzn-link--lulu { padding: 14px 12px !important; font-size: 13.5px !important; }
+  .dzn-link--lulu { padding: 14px 12px !important; font-size: 12.5px !important; }
 }
 @media (max-width: 768px) {
   #mainMenu.dzn-nav--lulu { border-bottom: none !important; }
-  .dzn-link--lulu { width: 100%; justify-content: flex-start !important; padding: 15px 14px !important; border-bottom: 1px solid var(--lulu-line-soft) !important; }
+  #mainMenu.dzn-nav--lulu::after { display: none; }
+  .dzn-link--lulu {
+    width: 100%; justify-content: flex-start !important; border-radius: 0 !important; margin: 0;
+    padding: 15px 14px !important; text-transform: none; letter-spacing: .02em !important;
+    border-bottom: 1px solid var(--lulu-line-soft) !important;
+  }
   .dzn-link--lulu::after { display: none; }
-  .dzn-link--lulu:hover, .dzn-link--lulu.active { background: var(--lulu-cream) !important; }
+  .dzn-link--lulu:hover, .dzn-link--lulu.active { background: var(--lulu-cream) !important; transform: none; }
 }
 
 /* ── ACCIONES: Buscador + Iniciar Sesión + Bolsa de Compras (estilo etiqueta + ícono, unificado) ── */
@@ -5351,6 +5369,16 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
         itemscope itemtype="https://schema.org/WPHeader">
   <div class="header-inner">
 
+    <!-- Búsqueda rápida — a la izquierda del logo -->
+    <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
+            aria-expanded="false" aria-controls="hdrSearchBar">
+      <span class="search-label">Buscador</span>
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
     <!-- ══ LOGO ══ -->
     <a class="logo" href="index.html"
        aria-label="D'Zoe Perú – Ropa infantil importada premium, inicio"
@@ -5388,16 +5416,6 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
     <!-- ══ ACCIONES HEADER (derecha) ══ -->
     <div class="header-actions" role="group" aria-label="Acciones del usuario">
 
-      <!-- Búsqueda rápida desktop -->
-      <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
-              aria-expanded="false" aria-controls="hdrSearchBar">
-        <span class="search-label">Buscador</span>
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-
       <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
       <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
               aria-label="Iniciar sesión o ver mi cuenta">
@@ -5420,7 +5438,6 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
         </span>
         <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
       </button>
-
 
       <!-- Hamburger (solo mobile) -->
       <button class="hdr-hamburger" id="hamburgerBtn"
@@ -5470,12 +5487,12 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
 
       <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
          onclick="goGenderAll('bebito');closeMobileMenu();return false;">
-        <span itemprop="name">Bebé Niño</span>
+        <span itemprop="name">Bebito</span>
       </a>
 
       <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
          onclick="goGenderAll('bebita');closeMobileMenu();return false;">
-        <span itemprop="name">Bebé Niña</span>
+        <span itemprop="name">Bebita</span>
       </a>
 
       <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
@@ -5491,11 +5508,6 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
       <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
          onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
         <span itemprop="name">Accesorios</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu dzn-link--lulu-accent" itemprop="url"
-         onclick="goOfertas();return false;">
-        <span itemprop="name">Ofertas</span>
       </a>
 
       <!-- Modo oscuro -->
@@ -5559,43 +5571,6 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
     </div>
   </div>
 </header>
-
-<!-- ═══════════════════════════════════════════════════════
-     SUBNAV — Ayuda, tallas y enlaces de interés
-═══════════════════════════════════════════════════════ -->
-<nav class="dzn-subnav" id="subNav" aria-label="Ayuda y enlaces de interés">
-  <div class="dzn-subnav-inner">
-    <div class="dzn-subnav-links">
-      <a href="guia-de-tallas.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-ruler-combined" aria-hidden="true"></i> Guía de Tallas
-      </a>
-      <a href="probador-de-tallas.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-ruler" aria-hidden="true"></i> Probador de Tallas
-      </a>
-      <a href="politica-de-envios.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-truck" aria-hidden="true"></i> Política de Envíos
-      </a>
-      <a href="preguntas-frecuentes.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-question-circle" aria-hidden="true"></i> Preguntas Frecuentes
-      </a>
-      <a href="blog.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-pen-nib" aria-hidden="true"></i> Blog
-      </a>
-      <a href="productos-digitales.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-download" aria-hidden="true"></i> Productos Digitales
-      </a>
-      <a href="politica-de-privacidad.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-shield-alt" aria-hidden="true"></i> Privacidad
-      </a>
-      <a href="libro-de-reclamaciones.html" class="dzn-subnav-link" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-book" aria-hidden="true"></i> Libro de Reclamaciones
-      </a>
-    </div>
-    <a href="https://wa.me/51956063145" target="_blank" rel="noopener noreferrer" class="dzn-subnav-wa">
-      <i class="fab fa-whatsapp" aria-hidden="true"></i> Escríbenos
-    </a>
-  </div>
-</nav>
 
 <!-- Overlay menú mobile (posición fixed sobre toda la página) -->
 <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
@@ -7586,7 +7561,7 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
   z-index: 2;
 }
 @media(max-width: 1100px){ .upcoming-grid { grid-template-columns: repeat(3, 1fr); } }
-@media(max-width: 768px) { .upcoming-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+@media(max-width: 768px) { .upcoming-grid { grid-template-columns: 1fr; gap: 12px; max-width: 380px; margin: 0 auto; } }
 @media(max-width: 480px) {
   .upcoming-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
 }
@@ -7926,6 +7901,41 @@ body.dark-mode .uc-skeleton { background: #2e2248; }
   .upcoming-wa-btn { font-size: 11.5px; padding: 8px 10px; }
   .upcoming-badge-flight, .upcoming-badge-arrived { font-size: 9px; padding: 3px 8px; }
   .upcoming-ver-todos-big { padding: 11px 24px; font-size: 13px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRODUCTOS PREMIUM en mobile: 1 sola columna con foto completa
+   arriba (mismo estilo de tarjeta que "Próximos ingresos")
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+  }
+  .product-card {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
+    min-height: unset !important;
+  }
+  .product-img-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: unset !important;
+    aspect-ratio: 3/4 !important;
+    flex-shrink: 0 !important;
+  }
+  .product-img-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .product-body {
+    padding: 14px 16px 16px !important;
+  }
 }
 </style>
 
@@ -9075,7 +9085,7 @@ body.dark-mode .anl-name { color: #e4d4c0; }
 <div class="cart-overlay" id="cartOverlay"></div>
 <div class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
-    <h3><i class="fas fa-shopping-bag"></i> Mi Carrito</h3>
+    <h3><i class="fas fa-shopping-bag"></i>Mi Bolsa de Compras</h3>
     <div style="display:flex;align-items:center;gap:8px;">
       <button class="clear-cart-btn" id="clearCartBtn" title="Vaciar carrito"><i class="fas fa-trash-alt"></i> Limpiar</button>
       <button class="close-cart" id="closeCartBtn"><i class="fas fa-times"></i></button>
@@ -9084,7 +9094,7 @@ body.dark-mode .anl-name { color: #e4d4c0; }
   <div class="cart-items" id="cartItemsContainer">
     <div class="empty-cart-msg">
       <span class="empty-icon">🛍️</span>
-      Tu carrito está vacío
+      Tu Bolsita está vacío
     </div>
   </div>
   <div class="cart-footer">
@@ -9315,7 +9325,7 @@ let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
 let currentGenderCats = null;   // categorías de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
 let currentPage = 1;
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 8;
 let selectedSizes = {};
 
 // ── Comparación robusta de nombres de categoría ──
