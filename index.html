@@ -1,6 +1,39 @@
  <!DOCTYPE html>
 <html lang="es-PE" prefix="og: https://ogp.me/ns#">
 <head>
+<script>
+/* ── FIX: altura real de viewport en mobile ──────────────────────────
+   Algunos navegadores/WebViews (in-app de Instagram/WhatsApp, Safari
+   viejo, y a veces Brave/Chrome Android) calculan mal 100vh/100dvh en
+   el primer pintado, dejando elementos position:fixed (como el drawer
+   del menú) o layouts basados en vh mostrando la pantalla en blanco
+   hasta que ocurre un reflow (ej. al rotar el celular). Este script
+   calcula la altura real y la expone como --vh, actualizándola en
+   load/resize/orientationchange, y fuerza un reflow extra apenas
+   carga para no depender de que el usuario rote el teléfono. */
+(function () {
+  function setVH() {
+    var vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+  }
+  setVH();
+  window.addEventListener('resize', setVH, { passive: true });
+  window.addEventListener('orientationchange', setVH);
+  window.addEventListener('load', function () {
+    setVH();
+    /* Reflow de seguridad: por si algún navegador pintó mal en el
+       primer ciclo, forzamos un recalculo de layout sin que el
+       usuario tenga que rotar el celular. */
+    setTimeout(function () {
+      setVH();
+      document.body.style.display = 'none';
+      // eslint-disable-next-line no-unused-expressions
+      document.body.offsetHeight; /* fuerza reflow */
+      document.body.style.display = '';
+    }, 50);
+  });
+})();
+</script>
 <meta charset="UTF-8">
 <!-- ═══ Google Analytics 4 (GA4) ═══ -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8R3YQCL0B"></script>
@@ -4587,6 +4620,7 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
      como base segura; dvh la sobreescribe donde sí hay soporte real. */
   #mainMenu.dzn-nav {
     height: 100vh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
     height: 100dvh !important;
   }
 }
@@ -4594,255 +4628,19 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
   <link rel="alternate" type="application/rss+xml"
   title="D'Zoe Perú — Novedades"
   href="https://dzoeperu.com/feed.xml">
-</head>
-<body>
 
-<!-- Corazones kawaii (fondo decorativo) -->
-<div id="hearts-canvas"></div>
-
-<!-- H1 semántico para SEO (visualmente oculto, estructuralmente presente) -->
-<h1 class="sr-only">D'Zoe Perú — Tienda Tienda especializada de Ropa Infantil Importada Premium | Bebés y Niños 0 a 14 años, Perú</h1>
-
-<!-- Texto SEO adicional oculto para rastreadores -->
-<p class="sr-only">D'Zoe Perú es la tienda líder de ropa infantil importada en Perú. Ofrecemos vestidos para niña, abrigos infantiles, conjuntos bebé, ropa de bebé recién nacido, overoles, jeans y más. Modelos exclusivos de alta gama con telas premium. Envíos a todo el Perú por Shalom. Ubicados en Gamarra, La Victoria, Lima. Contáctanos por WhatsApp al +51 956 063 145.</p>
-
-<!-- TOP BAR — REDISEÑO PREMIUM SEO 2026 -->
-<div class="topbar" role="complementary" aria-label="Información de contacto y envíos">
-  <div class="topbar-inner">
-    <!-- Información de envíos (izquierda) -->
-    <div class="topbar-left-info">
-      <span class="tb-item">
-        <i class="fas fa-truck" aria-hidden="true"></i>
-        <strong>Envíos a todo el Perú</strong>
-      </span>
-    </div>
-    <!-- Acciones rápidas (derecha) -->
-    <div class="topbar-actions">
-      <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
-         target="_blank" rel="noopener noreferrer"
-         class="tb-social tb-social--wa" aria-label="WhatsApp D'Zoe Perú">
-        <i class="fab fa-whatsapp" aria-hidden="true"></i>
-        <span>WhatsApp</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- HEADER PRINCIPAL — REDISEÑO PREMIUM SEO 2026 -->
-<header class="header" id="main-header" role="banner"
-        itemscope itemtype="https://schema.org/WPHeader">
-  <div class="header-inner">
-
-    <!-- Búsqueda rápida — a la izquierda del logo -->
-    <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
-            aria-expanded="false" aria-controls="hdrSearchBar">
-      <span class="search-label">Buscador</span>
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
-        <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-    </button>
-
-    <!-- ══ LOGO ══ -->
-    <a class="logo" href="index.html"
-       aria-label="D'Zoe Perú – Ropa infantil importada premium, inicio"
-       itemprop="url" rel="home">
-      <div class="logo-icon" aria-hidden="true">
-        <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 400 500" width="80" height="100" role="img" aria-hidden="true">
-          <defs>
-            <style>
+<style id="dz-consolidated-body-styles">
+/* ===================================================================
+   BLOQUES DE ESTILOS QUE ORIGINALMENTE ESTABAN DENTRO DE <body>
+   Se movieron aqui, al <head>, para evitar el bug de renderizado movil
+   donde el contenido no se pinta hasta un reflow (ej. rotar el celular).
+   =================================================================== */
               .st-rosa-frontal { fill: var(--rose); }
               .st-rosa-lateral { fill: var(--rose-dark); }
               .st-rosa-interior { fill: var(--rose-light); }
               .st-asa { fill: none; stroke: var(--rose); stroke-width: 7; stroke-linecap: round; }
               .st-asa-sombra { fill: none; stroke: var(--rose-dark); stroke-width: 3; opacity: 0.3; }
               .st-corazon-fondo { fill: #be92cb; stroke: #ffffff; stroke-width: 6; stroke-linejoin: round; }
-            </style>
-          </defs>
-          <path class="st-asa-sombra" d="M145,130 C145,30 235,30 235,130" />
-          <path class="st-asa" d="M135,120 C135,15 225,15 225,120" />
-          <polygon class="st-rosa-lateral" points="290,135 365,150 365,435 285,475" />
-          <polygon class="st-rosa-interior" points="285,475 365,435 295,415" />
-          <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
-          <circle cx="135" cy="125" r="5" fill="var(--rose)" />
-          <circle cx="225" cy="129" r="5" fill="var(--rose)" />
-          <g transform="translate(125, 275) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
-          <g transform="translate(210, 280) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
-          <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
-        </svg>
-      </div>
-      <div class="logo-text logo-text--lulu">
-        <span class="logo-brand-text logo-brand-text--lulu" itemprop="name">D'Zoe Perú</span>
-        <span class="logo-tagline logo-tagline--lulu">· Ropa Infantil Premium ·</span>
-      </div>
-    </a>
-
-    <!-- ══ ACCIONES HEADER (derecha) ══ -->
-    <div class="header-actions" role="group" aria-label="Acciones del usuario">
-
-      <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
-      <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
-              aria-label="Iniciar sesión o ver mi cuenta">
-        <span class="login-btn-text login-btn-text--lulu" id="loginBtnText">Iniciar<br>Sesión</span>
-        <svg class="login-icon" id="loginBtnIcon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="12" cy="8.3" r="3.4" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M5 20c0-3.7 3.13-6.6 7-6.6s7 2.9 7 6.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-
-      <!-- Carrito / Bolsa de compras -->
-      <button class="hdr-cart-btn hdr-cart-btn--lulu" id="cartIconBtn" aria-label="Ver carrito de compras">
-        <span class="cart-label">Bolsa de Compras</span>
-        <span class="cart-row">
-          <svg class="cart-bag-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M7 8V6.5C7 4 9 2 12 2C15 2 17 4 17 6.5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5.5 8H18.5L19.3 20.2C19.4 21.2 18.6 22 17.6 22H6.4C5.4 22 4.6 21.2 4.7 20.2L5.5 8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
-        </span>
-        <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
-      </button>
-
-      <!-- Hamburger (solo mobile) -->
-      <button class="hdr-hamburger" id="hamburgerBtn"
-              aria-label="Abrir menú de navegación" aria-expanded="false"
-              aria-controls="mainMenu">
-        <span class="hamburger-line" aria-hidden="true"></span>
-        <span class="hamburger-line" aria-hidden="true"></span>
-        <span class="hamburger-line" aria-hidden="true"></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ══ NAVEGACIÓN PRINCIPAL — FILA PROPIA, ESTILO LULUKI ══ -->
-  <nav class="main-nav dzn-nav dzn-nav--lulu" id="mainMenu" aria-label="Navegación principal"
-       role="navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
-
-    <!-- Cabecera del drawer (solo mobile) -->
-    <div class="drawer-head dzn-drawer-head" aria-hidden="true">
-      <div class="drawer-brand dzn-drawer-brand">
-        <span>D'Zoe Perú</span>
-        <small>Ropa infantil importada premium</small>
-      </div>
-      <button class="drawer-close dzn-drawer-close" id="menuCloseBtn" aria-label="Cerrar menú de navegación">
-        <i class="fas fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <!-- Búsqueda rápida (solo drawer mobile) — intacta, sin cambios funcionales -->
-    <div class="drawer-search dzn-drawer-search">
-      <i class="fas fa-search" aria-hidden="true"></i>
-      <input type="search" placeholder="Buscar ropa infantil…" aria-label="Buscar productos"
-             oninput="document.getElementById('searchInput').value=this.value;searchProducts();">
-    </div>
-
-    <div class="dzn-list">
-
-      <!-- === MENÚ PRINCIPAL — ESTILO LULUKI (texto plano, sin desplegables) === -->
-      <a href="index.html" class="dzn-link dzn-link--lulu active" itemprop="url"
-         onclick="closeMobileMenu();window.scrollTo({top:0,behavior:'smooth'});return false;">
-        <span itemprop="name">Inicio</span>
-      </a>
-
-      <a href="#productos" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="closeMobileMenu();document.getElementById('productos')?.scrollIntoView({behavior:'smooth'});return false;">
-        <span itemprop="name">Tienda</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('bebito');closeMobileMenu();return false;">
-        <span itemprop="name">Bebito</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('bebita');closeMobileMenu();return false;">
-        <span itemprop="name">Bebita</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('niña');closeMobileMenu();return false;">
-        <span itemprop="name">Niña</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('niño');closeMobileMenu();return false;">
-        <span itemprop="name">Niño</span>
-      </a>
-
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
-        <span itemprop="name">Accesorios</span>
-      </a>
-
-      <!-- Modo oscuro -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action dark-mode-btn" id="darkModeBtn"
-              aria-label="Activar modo oscuro" title="Modo oscuro">
-        <i class="fas fa-moon" aria-hidden="true"></i>
-        <span>Modo Oscuro</span>
-      </button>
-
-      <!-- Lista de Deseos Baby Shower -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action hdr-wish-btn" id="hdrWishBtn"
-              aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
-        <i class="fas fa-gift" aria-hidden="true"></i>
-        <span>Lista de Deseos</span>
-        <span class="dzn-action-badge" id="hdrWishBadge" aria-live="polite">0</span>
-      </button>
-
-      <!-- Favoritos próximos ingresos -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action" id="hdrFavsBtn"
-              aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
-        <i class="fas fa-star" aria-hidden="true"></i>
-        <span>Favoritos</span>
-        <span class="dzn-action-badge" id="hdrFavsBadge" aria-live="polite">0</span>
-      </button>
-
-    </div>
-
-      <!-- CTA de WhatsApp en el drawer mobile -->
-      <div class="drawer-cta dzn-drawer-cta">
-        <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
-           class="drawer-wa-btn dzn-drawer-wa" target="_blank" rel="noopener noreferrer"
-           aria-label="Pedir ropa infantil por WhatsApp">
-          <i class="fab fa-whatsapp" aria-hidden="true"></i>
-          Pedir por WhatsApp
-        </a>
-        <div class="drawer-social dzn-drawer-social">
-          <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener noreferrer"
-             aria-label="TikTok D'Zoe Perú" class="drawer-social-btn dzn-social-btn">
-            <i class="fab fa-tiktok" aria-hidden="true"></i>
-          </a>
-          <a href="tel:+51956063145" aria-label="Llamar a D'Zoe Perú" class="drawer-social-btn dzn-social-btn">
-            <i class="fas fa-phone" aria-hidden="true"></i>
-          </a>
-        </div>
-      </div>
-    </nav>
-
-  <!-- Barra de búsqueda expandible (desktop) -->
-  <div class="hdr-search-bar" id="hdrSearchBar" aria-hidden="true" role="search">
-    <div class="hdr-search-inner">
-      <label for="hdrSearchInput" class="sr-only">Buscar ropa infantil importada</label>
-      <i class="fas fa-search" aria-hidden="true"></i>
-      <input type="search" id="hdrSearchInput" name="q" autocomplete="off"
-             placeholder="Buscador"
-             aria-label="Buscar productos en D'Zoe Perú"
-             oninput="document.getElementById('searchInput').value=this.value;searchProducts();"
-             onkeydown="if(event.key==='Escape'){closeHdrSearch();}">
-      <button type="button" onclick="closeHdrSearch()" aria-label="Cerrar buscador">
-        <i class="fas fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Overlay menú mobile (posición fixed sobre toda la página) -->
-<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
-
-<!-- ═══════════════════════════════════════════════════════
-     HERO SLIDER — ESTILO MUNDO PIJAMA
-═══════════════════════════════════════════════════════ -->
-<style>
 .hero-slider-wrap {
   position: relative;
   width: 100%;
@@ -4918,79 +4716,6 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
   .hero-arr.left  { left: 10px; }
   .hero-arr.right { right: 10px; }
 }
-</style>
-
-<div class="hero-slider-wrap" id="heroSliderWrap">
-  <div class="hero-slider-track" id="heroTrack">
-    <div class="hero-slide">
-      <img
-        src="https://bit.ly/4vmwWEt"
-        alt="D'Zoe Perú - Moda Infantil Premium"
-        loading="eager"
-        fetchpriority="high"
-      >
-      <div class="hero-slide-overlay"></div>
-    </div>
-    <!-- Duplicá este bloque para agregar más slides:
-    <div class="hero-slide">
-      <img src="URL_IMAGEN_2" alt="Banner 2" loading="lazy">
-      <div class="hero-slide-overlay"></div>
-    </div>
-    -->
-  </div>
-  <button class="hero-arr left"  id="heroPrev" aria-label="Anterior">&#8249;</button>
-  <button class="hero-arr right" id="heroNext" aria-label="Siguiente">&#8250;</button>
-  <div class="hero-dots" id="heroDots"></div>
-</div>
-
-<script>
-(function(){
-  const track    = document.getElementById('heroTrack');
-  const dotsWrap = document.getElementById('heroDots');
-  const btnPrev  = document.getElementById('heroPrev');
-  const btnNext  = document.getElementById('heroNext');
-  if(!track) return;
-  const slides = track.querySelectorAll('.hero-slide');
-  const total  = slides.length;
-  let current  = 0, timer;
-
-  if(total <= 1){ btnPrev.style.display='none'; btnNext.style.display='none'; }
-
-  slides.forEach((_,i) => {
-    const d = document.createElement('button');
-    d.className = 'hero-dot' + (i===0?' active':'');
-    d.setAttribute('aria-label','Slide '+(i+1));
-    d.addEventListener('click', () => goTo(i));
-    dotsWrap.appendChild(d);
-  });
-  if(total <= 1) dotsWrap.style.display='none';
-
-  function goTo(n){
-    current = (n + total) % total;
-    track.style.transform = 'translateX(-' + current*100 + '%)';
-    dotsWrap.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===current));
-    restartTimer();
-  }
-  function restartTimer(){
-    clearInterval(timer);
-    if(total > 1) timer = setInterval(() => goTo(current+1), 5000);
-  }
-  btnPrev.addEventListener('click', () => goTo(current-1));
-  btnNext.addEventListener('click', () => goTo(current+1));
-  let sx = 0;
-  track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
-  track.addEventListener('touchend',   e => {
-    const dx = e.changedTouches[0].clientX - sx;
-    if(Math.abs(dx) > 40) goTo(current + (dx<0?1:-1));
-  }, {passive:true});
-  restartTimer();
-})();
-</script>
-
-<!-- ═══════════════════════════════════════════════════════
-     BUSCADOR INTELIGENTE BAJO EL HEADER
-═══════════════════════════════════════════════════════ -->
-<style>
 /* ═══════════════════════════════════════════════════════
    BUSCADOR PREMIUM — D'ZOE PERÚ 2026
 ═══════════════════════════════════════════════════════ */
@@ -5469,294 +5194,6 @@ body.dark-mode .prem-filter-toggle:hover { background: #4a3828; }
 @media (max-width: 480px) {
   .prem-search-btn { padding: 10px 14px; }
 }
-</style>
-
-
-<script>
-/* ── BUSCADOR PREMIUM ── */
-const QUICK_SUGGESTIONS = [
-  { text: 'Vestido floreado niña', sub: 'Modelos exclusivos importados', icon: '🌸' },
-  { text: 'Abrigo de lana bebé', sub: 'Temporada frío · premium', icon: '🧥' },
-  { text: 'Conjunto bebé recién nacido', sub: 'Algodón premium 0–24 meses', icon: '👶' },
-  { text: 'Jeans niño 4 años', sub: 'Denim infantil importado', icon: '👖' },
-  { text: 'Vestido bautizo', sub: 'Ocasión especial · encaje fino', icon: '🕊️' },
-  { text: 'Body algodón bebé', sub: 'Suave y cómodo · recién nacido', icon: '✨' },
-  { text: 'Abrigo invierno niña', sub: 'Abrigador y con estilo', icon: '❄️' },
-  { text: 'Conjunto cumpleaños', sub: 'Brillante y especial', icon: '🎂' },
-  { text: 'Overol bebé', sub: 'Estilo y comodidad', icon: '🎀' },
-  { text: 'Cardigan niño', sub: 'Tejido premium importado', icon: '🧶' },
-  { text: 'Polo niño 6 años', sub: 'Ropa de niño · importada', icon: '👕' },
-  { text: 'Buzo niño 8 años', sub: 'Cómodo y moderno', icon: '🏃' },
-  { text: 'Conjunto niño 5 años', sub: 'Outfits completos para niño', icon: '👦' },
-  { text: 'Vestido niña 6 años', sub: 'Modelos exclusivos para niña', icon: '👗' },
-  { text: 'Abrigo niño 10 años', sub: 'Abrigo premium para niño', icon: '🧥' },
-];
-
-function smartSearchHandle(val) {
-  const sug = document.getElementById('smartSearchSuggestions');
-  const clearBtn = document.getElementById('premClearBtn');
-  if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
-
-  if (!val || val.length < 2) {
-    sug.innerHTML = ''; sug.classList.remove('has-results');
-    if (typeof searchProducts === 'function') searchProducts();
-    return;
-  }
-
-  const q = val.toLowerCase();
-
-  // 1. Sugerencias de productos reales (nombre + categorías)
-  const productMatches = (typeof products !== 'undefined' ? products : [])
-    .filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
-      (p.tags||[]).some(t => String(t).toLowerCase().includes(q))
-    )
-    .slice(0, 4)
-    .map(p => {
-      const cat = (p.categories||[])[0] || '';
-      return { text: p.name, sub: cat || 'D\'Zoe Perú', icon: '🌸', isProduct: true };
-    });
-
-  // 2. Sugerencias rápidas estáticas como fallback/complemento
-  const staticMatches = QUICK_SUGGESTIONS
-    .filter(s => s.text.toLowerCase().includes(q))
-    .slice(0, 3 - Math.min(productMatches.length, 3));
-
-  const matches = [...productMatches, ...staticMatches].slice(0, 5);
-
-  if (matches.length === 0) {
-    sug.innerHTML = ''; sug.classList.remove('has-results');
-    if (typeof searchProducts === 'function') searchProducts();
-    return;
-  }
-
-  // Mostrar chips de filtros detectados (género + edad)
-  let detectedChips = '';
-  if (typeof parseSmartQuery === 'function') {
-    try {
-      const parsed = parseSmartQuery(val);
-      if (parsed.gender) {
-        const gLabel = parsed.gender === 'nino' ? '👦 Niño' : '👧 Niña';
-        detectedChips += `<span style="display:inline-block;background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">${gLabel}</span>`;
-      }
-      if (parsed.ageSizes && parsed.ageSizes.length) {
-        const ageLabel = parsed.ageSizes[0];
-        detectedChips += `<span style="display:inline-block;background:var(--lavender-soft,#f0ebf8);color:var(--lavender,#9c7bbf);border:1px solid #d8c9ef;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">📏 ${ageLabel}</span>`;
-      }
-    } catch(e) {}
-  }
-
-  sug.innerHTML =
-    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias${detectedChips ? '<span style="margin-left:6px;">'+detectedChips+'</span>' : ''}</div>` +
-    matches.map(m =>
-      `<div class="pss-item" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
-        <div class="pss-item-icon">${m.icon}</div>
-        <div class="pss-item-text">
-          <strong>${m.text}</strong>
-          <span>${m.sub}</span>
-        </div>
-        <i class="fas fa-arrow-right pss-item-arrow"></i>
-      </div>`
-    ).join('');
-  sug.classList.add('has-results');
-  if (typeof searchProducts === 'function') searchProducts();
-}
-
-function selectSuggestion(val) {
-  document.getElementById('searchInput').value = val;
-  const clearBtn = document.getElementById('premClearBtn');
-  if (clearBtn) clearBtn.classList.add('visible');
-  const sug = document.getElementById('smartSearchSuggestions');
-  sug.innerHTML = ''; sug.classList.remove('has-results');
-  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
-  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function smartSearchGo() {
-  const val = document.getElementById('searchInput').value;
-  const sug = document.getElementById('smartSearchSuggestions');
-  sug.innerHTML = ''; sug.classList.remove('has-results');
-  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
-  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function smartSearchClear() {
-  document.getElementById('searchInput').value = '';
-  const clearBtn = document.getElementById('premClearBtn');
-  if (clearBtn) clearBtn.classList.remove('visible');
-  const sug = document.getElementById('smartSearchSuggestions');
-  sug.innerHTML = ''; sug.classList.remove('has-results');
-  const catSel = document.getElementById('premCatSelect');
-  if (catSel) catSel.value = '';
-  const catSelM = document.getElementById('premCatSelectMobile');
-  if (catSelM) catSelM.value = '';
-  currentGenderCats = null;
-  syncTipoSelectUI(null);
-  if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
-  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
-}
-
-function premCatSelectChange() {
-  const cat = document.getElementById('premCatSelect')?.value || '';
-  if (typeof filterByCategory === 'function') {
-    filterByCategory(cat || 'all', true); // true = combinar con Tipo/Edad activos, no reemplazarlos
-    if (cat) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-}
-
-/* ── Box "Tipo" (Bebita / Bebito / Niño / Niña / Accesorios) ── */
-// Mapea el valor del select a las categorías EXACTAS de Supabase (filtro estricto)
-const TIPO_CATEGORY_MAP = {
-  'bebita': ['Bebita'],
-  'bebito': ['Bebito'],
-  'nino':   ['Niño'],
-  'nina':   ['Niña'],
-  'accesorios': ['Accesorios'],
-};
-
-// Bloquea (deshabilita) los selects de Edad y Categoría cuando Tipo = Accesorios,
-// ya que los accesorios no se filtran por edad ni por categoría de prenda.
-function updateFilterLockState() {
-  const val = document.getElementById('premTipoSelect')?.value || '';
-  const lock = val === 'accesorios';
-
-  const edadSel  = document.getElementById('afpEdad');
-  const edadSelM = document.getElementById('afpEdadMobile');
-  const catSel   = document.getElementById('premCatSelect');
-  const catSelM  = document.getElementById('premCatSelectMobile');
-
-  [edadSel, edadSelM, catSel, catSelM].forEach(el => {
-    if (!el) return;
-    el.disabled = lock;
-    if (lock) el.value = '';
-  });
-
-  if (lock) {
-    currentAgeFilter = null;
-    currentAgeFilterSet = null;
-    currentAgeGroup = null;
-  }
-}
-
-function premTipoSelectChange() {
-  const val = document.getElementById('premTipoSelect')?.value || '';
-  currentGenderCats = TIPO_CATEGORY_MAP[val] || null;
-  currentPage = 1;
-  // Mantener sincronizado el select gemelo de mobile
-  const mobileSel = document.getElementById('premTipoSelectMobile');
-  if (mobileSel && mobileSel.value !== val) mobileSel.value = val;
-  updateFilterLockState();
-  if (typeof renderProducts === 'function') renderProducts();
-  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
-  if (typeof renderAgeChips === 'function') renderAgeChips();
-  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
-  if (val) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-// Refleja en el select el filtro de género/tipo activo, venga de donde venga
-// (menú BEBE/NIÑA/NIÑO, búsqueda por texto, etc.) para que la UI nunca quede desfasada
-function syncTipoSelectUI(cats) {
-  let val = '';
-  if (cats && cats.length) {
-    val = Object.keys(TIPO_CATEGORY_MAP).find(k =>
-      TIPO_CATEGORY_MAP[k].length === cats.length && TIPO_CATEGORY_MAP[k].every(c => cats.includes(c))
-    ) || '';
-  }
-  const sel = document.getElementById('premTipoSelect');
-  const selM = document.getElementById('premTipoSelectMobile');
-  if (sel) sel.value = val;
-  if (selM) selM.value = val;
-  updateFilterLockState();
-}
-
-// Categorías que ya se cubren desde el select "Tipo" (Bebita/Bebito/Niño/Niña/Accesorios)
-// y por lo tanto no deben duplicarse en el select de Categorías.
-// La comparación es tolerante a singular/plural y tildes/mayúsculas (ver catNamesMatch),
-// así sigue funcionando aunque en Supabase estén guardadas como "Niños"/"Niñas", etc.
-const CATEGORIAS_EXCLUIDAS_DE_CATSELECT = ['Bebita', 'Bebito', 'Niño', 'Niña', 'Accesorios'];
-function isExcludedFromCatSelect(catName) {
-  return CATEGORIAS_EXCLUIDAS_DE_CATSELECT.some(excl => catNamesMatch(catName, excl));
-}
-
-// Rellena dinámicamente los selects de categoría con los datos reales de Supabase
-function populateCategorySelects() {
-  const allCats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
-  const cats = allCats.filter(c => !isExcludedFromCatSelect(c));
-  const selects = ['premCatSelect', 'premCatSelectMobile'];
-  selects.forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    const current = sel.value;
-    sel.innerHTML = '<option value="">Categorías</option>' +
-      cats.map(c => `<option value="${c}">${c}</option>`).join('');
-    // Restaurar valor si sigue siendo válido (comparación exacta primero,
-    // y si no, tolerante a singular/plural/tildes para no perder la selección)
-    if (current) {
-      if (cats.includes(current)) sel.value = current;
-      else {
-        const match = cats.find(c => catNamesMatch(c, current));
-        if (match) sel.value = match;
-      }
-    }
-  });
-  updateFilterLockState();
-}
-
-function quickChipSearch(el, term) {
-  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
-  el.classList.add('chip-active');
-  document.getElementById('searchInput').value = term;
-  const clearBtn = document.getElementById('premClearBtn');
-  if (clearBtn) clearBtn.classList.add('visible');
-  if (typeof searchProducts === 'function') { currentSearch = term; renderProducts(); }
-  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function toggleAdvancedFilters() {
-  const panel = document.getElementById('advancedFiltersPanel');
-  const toggle = document.getElementById('premFilterToggle');
-  panel.classList.toggle('open');
-  toggle?.classList.toggle('active', panel.classList.contains('open'));
-}
-
-function applyAdvancedFilter() {
-  const edad  = document.getElementById('afpEdad')?.value  || '';
-
-  currentAgeGroup = null;
-  currentPage = 1;
-
-  if (!edad) {
-    // Sin edad → limpiar filtro de edad, sin tocar categoría/tipo/género
-    currentAgeFilter = null;
-    currentAgeFilterSet = null;
-  } else {
-    // Edad seleccionada → expandir a todos los rangos solapados (mapa completo, ver EDAD_EXPANSION_MAP)
-    currentAgeFilter = edad;
-    currentAgeFilterSet = (typeof EDAD_EXPANSION_MAP !== 'undefined' && EDAD_EXPANSION_MAP[edad]) || [edad];
-  }
-
-  if (typeof renderAgeChips === 'function') renderAgeChips();
-  if (typeof renderProducts === 'function') renderProducts();
-  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
-  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
-  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-// Cerrar sugerencias al hacer click fuera
-document.addEventListener('click', function(e) {
-  if (!document.getElementById('smartSearchBox')?.contains(e.target)) {
-    const sug = document.getElementById('smartSearchSuggestions');
-    if (sug) { sug.innerHTML = ''; sug.classList.remove('has-results'); }
-  }
-});
-</script>
-<!-- ══════════════════════════════════════════════════════════
-     SECCIÓN UNIFICADA v3 — CATEGORÍAS + EDADES + ANUNCIO
-══════════════════════════════════════════════════════════ -->
-
-
-<style>
 /* ═══════════════════════════════════════════════════════
    HUB3 — sección triple spaciosa, fiel al diseño original
 ══════════════════════════════════════════════════════ */
@@ -6116,14 +5553,6 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
   animation: heartPulse 1.8s ease-in-out infinite;
 }
 
-</style>
-
-<!-- PRODUCTOS -->
-<section class="products" id="productos">
-  <div class="container">
-
-    <!-- Banner Baby Shower + Asistente de Talla -->
-    <style>
     /* ═══ PREMIUM CARDS 2026 ═══ */
     .split-banner {
       display: flex;
@@ -6457,198 +5886,6 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
         gap: 10px;
       }
     }
-    </style>
-
- 
-<!-- BREADCRUMBS — Schema.org BreadcrumbList -->
-<script type="application/ld+json" id="breadcrumbSchema">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://dzoeperu.com/"},{"@type":"ListItem","position":2,"name":"Tienda D'Zoe Perú","item":"https://dzoeperu.com/index.html"}]}
-</script>
-<div class="breadcrumb-bar">
-  <div class="container">
-    <nav class="breadcrumb" id="breadcrumbNav" aria-label="Ruta de navegación">
-      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
-      <span class="bc-sep"><i class="fas fa-chevron-right"></i></span>
-      <span class="bc-current" aria-current="page">🌸 Todos los productos</span>
-    </nav>
-  </div>
-</div>
-
-    <!-- Título PRODUCTOS PREMIUM -->
-    <div class="productos-premium-header">
-      <p class="productos-premium-eyebrow">✨ Colección Exclusiva 2026</p>
-      <h2 class="productos-premium-title">PRODUCTOS <span>PREMIUM</span></h2>
-      <p class="productos-premium-sub">Ropa infantil importada de alta gama para bebés y niños de 0 a 14 años</p>
-    </div>
-
-    <!-- Buscador inteligente reubicado dentro de PRODUCTOS PREMIUM -->
-    <section class="prem-search-section" aria-label="Buscador de productos D'Zoe Perú">
-  <div class="container">
-    <div class="prem-search-wrap">
-
-      <!-- Caja principal -->
-      <div class="prem-search-box" id="smartSearchBox">
-        <i class="fas fa-search prem-search-icon" aria-hidden="true"></i>
-
-        <input
-          type="search"
-          class="prem-search-input"
-          id="searchInput"
-          placeholder="Buscador"
-          aria-label="Buscar productos en D'Zoe Perú"
-          autocomplete="off"
-          oninput="smartSearchHandle(this.value)"
-          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
-        >
-
-        <!-- Limpiar -->
-        <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
-          <i class="fas fa-times"></i>
-        </button>
-
-        <!-- Separador + Tipo (Bebita/Bebito/Niño/Niña/Accesorios) -->
-        <div class="prem-search-sep"></div>
-        <div class="prem-inline-filter">
-          <span class="prem-inline-label"><i class="fas fa-child"></i></span>
-          <select class="prem-search-cat-select" id="premTipoSelect" onchange="premTipoSelectChange()" aria-label="Filtrar por tipo">
-            <option value="">Genero</option>
-            <option value="bebita">👧🏻 Bebita</option>
-            <option value="bebito">👦🏻 Bebito</option>
-            <option value="nino">👦 Niño</option>
-            <option value="nina">👧 Niña</option>
-            <option value="accesorios">🎀 Accesorios</option>
-          </select>
-        </div>
-
-        <!-- Separador + Edad -->
-        <div class="prem-search-sep"></div>
-        <div class="prem-inline-filter">
-          <span class="prem-inline-label"><i class="fas fa-baby"></i></span>
-          <select class="prem-search-cat-select" id="afpEdad" onchange="applyAdvancedFilter()" aria-label="Filtrar por edad">
-            <option value="">Edades</option>
-            <option value="Talla única">Talla única</option>
-            <option value="1-3 meses">1-3 meses</option>
-            <option value="3-6 meses">3-6 meses</option>
-            <option value="6-9 meses">6-9 meses</option>
-            <option value="9-12 meses">9-12 meses</option>
-            <option value="9-18 meses">9-18 meses</option>
-            <option value="12-18 meses">12-18 meses</option>
-            <option value="12-24 meses">12-24 meses</option>
-            <option value="18-24 meses">18-24 meses</option>
-            <option value="1 años">1 año</option>
-            <option value="2 años">2 años</option>
-            <option value="3 años">3 años</option>
-            <option value="4 años">4 años</option>
-            <option value="5 años">5 años</option>
-            <option value="6 años">6 años</option>
-            <option value="7 años">7 años</option>
-            <option value="8 años">8 años</option>
-            <option value="9 años">9 años</option>
-            <option value="10 años">10 años</option>
-            <option value="11 años">11 años</option>
-            <option value="12 años">12 años</option>
-            <option value="13 años">13 años</option>
-            <option value="14 años">14 años</option>
-            <option value="15 años">15 años</option>
-            <option value="16 años">16 años</option>
-            <option value="17 años">17 años</option>
-          </select>
-        </div>
-
-        <!-- Separador + Categorías -->
-        <div class="prem-search-sep"></div>
-        <div class="prem-inline-filter">
-          <span class="prem-inline-label"><i class="fas fa-tags"></i></span>
-          <select class="prem-search-cat-select" id="premCatSelect" onchange="premCatSelectChange()" aria-label="Filtrar por categoría">
-            <option value="">Todas</option>
-          </select>
-        </div>
-
-        <!-- Botón buscar -->
-        <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
-          <i class="fas fa-search"></i>
-          <span>Buscar</span>
-        </button>
-
-        <!-- Sugerencias -->
-        <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
-      </div>
-
-      <!-- Filtros mobile (debajo del buscador) -->
-      <div class="prem-mobile-filters">
-        <select id="premTipoSelectMobile" onchange="document.getElementById('premTipoSelect').value=this.value;premTipoSelectChange();" aria-label="Filtrar por tipo">
-          <option value="">🧒 Genero</option>
-          <option value="bebita">👧🏻 Bebita</option>
-          <option value="bebito">👦🏻 Bebito</option>
-          <option value="nino">👦 Niño</option>
-          <option value="nina">👧 Niña</option>
-          <option value="accesorios">🎀 Accesorios</option>
-        </select>
-        <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
-          <option value="">🍼 Edades</option>
-          <option value="Talla única">Talla única</option>
-          <option value="1-3 meses">1-3 meses</option>
-          <option value="3-6 meses">3-6 meses</option>
-          <option value="6-9 meses">6-9 meses</option>
-          <option value="9-12 meses">9-12 meses</option>
-          <option value="9-18 meses">9-18 meses</option>
-          <option value="12-18 meses">12-18 meses</option>
-          <option value="12-24 meses">12-24 meses</option>
-          <option value="18-24 meses">18-24 meses</option>
-          <option value="1 años">1 año</option>
-          <option value="2 años">2 años</option>
-          <option value="3 años">3 años</option>
-          <option value="4 años">4 años</option>
-          <option value="5 años">5 años</option>
-          <option value="6 años">6 años</option>
-          <option value="7 años">7 años</option>
-          <option value="8 años">8 años</option>
-          <option value="9 años">9 años</option>
-          <option value="10 años">10 años</option>
-          <option value="11 años">11 años</option>
-          <option value="12 años">12 años</option>
-          <option value="13 años">13 años</option>
-          <option value="14 años">14 años</option>
-          <option value="15 años">15 años</option>
-          <option value="16 años">16 años</option>
-          <option value="17 años">17 años</option>
-        </select>
-        <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
-          <option value="">🏷️ Todas</option>
-        </select>
-      </div>
-
-      <!-- Chips rápidos -->
-      <div class="prem-chips-row" id="quickChipsRow" aria-label="Filtros rápidos">
-        <button class="prem-chip" onclick="quickChipSearch(this,'bautizo')">🕊️ Bautizo</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'cumpleaños')">🎂 Cumpleaños</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'recién nacido')">👶 Recién nacido</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'abrigo')">🧥 Abrigos</button>
-        <button class="prem-chip" onclick="quickChipSearch(this,'conjunto')">✨ Conjuntos</button>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-    <!-- Grid de productos (dinámico desde Supabase) -->
-    <div class="product-grid" id="productGrid">
-      <div class="products-skeleton" id="productsSkeleton" aria-hidden="true">
-        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
-        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
-        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
-        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
-      </div>
-    </div>
-    <!-- Paginación -->
-    <div class="pagination" id="pagination"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════
-     PRÓXIMOS INGRESOS
-═══════════════════════════════════════════════════ -->
-<style id="dzoe-upcoming-css">
 
 /* ══════════════════════════════════════════════════════════
    SECCIÓN PRÓXIMOS INGRESOS — HOME (6-8 cards, premium)
@@ -7153,99 +6390,6 @@ body.dark-mode .uc-skeleton { background: #2e2248; }
     padding: 14px 16px 16px !important;
   }
 }
-</style>
-
-<section id="proximos-ingresos" class="upcoming-section" aria-label="Próximos ingresos D'Zoe Perú" style="display:none;">
-  <div class="container">
-
-    <!-- Header -->
-    <header class="upcoming-header">
-      <div class="upcoming-header-left">
-        <div class="upcoming-eyebrow">
-          <i class="fas fa-plane-arrival" aria-hidden="true"></i>
-          Próximos ingresos
-        </div>
-        <h2 class="upcoming-title">
-          Lo que viene<br><span>en camino 🛍️</span>
-        </h2>
-        <p class="upcoming-subtitle">
-          Reserva antes de que lleguen. Precio especial garantizado.
-        </p>
-      </div>
-      <div class="upcoming-header-right">
-        <div class="upcoming-live-badge">
-          <div class="upcoming-live-dot" aria-hidden="true"></div>
-          Actualizando en vivo
-        </div>
-        <a href="/proximos-ingresos.html" class="upcoming-ver-todos" aria-label="Ver todos los próximos ingresos">
-          Ver todos <i class="fas fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      </div>
-    </header>
-
-    <!-- Grid (max 8 cards, poblado por JS) -->
-    <div class="upcoming-grid" id="upcomingGrid" aria-live="polite">
-      <!-- Skeletons iniciales -->
-      <div class="uc-skeleton" aria-hidden="true">
-        <div class="uc-sk-img"></div>
-        <div class="uc-sk-body">
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w70 h20"></div>
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w100 h20"></div>
-          <div class="uc-sk-btn"></div>
-        </div>
-      </div>
-      <div class="uc-skeleton" aria-hidden="true">
-        <div class="uc-sk-img"></div>
-        <div class="uc-sk-body">
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w70 h20"></div>
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w100 h20"></div>
-          <div class="uc-sk-btn"></div>
-        </div>
-      </div>
-      <div class="uc-skeleton" aria-hidden="true">
-        <div class="uc-sk-img"></div>
-        <div class="uc-sk-body">
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w70 h20"></div>
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w100 h20"></div>
-          <div class="uc-sk-btn"></div>
-        </div>
-      </div>
-      <div class="uc-skeleton" aria-hidden="true">
-        <div class="uc-sk-img"></div>
-        <div class="uc-sk-body">
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w70 h20"></div>
-          <div class="uc-sk-line w55"></div>
-          <div class="uc-sk-line w100 h20"></div>
-          <div class="uc-sk-btn"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Botón Ver Todos -->
-    <div class="upcoming-footer-row">
-      <a href="/proximos-ingresos.html" class="upcoming-ver-todos-big" id="upcomingVerTodosBtn" aria-label="Ver todos los próximos ingresos">
-        <i class="fas fa-plane-arrival" aria-hidden="true"></i>
-        Ver todos los próximos ingresos
-        <span class="upcoming-count-pill" id="upcomingTotalPill">…</span>
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- ═══════════════════════════════════════════════════════
-     SECCIÓN PREMIUM DE CONFIANZA / BENEFICIOS
-═══════════════════════════════════════════════════════ -->
-<style>
 /* ── TRUST SECTION ── */
 .trust-section {
   padding: 56px 0 60px;
@@ -7426,12 +6570,6 @@ body.dark-mode .uc-skeleton { background: #2e2248; }
   .trust-title { font-size: 24px; }
   .trust-section { padding: 40px 0 44px; }
 }
-</style>
-
-<!-- ═══════════════════════════════════════════════════════
-     BLOQUE: NUEVOS INGRESOS / MÁS VENDIDOS
-═══════════════════════════════════════════════════════ -->
-<style>
 /* ── NUEVOS / MÁS VENDIDOS ── */
 .highlights-section {
   padding: 50px 0 54px;
@@ -8103,6 +7241,894 @@ body.dark-mode .anl-name { color: #e4d4c0; }
 
 
 </style>
+</head>
+<body>
+
+<!-- Corazones kawaii (fondo decorativo) -->
+<div id="hearts-canvas"></div>
+
+<!-- H1 semántico para SEO (visualmente oculto, estructuralmente presente) -->
+<h1 class="sr-only">D'Zoe Perú — Tienda Tienda especializada de Ropa Infantil Importada Premium | Bebés y Niños 0 a 14 años, Perú</h1>
+
+<!-- Texto SEO adicional oculto para rastreadores -->
+<p class="sr-only">D'Zoe Perú es la tienda líder de ropa infantil importada en Perú. Ofrecemos vestidos para niña, abrigos infantiles, conjuntos bebé, ropa de bebé recién nacido, overoles, jeans y más. Modelos exclusivos de alta gama con telas premium. Envíos a todo el Perú por Shalom. Ubicados en Gamarra, La Victoria, Lima. Contáctanos por WhatsApp al +51 956 063 145.</p>
+
+<!-- TOP BAR — REDISEÑO PREMIUM SEO 2026 -->
+<div class="topbar" role="complementary" aria-label="Información de contacto y envíos">
+  <div class="topbar-inner">
+    <!-- Información de envíos (izquierda) -->
+    <div class="topbar-left-info">
+      <span class="tb-item">
+        <i class="fas fa-truck" aria-hidden="true"></i>
+        <strong>Envíos a todo el Perú</strong>
+      </span>
+    </div>
+    <!-- Acciones rápidas (derecha) -->
+    <div class="topbar-actions">
+      <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
+         target="_blank" rel="noopener noreferrer"
+         class="tb-social tb-social--wa" aria-label="WhatsApp D'Zoe Perú">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER PRINCIPAL — REDISEÑO PREMIUM SEO 2026 -->
+<header class="header" id="main-header" role="banner"
+        itemscope itemtype="https://schema.org/WPHeader">
+  <div class="header-inner">
+
+    <!-- Búsqueda rápida — a la izquierda del logo -->
+    <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
+            aria-expanded="false" aria-controls="hdrSearchBar">
+      <span class="search-label">Buscador</span>
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- ══ LOGO ══ -->
+    <a class="logo" href="index.html"
+       aria-label="D'Zoe Perú – Ropa infantil importada premium, inicio"
+       itemprop="url" rel="home">
+      <div class="logo-icon" aria-hidden="true">
+        <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 400 500" width="80" height="100" role="img" aria-hidden="true">
+          <defs>
+          </defs>
+          <path class="st-asa-sombra" d="M145,130 C145,30 235,30 235,130" />
+          <path class="st-asa" d="M135,120 C135,15 225,15 225,120" />
+          <polygon class="st-rosa-lateral" points="290,135 365,150 365,435 285,475" />
+          <polygon class="st-rosa-interior" points="285,475 365,435 295,415" />
+          <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
+          <circle cx="135" cy="125" r="5" fill="var(--rose)" />
+          <circle cx="225" cy="129" r="5" fill="var(--rose)" />
+          <g transform="translate(125, 275) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(210, 280) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+        </svg>
+      </div>
+      <div class="logo-text logo-text--lulu">
+        <span class="logo-brand-text logo-brand-text--lulu" itemprop="name">D'Zoe Perú</span>
+        <span class="logo-tagline logo-tagline--lulu">· Ropa Infantil Premium ·</span>
+      </div>
+    </a>
+
+    <!-- ══ ACCIONES HEADER (derecha) ══ -->
+    <div class="header-actions" role="group" aria-label="Acciones del usuario">
+
+      <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
+      <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
+              aria-label="Iniciar sesión o ver mi cuenta">
+        <span class="login-btn-text login-btn-text--lulu" id="loginBtnText">Iniciar<br>Sesión</span>
+        <svg class="login-icon" id="loginBtnIcon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="8.3" r="3.4" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M5 20c0-3.7 3.13-6.6 7-6.6s7 2.9 7 6.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <!-- Carrito / Bolsa de compras -->
+      <button class="hdr-cart-btn hdr-cart-btn--lulu" id="cartIconBtn" aria-label="Ver carrito de compras">
+        <span class="cart-label">Bolsa de Compras</span>
+        <span class="cart-row">
+          <svg class="cart-bag-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M7 8V6.5C7 4 9 2 12 2C15 2 17 4 17 6.5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.5 8H18.5L19.3 20.2C19.4 21.2 18.6 22 17.6 22H6.4C5.4 22 4.6 21.2 4.7 20.2L5.5 8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
+        </span>
+        <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
+      </button>
+
+      <!-- Hamburger (solo mobile) -->
+      <button class="hdr-hamburger" id="hamburgerBtn"
+              aria-label="Abrir menú de navegación" aria-expanded="false"
+              aria-controls="mainMenu">
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ NAVEGACIÓN PRINCIPAL — FILA PROPIA, ESTILO LULUKI ══ -->
+  <nav class="main-nav dzn-nav dzn-nav--lulu" id="mainMenu" aria-label="Navegación principal"
+       role="navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+
+    <!-- Cabecera del drawer (solo mobile) -->
+    <div class="drawer-head dzn-drawer-head" aria-hidden="true">
+      <div class="drawer-brand dzn-drawer-brand">
+        <span>D'Zoe Perú</span>
+        <small>Ropa infantil importada premium</small>
+      </div>
+      <button class="drawer-close dzn-drawer-close" id="menuCloseBtn" aria-label="Cerrar menú de navegación">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Búsqueda rápida (solo drawer mobile) — intacta, sin cambios funcionales -->
+    <div class="drawer-search dzn-drawer-search">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input type="search" placeholder="Buscar ropa infantil…" aria-label="Buscar productos"
+             oninput="document.getElementById('searchInput').value=this.value;searchProducts();">
+    </div>
+
+    <div class="dzn-list">
+
+      <!-- === MENÚ PRINCIPAL — ESTILO LULUKI (texto plano, sin desplegables) === -->
+      <a href="index.html" class="dzn-link dzn-link--lulu active" itemprop="url"
+         onclick="closeMobileMenu();window.scrollTo({top:0,behavior:'smooth'});return false;">
+        <span itemprop="name">Inicio</span>
+      </a>
+
+      <a href="#productos" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="closeMobileMenu();document.getElementById('productos')?.scrollIntoView({behavior:'smooth'});return false;">
+        <span itemprop="name">Tienda</span>
+      </a>
+
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('bebito');closeMobileMenu();return false;">
+        <span itemprop="name">Bebito</span>
+      </a>
+
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('bebita');closeMobileMenu();return false;">
+        <span itemprop="name">Bebita</span>
+      </a>
+
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('niña');closeMobileMenu();return false;">
+        <span itemprop="name">Niña</span>
+      </a>
+
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('niño');closeMobileMenu();return false;">
+        <span itemprop="name">Niño</span>
+      </a>
+
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
+        <span itemprop="name">Accesorios</span>
+      </a>
+
+      <!-- Modo oscuro -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action dark-mode-btn" id="darkModeBtn"
+              aria-label="Activar modo oscuro" title="Modo oscuro">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+        <span>Modo Oscuro</span>
+      </button>
+
+      <!-- Lista de Deseos Baby Shower -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action hdr-wish-btn" id="hdrWishBtn"
+              aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
+        <i class="fas fa-gift" aria-hidden="true"></i>
+        <span>Lista de Deseos</span>
+        <span class="dzn-action-badge" id="hdrWishBadge" aria-live="polite">0</span>
+      </button>
+
+      <!-- Favoritos próximos ingresos -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action" id="hdrFavsBtn"
+              aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
+        <i class="fas fa-star" aria-hidden="true"></i>
+        <span>Favoritos</span>
+        <span class="dzn-action-badge" id="hdrFavsBadge" aria-live="polite">0</span>
+      </button>
+
+    </div>
+
+      <!-- CTA de WhatsApp en el drawer mobile -->
+      <div class="drawer-cta dzn-drawer-cta">
+        <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
+           class="drawer-wa-btn dzn-drawer-wa" target="_blank" rel="noopener noreferrer"
+           aria-label="Pedir ropa infantil por WhatsApp">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          Pedir por WhatsApp
+        </a>
+        <div class="drawer-social dzn-drawer-social">
+          <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener noreferrer"
+             aria-label="TikTok D'Zoe Perú" class="drawer-social-btn dzn-social-btn">
+            <i class="fab fa-tiktok" aria-hidden="true"></i>
+          </a>
+          <a href="tel:+51956063145" aria-label="Llamar a D'Zoe Perú" class="drawer-social-btn dzn-social-btn">
+            <i class="fas fa-phone" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+  <!-- Barra de búsqueda expandible (desktop) -->
+  <div class="hdr-search-bar" id="hdrSearchBar" aria-hidden="true" role="search">
+    <div class="hdr-search-inner">
+      <label for="hdrSearchInput" class="sr-only">Buscar ropa infantil importada</label>
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input type="search" id="hdrSearchInput" name="q" autocomplete="off"
+             placeholder="Buscador"
+             aria-label="Buscar productos en D'Zoe Perú"
+             oninput="document.getElementById('searchInput').value=this.value;searchProducts();"
+             onkeydown="if(event.key==='Escape'){closeHdrSearch();}">
+      <button type="button" onclick="closeHdrSearch()" aria-label="Cerrar buscador">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Overlay menú mobile (posición fixed sobre toda la página) -->
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO SLIDER — ESTILO MUNDO PIJAMA
+═══════════════════════════════════════════════════════ -->
+
+<div class="hero-slider-wrap" id="heroSliderWrap">
+  <div class="hero-slider-track" id="heroTrack">
+    <div class="hero-slide">
+      <img
+        src="https://bit.ly/4vmwWEt"
+        alt="D'Zoe Perú - Moda Infantil Premium"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <div class="hero-slide-overlay"></div>
+    </div>
+    <!-- Duplicá este bloque para agregar más slides:
+    <div class="hero-slide">
+      <img src="URL_IMAGEN_2" alt="Banner 2" loading="lazy">
+      <div class="hero-slide-overlay"></div>
+    </div>
+    -->
+  </div>
+  <button class="hero-arr left"  id="heroPrev" aria-label="Anterior">&#8249;</button>
+  <button class="hero-arr right" id="heroNext" aria-label="Siguiente">&#8250;</button>
+  <div class="hero-dots" id="heroDots"></div>
+</div>
+
+<script>
+(function(){
+  const track    = document.getElementById('heroTrack');
+  const dotsWrap = document.getElementById('heroDots');
+  const btnPrev  = document.getElementById('heroPrev');
+  const btnNext  = document.getElementById('heroNext');
+  if(!track) return;
+  const slides = track.querySelectorAll('.hero-slide');
+  const total  = slides.length;
+  let current  = 0, timer;
+
+  if(total <= 1){ btnPrev.style.display='none'; btnNext.style.display='none'; }
+
+  slides.forEach((_,i) => {
+    const d = document.createElement('button');
+    d.className = 'hero-dot' + (i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  if(total <= 1) dotsWrap.style.display='none';
+
+  function goTo(n){
+    current = (n + total) % total;
+    track.style.transform = 'translateX(-' + current*100 + '%)';
+    dotsWrap.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+    restartTimer();
+  }
+  function restartTimer(){
+    clearInterval(timer);
+    if(total > 1) timer = setInterval(() => goTo(current+1), 5000);
+  }
+  btnPrev.addEventListener('click', () => goTo(current-1));
+  btnNext.addEventListener('click', () => goTo(current+1));
+  let sx = 0;
+  track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 40) goTo(current + (dx<0?1:-1));
+  }, {passive:true});
+  restartTimer();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     BUSCADOR INTELIGENTE BAJO EL HEADER
+═══════════════════════════════════════════════════════ -->
+
+
+<script>
+/* ── BUSCADOR PREMIUM ── */
+const QUICK_SUGGESTIONS = [
+  { text: 'Vestido floreado niña', sub: 'Modelos exclusivos importados', icon: '🌸' },
+  { text: 'Abrigo de lana bebé', sub: 'Temporada frío · premium', icon: '🧥' },
+  { text: 'Conjunto bebé recién nacido', sub: 'Algodón premium 0–24 meses', icon: '👶' },
+  { text: 'Jeans niño 4 años', sub: 'Denim infantil importado', icon: '👖' },
+  { text: 'Vestido bautizo', sub: 'Ocasión especial · encaje fino', icon: '🕊️' },
+  { text: 'Body algodón bebé', sub: 'Suave y cómodo · recién nacido', icon: '✨' },
+  { text: 'Abrigo invierno niña', sub: 'Abrigador y con estilo', icon: '❄️' },
+  { text: 'Conjunto cumpleaños', sub: 'Brillante y especial', icon: '🎂' },
+  { text: 'Overol bebé', sub: 'Estilo y comodidad', icon: '🎀' },
+  { text: 'Cardigan niño', sub: 'Tejido premium importado', icon: '🧶' },
+  { text: 'Polo niño 6 años', sub: 'Ropa de niño · importada', icon: '👕' },
+  { text: 'Buzo niño 8 años', sub: 'Cómodo y moderno', icon: '🏃' },
+  { text: 'Conjunto niño 5 años', sub: 'Outfits completos para niño', icon: '👦' },
+  { text: 'Vestido niña 6 años', sub: 'Modelos exclusivos para niña', icon: '👗' },
+  { text: 'Abrigo niño 10 años', sub: 'Abrigo premium para niño', icon: '🧥' },
+];
+
+function smartSearchHandle(val) {
+  const sug = document.getElementById('smartSearchSuggestions');
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
+
+  if (!val || val.length < 2) {
+    sug.innerHTML = ''; sug.classList.remove('has-results');
+    if (typeof searchProducts === 'function') searchProducts();
+    return;
+  }
+
+  const q = val.toLowerCase();
+
+  // 1. Sugerencias de productos reales (nombre + categorías)
+  const productMatches = (typeof products !== 'undefined' ? products : [])
+    .filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
+      (p.tags||[]).some(t => String(t).toLowerCase().includes(q))
+    )
+    .slice(0, 4)
+    .map(p => {
+      const cat = (p.categories||[])[0] || '';
+      return { text: p.name, sub: cat || 'D\'Zoe Perú', icon: '🌸', isProduct: true };
+    });
+
+  // 2. Sugerencias rápidas estáticas como fallback/complemento
+  const staticMatches = QUICK_SUGGESTIONS
+    .filter(s => s.text.toLowerCase().includes(q))
+    .slice(0, 3 - Math.min(productMatches.length, 3));
+
+  const matches = [...productMatches, ...staticMatches].slice(0, 5);
+
+  if (matches.length === 0) {
+    sug.innerHTML = ''; sug.classList.remove('has-results');
+    if (typeof searchProducts === 'function') searchProducts();
+    return;
+  }
+
+  // Mostrar chips de filtros detectados (género + edad)
+  let detectedChips = '';
+  if (typeof parseSmartQuery === 'function') {
+    try {
+      const parsed = parseSmartQuery(val);
+      if (parsed.gender) {
+        const gLabel = parsed.gender === 'nino' ? '👦 Niño' : '👧 Niña';
+        detectedChips += `<span style="display:inline-block;background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">${gLabel}</span>`;
+      }
+      if (parsed.ageSizes && parsed.ageSizes.length) {
+        const ageLabel = parsed.ageSizes[0];
+        detectedChips += `<span style="display:inline-block;background:var(--lavender-soft,#f0ebf8);color:var(--lavender,#9c7bbf);border:1px solid #d8c9ef;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">📏 ${ageLabel}</span>`;
+      }
+    } catch(e) {}
+  }
+
+  sug.innerHTML =
+    `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias${detectedChips ? '<span style="margin-left:6px;">'+detectedChips+'</span>' : ''}</div>` +
+    matches.map(m =>
+      `<div class="pss-item" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
+        <div class="pss-item-icon">${m.icon}</div>
+        <div class="pss-item-text">
+          <strong>${m.text}</strong>
+          <span>${m.sub}</span>
+        </div>
+        <i class="fas fa-arrow-right pss-item-arrow"></i>
+      </div>`
+    ).join('');
+  sug.classList.add('has-results');
+  if (typeof searchProducts === 'function') searchProducts();
+}
+
+function selectSuggestion(val) {
+  document.getElementById('searchInput').value = val;
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.add('visible');
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function smartSearchGo() {
+  const val = document.getElementById('searchInput').value;
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function smartSearchClear() {
+  document.getElementById('searchInput').value = '';
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.remove('visible');
+  const sug = document.getElementById('smartSearchSuggestions');
+  sug.innerHTML = ''; sug.classList.remove('has-results');
+  const catSel = document.getElementById('premCatSelect');
+  if (catSel) catSel.value = '';
+  const catSelM = document.getElementById('premCatSelectMobile');
+  if (catSelM) catSelM.value = '';
+  currentGenderCats = null;
+  syncTipoSelectUI(null);
+  if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
+  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+}
+
+function premCatSelectChange() {
+  const cat = document.getElementById('premCatSelect')?.value || '';
+  if (typeof filterByCategory === 'function') {
+    filterByCategory(cat || 'all', true); // true = combinar con Tipo/Edad activos, no reemplazarlos
+    if (cat) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+/* ── Box "Tipo" (Bebita / Bebito / Niño / Niña / Accesorios) ── */
+// Mapea el valor del select a las categorías EXACTAS de Supabase (filtro estricto)
+const TIPO_CATEGORY_MAP = {
+  'bebita': ['Bebita'],
+  'bebito': ['Bebito'],
+  'nino':   ['Niño'],
+  'nina':   ['Niña'],
+  'accesorios': ['Accesorios'],
+};
+
+// Bloquea (deshabilita) los selects de Edad y Categoría cuando Tipo = Accesorios,
+// ya que los accesorios no se filtran por edad ni por categoría de prenda.
+function updateFilterLockState() {
+  const val = document.getElementById('premTipoSelect')?.value || '';
+  const lock = val === 'accesorios';
+
+  const edadSel  = document.getElementById('afpEdad');
+  const edadSelM = document.getElementById('afpEdadMobile');
+  const catSel   = document.getElementById('premCatSelect');
+  const catSelM  = document.getElementById('premCatSelectMobile');
+
+  [edadSel, edadSelM, catSel, catSelM].forEach(el => {
+    if (!el) return;
+    el.disabled = lock;
+    if (lock) el.value = '';
+  });
+
+  if (lock) {
+    currentAgeFilter = null;
+    currentAgeFilterSet = null;
+    currentAgeGroup = null;
+  }
+}
+
+function premTipoSelectChange() {
+  const val = document.getElementById('premTipoSelect')?.value || '';
+  currentGenderCats = TIPO_CATEGORY_MAP[val] || null;
+  currentPage = 1;
+  // Mantener sincronizado el select gemelo de mobile
+  const mobileSel = document.getElementById('premTipoSelectMobile');
+  if (mobileSel && mobileSel.value !== val) mobileSel.value = val;
+  updateFilterLockState();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
+  if (val) document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Refleja en el select el filtro de género/tipo activo, venga de donde venga
+// (menú BEBE/NIÑA/NIÑO, búsqueda por texto, etc.) para que la UI nunca quede desfasada
+function syncTipoSelectUI(cats) {
+  let val = '';
+  if (cats && cats.length) {
+    val = Object.keys(TIPO_CATEGORY_MAP).find(k =>
+      TIPO_CATEGORY_MAP[k].length === cats.length && TIPO_CATEGORY_MAP[k].every(c => cats.includes(c))
+    ) || '';
+  }
+  const sel = document.getElementById('premTipoSelect');
+  const selM = document.getElementById('premTipoSelectMobile');
+  if (sel) sel.value = val;
+  if (selM) selM.value = val;
+  updateFilterLockState();
+}
+
+// Categorías que ya se cubren desde el select "Tipo" (Bebita/Bebito/Niño/Niña/Accesorios)
+// y por lo tanto no deben duplicarse en el select de Categorías.
+// La comparación es tolerante a singular/plural y tildes/mayúsculas (ver catNamesMatch),
+// así sigue funcionando aunque en Supabase estén guardadas como "Niños"/"Niñas", etc.
+const CATEGORIAS_EXCLUIDAS_DE_CATSELECT = ['Bebita', 'Bebito', 'Niño', 'Niña', 'Accesorios'];
+function isExcludedFromCatSelect(catName) {
+  return CATEGORIAS_EXCLUIDAS_DE_CATSELECT.some(excl => catNamesMatch(catName, excl));
+}
+
+// Rellena dinámicamente los selects de categoría con los datos reales de Supabase
+function populateCategorySelects() {
+  const allCats = typeof getUniqueCategories === 'function' ? getUniqueCategories() : [];
+  const cats = allCats.filter(c => !isExcludedFromCatSelect(c));
+  const selects = ['premCatSelect', 'premCatSelectMobile'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Categorías</option>' +
+      cats.map(c => `<option value="${c}">${c}</option>`).join('');
+    // Restaurar valor si sigue siendo válido (comparación exacta primero,
+    // y si no, tolerante a singular/plural/tildes para no perder la selección)
+    if (current) {
+      if (cats.includes(current)) sel.value = current;
+      else {
+        const match = cats.find(c => catNamesMatch(c, current));
+        if (match) sel.value = match;
+      }
+    }
+  });
+  updateFilterLockState();
+}
+
+function quickChipSearch(el, term) {
+  document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+  el.classList.add('chip-active');
+  document.getElementById('searchInput').value = term;
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.add('visible');
+  if (typeof searchProducts === 'function') { currentSearch = term; renderProducts(); }
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleAdvancedFilters() {
+  const panel = document.getElementById('advancedFiltersPanel');
+  const toggle = document.getElementById('premFilterToggle');
+  panel.classList.toggle('open');
+  toggle?.classList.toggle('active', panel.classList.contains('open'));
+}
+
+function applyAdvancedFilter() {
+  const edad  = document.getElementById('afpEdad')?.value  || '';
+
+  currentAgeGroup = null;
+  currentPage = 1;
+
+  if (!edad) {
+    // Sin edad → limpiar filtro de edad, sin tocar categoría/tipo/género
+    currentAgeFilter = null;
+    currentAgeFilterSet = null;
+  } else {
+    // Edad seleccionada → expandir a todos los rangos solapados (mapa completo, ver EDAD_EXPANSION_MAP)
+    currentAgeFilter = edad;
+    currentAgeFilterSet = (typeof EDAD_EXPANSION_MAP !== 'undefined' && EDAD_EXPANSION_MAP[edad]) || [edad];
+  }
+
+  if (typeof renderAgeChips === 'function') renderAgeChips();
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Cerrar sugerencias al hacer click fuera
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('smartSearchBox')?.contains(e.target)) {
+    const sug = document.getElementById('smartSearchSuggestions');
+    if (sug) { sug.innerHTML = ''; sug.classList.remove('has-results'); }
+  }
+});
+</script>
+<!-- ══════════════════════════════════════════════════════════
+     SECCIÓN UNIFICADA v3 — CATEGORÍAS + EDADES + ANUNCIO
+══════════════════════════════════════════════════════════ -->
+
+
+
+<!-- PRODUCTOS -->
+<section class="products" id="productos">
+  <div class="container">
+
+    <!-- Banner Baby Shower + Asistente de Talla -->
+
+ 
+<!-- BREADCRUMBS — Schema.org BreadcrumbList -->
+<script type="application/ld+json" id="breadcrumbSchema">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://dzoeperu.com/"},{"@type":"ListItem","position":2,"name":"Tienda D'Zoe Perú","item":"https://dzoeperu.com/index.html"}]}
+</script>
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb" id="breadcrumbNav" aria-label="Ruta de navegación">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <span class="bc-sep"><i class="fas fa-chevron-right"></i></span>
+      <span class="bc-current" aria-current="page">🌸 Todos los productos</span>
+    </nav>
+  </div>
+</div>
+
+    <!-- Título PRODUCTOS PREMIUM -->
+    <div class="productos-premium-header">
+      <p class="productos-premium-eyebrow">✨ Colección Exclusiva 2026</p>
+      <h2 class="productos-premium-title">PRODUCTOS <span>PREMIUM</span></h2>
+      <p class="productos-premium-sub">Ropa infantil importada de alta gama para bebés y niños de 0 a 14 años</p>
+    </div>
+
+    <!-- Buscador inteligente reubicado dentro de PRODUCTOS PREMIUM -->
+    <section class="prem-search-section" aria-label="Buscador de productos D'Zoe Perú">
+  <div class="container">
+    <div class="prem-search-wrap">
+
+      <!-- Caja principal -->
+      <div class="prem-search-box" id="smartSearchBox">
+        <i class="fas fa-search prem-search-icon" aria-hidden="true"></i>
+
+        <input
+          type="search"
+          class="prem-search-input"
+          id="searchInput"
+          placeholder="Buscador"
+          aria-label="Buscar productos en D'Zoe Perú"
+          autocomplete="off"
+          oninput="smartSearchHandle(this.value)"
+          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
+        >
+
+        <!-- Limpiar -->
+        <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Separador + Tipo (Bebita/Bebito/Niño/Niña/Accesorios) -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-child"></i></span>
+          <select class="prem-search-cat-select" id="premTipoSelect" onchange="premTipoSelectChange()" aria-label="Filtrar por tipo">
+            <option value="">Genero</option>
+            <option value="bebita">👧🏻 Bebita</option>
+            <option value="bebito">👦🏻 Bebito</option>
+            <option value="nino">👦 Niño</option>
+            <option value="nina">👧 Niña</option>
+            <option value="accesorios">🎀 Accesorios</option>
+          </select>
+        </div>
+
+        <!-- Separador + Edad -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-baby"></i></span>
+          <select class="prem-search-cat-select" id="afpEdad" onchange="applyAdvancedFilter()" aria-label="Filtrar por edad">
+            <option value="">Edades</option>
+            <option value="Talla única">Talla única</option>
+            <option value="1-3 meses">1-3 meses</option>
+            <option value="3-6 meses">3-6 meses</option>
+            <option value="6-9 meses">6-9 meses</option>
+            <option value="9-12 meses">9-12 meses</option>
+            <option value="9-18 meses">9-18 meses</option>
+            <option value="12-18 meses">12-18 meses</option>
+            <option value="12-24 meses">12-24 meses</option>
+            <option value="18-24 meses">18-24 meses</option>
+            <option value="1 años">1 año</option>
+            <option value="2 años">2 años</option>
+            <option value="3 años">3 años</option>
+            <option value="4 años">4 años</option>
+            <option value="5 años">5 años</option>
+            <option value="6 años">6 años</option>
+            <option value="7 años">7 años</option>
+            <option value="8 años">8 años</option>
+            <option value="9 años">9 años</option>
+            <option value="10 años">10 años</option>
+            <option value="11 años">11 años</option>
+            <option value="12 años">12 años</option>
+            <option value="13 años">13 años</option>
+            <option value="14 años">14 años</option>
+            <option value="15 años">15 años</option>
+            <option value="16 años">16 años</option>
+            <option value="17 años">17 años</option>
+          </select>
+        </div>
+
+        <!-- Separador + Categorías -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-tags"></i></span>
+          <select class="prem-search-cat-select" id="premCatSelect" onchange="premCatSelectChange()" aria-label="Filtrar por categoría">
+            <option value="">Todas</option>
+          </select>
+        </div>
+
+        <!-- Botón buscar -->
+        <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
+          <i class="fas fa-search"></i>
+          <span>Buscar</span>
+        </button>
+
+        <!-- Sugerencias -->
+        <div class="prem-search-suggestions" id="smartSearchSuggestions"></div>
+      </div>
+
+      <!-- Filtros mobile (debajo del buscador) -->
+      <div class="prem-mobile-filters">
+        <select id="premTipoSelectMobile" onchange="document.getElementById('premTipoSelect').value=this.value;premTipoSelectChange();" aria-label="Filtrar por tipo">
+          <option value="">🧒 Genero</option>
+          <option value="bebita">👧🏻 Bebita</option>
+          <option value="bebito">👦🏻 Bebito</option>
+          <option value="nino">👦 Niño</option>
+          <option value="nina">👧 Niña</option>
+          <option value="accesorios">🎀 Accesorios</option>
+        </select>
+        <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
+          <option value="">🍼 Edades</option>
+          <option value="Talla única">Talla única</option>
+          <option value="1-3 meses">1-3 meses</option>
+          <option value="3-6 meses">3-6 meses</option>
+          <option value="6-9 meses">6-9 meses</option>
+          <option value="9-12 meses">9-12 meses</option>
+          <option value="9-18 meses">9-18 meses</option>
+          <option value="12-18 meses">12-18 meses</option>
+          <option value="12-24 meses">12-24 meses</option>
+          <option value="18-24 meses">18-24 meses</option>
+          <option value="1 años">1 año</option>
+          <option value="2 años">2 años</option>
+          <option value="3 años">3 años</option>
+          <option value="4 años">4 años</option>
+          <option value="5 años">5 años</option>
+          <option value="6 años">6 años</option>
+          <option value="7 años">7 años</option>
+          <option value="8 años">8 años</option>
+          <option value="9 años">9 años</option>
+          <option value="10 años">10 años</option>
+          <option value="11 años">11 años</option>
+          <option value="12 años">12 años</option>
+          <option value="13 años">13 años</option>
+          <option value="14 años">14 años</option>
+          <option value="15 años">15 años</option>
+          <option value="16 años">16 años</option>
+          <option value="17 años">17 años</option>
+        </select>
+        <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
+          <option value="">🏷️ Todas</option>
+        </select>
+      </div>
+
+      <!-- Chips rápidos -->
+      <div class="prem-chips-row" id="quickChipsRow" aria-label="Filtros rápidos">
+        <button class="prem-chip" onclick="quickChipSearch(this,'bautizo')">🕊️ Bautizo</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'cumpleaños')">🎂 Cumpleaños</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'recién nacido')">👶 Recién nacido</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'abrigo')">🧥 Abrigos</button>
+        <button class="prem-chip" onclick="quickChipSearch(this,'conjunto')">✨ Conjuntos</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <!-- Grid de productos (dinámico desde Supabase) -->
+    <div class="product-grid" id="productGrid">
+      <div class="products-skeleton" id="productsSkeleton" aria-hidden="true">
+        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
+        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
+        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
+        <div class="sk-card"><div class="sk-img"></div><div class="sk-body"><div class="sk-line sk-title"></div><div class="sk-line sk-price"></div><div class="sk-sizes"><span class="sk-sz"></span><span class="sk-sz"></span><span class="sk-sz"></span></div><div class="sk-line sk-btn"></div></div></div>
+      </div>
+    </div>
+    <!-- Paginación -->
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PRÓXIMOS INGRESOS
+═══════════════════════════════════════════════════ -->
+
+<section id="proximos-ingresos" class="upcoming-section" aria-label="Próximos ingresos D'Zoe Perú" style="display:none;">
+  <div class="container">
+
+    <!-- Header -->
+    <header class="upcoming-header">
+      <div class="upcoming-header-left">
+        <div class="upcoming-eyebrow">
+          <i class="fas fa-plane-arrival" aria-hidden="true"></i>
+          Próximos ingresos
+        </div>
+        <h2 class="upcoming-title">
+          Lo que viene<br><span>en camino 🛍️</span>
+        </h2>
+        <p class="upcoming-subtitle">
+          Reserva antes de que lleguen. Precio especial garantizado.
+        </p>
+      </div>
+      <div class="upcoming-header-right">
+        <div class="upcoming-live-badge">
+          <div class="upcoming-live-dot" aria-hidden="true"></div>
+          Actualizando en vivo
+        </div>
+        <a href="/proximos-ingresos.html" class="upcoming-ver-todos" aria-label="Ver todos los próximos ingresos">
+          Ver todos <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- Grid (max 8 cards, poblado por JS) -->
+    <div class="upcoming-grid" id="upcomingGrid" aria-live="polite">
+      <!-- Skeletons iniciales -->
+      <div class="uc-skeleton" aria-hidden="true">
+        <div class="uc-sk-img"></div>
+        <div class="uc-sk-body">
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w70 h20"></div>
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w100 h20"></div>
+          <div class="uc-sk-btn"></div>
+        </div>
+      </div>
+      <div class="uc-skeleton" aria-hidden="true">
+        <div class="uc-sk-img"></div>
+        <div class="uc-sk-body">
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w70 h20"></div>
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w100 h20"></div>
+          <div class="uc-sk-btn"></div>
+        </div>
+      </div>
+      <div class="uc-skeleton" aria-hidden="true">
+        <div class="uc-sk-img"></div>
+        <div class="uc-sk-body">
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w70 h20"></div>
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w100 h20"></div>
+          <div class="uc-sk-btn"></div>
+        </div>
+      </div>
+      <div class="uc-skeleton" aria-hidden="true">
+        <div class="uc-sk-img"></div>
+        <div class="uc-sk-body">
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w70 h20"></div>
+          <div class="uc-sk-line w55"></div>
+          <div class="uc-sk-line w100 h20"></div>
+          <div class="uc-sk-btn"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Ver Todos -->
+    <div class="upcoming-footer-row">
+      <a href="/proximos-ingresos.html" class="upcoming-ver-todos-big" id="upcomingVerTodosBtn" aria-label="Ver todos los próximos ingresos">
+        <i class="fas fa-plane-arrival" aria-hidden="true"></i>
+        Ver todos los próximos ingresos
+        <span class="upcoming-count-pill" id="upcomingTotalPill">…</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECCIÓN PREMIUM DE CONFIANZA / BENEFICIOS
+═══════════════════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════════════════════
+     BLOQUE: NUEVOS INGRESOS / MÁS VENDIDOS
+═══════════════════════════════════════════════════════ -->
 
    <div style="width:1200px;max-width:95%;margin:0 auto;padding:0 16px 8px;">
    <div class="split-banner" style="margin:0;flex-wrap:nowrap;">
