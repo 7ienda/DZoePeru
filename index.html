@@ -5226,50 +5226,79 @@ body.dark-mode .dzn-link--action i { color: var(--hdr-mint); }
   .dzn-link--lulu:hover, .dzn-link--lulu.active { background: var(--lulu-cream) !important; }
 }
 
-/* ── ACCIONES: Iniciar Sesión + Bolsa de Compras (estilo etiqueta + ícono) ── */
+/* ── ACCIONES: Buscador + Iniciar Sesión + Bolsa de Compras (estilo etiqueta + ícono, unificado) ── */
 .hdr-icon-btn, .hdr-search-btn, .hdr-favs-btn {
   border: none !important; background: transparent !important; color: var(--lulu-brown) !important;
 }
 .hdr-icon-btn:hover, .hdr-search-btn:hover, .hdr-favs-btn:hover { background: rgba(91,58,34,0.08) !important; }
 .hdr-favs-badge, .cart-count-badge { background: var(--lulu-brown) !important; color: #fff !important; }
 
-.login-btn--lulu {
-  display: flex !important; flex-direction: column-reverse !important; align-items: center !important;
-  gap: 4px !important; height: auto !important; width: auto !important; padding: 4px 14px !important;
+.hdr-search-btn--lulu {
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; gap: 5px !important;
+  height: auto !important; width: auto !important; padding: 4px 16px !important; border-radius: 0 !important;
 }
-.login-btn--lulu i { font-size: 15px; color: var(--lulu-brown) !important; }
+.hdr-search-btn--lulu .search-label {
+  font-family: var(--lulu-font) !important; font-size: 11px !important; font-weight: 700 !important;
+  letter-spacing: .12em !important; text-transform: uppercase; color: var(--lulu-brown) !important;
+  white-space: nowrap;
+}
+.hdr-search-btn--lulu .search-icon { width: 18px; height: 18px; flex-shrink: 0; color: var(--lulu-brown); }
+.hdr-search-btn--lulu.open { background: transparent !important; border-color: transparent !important; }
+.hdr-search-btn--lulu.open .search-label, .hdr-search-btn--lulu.open .search-icon { color: var(--lulu-brown-soft) !important; }
+
+.login-btn--lulu {
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; gap: 5px !important; height: auto !important; width: auto !important;
+  padding: 4px 16px !important; border-left: 1px solid var(--lulu-line) !important; margin-left: 4px !important;
+}
+.login-btn--lulu .login-icon { width: 18px; height: 18px; flex-shrink: 0; color: var(--lulu-brown) !important; }
 .login-btn-text--lulu {
   font-family: var(--lulu-font) !important; font-size: 11px !important; font-weight: 700 !important;
   letter-spacing: .1em; text-transform: uppercase; text-align: center; line-height: 1.25;
-  color: var(--lulu-brown) !important;
+  color: var(--lulu-brown) !important; white-space: nowrap;
+}
+.login-btn--lulu.is-logged-in .login-icon, .login-btn--lulu.is-logged-in .login-btn-text--lulu {
+  color: var(--mint, #6fae8e) !important;
 }
 
 .hdr-cart-btn--lulu {
-  display: flex !important; align-items: center !important; gap: 10px !important;
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; gap: 5px !important;
   background: transparent !important; border: none !important; border-left: 1px solid var(--lulu-line) !important;
-  padding: 4px 0 4px 18px !important; margin-left: 6px !important; border-radius: 0 !important;
+  padding: 4px 18px !important; margin-left: 4px !important; border-radius: 0 !important;
+  position: relative !important;
 }
-.hdr-cart-btn--lulu .cart-info { align-items: flex-end !important; }
 .hdr-cart-btn--lulu .cart-label {
   font-family: var(--lulu-font) !important; font-size: 11px !important; font-weight: 700 !important;
-  letter-spacing: .1em !important; text-transform: uppercase; color: var(--lulu-brown-soft) !important;
+  letter-spacing: .12em !important; text-transform: uppercase; color: var(--lulu-brown) !important;
+  white-space: nowrap;
 }
+.hdr-cart-btn--lulu .cart-row {
+  display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+}
+.hdr-cart-btn--lulu .cart-bag-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--lulu-brown); }
 .hdr-cart-btn--lulu .cart-total { font-family: var(--lulu-font) !important; font-size: 15px !important; font-weight: 700 !important; color: var(--lulu-brown) !important; }
-.hdr-cart-btn--lulu i { font-size: 19px; color: var(--lulu-brown) !important; }
 .hdr-cart-btn--lulu:hover { background: rgba(91,58,34,0.06) !important; }
 
 body.dark-mode .hdr-icon-btn, body.dark-mode .hdr-search-btn, body.dark-mode .hdr-favs-btn,
-body.dark-mode .login-btn--lulu i, body.dark-mode .login-btn-text--lulu,
-body.dark-mode .hdr-cart-btn--lulu .cart-total, body.dark-mode .hdr-cart-btn--lulu i {
+body.dark-mode .hdr-search-btn--lulu .search-label, body.dark-mode .hdr-search-btn--lulu .search-icon,
+body.dark-mode .login-btn--lulu .login-icon, body.dark-mode .login-btn-text--lulu,
+body.dark-mode .hdr-cart-btn--lulu .cart-label,
+body.dark-mode .hdr-cart-btn--lulu .cart-total, body.dark-mode .hdr-cart-btn--lulu .cart-bag-icon {
   color: var(--lulu-cream) !important;
 }
+body.dark-mode .login-btn--lulu { border-left-color: rgba(201,168,118,0.25) !important; }
 body.dark-mode .hdr-cart-btn--lulu { border-left-color: rgba(201,168,118,0.25) !important; }
 
 @media (max-width: 900px) {
+  .hdr-search-btn--lulu .search-label { display: none !important; }
+  .hdr-search-btn--lulu { padding: 4px 8px !important; }
   .login-btn-text--lulu { display: none !important; }
   .login-btn--lulu { padding: 4px 8px !important; }
-  .hdr-cart-btn--lulu .cart-info { display: none !important; }
-  .hdr-cart-btn--lulu { padding-left: 10px !important; }
+  .hdr-cart-btn--lulu .cart-label { display: none !important; }
+  .hdr-cart-btn--lulu .cart-total { display: none !important; }
+  .hdr-cart-btn--lulu { padding: 6px 10px !important; }
 }
 
 /* ── SUBNAV — mismo tono cálido, coherente con el resto ────────────── */
@@ -5360,27 +5389,38 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
     <div class="header-actions" role="group" aria-label="Acciones del usuario">
 
       <!-- Búsqueda rápida desktop -->
-      <button class="hdr-search-btn" id="hdrSearchBtn" aria-label="Buscar productos"
+      <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
               aria-expanded="false" aria-controls="hdrSearchBar">
-        <i class="fas fa-search" aria-hidden="true"></i>
+        <span class="search-label">Buscador</span>
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
       </button>
 
       <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
       <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
               aria-label="Iniciar sesión o ver mi cuenta">
-        <span class="login-btn-text login-btn-text--lulu">Iniciar<br>Sesión</span>
-        <i class="fas fa-user" aria-hidden="true"></i>
+        <span class="login-btn-text login-btn-text--lulu" id="loginBtnText">Iniciar<br>Sesión</span>
+        <svg class="login-icon" id="loginBtnIcon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="8.3" r="3.4" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M5 20c0-3.7 3.13-6.6 7-6.6s7 2.9 7 6.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
       </button>
 
       <!-- Carrito / Bolsa de compras -->
       <button class="hdr-cart-btn hdr-cart-btn--lulu" id="cartIconBtn" aria-label="Ver carrito de compras">
-        <div class="cart-info">
-          <span class="cart-label">Bolsa de Compras</span>
+        <span class="cart-label">Bolsa de Compras</span>
+        <span class="cart-row">
+          <svg class="cart-bag-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M7 8V6.5C7 4 9 2 12 2C15 2 17 4 17 6.5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.5 8H18.5L19.3 20.2C19.4 21.2 18.6 22 17.6 22H6.4C5.4 22 4.6 21.2 4.7 20.2L5.5 8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
-        </div>
-        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+        </span>
         <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
       </button>
+
 
       <!-- Hamburger (solo mobile) -->
       <button class="hdr-hamburger" id="hamburgerBtn"
@@ -13627,12 +13667,17 @@ document.getElementById('registerSubmitBtn')?.addEventListener('click', async ()
 // Actualizar UI según sesión
 function updateLoginUI(user) {
   const loginBtn = document.getElementById('loginBtn');
-  if (!loginBtn) return;
+  const loginText = document.getElementById('loginBtnText');
+  if (!loginBtn || !loginText) return;
   if (user) {
     const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Mi cuenta';
-    loginBtn.innerHTML = `<i class="fas fa-user-check" style="color:var(--mint)"></i> <span>${name}</span>`;
+    loginText.textContent = name.split(' ')[0];
+    loginBtn.classList.add('is-logged-in');
+    loginBtn.setAttribute('aria-label', 'Mi cuenta: ' + name);
   } else {
-    loginBtn.innerHTML = `<i class="fas fa-user"></i> <span>Iniciar sesión</span>`;
+    loginText.innerHTML = 'Iniciar<br>Sesión';
+    loginBtn.classList.remove('is-logged-in');
+    loginBtn.setAttribute('aria-label', 'Iniciar sesión o ver mi cuenta');
   }
 }
 
