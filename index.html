@@ -1151,11 +1151,11 @@ body.dark-mode .main-nav { background: #2A1810; }
 
   /* DRAWER LATERAL */
   .main-nav {
-    position: fixed;
-    top: 0; left: -100%; bottom: 0; right: auto;
-    width: min(310px, 88vw);
+    position: fixed !important;
+    top: 0 !important; left: -100% !important; bottom: 0 !important; right: auto !important;
+    width: min(310px, 88vw) !important;
     background: var(--white);
-    flex-direction: column;
+    flex-direction: column !important;
     align-items: stretch;
     justify-content: flex-start;
     gap: 2px;
@@ -1163,11 +1163,11 @@ body.dark-mode .main-nav { background: #2A1810; }
     z-index: 999;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    transition: left 0.32s cubic-bezier(0.4,0,0.2,1);
+    transition: left 0.32s cubic-bezier(0.4,0,0.2,1) !important;
     box-shadow: 6px 0 36px rgba(163,133,210,0.3);
     backdrop-filter: none;
   }
-  .main-nav.open { left: 0; }
+  .main-nav.open { left: 0 !important; }
 
   /* Cabecera y búsqueda del drawer */
   .drawer-head {
