@@ -25,6 +25,12 @@ content="https://dzoeperu.com/og-image.jpg">
 <!-- Preload fuentes críticas para mejorar LCP -->
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"></noscript>
+<!-- Fuente serif elegante para el logo y el menú (estilo boutique cálido) -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&display=swap"></noscript>
+<!-- Fuente elegante, en negrita y sin cursiva para el logo -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap"></noscript>
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -344,7 +350,7 @@ html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;width:100%;max-wid
   --peach-light: #FBE8D0;   /* melocotón claro */
   --sky:         #A0D0E8;   /* azul bebé (jeans del niño) */
   --sky-light:   #D4EDF8;   /* azul muy claro */
-  --cream:       #FBF7FF;   /* blanco lavanda ultra suave */
+  --cream:       #FFFFFF;   /* fondo blanco de la web */
   --sand:        #F5EDD8;   /* arena/beige hoodie */
   --sand-dark:   #D4C4A0;   /* arena oscuro */
   --green-khaki: #8FAA84;   /* verde cargo pants */
@@ -4789,7 +4795,6 @@ body.dark-mode #megaPanelNinos .dzn-age-menu-lead { color: #b8a8cc; }
      hamburguesa) sin obligar a hacer scroll horizontal para verla */
   .header-actions { gap: 3px !important; }
   .hdr-icon-btn, .hdr-search-btn { width: 34px !important; height: 34px !important; }
-  .dark-mode-btn { display: none !important; } /* prescindible en mobile, libera espacio */
   .hdr-favs-btn.hdr-wish-btn, .hdr-favs-btn { padding: 6px 8px !important; }
   .hdr-cart-btn { padding: 5px 7px !important; }
   .hdr-hamburger { width: 36px !important; height: 36px !important; flex-shrink: 0; }
@@ -4928,6 +4933,352 @@ body.dark-mode .dzn-cat-link:hover, body.dark-mode .dzn-help-link:hover { backgr
 body.dark-mode #mainMenu.dzn-nav { background: #1a1420 !important; }
 body.dark-mode .dzn-drawer-search { background: #241C30; border-color: #5a4838; }
 body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; color: #E4D4C0; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HEADER PREMIUM V16 — LUXE BOUTIQUE (BLANCO · NEGRO · DORADO)
+   Reestilizado sobre V15: topbar, header, menú principal minimalista
+   (Novedades · Colección · Ofertas · Lista de Deseos) y subnav.
+   No toca buscador, carrito, favoritos, login, Supabase ni JS de productos.
+   Se carga al final para tener prioridad de cascada.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --lux-noir:       #15130f;
+  --lux-noir-2:     #221d17;
+  --lux-paper:      #ffffff;
+  --lux-cream:      #faf8f4;
+  --lux-gold:       #c9a876;
+  --lux-gold-deep:  #a9803f;
+  --lux-gold-light: #e8d9b8;
+  --lux-line:       rgba(20,17,15,0.12);
+  --lux-line-soft:  rgba(20,17,15,0.06);
+}
+
+/* ── TOPBAR — negro con acentos dorados ────────────────────────────── */
+.topbar {
+  background: linear-gradient(90deg, var(--lux-noir), var(--lux-noir-2) 50%, var(--lux-noir)) !important;
+  border-bottom: 1px solid var(--lux-gold) !important;
+}
+.tb-item, .tb-item i { color: var(--lux-gold-light) !important; opacity: 1 !important; }
+.tb-sep { color: rgba(232,217,184,0.35) !important; }
+.topbar-ticker-inner span {
+  color: var(--lux-gold-light) !important; font-weight: 700 !important;
+  letter-spacing: .02em; text-transform: none;
+}
+.tb-social {
+  background: rgba(232,217,184,0.08) !important; border: 1px solid rgba(201,168,118,0.35) !important;
+  color: var(--lux-gold-light) !important;
+}
+.tb-social:hover { background: var(--lux-gold) !important; color: var(--lux-noir) !important; }
+.tb-social--wa { background: rgba(37,211,102,0.12) !important; border-color: rgba(37,211,102,0.4) !important; }
+.tb-social--wa:hover { background: #25D366 !important; color: #fff !important; }
+.tb-phone {
+  background: rgba(232,217,184,0.08) !important; border: 1px solid rgba(201,168,118,0.35) !important;
+  color: var(--lux-gold-light) !important;
+}
+.tb-phone:hover { background: var(--lux-gold) !important; color: var(--lux-noir) !important; }
+
+/* ── HEADER — blanco marfil, línea dorada fina ─────────────────────── */
+#main-header {
+  background: rgba(255,255,255,0.97) !important;
+  border-bottom: 1px solid var(--lux-line) !important;
+  box-shadow: 0 1px 0 var(--lux-line) !important;
+  backdrop-filter: saturate(140%) blur(10px) !important;
+  -webkit-backdrop-filter: saturate(140%) blur(10px) !important;
+}
+#main-header.scrolled {
+  background: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(20,17,15,0.10) !important;
+}
+body.dark-mode #main-header { background: rgba(15,13,10,0.95) !important; border-bottom-color: rgba(201,168,118,0.22) !important; }
+body.dark-mode #main-header.scrolled { background: rgba(12,10,8,0.98) !important; }
+
+/* ── LOGO — tratamiento tipográfico premium ────────────────────────── */
+.logo-brand-text { color: var(--lux-noir) !important; }
+.logo-country { color: var(--lux-gold-deep) !important; letter-spacing: .2em !important; }
+.logo-tagline { color: #8a8072 !important; letter-spacing: .03em; }
+body.dark-mode .logo-brand-text { color: var(--lux-gold-light) !important; }
+body.dark-mode .logo-tagline { color: #b8a888 !important; }
+
+/* ── MENÚ PRINCIPAL MINIMALISTA — Novedades · Colección · Ofertas · Lista de Deseos ── */
+.dzn-nav .dzn-list { gap: 6px !important; }
+.dzn-link--lux {
+  position: relative;
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 12.5px !important; font-weight: 800 !important;
+  letter-spacing: .16em !important; text-transform: uppercase;
+  color: var(--lux-noir) !important; padding: 0 20px !important;
+  background: transparent !important; border-radius: 2px !important;
+}
+.dzn-link--lux::after {
+  content: ''; position: absolute; left: 20px; right: 20px; bottom: 8px; height: 1px;
+  background: var(--lux-gold); transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--dzn-ease);
+}
+.dzn-link--lux:hover, .dzn-link--lux:focus-visible {
+  background: transparent !important; color: var(--lux-gold-deep) !important;
+}
+.dzn-link--lux:hover::after, .dzn-link--lux:focus-visible::after { transform: scaleX(1); }
+.dzn-link--lux-accent { color: #8a5a35 !important; }
+.dzn-link--lux-accent::after { background: linear-gradient(90deg, #8a5a35, var(--lux-gold)); }
+body.dark-mode .dzn-link--lux { color: var(--lux-gold-light) !important; }
+body.dark-mode .dzn-link--lux:hover { color: var(--lux-gold) !important; }
+
+@media (max-width: 768px) {
+  .dzn-link--lux {
+    justify-content: flex-start !important; width: 100% !important;
+    border-bottom: 1px solid var(--lux-line-soft) !important; border-radius: 0 !important;
+    padding: 16px 12px !important;
+  }
+  .dzn-link--lux::after { display: none; }
+  .dzn-link--lux:hover, .dzn-link--lux:active { background: var(--lux-cream) !important; box-shadow: none !important; }
+}
+
+/* ── ACCIONES DEL HEADER — botones, carrito, favoritos ─────────────── */
+.hdr-icon-btn, .hdr-search-btn {
+  border: 1px solid var(--lux-line) !important; background: #fff !important; color: var(--lux-noir) !important;
+}
+.hdr-icon-btn:hover, .hdr-search-btn:hover, .hdr-search-btn.open {
+  background: var(--lux-noir) !important; color: #fff !important; border-color: var(--lux-noir) !important;
+}
+.login-btn i { color: var(--lux-gold-deep) !important; }
+.login-btn-text { color: var(--lux-noir) !important; }
+.login-btn:hover .login-btn-text { color: var(--lux-gold-deep) !important; }
+
+.hdr-favs-btn { border: 1px solid var(--lux-line) !important; background: #fff !important; }
+.hdr-favs-btn:hover { border-color: var(--lux-gold) !important; box-shadow: 0 6px 16px rgba(20,17,15,0.10) !important; }
+.hdr-favs-btn .favs-label, .hdr-favs-btn .cart-label { color: #8a8072 !important; }
+.hdr-favs-btn .favs-text { color: var(--lux-noir) !important; }
+.hdr-favs-badge, .cart-count-badge {
+  background: var(--lux-gold-deep) !important; color: #fff !important;
+}
+
+.hdr-cart-btn { border: 1px solid var(--lux-noir) !important; background: var(--lux-noir) !important; }
+.hdr-cart-btn i, .hdr-cart-btn .cart-label, .hdr-cart-btn .cart-total { color: #fff !important; }
+.hdr-cart-btn:hover { background: var(--lux-gold-deep) !important; border-color: var(--lux-gold-deep) !important; }
+
+.hdr-hamburger .hamburger-line { background: var(--lux-noir) !important; }
+body.dark-mode .hdr-icon-btn, body.dark-mode .hdr-search-btn { border-color: rgba(201,168,118,0.3) !important; color: var(--lux-gold-light) !important; background: transparent !important; }
+body.dark-mode .hdr-favs-btn { border-color: rgba(201,168,118,0.3) !important; background: transparent !important; }
+body.dark-mode .hdr-favs-btn .favs-text { color: var(--lux-gold-light) !important; }
+body.dark-mode .hdr-hamburger .hamburger-line { background: var(--lux-gold-light) !important; }
+
+/* ── DRAWER MOBILE — cabecera, búsqueda y CTA ──────────────────────── */
+.dzn-drawer-brand span { color: var(--lux-noir) !important; }
+.dzn-drawer-close { border-color: var(--lux-line) !important; color: var(--lux-noir) !important; background: #fff !important; }
+.dzn-drawer-search { border-color: var(--lux-line) !important; }
+.dzn-drawer-search i { color: var(--lux-gold-deep) !important; }
+.dzn-drawer-wa { background: var(--lux-noir) !important; box-shadow: 0 6px 18px rgba(20,17,15,0.28) !important; }
+.dzn-social-btn { background: var(--lux-cream) !important; color: var(--lux-noir) !important; }
+body.dark-mode #mainMenu.dzn-nav { background: #0f0d0a !important; }
+body.dark-mode .dzn-drawer-brand span { color: var(--lux-gold-light) !important; }
+body.dark-mode .dzn-drawer-search { background: #1c1712 !important; border-color: rgba(201,168,118,0.25) !important; }
+
+/* ── SUBNAV — menú secundario (ayuda, tallas, blog…) ───────────────── */
+.dzn-subnav {
+  background: var(--lux-cream) !important;
+  border-top: 1px solid var(--lux-line-soft) !important;
+  border-bottom: 1px solid var(--lux-line) !important;
+}
+.dzn-subnav-link {
+  color: var(--lux-noir) !important; font-weight: 700 !important;
+  letter-spacing: .03em; text-transform: uppercase; font-size: 10.5px !important;
+}
+.dzn-subnav-link i { color: var(--lux-gold-deep) !important; }
+.dzn-subnav-link:hover, .dzn-subnav-link:focus-visible {
+  background: #fff !important; color: var(--lux-gold-deep) !important;
+  box-shadow: inset 0 0 0 1px var(--lux-line);
+}
+.dzn-subnav-wa {
+  background: #fff !important; border-color: rgba(37,211,102,0.35) !important; color: #128a46 !important;
+}
+.dzn-subnav-wa:hover { background: rgba(37,211,102,0.10) !important; }
+body.dark-mode .dzn-subnav { background: #1c1712 !important; border-color: rgba(201,168,118,0.2) !important; }
+body.dark-mode .dzn-subnav-link { color: var(--lux-gold-light) !important; }
+body.dark-mode .dzn-subnav-link:hover { background: rgba(201,168,118,0.10) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HEADER PREMIUM V17 — ESTILO "LULUKI" (MARRÓN CÁLIDO · CREMA · SERIF)
+   Sustituye la paleta V16 (negro/dorado) por tonos marrón/crema cálidos,
+   logo con mucha más presencia y menú en fila propia, texto plano sin
+   desplegables. No toca buscador, carrito, favoritos, login ni Supabase.
+   Se carga al final para tener prioridad de cascada sobre V15/V16.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --lulu-brown:      #2D2545;   /* texto principal del header (morado oscuro de la web) */
+  --lulu-brown-deep: #201a33;
+  --lulu-brown-soft: #5C4E7A;   /* texto secundario */
+  --lulu-cream:      #FFFFFF;   /* fondo blanco */
+  --lulu-cream-2:    #FFFFFF;
+  --lulu-paper:      #FFFFFF;
+  --lulu-line:       rgba(45,37,69,0.12);
+  --lulu-line-soft:  rgba(45,37,69,0.06);
+  --lulu-font:       'Playfair Display', Georgia, serif;
+  --hdr-coral:       #E8917A;   /* acento coral del header */
+  --hdr-mint:        #3FAE8A;   /* acento menta del header */
+}
+
+/* ── TOPBAR — lila, texto blanco, minimalista ─────────────────────── */
+.topbar { background: var(--rose-dark) !important; border-bottom: none !important; padding: 0 !important; }
+.topbar-inner { height: 30px !important; }
+.tb-item, .tb-item i { color: #ffffff !important; opacity: 1 !important; }
+.tb-social--wa {
+  display: inline-flex !important; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.16) !important; border: 1px solid rgba(255,255,255,0.4) !important;
+  color: #ffffff !important; font-size: 12px !important; font-weight: 700 !important;
+  padding: 3px 12px !important; border-radius: 20px !important; width: auto !important; height: auto !important;
+}
+.tb-social--wa:hover { background: #25D366 !important; border-color: #25D366 !important; color: #fff !important; }
+
+/* ── HEADER — fondo crema cálido, sin sombra dura ──────────────────── */
+#main-header {
+  background: var(--lulu-cream) !important;
+  border-bottom: 1px solid var(--lulu-line) !important;
+  box-shadow: none !important;
+}
+#main-header.scrolled { background: var(--lulu-cream) !important; box-shadow: 0 8px 22px rgba(91,58,34,0.10) !important; }
+#main-header .header-inner { height: 108px !important; justify-content: center !important; position: relative; }
+#main-header.scrolled .header-inner { height: 88px !important; }
+body.dark-mode #main-header { background: #201812 !important; border-bottom-color: rgba(201,168,118,0.2) !important; }
+body.dark-mode #main-header .header-inner { background: transparent; }
+
+/* Logo centrado, acciones ancladas a la derecha */
+.logo { margin: 0 auto !important; }
+.header-actions { position: absolute !important; right: 0; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
+
+/* ── LOGO — mucha más presencia, tipografía serif elegante ─────────── */
+.logo-icon {
+  width: 46px !important; height: 58px !important; opacity: .9;
+  background: transparent !important; box-shadow: none !important; border-radius: 0 !important;
+}
+.logo-icon svg { width: 46px !important; height: 58px !important; }
+.logo-text--lulu { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-left: 10px; }
+.logo-brand-text--lulu {
+  font-family: var(--lulu-font) !important; font-style: normal !important;
+  font-size: 42px !important; font-weight: 800 !important; line-height: 1;
+  color: var(--lulu-brown) !important; letter-spacing: .01em;
+}
+.logo-tagline--lulu {
+  font-family: 'Nunito', sans-serif !important; font-style: normal;
+  font-size: 12px !important; font-weight: 700 !important;
+  letter-spacing: .18em !important; text-transform: uppercase;
+  color: var(--hdr-mint) !important; margin-top: 2px;
+}
+body.dark-mode .logo-brand-text--lulu { color: #f0e8d8 !important; }
+body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
+@media (max-width: 768px) {
+  #main-header .header-inner { height: 82px !important; }
+  #main-header.scrolled .header-inner { height: 68px !important; }
+  .logo-icon { width: 34px !important; height: 42px !important; }
+  .logo-icon svg { width: 34px !important; height: 42px !important; }
+  .logo-brand-text--lulu { font-size: 30px !important; }
+  .logo-tagline--lulu { font-size: 10px !important; letter-spacing: .16em !important; }
+}
+
+/* ── NAV — fila propia debajo del header, texto plano estilo Luluki ── */
+#mainMenu.dzn-nav--lulu {
+  background: var(--lulu-paper) !important;
+  border-bottom: 1px solid var(--lulu-line) !important;
+  display: flex !important; justify-content: center !important;
+  padding: 0 !important;
+}
+.dzn-nav--lulu .dzn-list { display: flex !important; justify-content: center; gap: 2px; }
+.dzn-link--lulu {
+  position: relative;
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 14.5px !important; font-weight: 800 !important;
+  letter-spacing: .04em !important; text-transform: none;
+  color: var(--lulu-brown) !important; padding: 16px 18px !important;
+  height: auto !important; background: transparent !important; border-radius: 0 !important;
+}
+.dzn-link--lulu::after {
+  content: ''; position: absolute; left: 18px; right: 18px; bottom: 10px; height: 2px;
+  background: var(--hdr-coral); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s var(--dzn-ease);
+}
+.dzn-link--lulu:hover, .dzn-link--lulu:focus-visible,
+.dzn-link--lulu.active { background: transparent !important; color: var(--hdr-coral) !important; }
+.dzn-link--lulu:hover::after, .dzn-link--lulu:focus-visible::after,
+.dzn-link--lulu.active::after { transform: scaleX(1); }
+.dzn-link--lulu-accent { color: var(--hdr-coral) !important; }
+.dzn-link--lulu-accent::after { background: var(--hdr-coral); }
+.dzn-nav--lulu .dzn-link--action { display: inline-flex !important; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif !important; width: auto !important; height: auto !important; }
+@media (max-width: 768px) {
+  .dzn-nav--lulu .dzn-link--action { width: 100% !important; justify-content: flex-start !important; }
+}
+.dzn-link--action i { font-size: 14px; color: var(--hdr-mint); }
+.dzn-link--action .dzn-action-badge {
+  display: none; background: var(--hdr-coral); color: #fff; font-size: 10px; font-weight: 800;
+  border-radius: 20px; padding: 1px 6px; line-height: 1.4; min-width: 16px; text-align: center;
+  align-items: center; justify-content: center;
+}
+body.dark-mode #mainMenu.dzn-nav--lulu { background: #1c1510 !important; border-color: rgba(201,168,118,0.18) !important; }
+body.dark-mode .dzn-link--lulu { color: #f0e8d8 !important; }
+body.dark-mode .dzn-link--lulu::after { background: var(--hdr-coral); }
+body.dark-mode .dzn-link--action i { color: var(--hdr-mint); }
+
+@media (max-width: 1080px) {
+  .dzn-link--lulu { padding: 14px 12px !important; font-size: 13.5px !important; }
+}
+@media (max-width: 768px) {
+  #mainMenu.dzn-nav--lulu { border-bottom: none !important; }
+  .dzn-link--lulu { width: 100%; justify-content: flex-start !important; padding: 15px 14px !important; border-bottom: 1px solid var(--lulu-line-soft) !important; }
+  .dzn-link--lulu::after { display: none; }
+  .dzn-link--lulu:hover, .dzn-link--lulu.active { background: var(--lulu-cream) !important; }
+}
+
+/* ── ACCIONES: Iniciar Sesión + Bolsa de Compras (estilo etiqueta + ícono) ── */
+.hdr-icon-btn, .hdr-search-btn, .hdr-favs-btn {
+  border: none !important; background: transparent !important; color: var(--lulu-brown) !important;
+}
+.hdr-icon-btn:hover, .hdr-search-btn:hover, .hdr-favs-btn:hover { background: rgba(91,58,34,0.08) !important; }
+.hdr-favs-badge, .cart-count-badge { background: var(--lulu-brown) !important; color: #fff !important; }
+
+.login-btn--lulu {
+  display: flex !important; flex-direction: column-reverse !important; align-items: center !important;
+  gap: 4px !important; height: auto !important; width: auto !important; padding: 4px 14px !important;
+}
+.login-btn--lulu i { font-size: 15px; color: var(--lulu-brown) !important; }
+.login-btn-text--lulu {
+  font-family: var(--lulu-font) !important; font-size: 11px !important; font-weight: 700 !important;
+  letter-spacing: .1em; text-transform: uppercase; text-align: center; line-height: 1.25;
+  color: var(--lulu-brown) !important;
+}
+
+.hdr-cart-btn--lulu {
+  display: flex !important; align-items: center !important; gap: 10px !important;
+  background: transparent !important; border: none !important; border-left: 1px solid var(--lulu-line) !important;
+  padding: 4px 0 4px 18px !important; margin-left: 6px !important; border-radius: 0 !important;
+}
+.hdr-cart-btn--lulu .cart-info { align-items: flex-end !important; }
+.hdr-cart-btn--lulu .cart-label {
+  font-family: var(--lulu-font) !important; font-size: 11px !important; font-weight: 700 !important;
+  letter-spacing: .1em !important; text-transform: uppercase; color: var(--lulu-brown-soft) !important;
+}
+.hdr-cart-btn--lulu .cart-total { font-family: var(--lulu-font) !important; font-size: 15px !important; font-weight: 700 !important; color: var(--lulu-brown) !important; }
+.hdr-cart-btn--lulu i { font-size: 19px; color: var(--lulu-brown) !important; }
+.hdr-cart-btn--lulu:hover { background: rgba(91,58,34,0.06) !important; }
+
+body.dark-mode .hdr-icon-btn, body.dark-mode .hdr-search-btn, body.dark-mode .hdr-favs-btn,
+body.dark-mode .login-btn--lulu i, body.dark-mode .login-btn-text--lulu,
+body.dark-mode .hdr-cart-btn--lulu .cart-total, body.dark-mode .hdr-cart-btn--lulu i {
+  color: var(--lulu-cream) !important;
+}
+body.dark-mode .hdr-cart-btn--lulu { border-left-color: rgba(201,168,118,0.25) !important; }
+
+@media (max-width: 900px) {
+  .login-btn-text--lulu { display: none !important; }
+  .login-btn--lulu { padding: 4px 8px !important; }
+  .hdr-cart-btn--lulu .cart-info { display: none !important; }
+  .hdr-cart-btn--lulu { padding-left: 10px !important; }
+}
+
+/* ── SUBNAV — mismo tono cálido, coherente con el resto ────────────── */
+.dzn-subnav { background: var(--lulu-cream-2) !important; border-top: 1px solid var(--lulu-line-soft) !important; border-bottom: 1px solid var(--lulu-line) !important; }
+.dzn-subnav-link { color: var(--lulu-brown) !important; }
+.dzn-subnav-link i { color: var(--lulu-brown-soft) !important; }
+.dzn-subnav-link:hover, .dzn-subnav-link:focus-visible { background: var(--lulu-paper) !important; color: var(--lulu-brown) !important; }
+body.dark-mode .dzn-subnav { background: #1c1510 !important; border-color: rgba(201,168,118,0.18) !important; }
+body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
 </style>
   <link rel="alternate" type="application/rss+xml"
   title="D'Zoe Perú — Novedades"
@@ -4951,40 +5302,16 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
     <div class="topbar-left-info">
       <span class="tb-item">
         <i class="fas fa-truck" aria-hidden="true"></i>
-        <strong>Envíos a todo el Perú</strong> · Shalom &amp; Olva Courier
+        <strong>Envíos a todo el Perú</strong>
       </span>
-      <span class="tb-sep" aria-hidden="true">·</span>
-      <span class="tb-item">
-        <i class="fas fa-clock" aria-hidden="true"></i>
-        Lun–Vie 9am–7pm · Sáb 9am–5pm
-      </span>
-    </div>
-    <!-- Ticker central (mobile: oculto) -->
-    <div class="topbar-ticker" aria-hidden="true">
-      <div class="topbar-ticker-inner" id="topbarTicker">
-        <span>👑 D'Zoe Perú — Marca Infantil Premium para niños</span>
-        <span>🌟 Diseños exclusivos importados · No se consiguen en otro lado</span>
-        <span>✨ Telas premium suaves · bebés 0 meses a 14 años</span>
-        <span>💳 Yape · Plin · Efectivo · Tarjeta</span>
-        <span>🏪 Tienda física en Huancayo - Piopata</span>
-        <span>🎁 Lista de Deseos para Baby Shower</span>
-        <span>🚚 Envío Express por Shalom</span>
-      </div>
     </div>
     <!-- Acciones rápidas (derecha) -->
     <div class="topbar-actions">
-      <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener noreferrer"
-         class="tb-social" aria-label="Síguenos en TikTok">
-        <i class="fab fa-tiktok" aria-hidden="true"></i>
-      </a>
       <a href="https://wa.me/51956063145?text=Hola%21%20Quiero%20ver%20los%20productos%20de%20D%27Zoe%20Per%C3%BA%20%F0%9F%9B%8D%EF%B8%8F"
          target="_blank" rel="noopener noreferrer"
          class="tb-social tb-social--wa" aria-label="WhatsApp D'Zoe Perú">
         <i class="fab fa-whatsapp" aria-hidden="true"></i>
-      </a>
-      <a href="tel:+51956063145" class="tb-phone" aria-label="Llamar a D'Zoe Perú">
-        <i class="fas fa-phone" aria-hidden="true"></i>
-        <span>956 063 145</span>
+        <span>WhatsApp</span>
       </a>
     </div>
   </div>
@@ -5023,284 +5350,138 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
           <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
         </svg>
       </div>
-      <div class="logo-text">
-        <span class="logo-brand-text" itemprop="name">D'Zoe</span>
-        <span class="logo-country">PERÚ</span>
-        <span class="logo-tagline">Ropa infantil importada</span>
+      <div class="logo-text logo-text--lulu">
+        <span class="logo-brand-text logo-brand-text--lulu" itemprop="name">D'Zoe Perú</span>
+        <span class="logo-tagline logo-tagline--lulu">· Ropa Infantil Premium ·</span>
       </div>
     </a>
 
-    <!-- ══ NAVEGACIÓN PRINCIPAL — DESKTOP ══ -->
-    <nav class="main-nav dzn-nav" id="mainMenu" aria-label="Navegación principal"
-         role="navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <!-- ══ ACCIONES HEADER (derecha) ══ -->
+    <div class="header-actions" role="group" aria-label="Acciones del usuario">
 
-      <!-- Cabecera del drawer (solo mobile) -->
-      <div class="drawer-head dzn-drawer-head" aria-hidden="true">
-        <div class="drawer-brand dzn-drawer-brand">
-          <span>D'Zoe Perú</span>
-          <small>Ropa infantil importada premium</small>
-        </div>
-        <button class="drawer-close dzn-drawer-close" id="menuCloseBtn" aria-label="Cerrar menú de navegación">
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <!-- Búsqueda rápida (solo drawer mobile) — intacta, sin cambios funcionales -->
-      <div class="drawer-search dzn-drawer-search">
+      <!-- Búsqueda rápida desktop -->
+      <button class="hdr-search-btn" id="hdrSearchBtn" aria-label="Buscar productos"
+              aria-expanded="false" aria-controls="hdrSearchBar">
         <i class="fas fa-search" aria-hidden="true"></i>
-        <input type="search" placeholder="Buscar ropa infantil…" aria-label="Buscar productos"
-               oninput="document.getElementById('searchInput').value=this.value;searchProducts();">
+      </button>
+
+      <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
+      <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
+              aria-label="Iniciar sesión o ver mi cuenta">
+        <span class="login-btn-text login-btn-text--lulu">Iniciar<br>Sesión</span>
+        <i class="fas fa-user" aria-hidden="true"></i>
+      </button>
+
+      <!-- Carrito / Bolsa de compras -->
+      <button class="hdr-cart-btn hdr-cart-btn--lulu" id="cartIconBtn" aria-label="Ver carrito de compras">
+        <div class="cart-info">
+          <span class="cart-label">Bolsa de Compras</span>
+          <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
+        </div>
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+        <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
+      </button>
+
+      <!-- Hamburger (solo mobile) -->
+      <button class="hdr-hamburger" id="hamburgerBtn"
+              aria-label="Abrir menú de navegación" aria-expanded="false"
+              aria-controls="mainMenu">
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ NAVEGACIÓN PRINCIPAL — FILA PROPIA, ESTILO LULUKI ══ -->
+  <nav class="main-nav dzn-nav dzn-nav--lulu" id="mainMenu" aria-label="Navegación principal"
+       role="navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+
+    <!-- Cabecera del drawer (solo mobile) -->
+    <div class="drawer-head dzn-drawer-head" aria-hidden="true">
+      <div class="drawer-brand dzn-drawer-brand">
+        <span>D'Zoe Perú</span>
+        <small>Ropa infantil importada premium</small>
       </div>
+      <button class="drawer-close dzn-drawer-close" id="menuCloseBtn" aria-label="Cerrar menú de navegación">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
 
-      <div class="dzn-list">
+    <!-- Búsqueda rápida (solo drawer mobile) — intacta, sin cambios funcionales -->
+    <div class="drawer-search dzn-drawer-search">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input type="search" placeholder="Buscar ropa infantil…" aria-label="Buscar productos"
+             oninput="document.getElementById('searchInput').value=this.value;searchProducts();">
+    </div>
 
-        <!-- === BEBITO — mega === -->
-        <div class="nav-mega dzn-mega" id="megaBebito">
-          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelBebito" id="megaBtnBebito">
-            <span class="dzn-emoji" aria-hidden="true">🍼</span>
-            <span>BEBITO</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
-          </button>
+    <div class="dzn-list">
 
-          <div class="mega-panel dzn-panel" id="megaPanelBebito" role="menu" aria-labelledby="megaBtnBebito">
-            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
-                    onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Bebito
-            </button>
+      <!-- === MENÚ PRINCIPAL — ESTILO LULUKI (texto plano, sin desplegables) === -->
+      <a href="index.html" class="dzn-link dzn-link--lulu active" itemprop="url"
+         onclick="closeMobileMenu();window.scrollTo({top:0,behavior:'smooth'});return false;">
+        <span itemprop="name">Inicio</span>
+      </a>
 
-            <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Bebito</div>
-              <div class="dzn-age-menu">
-                <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
-                <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','1-3 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">1-3</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','3-6 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">3-6</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','6-9 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">6-9</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','6-12 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">6-12</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','9-12 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">9-12</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','9-18 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">9-18</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','12-18 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">12-18</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','12-24 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">12-24</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebito','18-24 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">18-24</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('bebito');closeMobileMenu();return false;">
-                    <i class="fas fa-baby-carriage" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Bebito</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <a href="#productos" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="closeMobileMenu();document.getElementById('productos')?.scrollIntoView({behavior:'smooth'});return false;">
+        <span itemprop="name">Tienda</span>
+      </a>
 
-        <!-- === BEBITA — mega === -->
-        <div class="nav-mega dzn-mega" id="megaBebita">
-          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelBebita" id="megaBtnBebita">
-            <span class="dzn-emoji" aria-hidden="true">🍼</span>
-            <span>BEBITA</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">0-24 meses</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
-          </button>
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('bebito');closeMobileMenu();return false;">
+        <span itemprop="name">Bebé Niño</span>
+      </a>
 
-          <div class="mega-panel dzn-panel" id="megaPanelBebita" role="menu" aria-labelledby="megaBtnBebita">
-            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
-                    onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Bebita
-            </button>
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('bebita');closeMobileMenu();return false;">
+        <span itemprop="name">Bebé Niña</span>
+      </a>
 
-            <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Bebita</div>
-              <div class="dzn-age-menu">
-                <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
-                <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','1-3 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">1-3</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','3-6 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">3-6</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','6-9 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">6-9</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','6-12 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">6-12</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','9-12 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">9-12</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','9-18 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">9-18</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','12-18 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">12-18</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','12-24 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">12-24</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('bebita','18-24 meses');closeMobileMenu();return false;">
-                    <span class="dzn-age-pill-num">18-24</span><span class="dzn-age-pill-unit">meses</span>
-                  </button>
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('bebita');closeMobileMenu();return false;">
-                    <i class="fas fa-baby-carriage" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Bebita</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('niña');closeMobileMenu();return false;">
+        <span itemprop="name">Niña</span>
+      </a>
 
-        <!-- === NIÑAS — mega === -->
-        <div class="nav-mega dzn-mega" id="megaNinas">
-          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelNinas" id="megaBtnNinas">
-            <span class="dzn-emoji" aria-hidden="true">👧</span>
-            <span>NIÑA</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">2-7 años</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
-          </button>
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('niño');closeMobileMenu();return false;">
+        <span itemprop="name">Niño</span>
+      </a>
 
-          <div class="mega-panel dzn-panel" id="megaPanelNinas" role="menu" aria-labelledby="megaBtnNinas">
-            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
-                    onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Niñas
-            </button>
+      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
+         onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
+        <span itemprop="name">Accesorios</span>
+      </a>
 
-            <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Niña</div>
-              <div class="dzn-age-menu">
-                <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
-                <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','1 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">1</span><span class="dzn-age-pill-unit">año</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','2 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">2</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','3 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">3</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','4 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">4</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','5 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">5</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','6 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">6</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','7 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">7</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','8 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">8</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','9 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">9</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','10 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">10</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','11 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">11</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','12 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">12</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','13 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">13</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','14 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">14</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','15 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">15</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niña','16 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">16</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('niña');closeMobileMenu();return false;">
-                    <i class="fas fa-child-dress" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Niña</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <a href="#" class="dzn-link dzn-link--lulu dzn-link--lulu-accent" itemprop="url"
+         onclick="goOfertas();return false;">
+        <span itemprop="name">Ofertas</span>
+      </a>
 
-        <!-- === NIÑOS — mega === -->
-        <div class="nav-mega dzn-mega" id="megaNinos">
-          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelNinos" id="megaBtnNinos">
-            <span class="dzn-emoji" aria-hidden="true">👦</span>
-            <span>NIÑO</span><span class="nav-badge dzn-badge" aria-label="Función lista de deseos">2-7 años</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
-          </button>
+      <!-- Modo oscuro -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action dark-mode-btn" id="darkModeBtn"
+              aria-label="Activar modo oscuro" title="Modo oscuro">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+        <span>Modo Oscuro</span>
+      </button>
 
-          <div class="mega-panel dzn-panel" id="megaPanelNinos" role="menu" aria-labelledby="megaBtnNinos">
-            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
-                    onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Niños
-            </button>
+      <!-- Lista de Deseos Baby Shower -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action hdr-wish-btn" id="hdrWishBtn"
+              aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
+        <i class="fas fa-gift" aria-hidden="true"></i>
+        <span>Lista de Deseos</span>
+        <span class="dzn-action-badge" id="hdrWishBadge" aria-live="polite">0</span>
+      </button>
 
-            <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Niño</div>
-              <div class="dzn-age-menu">
-                <p class="dzn-age-menu-lead"><i class="fas fa-calendar-day" aria-hidden="true"></i> Elige la edad</p>
-                <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','1 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">1</span><span class="dzn-age-pill-unit">año</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','2 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">2</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','3 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">3</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','4 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">4</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','5 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">5</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','6 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">6</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','7 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">7</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','8 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">8</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','9 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">9</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','10 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">10</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','11 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">11</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','12 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">12</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','13 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">13</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','14 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">14</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','15 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">15</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill" onclick="goAgeGender('niño','16 años');closeMobileMenu();return false;"><span class="dzn-age-pill-num">16</span><span class="dzn-age-pill-unit">años</span></button>
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('niño');closeMobileMenu();return false;">
-                    <i class="fas fa-child" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Niño</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- Favoritos próximos ingresos -->
+      <button class="dzn-link dzn-link--lulu dzn-link--action" id="hdrFavsBtn"
+              aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
+        <i class="fas fa-star" aria-hidden="true"></i>
+        <span>Favoritos</span>
+        <span class="dzn-action-badge" id="hdrFavsBadge" aria-live="polite">0</span>
+      </button>
 
-        <!-- === ACCESORIOS — mega === -->
-        <div class="nav-mega dzn-mega" id="megaAccesorios">
-          <button class="nav-mega-btn dzn-mega-btn" aria-expanded="false" aria-haspopup="true"
-                  aria-controls="megaPanelAccesorios" id="megaBtnAccesorios">
-            <span class="dzn-emoji" aria-hidden="true">🎀</span>
-            <span>ACCESORIO</span><span class="nav-badge dzn-badge" aria-label="Categoría de accesorios">PARA TU OUTFIT</span>
-            <i class="fas fa-chevron-down nav-arrow dzn-arrow" aria-hidden="true"></i><span class="dzn-btn-break" aria-hidden="true"></span>
-          </button>
-
-          <div class="mega-panel dzn-panel" id="megaPanelAccesorios" role="menu" aria-labelledby="megaBtnAccesorios">
-            <button type="button" class="dzn-panel-back" aria-label="Volver al menú"
-                    onclick="this.closest('.nav-mega').classList.remove('open')">
-              <i class="fas fa-arrow-left" aria-hidden="true"></i> Accesorios
-            </button>
-
-            <div class="dzn-panel-inner">
-              <div class="dzn-ninas-title">Accesorio</div>
-              <div class="dzn-age-menu">
-                <p class="dzn-age-menu-lead"><i class="fas fa-gem" aria-hidden="true"></i> Complementa el look</p>
-                <div class="dzn-age-grid">
-                  <button type="button" role="menuitem" class="dzn-age-pill dzn-age-pill-all" onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
-                    <i class="fas fa-gem" aria-hidden="true"></i>
-                    <span class="dzn-age-pill-num">Ver todo Accesorios</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- === NUEVOS INGRESOS === -->
-        <a href="#proximos-ingresos" class="nav-link dzn-link dzn-link--stack" itemprop="url"
-           onclick="closeMobileMenu();document.getElementById('proximos-ingresos')?.scrollIntoView({behavior:'smooth'});return false;">
-          <span class="dzn-emoji" aria-hidden="true">✈️</span>
-          <span itemprop="name">Proximos</span>
-          <span class="dzn-btn-break" aria-hidden="true"></span>
-          <span class="nav-badge dzn-badge" aria-label="Sección de próximos ingresos">INGRESOS</span>
-        </a>
-
-        <!-- === GUÍA DE TALLAS (incluye Ayuda / legal) — mega === -->
-      </div>
+    </div>
 
       <!-- CTA de WhatsApp en el drawer mobile -->
       <div class="drawer-cta dzn-drawer-cta">
@@ -5321,62 +5502,6 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
         </div>
       </div>
     </nav>
-
-    <!-- ══ ACCIONES HEADER (derecha) ══ -->
-    <div class="header-actions" role="group" aria-label="Acciones del usuario">
-
-      <!-- Búsqueda rápida desktop -->
-      <button class="hdr-search-btn" id="hdrSearchBtn" aria-label="Buscar productos"
-              aria-expanded="false" aria-controls="hdrSearchBar">
-        <i class="fas fa-search" aria-hidden="true"></i>
-      </button>
-
-      <!-- Modo oscuro -->
-      <button class="hdr-icon-btn dark-mode-btn" id="darkModeBtn"
-              aria-label="Activar modo oscuro" title="Modo oscuro">
-        <i class="fas fa-moon" aria-hidden="true"></i>
-      </button>
-
-      <!-- Mi cuenta -->
-      <button class="hdr-icon-btn login-btn" id="loginBtn"
-              aria-label="Iniciar sesión o ver mi cuenta">
-        <i class="fas fa-user" aria-hidden="true"></i>
-        <span class="login-btn-text">Mi cuenta</span>
-      </button>
-
-      <!-- Lista de Deseos Baby Shower -->
-      <button class="hdr-favs-btn hdr-wish-btn" id="hdrWishBtn" aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
-        <span aria-hidden="true" style="font-size:1.1em;">🎀</span>
-        <span class="hdr-favs-badge" id="hdrWishBadge" aria-live="polite">0</span>
-      </button>
-
-      <!-- Favoritos próximos ingresos -->
-      <button class="hdr-favs-btn" id="hdrFavsBtn" aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
-        <span aria-hidden="true" style="font-size:1.1em;">⭐</span>
-        <span class="hdr-favs-badge" id="hdrFavsBadge" aria-live="polite">0</span>
-      </button>
-
-      <!-- Carrito -->
-      <button class="hdr-cart-btn" id="cartIconBtn" aria-label="Ver carrito de compras">
-        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
-        <div class="cart-info">
-          <span class="cart-label">CARRITO</span>
-          <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
-        </div>
-        <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
-      </button>
-
-      <!-- Hamburger (solo mobile) -->
-      <button class="hdr-hamburger" id="hamburgerBtn"
-              aria-label="Abrir menú de navegación" aria-expanded="false"
-              aria-controls="mainMenu">
-        <span class="hamburger-line" aria-hidden="true"></span>
-        <span class="hamburger-line" aria-hidden="true"></span>
-        <span class="hamburger-line" aria-hidden="true"></span>
-      </button>
-    </div>
-
-  </div>
 
   <!-- Barra de búsqueda expandible (desktop) -->
   <div class="hdr-search-bar" id="hdrSearchBar" aria-hidden="true" role="search">
@@ -5444,13 +5569,9 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   width: 100%;
   overflow: hidden;
   background: #f3eef8;
-  /* FIX: usar aspect-ratio como base para que siempre tenga altura */
-  aspect-ratio: 16/6;
-  max-height: 580px;
 }
 .hero-slider-track {
   display: flex;
-  height: 100%;
   transition: transform 0.55s cubic-bezier(.4,0,.2,1);
   will-change: transform;
 }
@@ -5462,13 +5583,8 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 }
 .hero-slide img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  height: auto;
   display: block;
-  /* FIX: que la imagen llene el slide completamente */
-  position: absolute;
-  inset: 0;
 }
 .hero-slide-overlay {
   position: absolute;
@@ -5518,19 +5634,10 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 }
 .hero-dot.active { background: #fff; transform: scale(1.35); }
 
-/* ── BANNER RESPONSIVE ── */
-@media(max-width: 900px) {
-  .hero-slider-wrap { aspect-ratio: 16/7; max-height: 440px; }
-}
 @media(max-width: 600px) {
-  .hero-slider-wrap { aspect-ratio: 16/7; max-height: unset; }
-  .hero-slide img { object-fit: contain; object-position: center center; background: #f3eef8; }
   .hero-arr { width: 34px; height: 34px; font-size: 14px; }
   .hero-arr.left  { left: 10px; }
   .hero-arr.right { right: 10px; }
-}
-@media(max-width: 400px) {
-  .hero-slider-wrap { aspect-ratio: 16/7; }
 }
 </style>
 
@@ -5538,8 +5645,8 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   <div class="hero-slider-track" id="heroTrack">
     <div class="hero-slide">
       <img
-        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdDpla_9iZun5GZGStMfqV1PbZ8xytaAOILODOVxJrVISWW6lV9qh0IbwKvWhbzUwMeQlPVt7k8MOUE3TPB5ImteEcrMgtPj57uA2lZgPvmCjIoC-4gS2edn7f7yiy53fAAiMxkcleioDBc5Ig8Q_hJ12bYqMMfzzN3KQguPTJk8kDeD9aSRU9JiplwTHZ/s1600/dzoe-ropa-ni%C3%B1as-ni%C3%B1os-bebes-importada-coleccion-premium%20(1)%20(1).webp"
-        alt="Banner principal"
+        src="https://bit.ly/4vmwWEt"
+        alt="D'Zoe Perú - Moda Infantil Premium"
         loading="eager"
         fetchpriority="high"
       >
@@ -5665,32 +5772,34 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 .prem-search-box {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.92);
-  border: 2px solid rgba(179,157,200,0.35);
-  border-radius: 22px;
-  padding: 6px 6px 6px 22px;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 7px 7px 7px 22px;
   box-shadow:
-    0 4px 24px rgba(163,133,210,0.18),
-    0 1px 0 rgba(255,255,255,0.9) inset;
-  transition: border-color 0.25s, box-shadow 0.25s;
+    0 2px 6px rgba(138,111,170,0.06),
+    0 12px 32px rgba(138,111,170,0.10);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+}
+.prem-search-box:hover {
+  box-shadow:
+    0 2px 6px rgba(138,111,170,0.08),
+    0 14px 38px rgba(138,111,170,0.14);
 }
 .prem-search-box:focus-within {
   border-color: var(--rose);
   box-shadow:
-    0 0 0 5px rgba(179,157,200,0.14),
-    0 8px 32px rgba(163,133,210,0.28),
-    0 1px 0 rgba(255,255,255,0.9) inset;
+    0 0 0 4px rgba(179,157,200,0.15),
+    0 16px 40px rgba(138,111,170,0.20);
 }
 
 /* Icono lupa izquierda */
 .prem-search-icon {
-  color: var(--rose);
+  color: var(--rose-dark);
   font-size: 17px;
   flex-shrink: 0;
-  opacity: 0.85;
+  opacity: 0.75;
   transition: opacity 0.2s;
 }
 .prem-search-box:focus-within .prem-search-icon { opacity: 1; }
@@ -5704,19 +5813,20 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   font-size: 15.5px;
   color: var(--text);
   outline: none;
-  font-weight: 600;
-  padding: 10px 14px;
+  font-weight: 700;
+  padding: 11px 14px;
   min-width: 0;
+  letter-spacing: 0.1px;
 }
-.prem-search-input::placeholder { color: var(--text-soft); font-weight: 500; }
+.prem-search-input::placeholder { color: var(--text-soft); font-weight: 500; opacity: 0.75; }
 
 /* Separador vertical */
 .prem-search-sep {
   width: 1px;
-  height: 28px;
-  background: rgba(163,133,210,0.35);
+  height: 26px;
+  background: linear-gradient(to bottom, transparent, rgba(163,133,210,0.35), transparent);
   flex-shrink: 0;
-  margin: 0 2px;
+  margin: 0 3px;
 }
 
 /* Selector de categoría inline */
@@ -5724,20 +5834,21 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   border: none;
   background: transparent;
   font-family: 'Nunito', sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--text-soft);
+  color: var(--text);
   cursor: pointer;
   outline: none;
-  padding: 8px 12px;
+  padding: 8px 20px 8px 2px;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a85a0'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A6FAA'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 8px center;
-  padding-right: 26px;
-  min-width: 120px;
+  background-position: right 2px center;
+  min-width: 0;
+  max-width: 108px;
   white-space: nowrap;
+  text-overflow: ellipsis;
   transition: color 0.18s;
 }
 .prem-search-cat-select:focus { color: var(--rose-dark); }
@@ -5751,19 +5862,24 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 .prem-inline-filter {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   flex-shrink: 0;
+  background: var(--rose-soft);
+  border-radius: 14px;
+  padding: 4px 8px 4px 12px;
+  transition: background 0.18s;
 }
+.prem-inline-filter:hover { background: var(--rose-light); }
 .prem-inline-label {
   font-size: 12px;
   font-weight: 800;
-  color: var(--text-soft);
+  color: var(--rose-dark);
   white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.prem-inline-label i { color: var(--rose); font-size: 11px; }
+.prem-inline-label i { color: var(--rose-dark); font-size: 11px; }
 
 @media (max-width: 768px) {
   .prem-inline-filter { display: none; }
@@ -5780,25 +5896,30 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   .prem-mobile-filters select {
     flex: 1 1 90px;
     font-size: 12px;
-    padding: 8px 10px;
+    padding: 9px 26px 9px 12px;
     border: 1.5px solid var(--border);
-    border-radius: 12px;
-    background: var(--white);
+    border-radius: 13px;
+    background-color: var(--rose-soft);
     color: var(--text);
     font-family: inherit;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    appearance: auto;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238A6FAA'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
   }
   .prem-mobile-filters select:focus {
     outline: none;
     border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(179,157,200,0.18);
   }
   .prem-search-section { padding: 16px 0 14px; }
   .prem-search-label { margin-bottom: 10px; }
-  .prem-search-box { padding: 4px 4px 4px 16px; border-radius: 16px; }
-  .prem-search-input { font-size: 14px; padding: 8px 10px; }
-  .prem-search-btn { padding: 10px 16px; font-size: 13px; border-radius: 12px; }
+  .prem-search-box { padding: 5px 5px 5px 18px; border-radius: 20px; }
+  .prem-search-input { font-size: 14.5px; padding: 9px 10px; }
+  .prem-search-btn { padding: 11px 18px; font-size: 13px; border-radius: 15px; }
 }
 @media (max-width: 600px) {
   .prem-search-cat-select { display: none; }
@@ -5809,10 +5930,10 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 
 /* Botón Buscar */
 .prem-search-btn {
-  background: var(--rose);
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
   border: none;
-  border-radius: 16px;
-  padding: 12px 24px;
+  border-radius: 18px;
+  padding: 13px 26px;
   font-size: 14px;
   font-weight: 800;
   color: #fff;
@@ -5825,12 +5946,11 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   gap: 7px;
   flex-shrink: 0;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 18px rgba(200,111,160,0.35);
+  box-shadow: 0 6px 20px rgba(138,111,170,0.38);
 }
 .prem-search-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 26px rgba(200,111,160,0.5);
-  background: var(--rose);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(138,111,170,0.5);
 }
 .prem-search-btn:active { transform: scale(0.98); }
 .prem-search-btn i { font-size: 13px; }
@@ -5859,15 +5979,14 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
   position: absolute;
   top: calc(100% + 10px);
   left: 0; right: 0;
-  background: rgba(255,255,255,0.98);
-  border-radius: 18px;
+  background: #ffffff;
+  border-radius: 20px;
   box-shadow:
-    0 16px 48px rgba(163,133,210,0.32),
-    0 2px 0 rgba(255,255,255,0.9) inset;
-  border: 1.5px solid rgba(220,200,240,0.5);
+    0 4px 14px rgba(138,111,170,0.10),
+    0 20px 50px rgba(138,111,170,0.22);
+  border: 1.5px solid var(--border);
   z-index: 600;
   overflow: hidden;
-  backdrop-filter: blur(16px);
   animation: suggDropIn 0.18s cubic-bezier(0.22,0.9,0.36,1);
 }
 @keyframes suggDropIn {
@@ -5977,40 +6096,39 @@ body.dark-mode .dzn-panel-back { background: #1E1610; border-color: #3a2c22; col
 .prem-chips-row {
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 18px;
   flex-wrap: wrap;
   justify-content: center;
 }
 .prem-chip {
-  background: rgba(255,255,255,0.85);
-  border: 1.5px solid rgba(163,133,210,0.4);
-  border-radius: 22px;
-  padding: 6px 15px;
-  font-size: 12px;
+  background: var(--rose-soft);
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-soft);
   cursor: pointer;
   font-family: 'Nunito', sans-serif;
   transition: all 0.2s cubic-bezier(0.22,0.9,0.36,1);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   white-space: nowrap;
-  backdrop-filter: blur(8px);
 }
 .prem-chip:hover {
-  background: rgba(255,255,255,0.98);
+  background: #ffffff;
   border-color: var(--rose-light);
   color: var(--rose-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(179,157,200,0.25);
+  box-shadow: 0 6px 16px rgba(138,111,170,0.18);
 }
 .prem-chip.chip-active {
-  background: var(--rose);
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 4px 14px rgba(200,111,160,0.35);
+  box-shadow: 0 6px 16px rgba(138,111,170,0.35);
 }
 
 /* ── Botón abrir filtros avanzados ── */
@@ -6041,8 +6159,12 @@ body.dark-mode .prem-search-box { background: rgba(36,30,52,0.95); border-color:
 body.dark-mode .prem-search-input { color: #e4d4c0; }
 body.dark-mode .prem-mobile-filters select { background: #4a3828; border-color: #6a5848; color: #e4d4c0; }
 body.dark-mode .prem-search-input::placeholder { color: #6A5848; }
-body.dark-mode .prem-search-sep { background: rgba(163,133,210,0.2); }
-body.dark-mode .prem-search-cat-select { color: var(--text-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a89ec0'/%3E%3C/svg%3E"); }
+body.dark-mode .prem-search-sep { background: linear-gradient(to bottom, transparent, rgba(163,133,210,0.25), transparent); }
+body.dark-mode .prem-inline-filter { background: rgba(163,133,210,0.14); }
+body.dark-mode .prem-inline-filter:hover { background: rgba(163,133,210,0.22); }
+body.dark-mode .prem-inline-label,
+body.dark-mode .prem-inline-label i { color: #c8b8e0; }
+body.dark-mode .prem-search-cat-select { color: #e4d4c0; background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c8b8e0'/%3E%3C/svg%3E"); }
 body.dark-mode .prem-search-suggestions { background: rgba(36,30,52,0.98); border-color: #5a4838; }
 body.dark-mode .pss-item:hover { background: #4a3828; }
 body.dark-mode .pss-item { color: #e4d4c0; border-color: rgba(163,133,210,0.1); }
@@ -6051,20 +6173,17 @@ body.dark-mode .pss-header { border-color: rgba(163,133,210,0.15); }
 body.dark-mode .prem-adv-panel { background: rgba(36,30,52,0.92); border-color: #5a4838; }
 body.dark-mode .pafp-group label { color: var(--text-soft); }
 body.dark-mode .pafp-group select { background: #4a3828; border-color: #6a5848; color: #e4d4c0; }
-body.dark-mode .prem-chip { background: rgba(36,30,52,0.9); border-color: #6a5848; color: #e4d4c0; }
-body.dark-mode .prem-chip:hover { background: #4a3828; border-color: var(--lavender); }
+body.dark-mode .prem-chip { background: rgba(163,133,210,0.14); color: #e4d4c0; }
+body.dark-mode .prem-chip:hover { background: #4a3828; border-color: var(--lavender); color: #e4d4c0; }
 body.dark-mode .prem-filter-toggle { background: rgba(36,30,52,0.8); border-color: #6a5848; color: var(--text-soft); }
 body.dark-mode .prem-filter-toggle:hover { background: #4a3828; }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .prem-search-section { padding: 18px 0 16px; }
-  .prem-search-box { padding: 5px 5px 5px 16px; border-radius: 18px; }
-  .prem-search-input { font-size: 14.5px; padding: 10px 10px; }
-  .prem-search-btn { padding: 11px 18px; font-size: 13px; border-radius: 13px; }
   .prem-search-btn span { display: none; }
   .prem-search-label { margin-bottom: 10px; }
-  .prem-chips-row { gap: 6px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; scrollbar-width: none; margin-top: 12px; }
+  .prem-chips-row { gap: 7px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; scrollbar-width: none; margin-top: 14px; }
   .prem-chips-row::-webkit-scrollbar { display: none; }
   .prem-adv-panel { grid-template-columns: 1fr; padding: 14px 14px; }
 }
@@ -13136,6 +13255,16 @@ document.addEventListener('keydown', e => {
     closeHdrSearch();
   }
 });
+
+// ═══ HEADER V16 — "NOVEDADES": lleva a la sección de destacados y activa el tab de nuevo (aditivo, no toca renderProducts) ═══
+function goNovedades() {
+  const hl = document.querySelector('.highlights-section');
+  const tab = hl?.querySelector('.hl-tab[data-tab="nuevo"]');
+  if (tab) tab.click();
+  if (hl) { hl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  else { document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' }); }
+  if (typeof closeMobileMenu === 'function') closeMobileMenu();
+}
 
 // ═══ HEADER V15 — "OFERTAS": lleva a la sección de destacados y activa el tab de oferta (aditivo, no toca renderProducts) ═══
 function goOfertas() {
