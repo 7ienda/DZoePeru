@@ -1532,13 +1532,13 @@ body.dark-mode .breadcrumb .bc-current{color:var(--rose);}
 .product-img-wrap{
   position:relative;
   overflow:hidden;
-  aspect-ratio:3/4;
+  aspect-ratio:1/1;
   background:var(--lav-light);
   border-radius:0;
 }
 .img-slider{position:relative;width:100%;height:100%;overflow:hidden;}
 .img-slides{display:flex;width:100%;height:100%;transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
-.img-slides img{min-width:100%;width:100%;height:100%;object-fit:cover;display:block;flex-shrink:0;transition:transform 0.5s ease;}
+.img-slides img{min-width:100%;width:100%;height:100%;object-fit:contain;display:block;flex-shrink:0;transition:transform 0.5s ease;}
 .product-card:hover .img-slides img{transform:scale(1.04);}
 
 /* Slider controls */
@@ -2065,8 +2065,9 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .pp-close{background:white;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--text-soft);display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .pp-close:hover{background:var(--rose);color:#fff;}
 .pp-body{display:grid;grid-template-columns:1fr 1fr;}
-.pp-gallery{background:var(--rose-soft);position:relative;}
-.pp-main-img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;cursor:zoom-in;}
+.pp-gallery{background:var(--rose-soft);position:relative;align-self:start;}
+.pp-gallery-imgbox{position:relative;width:100%;padding-top:100%;overflow:hidden;background:var(--rose-soft);}
+.pp-main-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;cursor:zoom-in;background:var(--rose-soft);}
 /* ── LIGHTBOX ZOOM HD ── */
 .hd-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.94);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.25s ease,visibility 0.25s ease;cursor:zoom-out;}
 .hd-lightbox.open{opacity:1;visibility:visible;}
@@ -2080,7 +2081,7 @@ body.dark-mode .pi-fav-name{color:#e4d4c0;}
 .hd-lightbox-arrow.prev{left:20px;}
 .hd-lightbox-arrow.next{right:20px;}
 .hd-lightbox-hint{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.35);font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;}
-.pp-img-placeholder{width:100%;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;font-size:72px;background:var(--rose-soft);}
+.pp-img-placeholder{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:72px;background:var(--rose-soft);}
 .pp-thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto;background:var(--white);border-top:1px solid var(--border);}
 .pp-thumb{width:60px;height:60px;object-fit:cover;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:.2s;flex-shrink:0;}
 .pp-thumb.active,.pp-thumb:hover{border-color:var(--rose);}
@@ -3875,7 +3876,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
     min-height: 180px !important;
   }
   .product-img-wrap {
-    aspect-ratio: 3/4 !important;
+    aspect-ratio: 1/1 !important;
     width: 50vw !important;
     max-width: 240px !important;
     height: 100% !important;
@@ -3886,7 +3887,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
   .product-img-wrap img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
   }
   .product-ribbons {
     position: absolute !important;
@@ -4110,8 +4111,7 @@ body.dark-mode .menu-mobile-cta { border-color: #5a4838; }
     padding: 16px 14px 24px !important;
     overflow-y: visible !important;
   }
-  .pp-gallery { min-height: 280px; }
-  .pp-main-img { aspect-ratio: 3/2 !important; }
+  .pp-gallery-imgbox { padding-top: 100% !important; }
   .pp-features { grid-template-columns: 1fr 1fr !important; }
   .pp-name { font-size: 20px !important; }
   .pp-price { font-size: 28px !important; }
@@ -6046,14 +6046,14 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
 /* Img wrap */
 .upcoming-img-wrap {
   position: relative;
-  aspect-ratio: 3/4;
+  aspect-ratio: 1/1;
   overflow: hidden;
   background: var(--rose-soft);
   flex-shrink: 0;
 }
 .upcoming-img-wrap img {
   width: 100%; height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   opacity: 1;
   transition: transform 0.5s cubic-bezier(0.22,0.9,0.36,1);
@@ -6063,7 +6063,7 @@ body.dark-mode .h3p-cta { background: #4a3828; border-color: #6a5848; color: var
 /* Slider dentro de upcoming */
 .upcoming-img-wrap .img-slider { height: 100%; }
 .upcoming-img-wrap .img-slides { height: 100%; display: flex; transition: transform 0.35s cubic-bezier(0.22,0.9,0.36,1); }
-.upcoming-img-wrap .img-slides img { flex: 0 0 100%; height: 100%; object-fit: cover; opacity: 1; transform: none; }
+.upcoming-img-wrap .img-slides img { flex: 0 0 100%; height: 100%; object-fit: contain; opacity: 1; transform: none; }
 .upcoming-no-img {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
@@ -6378,13 +6378,13 @@ body.dark-mode .uc-skeleton { background: #2e2248; }
     max-width: 100% !important;
     height: auto !important;
     min-height: unset !important;
-    aspect-ratio: 3/4 !important;
+    aspect-ratio: 1/1 !important;
     flex-shrink: 0 !important;
   }
   .product-img-wrap img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
   }
   .product-body {
     padding: 14px 16px 16px !important;
@@ -12144,7 +12144,7 @@ function openProductPage(productId) {
   window._ppCurrentImgs = imgs;
 
   const mainImgHtml = imgs.length
-    ? `<img src="${imgs[0]}" ${buildProductImgAttrs(product, 0, 0)} class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'" onclick="hdOpenLightbox(window._ppCurrentImgs, window._ppCurrentImgIdx||0)" style="cursor:zoom-in;">`
+    ? `<div class="pp-gallery-imgbox"><img src="${imgs[0]}" ${buildProductImgAttrs(product, 0, 0)} class="pp-main-img" id="ppMainImg" onerror="this.style.display='none'" onclick="hdOpenLightbox(window._ppCurrentImgs, window._ppCurrentImgIdx||0)" style="cursor:zoom-in;"></div>`
     : `<div class="pp-img-placeholder">🌸</div>`;
 
   const thumbsHtml = imgs.length > 1 ? imgs.map((img, i) =>
