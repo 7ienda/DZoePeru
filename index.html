@@ -4477,20 +4477,19 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
   color: var(--lulu-brown) !important; padding: 17px 17px !important;
   height: auto !important; background: transparent !important; border-radius: 30px !important;
   margin: 10px 1px; transition: background .22s ease, color .22s ease, transform .22s ease;
+  text-decoration: none !important;
+}
+.dzn-link--lulu:hover, .dzn-link--lulu:focus-visible, .dzn-link--lulu:active, .dzn-link--lulu:visited {
+  text-decoration: none !important;
 }
 .dzn-link--lulu::after {
-  content: ''; position: absolute; left: 22px; right: 22px; bottom: 9px; height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light));
-  transform: scaleX(0); transform-origin: center;
-  transition: transform .35s var(--dzn-ease);
+  content: none;
 }
 .dzn-link--lulu:hover, .dzn-link--lulu:focus-visible,
 .dzn-link--lulu.active {
   background: var(--lulu-line-soft) !important; color: var(--hdr-coral) !important;
   transform: translateY(-1px);
 }
-.dzn-link--lulu:hover::after, .dzn-link--lulu:focus-visible::after,
-.dzn-link--lulu.active::after { transform: scaleX(1); }
 .dzn-link--lulu-accent { color: var(--hdr-coral) !important; font-weight: 800 !important; }
 .dzn-link--lulu-accent::after { background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light)); }
 .dzn-nav--lulu .dzn-link--action { display: inline-flex !important; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif !important; width: auto !important; height: auto !important; }
