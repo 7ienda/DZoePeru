@@ -151,20 +151,6 @@
     "url": "/productos/conjunto-paris-verde.html"
   },
   {
-    "id": 1780259715575,
-    "slug": "vestido-destello-de-mariposa",
-    "name": "Vestido Destello de Mariposa",
-    "price": 55,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjV_FvT4eEotDLLY1xl1R1tFBIkT9uSN9cG4yn7gxz6KUBjVRpmourSzfrkD4wEAoim-PPDbYY-HxuBHLd4kP_5rD7fouv_LllF5DW7xe7RH7xUmrBe21OWrmDYaT6rDVuKRaQQT9j6epxH7QrrfmXJ4yiqDSEO9dOxuQDfJ4znEL-lxb6VSfBfsjuDUdw-/s1600/vvd2.png",
-    "categories": [
-      "Vestidos",
-      "Niña",
-      "Vestilo Hilo"
-    ],
-    "inStock": true,
-    "url": "/productos/vestido-destello-de-mariposa.html"
-  },
-  {
     "id": 1780258754512,
     "slug": "vestido-sueter-con-cuello-de-muneca",
     "name": "Vestido suéter con Cuello de Muñeca",
@@ -3655,20 +3641,6 @@
     "url": "/productos/rompercito-morado-osita-3-piezas.html"
   },
   {
-    "id": 1784156154303,
-    "slug": "conjunto-lazo-rosado-3-piezas",
-    "name": "Conjunto Lazo Rosado 3 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEjDyuL1vObmiSjTvmVXGEssHq6jnIUE7dGyCkbjoFJFFEpsquiBKdvsphhUHanENnvHvNMH8BnZvrvCF7tqaTtAF4_CHtVRiRwp0u7IICwvjqILgLw8Jy6WLcUpmtRJby0VSLdEL7Ql2mGXuv70KjocR_oOvTqK22Y9qLKX7cRay0OeE3gNcbpcDTDcbj/s1600/modelo-conjunto-lazo-rosado-3-piezas.webp",
-    "categories": [
-      "Conjunto 3 piezas",
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-lazo-rosado-3-piezas.html"
-  },
-  {
     "id": 1783785058835,
     "slug": "overol-conejito-bebito-con-polerita-2-piezas",
     "name": "Overol Conejito bebito con Polerita 2 piezas",
@@ -3696,6 +3668,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-dini-kids-2-piezas.html"
+  },
+  {
+    "id": 1784156154303,
+    "slug": "conjunto-lazo-rosado-3-piezas",
+    "name": "Conjunto Lazo Rosado 3 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEjDyuL1vObmiSjTvmVXGEssHq6jnIUE7dGyCkbjoFJFFEpsquiBKdvsphhUHanENnvHvNMH8BnZvrvCF7tqaTtAF4_CHtVRiRwp0u7IICwvjqILgLw8Jy6WLcUpmtRJby0VSLdEL7Ql2mGXuv70KjocR_oOvTqK22Y9qLKX7cRay0OeE3gNcbpcDTDcbj/s1600/modelo-conjunto-lazo-rosado-3-piezas.webp",
+    "categories": [
+      "Conjunto 3 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-lazo-rosado-3-piezas.html"
   },
   {
     "id": 1783785119687,
@@ -3737,6 +3723,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-pollito-hilo-gris-2-piezas.html"
+  },
+  {
+    "id": 1780259715575,
+    "slug": "vestido-destello-de-mariposa",
+    "name": "Vestido Destello de Mariposa",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0tTznicP2WH-LAYgybUyG4nmbfx16vSTolsd4qJByKb1GvPNjAS5nw3X7pwrWD7rSUCV6usat8ww8Dx_TK-ZTyA3nFGi8w4FYs50kIV_USMm07zU9CedVT5d-qoWq-LeuqDm9XvJ5VzgtoV9v9Sox76-YiZqMUJwGHUf0-oDRL2GrzpzMBXdjRSBVXTyx/s1600/vestido-destello-de-mariposa-modelo.webp",
+    "categories": [
+      "Vestidos",
+      "Niña",
+      "Vestilo Hilo"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-destello-de-mariposa.html"
   },
   {
     "id": 1783785130735,
