@@ -565,12 +565,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-boy-urban-b.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-jean-rosa-blanca.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -859,12 +853,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/cardigan-tierra-nordica.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-lady-cristal.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -1010,12 +998,6 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/abrigo-conejita.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dzoeperu.com/productos/cardigan-acero-elegante.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1219,12 +1201,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-flor-de-fresa.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-university-sports-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -1303,7 +1279,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-pink-pearl-magic.html</loc>
+    <loc>https://dzoeperu.com/productos/conjunto-perla-rosa-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1393,12 +1369,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/casaca-marron-3d.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-fucsia-floral-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -1430,12 +1400,6 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/vestido-mirian-rose.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dzoeperu.com/productos/cardigan-arena-dulce.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1514,12 +1478,6 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/abrigo-osita-de-nieve.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://dzoeperu.com/productos/cardigan-niebla-suave.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1867,6 +1825,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dzoeperu.com/productos/conjunto-boy-urban-b-2-piezas.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dzoeperu.com/productos/conjunto-elegante-ted-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -1886,6 +1850,18 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-lazo-primavera-2-piezas.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/casaca-marron-alto-relieve.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/conjunto-flor-de-fresa-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1921,6 +1897,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dzoeperu.com/productos/cardigan-marron-elegante.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dzoeperu.com/productos/conjunto-bb-cuello-redondo-2-piezas.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -1928,6 +1910,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/enterizo-bebito-rabbit.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/cardigan-beige-elegante.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1946,6 +1934,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/abrigo-rosa-de-tulipan.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/cardigan-acero-elegante.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2012,6 +2006,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-bunny-caramelo-3-piezas.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/cardigan-plomo-elegante.html</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
