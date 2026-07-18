@@ -7824,6 +7824,81 @@ function applyAdvancedFilter() {
   document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+/* ═══════════════════════════════════════════════════════
+   BOX "PRECIO" — se llena dinámicamente solo con los precios
+   EXACTOS (S/ 10, S/ 20, S/ 25, S/ 100...) que realmente tienen
+   productos según los filtros de Género/Edad/Categoría/Búsqueda
+   ya activos. Nada de rangos: son los precios reales de Supabase.
+   ═══════════════════════════════════════════════════════ */
+
+// Precio "desde" de un producto — misma lógica que usan las tarjetas/highlights:
+// el precio más bajo entre las tallas con stock disponible; si ninguna tiene
+// stock, usa el precio más bajo entre todas sus tallas; si no hay tallas
+// con precio, cae al campo price del producto (viene de Supabase, tabla products,
+// la misma fuente que gestiona mi-cuenta.html).
+function getProductMinPrice(p) {
+  const sizes = p.sizes || [];
+  const withStock = sizes.filter(s => s.stock > 0 && Number(s.price) > 0);
+  if (withStock.length) return Math.min(...withStock.map(s => Number(s.price)));
+  const anyPriced = sizes.filter(s => Number(s.price) > 0);
+  if (anyPriced.length) return Math.min(...anyPriced.map(s => Number(s.price)));
+  return Number(p.price) || 0;
+}
+
+// Formatea un precio sin decimales de sobra: 25 -> "S/ 25", 19.9 -> "S/ 19.90"
+function formatPriceOption(n) {
+  const hasDecimals = Math.round(n * 100) % 100 !== 0;
+  return 'S/ ' + (hasDecimals ? n.toFixed(2) : n.toFixed(0));
+}
+
+// Rellena el select de Precio (desktop + mobile) con los precios EXACTOS
+// (sin repetir, ordenados de menor a mayor) que tienen productos disponibles
+// con los filtros de Género/Edad/Categoría/Búsqueda ACTUALMENTE activos
+// (sin aplicar todavía el filtro de precio, para no auto-vaciarse a sí mismo).
+function populatePriceSelect() {
+  if (typeof filterProducts !== 'function') return;
+  const base = filterProducts(true); // true = ignorar el filtro de precio al calcular
+
+  const priceSet = new Set();
+  base.forEach(p => {
+    const price = getProductMinPrice(p);
+    if (price > 0) priceSet.add(price);
+  });
+  const availablePrices = [...priceSet].sort((a, b) => a - b);
+
+  const configs = [
+    { id: 'afpPrecio', emptyLabel: 'Precio' },
+    { id: 'afpPrecioMobile', emptyLabel: '💰 Precio' },
+  ];
+
+  configs.forEach(({ id, emptyLabel }) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = `<option value="">${emptyLabel}</option>` +
+      availablePrices.map(price => `<option value="${price}">${formatPriceOption(price)}</option>`).join('');
+    sel.disabled = availablePrices.length === 0;
+    if (current && availablePrices.some(price => String(price) === current)) {
+      sel.value = current; // sigue siendo válido con los filtros actuales
+    } else if (current) {
+      // El precio elegido dejó de estar disponible con los nuevos filtros → limpiar
+      sel.value = '';
+      currentPriceFilter = null;
+    }
+  });
+}
+
+function applyPriceFilter() {
+  const val = document.getElementById('afpPrecio')?.value || '';
+  currentPriceFilter = val ? Number(val) : null;
+  currentPage = 1;
+  const mobileSel = document.getElementById('afpPrecioMobile');
+  if (mobileSel && mobileSel.value !== val) mobileSel.value = val;
+  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 // Cerrar sugerencias al hacer click fuera
 document.addEventListener('click', function(e) {
   if (!document.getElementById('smartSearchBox')?.contains(e.target)) {
@@ -7949,6 +8024,15 @@ document.addEventListener('click', function(e) {
           </select>
         </div>
 
+        <!-- Separador + Precio (solo muestra rangos con productos disponibles según Género/Edad/Categoría ya elegidos) -->
+        <div class="prem-search-sep"></div>
+        <div class="prem-inline-filter">
+          <span class="prem-inline-label"><i class="fas fa-tag"></i></span>
+          <select class="prem-search-cat-select" id="afpPrecio" onchange="applyPriceFilter()" aria-label="Filtrar por precio">
+            <option value="">Precio</option>
+          </select>
+        </div>
+
         <!-- Botón buscar -->
         <button class="prem-search-btn" onclick="smartSearchGo()" aria-label="Buscar">
           <i class="fas fa-search"></i>
@@ -8000,6 +8084,9 @@ document.addEventListener('click', function(e) {
         </select>
         <select id="premCatSelectMobile" onchange="document.getElementById('premCatSelect').value=this.value;premCatSelectChange();" aria-label="Filtrar por categoría">
           <option value="">🏷️ Todas</option>
+        </select>
+        <select id="afpPrecioMobile" onchange="document.getElementById('afpPrecio').value=this.value;applyPriceFilter();" aria-label="Filtrar por precio">
+          <option value="">💰 Precio</option>
         </select>
       </div>
 
@@ -8565,6 +8652,7 @@ let currentAgeFilter = null;
 let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
 let currentGenderCats = null;   // categorías de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
+let currentPriceFilter = null;  // precio EXACTO elegido en el box "Precio" (ej. 25), null = sin filtro
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 8;
 let selectedSizes = {};
@@ -10134,9 +10222,19 @@ function renderCategoriesFromData() {
   container.innerHTML = todosChip + catChips;
 }
 
+// Categorías que NO deben mostrarse en ningún listado del sitio (chips, botones
+// de filtro, selects) porque no son categorías reales/válidas del catálogo.
+// "Bebes" no es una categoría — el filtro de bebés ya se maneja por Género
+// (Bebita/Bebito), así que si algún producto quedó mal etiquetado con
+// "Bebes" en Supabase, aquí se oculta en toda la tienda sin tocar la base de datos.
+const CATEGORIAS_INVALIDAS = ['Bebes'];
+function isCategoriaValida(catName) {
+  return !CATEGORIAS_INVALIDAS.some(invalida => catNamesMatch(catName, invalida));
+}
+
 function getUniqueCategories() {
   const cats = new Set();
-  products.forEach(p => { if(p.categories && Array.isArray(p.categories)) p.categories.forEach(c => cats.add(c)); });
+  products.forEach(p => { if(p.categories && Array.isArray(p.categories)) p.categories.forEach(c => { if (isCategoriaValida(c)) cats.add(c); }); });
   return Array.from(cats);
 }
 
@@ -10297,6 +10395,7 @@ function resetAllFilters() {
   currentAgeGroup = null;
   currentAgeFilterSet = null;
   currentGenderCats = null;
+  currentPriceFilter = null;
   currentPage = 1;
 
   const searchInput = document.getElementById('searchInput');
@@ -10307,6 +10406,7 @@ function resetAllFilters() {
   ['afpEdad', 'afpEdadMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['premTipoSelect', 'premTipoSelectMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['premCatSelect', 'premCatSelectMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['afpPrecio', 'afpPrecioMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
 
   if (typeof renderFilters === 'function') renderFilters();
@@ -10716,7 +10816,7 @@ function searchProducts() {
 // ═══════════════════════════════════════════════════════
 //  FILTRADO
 // ═══════════════════════════════════════════════════════
-function filterProducts() {
+function filterProducts(skipPriceFilter) {
   let filtered = currentFilter === 'all'
     ? [...products]
     : products.filter(p => p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase()));
@@ -10816,6 +10916,12 @@ function filterProducts() {
   // modelos de otro género cuyo nombre/descripción no menciona el género.
   if (currentGenderCats) {
     filtered = filtered.filter(p => productMatchesGenderCats(p.categories, currentGenderCats));
+  }
+
+  // ── Filtro por precio (box "Precio") — precio EXACTO, se aplica al final,
+  //    sobre el resultado ya filtrado por género/edad/categoría/búsqueda ──
+  if (!skipPriceFilter && currentPriceFilter) {
+    filtered = filtered.filter(p => getProductMinPrice(p) === currentPriceFilter);
   }
 
   return filtered;
@@ -11187,6 +11293,9 @@ function renderProducts() {
   // Ocultar skeleton al primer renderizado real
   const skeleton = document.getElementById('productsSkeleton');
   if (skeleton) skeleton.remove();
+
+  // Refrescar el box "Precio" con los rangos disponibles según Género/Edad/Categoría/Búsqueda actuales
+  if (typeof populatePriceSelect === 'function') populatePriceSelect();
 
   const filtered = filterProducts();
 
