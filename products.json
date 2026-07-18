@@ -922,19 +922,6 @@
     "url": "/productos/conjunto-baseball-00-2-piezas.html"
   },
   {
-    "id": 1780411939135,
-    "slug": "sleep-rose-bunny",
-    "name": "Sleep Rose Bunny",
-    "price": 42,
-    "image": "https://http2.mlstatic.com/D_NQ_NP_2X_876908-MCO75910394670_042024-F.webp",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/sleep-rose-bunny.html"
-  },
-  {
     "id": 1780365688073,
     "slug": "conjunto-dino-safari-3-piezas",
     "name": "Conjunto Dino Safari 3 piezas",
@@ -2028,7 +2015,7 @@
     "id": 1784132109663,
     "slug": "conjunto-university-sports-2-piezas",
     "name": "Conjunto University sports 2 piezas",
-    "price": 0,
+    "price": 50,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBA2dQO60KYwz5cMRi82aUs4D71tiA2d5VLDW2E6zFUCi1bEKl5IS1HZYU5bopzoeVp3ptyg0j3hRBJUjTPN9k0dXRsqDFC7Z3FZdYiAJxBW0-C_a00FthyphenhyphenMqnQJcEv4j0cnJU9p8THtUeV_jmDE1064ZtaokLGrS3Y_Yux4_7KVnzfFsL70nj6K9sGysb/s1600/efg2.png",
     "categories": [
       "Conjunto 2 piezas",
@@ -3147,19 +3134,6 @@
     "url": "/productos/conjunto-love-rosa-lila-2-piezas.html"
   },
   {
-    "id": 1784155682233,
-    "slug": "conjunto-burguer-3-piezas",
-    "name": "Conjunto Burguer 3 piezas",
-    "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNBGkfFuH441viurVUNikjYvezuqtjJqxo66UwZLhcI94s7p0WNyN2Z-Sw5jwGt9rkb-Cb-QtQl9hjM95zlgNECFBl-rNMsQp2F4rtgeEATzb2_d6DWLtbsU4s_c3GdlZEipXk_Xa94LLGyg6gEdtVpS3snr2Mq44olZodxR08hdI-6t6xuzYeboenwknd/s1600/hm1.png",
-    "categories": [
-      "Conjunto 3 piezas",
-      "Enterizos"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-burguer-3-piezas.html"
-  },
-  {
     "id": 1783629840197,
     "slug": "overol-kitty",
     "name": "Overol Kitty",
@@ -3255,20 +3229,6 @@
     ],
     "inStock": true,
     "url": "/productos/rompercito-abejita-rosada-2-piezas.html"
-  },
-  {
-    "id": 1784155938274,
-    "slug": "conjunto-osito-viajero-dark-2-piezas",
-    "name": "Conjunto osito viajero dark 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMHoCNu2Cfru-QTBvVywoC32GPmm5300TwAqnFsaD7M6ekdQPGJJL4VD0WloGlaKron2jTd9TV-co6sQG68fZdrSb8SRBoCTTfesl12vxqdBYQDXh1eHjzdgoj0q2hs6eAsWhWzGVGxtFnbIbEjeW6RPG3YuCh6VCFhaplwy_u_oyJgS7OE0I1XGuc4Y4Z/s1600/gds2.png",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niño"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-osito-viajero-dark-2-piezas.html"
   },
   {
     "id": 1783784947648,
@@ -3828,6 +3788,20 @@
     "url": "/productos/conjunto-princesa-rose-2-piezas.html"
   },
   {
+    "id": 1784155938274,
+    "slug": "conjunto-osito-viajero-dark-2-piezas",
+    "name": "Conjunto osito viajero dark 2 piezas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMHoCNu2Cfru-QTBvVywoC32GPmm5300TwAqnFsaD7M6ekdQPGJJL4VD0WloGlaKron2jTd9TV-co6sQG68fZdrSb8SRBoCTTfesl12vxqdBYQDXh1eHjzdgoj0q2hs6eAsWhWzGVGxtFnbIbEjeW6RPG3YuCh6VCFhaplwy_u_oyJgS7OE0I1XGuc4Y4Z/s1600/gds2.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niño"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-osito-viajero-dark-2-piezas.html"
+  },
+  {
     "id": 1783785518454,
     "slug": "conjunto-bb-cuello-redondo-2-piezas",
     "name": "Conjunto BB cuello redondo 2 piezas",
@@ -3912,6 +3886,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-baby-girl-floral-2-piezas.html"
+  },
+  {
+    "id": 1780411939135,
+    "slug": "conjunto-sleep-rose-bunny-3-piezas",
+    "name": "Conjunto Sleep Rose Bunny 3 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmDAOBmRjzdJsCr9GPMWuKLvpNxinmmvV2Q1jNt63l8H8ExW8rXjDFevxyZirmIsl4TApb9poS4xQZ4f51I6RwHcDpBqoVciuq2OdIvu5hC1_CsoV6fRTY453-0gW27JLFm0WqfdK8S5oV6lAQK7eW3XojbMBi0OA3TBQCWqFg3ngM7mL9-k-oBnJJfpfZ/s1600/conjunto-sleep-rose-bunny-3-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Conjunto 3 piezas",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-sleep-rose-bunny-3-piezas.html"
   },
   {
     "id": 1783785088755,
@@ -4182,5 +4170,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-dulce-corazon-2-piezas.html"
+  },
+  {
+    "id": 1784155682233,
+    "slug": "conjunto-burguer-3-piezas",
+    "name": "Conjunto Burguer 3 piezas",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNBGkfFuH441viurVUNikjYvezuqtjJqxo66UwZLhcI94s7p0WNyN2Z-Sw5jwGt9rkb-Cb-QtQl9hjM95zlgNECFBl-rNMsQp2F4rtgeEATzb2_d6DWLtbsU4s_c3GdlZEipXk_Xa94LLGyg6gEdtVpS3snr2Mq44olZodxR08hdI-6t6xuzYeboenwknd/s1600/hm1.png",
+    "categories": [
+      "Conjunto 3 piezas",
+      "Enterizos",
+      "Bebito"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-burguer-3-piezas.html"
   }
 ]
