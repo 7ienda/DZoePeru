@@ -1477,21 +1477,6 @@
     "url": "/productos/abrigo-conejita.html"
   },
   {
-    "id": 1784244804432,
-    "slug": "modelo-conjunto-lazo-estelar-2-piezas",
-    "name": "Modelo Conjunto lazo estelar 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjiYWPyeQ54u81SnOQ4N-UntSjbbE6lmua9omQ5Y7tYAF-NnVU-0XjXnLYThwW405oaRZlk_6eOnfc828t3F-PdHIizxaW_7Qi5Igxi7ewD9eYoxbh1vp0n73y5r8Sw2FUbj6zgv3yUQoHcZI1E-ieL0J8_qOYavcEj3T5peOCrGaGyD7sZfWm9OcmM6IF/s1600/modelo-conjunto-lazo-estelar-2-piezas.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Bebita",
-      "Niña",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/modelo-conjunto-lazo-estelar-2-piezas.html"
-  },
-  {
     "id": 1782278385623,
     "slug": "conjunto-3-piezas-osito-ted",
     "name": "Conjunto 3 piezas Osito TED",
@@ -4169,6 +4154,21 @@
     "url": "/productos/casaca-corta-viento-conejita.html"
   },
   {
+    "id": 1784510977997,
+    "slug": "conjunto-overolcito-oscuro-2-piezas",
+    "name": "Conjunto overolcito oscuro 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgiTHPm2VMiO1_LpiUaW64JyRbopZ3_Y9Q-X3YOZrFN0JRHziuEg97DajQqGqOdQOGnMQ3VEO_728siN6ccUuS9KgVpeiOTkHdpFdSKGvpZpi8sQNoUhQ-NE1H4NZWHovHCxSMWy0fYn3gWGVaQp0gF_jJpPlE3rivFjBIeqImhhR4krYMP_sY_Mf7PSOSM/s1600/conjunto-overolcito-oscuro-2-piezas-modelo.webp",
+    "categories": [
+      "Overoles",
+      "Conjunto Overol",
+      "Conjunto 2 piezas",
+      "Bebito"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-overolcito-oscuro-2-piezas.html"
+  },
+  {
     "id": 1782600736905,
     "slug": "conjunto-rosa-de-flores-2-piezas",
     "name": "Conjunto rosa de flores 2 piezas",
@@ -4196,5 +4196,33 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-lazo-rosado-3-piezas.html"
+  },
+  {
+    "id": 1784244804432,
+    "slug": "modelo-conjunto-lazo-estelar-2-piezas",
+    "name": "Modelo Conjunto lazo estelar 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjiYWPyeQ54u81SnOQ4N-UntSjbbE6lmua9omQ5Y7tYAF-NnVU-0XjXnLYThwW405oaRZlk_6eOnfc828t3F-PdHIizxaW_7Qi5Igxi7ewD9eYoxbh1vp0n73y5r8Sw2FUbj6zgv3yUQoHcZI1E-ieL0J8_qOYavcEj3T5peOCrGaGyD7sZfWm9OcmM6IF/s1600/modelo-conjunto-lazo-estelar-2-piezas.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Niña",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/modelo-conjunto-lazo-estelar-2-piezas.html"
+  },
+  {
+    "id": 1784512275414,
+    "slug": "conjunto-aguamarina-2-piezas",
+    "name": "Conjunto aguamarina 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYcMvM_RbC7Lf31vHcvqPITIkkkglYmahyphenhyphen4d9gT89uysUA5XxnQ6HMYiIzw1iahdqwRLJ3SS6suB-SUdYv08_P-4nVeSEbYyEzFaRgoFP_GxSqa3g6-iYES8rV_yE-lqCAUpVhA0MN6FlO4PO1tH5ebuXpcF97Kl_24ITj0dIFG2BMxAVSeNyUzIrPPRDn/s1600/conjunto-aguamarina-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-aguamarina-2-piezas.html"
   }
 ]
