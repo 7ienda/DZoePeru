@@ -1680,6 +1680,21 @@
     "url": "/productos/conjunto-orejitas-bunny-rosado-2-piezas.html"
   },
   {
+    "id": 1784649741061,
+    "slug": "pantalon-jean-fresitas-rasgado",
+    "name": "Pantalon Jean fresitas rasgado",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKsW-u42LiigzBwPfae187Y1lXO-LA84FJqgAe832Q774hp5UgctPhZQ0OPl2KgXf2vDBBevLtErFO4OGO6wYv0oqMX7-qMnR_2ok8ZK8-ilA6yS0062tEnVWi-_jKBuBSjcbm_INa1T_XG7x2ndIdR38IIjXKL2yx1LjVgw_CXMvjssSKx2wZprxwiKCM/s1600/pantalon-jean-fresitas-rasgado.webp",
+    "categories": [
+      "Jeans",
+      "Pantalones",
+      "Pantalones Jeans",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-fresitas-rasgado.html"
+  },
+  {
     "id": 1782436746231,
     "slug": "conjunto-tutu-lazo-rosado-2-piezas",
     "name": "Conjunto Tutu Lazo rosado 2 piezas",
@@ -3092,11 +3107,12 @@
     "slug": "pantalon-jean-hello-kitty",
     "name": "Pantalon Jean Hello Kitty",
     "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUfxAz7yylltwpM3qS_nUKnMP43CuOUJb3RaMpH-DZLWib9wybIKmw0N4FV2DHL3sgxpPGk6N7jEQfk34gyVfoVcg9mxjNgfRQrkdPes18KfwWoO9LeUXU73VR-ZH_DbiQ93l7Nccbj5lOqyFBcx2OEQxr18O2K4cZK-nEUEVAMPshTn7oa-S4rYH6S6F9/s16000/jk2.png",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT_pdrEbkcIHcP5nQTlschSvWC9b8IUz_wAQgre3DFTALD8c9RzjwqL3CMwVpPY9qfGnreFOco1rw9PvBbWwvIY6zBx0itL_Xfts32ROFIwZ5Q4myk447bMSbZJtNS37tScLZ40yHtSTgaJ9sRxDWwvqYfAs-RG2FxrQsCXf1wJQKNos1ay_mfDH7lgbtI/s1600/pantalon-jean-hello-kitty.webp",
     "categories": [
       "Jeans",
       "Ninas",
-      "Pantalones Jeans"
+      "Pantalones Jeans",
+      "Pantalones"
     ],
     "inStock": true,
     "url": "/productos/pantalon-jean-hello-kitty.html"
@@ -4224,5 +4240,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-aguamarina-2-piezas.html"
+  },
+  {
+    "id": 1784647534090,
+    "slug": "pantalon-jean-rasgado-moderno",
+    "name": "Pantalon Jean Rasgado Moderno",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh79OM9q6x8YoXGlobcLhkdSDpR1VXbCHwtEts96hZaSYjW0oRBXz-j3HoX3XeEyK0RQ3AHhw5Kib7wgLgBSMHVejrPqR2zp7uO0wCTxK-EBVNleX3DTLshOFDW9nccUi_880zOKwRyhHXy9-kvj6aUJMvjLINgMtQIXCV4l1XlULtm8SSy8heC9LO2zUpC/s1600/pantalon-jean-rasgado-moderno.webp",
+    "categories": [
+      "Jeans",
+      "Pantalones",
+      "Pantalones Jeans",
+      "Niño"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-rasgado-moderno.html"
   }
 ]
