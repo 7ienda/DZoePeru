@@ -400,6 +400,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .sold-progress-bar { flex: 1; height: 6px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
 .sold-progress-fill { height: 100%; border-radius: 99px; transition: width .3s; }
 .sold-margin-tag { font-size: 10px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+.sold-link-box { margin-top: 10px; padding: 9px 10px; background: var(--orange-light); border: 1.5px dashed var(--orange); border-radius: 10px; font-size: 10.5px; font-weight: 700; color: #8a5a0a; }
+.sold-link-box i { margin-right: 4px; }
+.sold-link-box select { width: 100%; margin-top: 6px; padding: 7px 8px; border-radius: 8px; border: 1.5px solid var(--line2); font-size: 11.5px; font-weight: 600; color: var(--text); background: #fff; cursor: pointer; }
 .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid var(--line2); }
 .product-price { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--rose); }
 .icon-btn { width: 32px; height: 32px; border-radius: 9px; border: none; cursor: pointer; transition: all .2s; font-size: 13px; }
@@ -3962,14 +3965,54 @@ function setSoldSort(mode) {
   renderSoldProducts();
 }
 
+// Vincula manualmente un grupo de ventas "huérfano" (sin match automático, ej: el producto
+// cambió de nombre/foto después de la venta) al producto correcto actual. Parchea productId
+// y el costo en las órdenes reales de Supabase para que quede resuelto para siempre.
+async function linkSoldProduct(key, productId) {
+  if (!productId) return;
+  const group = _soldGroups[key];
+  const prod = products.find(p => String(p.id) === String(productId));
+  if (!group || !prod) return;
+
+  const byOrder = {};
+  group._refs.forEach(r => { (byOrder[r.orderId] = byOrder[r.orderId]||[]).push(r.itemIndex); });
+
+  try {
+    for (const orderId of Object.keys(byOrder)) {
+      const order = orders.find(o => String(o.id) === String(orderId));
+      if (!order || !Array.isArray(order.items)) continue;
+      byOrder[orderId].forEach(idx => {
+        const it = order.items[idx];
+        if (!it) return;
+        it.productId = prod.id;
+        if (it.cost == null) {
+          const sizeObj = prod.sizes?.find(s => _normName(s.size) === _normName(it.size));
+          it.cost = sizeObj?.cost || 0;
+        }
+      });
+      if (supabaseClient) {
+        const { error } = await supabaseClient.from('orders').update({ items: order.items }).eq('id', order.id);
+        if (error) { showAlert('Error al vincular: ' + error.message, 'error'); return; }
+      }
+    }
+    showAlert('✅ Producto vinculado — foto y ganancia corregidas');
+    renderSoldProducts();
+  } catch (e) {
+    showAlert('Error al vincular: ' + e.message, 'error');
+  }
+}
+
+let _soldGroups = {}; // cache de grupos vendidos (con refs a orden/item) para poder vincular manualmente
+
 function renderSoldProducts() {
   // Construir mapa de productos vendidos desde órdenes confirmadas
   const soldMap = {};
   orders.filter(o => o.status === 'confirmed').forEach(o => {
-    (o.items||[]).forEach(it => {
+    (o.items||[]).forEach((it, itemIndex) => {
       const key = it.productId != null ? 'id:'+it.productId : 'name:'+_normName(it.name);
       const prod = _findSoldProduct(it);
-      if (!soldMap[key]) soldMap[key] = { name: prod?.name || it.name, totalQty: 0, totalRevenue: 0, totalProfit: 0, sizes: {} };
+      if (!soldMap[key]) soldMap[key] = { name: prod?.name || it.name, totalQty: 0, totalRevenue: 0, totalProfit: 0, sizes: {}, _refs: [], _key: key };
+      soldMap[key]._refs.push({ orderId: o.id, itemIndex });
       const sizeObj = prod?.sizes?.find(s => _normName(s.size) === _normName(it.size));
       // Costo: prioriza el costo guardado en la venta (snapshot al momento de vender);
       // si no existe (ventas antiguas), usa el costo actual de la talla del producto.
@@ -3986,6 +4029,7 @@ function renderSoldProducts() {
   });
 
   const soldList = Object.values(soldMap);
+  _soldGroups = soldMap;
   const sortFn = soldSortBy === 'revenue' ? (a,b) => b.totalRevenue - a.totalRevenue
                : soldSortBy === 'profit'  ? (a,b) => b.totalProfit - a.totalProfit
                : (a,b) => b.totalQty - a.totalQty;
@@ -4031,6 +4075,14 @@ function renderSoldProducts() {
     const isTop3 = i < 3;
     const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
     const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
+    const linkPicker = !prod ? `
+        <div class="sold-link-box">
+          <i class="fas fa-triangle-exclamation"></i> Sin vincular — el producto cambió de nombre/foto
+          <select onchange="linkSoldProduct('${s._key}', this.value)">
+            <option value="">Elegir producto actual...</option>
+            ${products.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+          </select>
+        </div>` : '';
     return `<div class="product-card sold-card${isTop3?' top3':''}" ${isTop3?`style="border-color:${rankColors[i]}66;"`:''}>
       <div class="product-card-img">
         ${img ? `<img src="${img}" alt="${s.name}" onerror="this.onerror=null;this.src='';this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;\\'>👗</div>')">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">👗</div>'}
@@ -4050,6 +4102,7 @@ function renderSoldProducts() {
           <span class="sold-margin-tag">Margen ${margin.toFixed(0)}%</span>
         </div>
         ${sizesHtml ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${sizesHtml}</div>` : ''}
+        ${linkPicker}
       </div>
     </div>`;
   }).join('');
