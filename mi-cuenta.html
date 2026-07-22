@@ -387,6 +387,19 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .metric-val.green { color: var(--green); }
 .metric-val.rose { color: var(--rose); }
 .metric-val.orange { color: var(--orange); }
+
+/* ===== Productos Vendidos — premium ===== */
+.sold-sort-group { display: flex; gap: 6px; background: var(--bg2); padding: 4px; border-radius: 99px; border: 1.5px solid var(--line2); }
+.sold-sort-btn { border: none; background: transparent; color: var(--text2); font-size: 11.5px; font-weight: 700; padding: 8px 14px; border-radius: 99px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .18s; white-space: nowrap; }
+.sold-sort-btn:hover { color: var(--rose-dark); }
+.sold-sort-btn.active { background: var(--rose); color: #fff; box-shadow: 0 3px 10px rgba(140,100,190,0.30); }
+.product-card.sold-card.top3 { border-width: 2px; box-shadow: 0 6px 20px rgba(212,175,55,0.18); }
+.product-card.sold-card.top3:hover { box-shadow: 0 10px 28px rgba(212,175,55,0.28); }
+.rank-badge { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 10.5px; font-weight: 800; padding: 4px 10px; border-radius: 99px; letter-spacing: .02em; box-shadow: 0 3px 10px rgba(0,0,0,0.18); }
+.sold-progress-wrap { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.sold-progress-bar { flex: 1; height: 6px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.sold-progress-fill { height: 100%; border-radius: 99px; transition: width .3s; }
+.sold-margin-tag { font-size: 10px; font-weight: 800; color: var(--muted); white-space: nowrap; }
 .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid var(--line2); }
 .product-price { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--rose); }
 .icon-btn { width: 32px; height: 32px; border-radius: 9px; border: none; cursor: pointer; transition: all .2s; font-size: 13px; }
@@ -1664,6 +1677,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         <div class="section-header">
           <div class="section-title"><i class="fas fa-bag-shopping" style="color:var(--rose)"></i> Productos Vendidos</div>
           <div class="inventory-controls">
+            <div class="sold-sort-group">
+              <button id="sold-sort-qty" class="sold-sort-btn active" onclick="setSoldSort('qty')"><i class="fas fa-fire"></i> Más vendidos</button>
+              <button id="sold-sort-revenue" class="sold-sort-btn" onclick="setSoldSort('revenue')"><i class="fas fa-sack-dollar"></i> Ingresos</button>
+              <button id="sold-sort-profit" class="sold-sort-btn" onclick="setSoldSort('profit')"><i class="fas fa-chart-line"></i> Ganancia</button>
+            </div>
             <div class="search-input-wrap">
               <i class="fas fa-search"></i>
               <input type="text" class="search-input" id="sold-search" placeholder="Buscar producto..." oninput="renderSoldProducts()">
@@ -3922,28 +3940,57 @@ function closeSaleModal() { document.getElementById('sale-modal').classList.remo
 // ============================================
 // PRODUCTOS VENDIDOS
 // ============================================
+let soldSortBy = 'qty'; // 'qty' | 'revenue' | 'profit'
+
+// Normaliza nombres para poder emparejar aunque haya espacios/mayúsculas distintas
+function _normName(s) { return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+
+// Busca el producto real detrás de un item vendido: primero por productId
+// (fuente confiable, no se rompe si luego renombras/editas el producto),
+// y si no existe (ventas antiguas), cae a un match por nombre normalizado.
+function _findSoldProduct(it) {
+  if (it.productId != null) {
+    const byId = products.find(p => String(p.id) === String(it.productId));
+    if (byId) return byId;
+  }
+  const target = _normName(it.name);
+  return products.find(p => _normName(p.name) === target);
+}
+
+function setSoldSort(mode) {
+  soldSortBy = mode;
+  renderSoldProducts();
+}
+
 function renderSoldProducts() {
   // Construir mapa de productos vendidos desde órdenes confirmadas
   const soldMap = {};
   orders.filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
-      const key = it.name;
-      if (!soldMap[key]) soldMap[key] = { name: it.name, totalQty: 0, totalRevenue: 0, totalProfit: 0, sizes: {} };
-      const prod = products.find(p => p.name === it.name);
-      const sizeObj = prod?.sizes?.find(s => s.size === it.size);
-      const cost = sizeObj?.cost || 0;
+      const key = it.productId != null ? 'id:'+it.productId : 'name:'+_normName(it.name);
+      const prod = _findSoldProduct(it);
+      if (!soldMap[key]) soldMap[key] = { name: prod?.name || it.name, totalQty: 0, totalRevenue: 0, totalProfit: 0, sizes: {} };
+      const sizeObj = prod?.sizes?.find(s => _normName(s.size) === _normName(it.size));
+      // Costo: prioriza el costo guardado en la venta (snapshot al momento de vender);
+      // si no existe (ventas antiguas), usa el costo actual de la talla del producto.
+      const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
       const price = it.price || sizeObj?.price || 0;
       const qty = it.qty || 1;
       soldMap[key].totalQty += qty;
       soldMap[key].totalRevenue += price * qty;
       soldMap[key].totalProfit += (price - cost) * qty;
       if (it.size) soldMap[key].sizes[it.size] = (soldMap[key].sizes[it.size]||0) + qty;
-      // Guardar ref al producto para imagen/categorías
-      if (!soldMap[key]._prod) soldMap[key]._prod = prod;
+      // Guardar ref al producto (siempre el más reciente encontrado) para imagen/categorías
+      if (prod) soldMap[key]._prod = prod;
     });
   });
 
-  const soldList = Object.values(soldMap).sort((a,b) => b.totalQty - a.totalQty);
+  const soldList = Object.values(soldMap);
+  const sortFn = soldSortBy === 'revenue' ? (a,b) => b.totalRevenue - a.totalRevenue
+               : soldSortBy === 'profit'  ? (a,b) => b.totalProfit - a.totalProfit
+               : (a,b) => b.totalQty - a.totalQty;
+  soldList.sort(sortFn);
+
   const search = (document.getElementById('sold-search')?.value||'').toLowerCase();
   const filtered = search ? soldList.filter(s => s.name.toLowerCase().includes(search)) : soldList;
 
@@ -3951,13 +3998,19 @@ function renderSoldProducts() {
   const totalCount = soldList.reduce((a,s) => a+s.totalQty, 0);
   const totalRevenue = soldList.reduce((a,s) => a+s.totalRevenue, 0);
   const totalProfit = soldList.reduce((a,s) => a+s.totalProfit, 0);
-  const top = soldList[0];
+  const topByQty = [...soldList].sort((a,b) => b.totalQty - a.totalQty)[0];
   document.getElementById('sold-total-count').textContent = totalCount;
   document.getElementById('sold-total-revenue').textContent = 'S/ '+totalRevenue.toFixed(2);
   document.getElementById('sold-total-profit').textContent = 'S/ '+totalProfit.toFixed(2);
-  document.getElementById('sold-top-product').textContent = top?.name || '—';
-  document.getElementById('sold-top-units').textContent = top ? top.totalQty+' unidades' : '';
+  document.getElementById('sold-top-product').textContent = topByQty?.name || '—';
+  document.getElementById('sold-top-units').textContent = topByQty ? topByQty.totalQty+' unidades' : '';
   document.getElementById('badge-sold-products').textContent = soldList.length;
+
+  // Marcar botones de orden activos
+  ['qty','revenue','profit'].forEach(m => {
+    const btn = document.getElementById('sold-sort-'+m);
+    if (btn) btn.classList.toggle('active', soldSortBy === m);
+  });
 
   const grid = document.getElementById('sold-products-grid');
   if (!grid) return;
@@ -3965,14 +4018,23 @@ function renderSoldProducts() {
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🛍️</div><h3>Sin productos vendidos aún</h3><p>Las ventas confirmadas aparecerán aquí.</p></div>`;
     return;
   }
-  grid.innerHTML = filtered.map(s => {
+
+  const maxQty = Math.max(1, ...filtered.map(s => s.totalQty));
+  const medals = ['🥇','🥈','🥉'];
+  const rankColors = ['#D4AF37','#B7C1CC','#C98A4B'];
+
+  grid.innerHTML = filtered.map((s, i) => {
     const prod = s._prod;
     const img = prod?.images?.[0] || prod?.image || '';
     const cats = (prod?.categories||[]).slice(0,1).join(', ');
+    const margin = s.totalRevenue > 0 ? (s.totalProfit / s.totalRevenue * 100) : 0;
+    const isTop3 = i < 3;
+    const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
     const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
-    return `<div class="product-card">
+    return `<div class="product-card sold-card${isTop3?' top3':''}" ${isTop3?`style="border-color:${rankColors[i]}66;"`:''}>
       <div class="product-card-img">
-        ${img ? `<img src="${img}" alt="${s.name}" onerror="this.style.display='none'">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">👗</div>'}
+        ${img ? `<img src="${img}" alt="${s.name}" onerror="this.onerror=null;this.src='';this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;\\'>👗</div>')">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">👗</div>'}
+        ${isTop3 ? `<div class="rank-badge" style="background:${rankColors[i]};">${medals[i]} #${i+1}</div>` : ''}
         <div class="product-card-badge" style="background:var(--green);color:#fff;">Vendido</div>
       </div>
       <div class="product-card-body">
@@ -3982,6 +4044,10 @@ function renderSoldProducts() {
           <div class="metric-item"><div class="metric-label">Unidades</div><div class="metric-val rose">${s.totalQty}</div></div>
           <div class="metric-item"><div class="metric-label">Ingresos</div><div class="metric-val orange">S/${s.totalRevenue.toFixed(2)}</div></div>
           <div class="metric-item"><div class="metric-label">Ganancia</div><div class="metric-val green">S/${s.totalProfit.toFixed(2)}</div></div>
+        </div>
+        <div class="sold-progress-wrap">
+          <div class="sold-progress-bar"><div class="sold-progress-fill" style="width:${barPct}%;background:${isTop3?rankColors[i]:'var(--rose)'};"></div></div>
+          <span class="sold-margin-tag">Margen ${margin.toFixed(0)}%</span>
         </div>
         ${sizesHtml ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${sizesHtml}</div>` : ''}
       </div>
@@ -4090,7 +4156,7 @@ async function saveManualSale() {
     destination: document.getElementById('ms-destination').value.trim(),
     payment_method: document.getElementById('ms-method').value,
     note: noteTxt,
-    items: [{ name: p.name, size, price, qty }],
+    items: [{ productId: p.id, name: p.name, size, price, qty, cost: (p.sizes?.find(s => s.size === size)?.cost || 0) }],
     total: totalVal,
     adelanto: adelantoVal,
     deuda: deudaVal,
