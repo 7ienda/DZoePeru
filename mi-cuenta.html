@@ -403,6 +403,22 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .sold-link-box { margin-top: 10px; padding: 9px 10px; background: var(--orange-light); border: 1.5px dashed var(--orange); border-radius: 10px; font-size: 10.5px; font-weight: 700; color: #8a5a0a; }
 .sold-link-box i { margin-right: 4px; }
 .sold-link-box select { width: 100%; margin-top: 6px; padding: 7px 8px; border-radius: 8px; border: 1.5px solid var(--line2); font-size: 11.5px; font-weight: 600; color: var(--text); background: #fff; cursor: pointer; }
+.sold-link-title { display: flex; align-items: center; gap: 5px; }
+.sold-link-suggestions { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.sold-suggest-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; background: #fff; border: 1.5px solid var(--line2); border-radius: 9px; cursor: pointer; text-align: left; font-size: 11.5px; font-weight: 700; color: var(--text); transition: border-color .15s, background .15s; }
+.sold-suggest-btn:hover { border-color: var(--rose); background: var(--rose-soft); }
+.sold-suggest-btn img { width: 26px; height: 26px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.sold-suggest-btn span:first-of-type { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sold-suggest-score { background: var(--mint-light); color: #1a6b4c; font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 99px; flex-shrink: 0; }
+.sold-link-search { display: flex; align-items: center; gap: 6px; margin-top: 9px; padding: 7px 9px; background: #fff; border: 1.5px solid var(--line2); border-radius: 9px; }
+.sold-link-search input { border: none; outline: none; font-size: 11.5px; font-weight: 600; color: var(--text); width: 100%; background: transparent; }
+.sold-link-results { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; max-height: 160px; overflow-y: auto; }
+.sold-result-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 5px 7px; background: #fff; border: 1.5px solid var(--line2); border-radius: 8px; cursor: pointer; text-align: left; font-size: 11px; font-weight: 600; color: var(--text); }
+.sold-result-btn:hover { border-color: var(--rose); background: var(--rose-soft); }
+.sold-result-btn img, .sold-result-noimg { width: 22px; height: 22px; border-radius: 5px; object-fit: cover; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--bg2); font-size: 12px; }
+.sold-link-noresult { font-size: 10.5px; color: var(--muted); padding: 4px 2px; }
+.sold-relink-toggle { margin-top: 9px; font-size: 10px; font-weight: 700; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: color .15s; }
+.sold-relink-toggle:hover { color: var(--rose-dark); }
 .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid var(--line2); }
 .product-price { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--rose); }
 .icon-btn { width: 32px; height: 32px; border-radius: 9px; border: none; cursor: pointer; transition: all .2s; font-size: 13px; }
@@ -3960,6 +3976,54 @@ function _findSoldProduct(it) {
   return products.find(p => _normName(p.name) === target);
 }
 
+// Similitud aproximada entre dos nombres (0 a 1): coincidencia exacta, contención,
+// palabras en común y solape de bigramas (para detectar renombres/typos parciales).
+function _similarity(a, b) {
+  const na = _normName(a), nb = _normName(b);
+  if (!na || !nb) return 0;
+  if (na === nb) return 1;
+  if (na.includes(nb) || nb.includes(na)) return 0.85;
+  const wa = na.split(' ').filter(Boolean);
+  const wb = nb.split(' ').filter(Boolean);
+  const setB = new Set(wb);
+  const common = wa.filter(w => setB.has(w)).length;
+  const wordScore = common / Math.max(wa.length, wb.length, 1);
+  const bigrams = str => { const set = new Set(); for (let i=0;i<str.length-1;i++) set.add(str.slice(i,i+2)); return set; };
+  const ba = bigrams(na), bb = bigrams(nb);
+  let inter = 0; ba.forEach(g => { if (bb.has(g)) inter++; });
+  const charScore = inter / Math.max(ba.size, bb.size, 1);
+  return Math.max(wordScore, charScore * 0.9);
+}
+
+// Escapa comillas simples/backslashes para poder embeber un string de forma segura
+// dentro de un atributo onclick/oninput con comillas simples (ej: nombres con apóstrofe)
+function _escJs(s) { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function toggleLinkBox(key) {
+  const box = document.getElementById('link-box-'+key);
+  if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+// Filtra productos en vivo mientras el usuario escribe, para el buscador manual
+function filterLinkOptions(key, query) {
+  const resultsEl = document.getElementById('link-results-'+key);
+  if (!resultsEl) return;
+  const q = _normName(query);
+  if (!q) { resultsEl.innerHTML = ''; return; }
+  const matches = products.filter(p => _normName(p.name).includes(q)).slice(0, 8);
+  if (!matches.length) {
+    resultsEl.innerHTML = `<div class="sold-link-noresult">Sin coincidencias</div>`;
+    return;
+  }
+  resultsEl.innerHTML = matches.map(p => {
+    const pimg = p.images?.[0] || p.image || '';
+    return `<button class="sold-result-btn" onclick="linkSoldProduct('${_escJs(key)}','${p.id}')">
+      ${pimg ? `<img src="${pimg}" onerror="this.remove()">` : '<span class="sold-result-noimg">👗</span>'}
+      <span>${p.name}</span>
+    </button>`;
+  }).join('');
+}
+
 function setSoldSort(mode) {
   soldSortBy = mode;
   renderSoldProducts();
@@ -4075,14 +4139,40 @@ function renderSoldProducts() {
     const isTop3 = i < 3;
     const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
     const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
+
+    // Sugerencias inteligentes por similitud de nombre (para productos huérfanos/renombrados)
+    const suggestions = !prod ? products
+      .map(p => ({ p, score: _similarity(s.name, p.name) }))
+      .filter(x => x.score > 0.18)
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 3) : [];
+
+    const searchBoxHtml = `
+        <div class="sold-link-search">
+          <i class="fas fa-search" style="color:var(--muted);font-size:10px;"></i>
+          <input type="text" placeholder="Buscar producto por nombre..." oninput="filterLinkOptions('${_escJs(s._key)}', this.value)">
+        </div>
+        <div class="sold-link-results" id="link-results-${s._key}"></div>`;
+
     const linkPicker = !prod ? `
         <div class="sold-link-box">
-          <i class="fas fa-triangle-exclamation"></i> Sin vincular — el producto cambió de nombre/foto
-          <select onchange="linkSoldProduct('${s._key}', this.value)">
-            <option value="">Elegir producto actual...</option>
-            ${products.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
-          </select>
-        </div>` : '';
+          <div class="sold-link-title"><i class="fas fa-triangle-exclamation"></i> Sin vincular — el producto cambió de nombre/foto</div>
+          ${suggestions.length ? `<div class="sold-link-suggestions">
+            ${suggestions.map(({p,score}) => {
+              const pimg = p.images?.[0] || p.image || '';
+              return `<button class="sold-suggest-btn" onclick="linkSoldProduct('${_escJs(s._key)}','${p.id}')">
+                ${pimg ? `<img src="${pimg}" onerror="this.remove()">` : ''}
+                <span>${p.name}</span>
+                <span class="sold-suggest-score">${Math.round(score*100)}%</span>
+              </button>`;
+            }).join('')}
+          </div>` : ''}
+          ${searchBoxHtml}
+        </div>` : `
+        <div class="sold-relink-toggle" onclick="toggleLinkBox('${_escJs(s._key)}')"><i class="fas fa-link"></i> ¿Vínculo equivocado? Cambiar producto</div>
+        <div class="sold-link-box" id="link-box-${s._key}" style="display:none;">
+          ${searchBoxHtml}
+        </div>`;
     return `<div class="product-card sold-card${isTop3?' top3':''}" ${isTop3?`style="border-color:${rankColors[i]}66;"`:''}>
       <div class="product-card-img">
         ${img ? `<img src="${img}" alt="${s.name}" onerror="this.onerror=null;this.src='';this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;\\'>👗</div>')">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;">👗</div>'}
