@@ -3978,6 +3978,11 @@ function _findSoldProduct(it) {
 
 // Similitud aproximada entre dos nombres (0 a 1): coincidencia exacta, contención,
 // palabras en común y solape de bigramas (para detectar renombres/typos parciales).
+// Un producto es candidato "vendido" si al menos una de sus tallas quedó en 0 stock
+function _hasZeroStockSize(p) {
+  return (p.sizes||[]).some(sz => Number(sz.stock) === 0);
+}
+
 function _similarity(a, b) {
   const na = _normName(a), nb = _normName(b);
   if (!na || !nb) return 0;
@@ -4010,9 +4015,9 @@ function filterLinkOptions(key, query) {
   if (!resultsEl) return;
   const q = _normName(query);
   if (!q) { resultsEl.innerHTML = ''; return; }
-  const matches = products.filter(p => _normName(p.name).includes(q)).slice(0, 8);
+  const matches = products.filter(p => _hasZeroStockSize(p) && _normName(p.name).includes(q)).slice(0, 8);
   if (!matches.length) {
-    resultsEl.innerHTML = `<div class="sold-link-noresult">Sin coincidencias</div>`;
+    resultsEl.innerHTML = `<div class="sold-link-noresult">Sin coincidencias con talla agotada</div>`;
     return;
   }
   resultsEl.innerHTML = matches.map(p => {
@@ -4140,8 +4145,10 @@ function renderSoldProducts() {
     const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
     const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
 
-    // Sugerencias inteligentes por similitud de nombre (para productos huérfanos/renombrados)
+    // Sugerencias inteligentes por similitud de nombre (solo entre productos con
+    // alguna talla agotada, ya que ese es el candidato lógico a haberse vendido)
     const suggestions = !prod ? products
+      .filter(_hasZeroStockSize)
       .map(p => ({ p, score: _similarity(s.name, p.name) }))
       .filter(x => x.score > 0.18)
       .sort((a,b) => b.score - a.score)
@@ -4150,7 +4157,7 @@ function renderSoldProducts() {
     const searchBoxHtml = `
         <div class="sold-link-search">
           <i class="fas fa-search" style="color:var(--muted);font-size:10px;"></i>
-          <input type="text" placeholder="Buscar producto por nombre..." oninput="filterLinkOptions('${_escJs(s._key)}', this.value)">
+          <input type="text" placeholder="Buscar por nombre (solo con talla agotada)..." oninput="filterLinkOptions('${_escJs(s._key)}', this.value)">
         </div>
         <div class="sold-link-results" id="link-results-${s._key}"></div>`;
 
