@@ -514,6 +514,44 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .btn-sm { padding: 6px 14px !important; font-size: 12px !important; }
 .status-select { padding: 5px 9px; border-radius: 9px; font-size: 12px; border: 1.5px solid var(--line); font-family: 'Nunito', sans-serif; cursor: pointer; font-weight: 700; }
 
+/* ============================================
+   CLIENTES — PREMIUM
+   ============================================ */
+.cli-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.cli-chip { display: inline-flex; align-items: center; gap: 7px; padding: 9px 17px; border-radius: 99px; border: 1.5px solid var(--line); background: var(--card); color: var(--text2); font-family: 'Nunito', sans-serif; font-size: 12.5px; font-weight: 800; cursor: pointer; transition: all .22s; white-space: nowrap; }
+.cli-chip:hover { border-color: var(--rose); color: var(--rose-dark); transform: translateY(-1px); }
+.cli-chip.active { background: var(--rose-dark); border-color: var(--rose-dark); color: #fff; box-shadow: 0 8px 20px rgba(138,111,170,.32); }
+.cli-chip .cli-chip-count { background: rgba(0,0,0,.12); padding: 1px 8px; border-radius: 99px; font-size: 10.5px; }
+.cli-chip.active .cli-chip-count { background: rgba(255,255,255,.25); }
+
+.avatar-circle { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--rose), var(--rose-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 15px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(138,111,170,.3); }
+.avatar-circle.vip { background: linear-gradient(135deg, #f0b840, #c98a12); box-shadow: 0 4px 12px rgba(201,138,18,.35); }
+.cli-name-cell { display: flex; align-items: center; gap: 11px; }
+
+.badge-vip { display: inline-flex; align-items: center; gap: 4px; background: linear-gradient(135deg, #fdeec4, #f6dc9a); color: #93690a; font-size: 9.5px; font-weight: 900; padding: 2px 9px 2px 7px; border-radius: 99px; letter-spacing: .04em; text-transform: uppercase; box-shadow: 0 2px 6px rgba(201,138,18,.25); }
+.badge-bolsita { display: inline-flex; align-items: center; gap: 4px; background: var(--sky-light); color: #1476a8; font-size: 9.5px; font-weight: 900; padding: 2px 9px; border-radius: 99px; letter-spacing: .03em; text-transform: uppercase; }
+.badge-recurrente { display: inline-flex; align-items: center; gap: 4px; background: var(--lav-light); color: var(--lavender); font-size: 9.5px; font-weight: 900; padding: 2px 9px; border-radius: 99px; letter-spacing: .03em; text-transform: uppercase; }
+
+.cli-progress-wrap { width: 100%; min-width: 110px; }
+.cli-progress-bar { height: 7px; background: var(--bg2); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.cli-progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--mint), #4fae8a); transition: width .4s ease; }
+.cli-progress-label { font-size: 10.5px; font-weight: 700; color: var(--muted); display: flex; justify-content: space-between; }
+
+.client-row-vip td:first-child { box-shadow: inset 3px 0 0 #d8a020; }
+
+/* Modal detalle de cliente */
+#client-detail-modal .modal { max-width: 620px; }
+.cli-detail-head { display: flex; align-items: center; gap: 16px; padding: 4px 0 18px; border-bottom: 1.5px solid var(--line2); margin-bottom: 18px; }
+.cli-detail-avatar { width: 62px; height: 62px; border-radius: 20px; background: linear-gradient(135deg, var(--rose), var(--rose-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 24px; flex-shrink: 0; box-shadow: 0 8px 20px rgba(138,111,170,.35); }
+.cli-detail-avatar.vip { background: linear-gradient(135deg, #f0b840, #c98a12); box-shadow: 0 8px 20px rgba(201,138,18,.4); }
+.cli-mini-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
+.cli-mini-stat { background: var(--bg2); border-radius: 14px; padding: 12px 14px; text-align: center; }
+.cli-mini-stat .lbl { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.cli-mini-stat .val { font-family: 'Baloo 2', cursive; font-size: 18px; font-weight: 800; color: var(--text); }
+.cli-bolsita-card { border: 1.5px solid var(--line2); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; background: var(--card); }
+.cli-bolsita-card.open { border-color: var(--sky); background: var(--sky-light); }
+.cli-bolsita-items { font-size: 12px; color: var(--text2); margin: 6px 0 10px; line-height: 1.5; }
+
 /* Sales filters */
 .sales-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .sales-stat { background: var(--bg); border-radius: 14px; padding: 12px 18px; border: 1.5px solid var(--line2); display: flex; flex-direction: column; gap: 4px; }
@@ -1867,20 +1905,32 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
     <!-- ====== CLIENTES ====== -->
     <div id="clients-section" class="page-section" style="display:none;">
-      <div class="stats-grid" style="margin-bottom:24px;">
+      <div class="stats-grid" style="margin-bottom:20px;">
         <div class="stat-card">
           <div class="stat-card-icon"><i class="fas fa-users"></i></div>
           <h3>Total Clientes</h3>
           <div class="stat-value" id="cli-total">0</div>
           <div class="stat-change">Clientes únicos</div>
         </div>
-        <div class="stat-card green">
-          <div class="stat-card-icon"><i class="fas fa-crown"></i></div>
-          <h3>Mejor Cliente</h3>
-          <div class="stat-value" style="font-size:18px;" id="cli-best">—</div>
-          <div class="stat-change" id="cli-best-amt"></div>
+        <div class="stat-card" style="border-left:4px solid var(--sky);">
+          <div class="stat-card-icon" style="background:var(--sky-light);color:var(--sky);"><i class="fas fa-shopping-bag"></i></div>
+          <h3>Bolsitas Activas</h3>
+          <div class="stat-value" id="cli-bolsitas" style="color:#1476a8;">0</div>
+          <div class="stat-change">Apartados en curso (TikTok Live)</div>
         </div>
         <div class="stat-card orange">
+          <div class="stat-card-icon"><i class="fas fa-hand-holding-dollar"></i></div>
+          <h3>Por Cobrar</h3>
+          <div class="stat-value" id="cli-porcobrar">S/ 0</div>
+          <div class="stat-change">Saldo pendiente de bolsitas</div>
+        </div>
+        <div class="stat-card" style="border-left:4px solid #d8a020;">
+          <div class="stat-card-icon" style="background:linear-gradient(135deg,#fdeec4,#f6dc9a);color:#93690a;"><i class="fas fa-crown"></i></div>
+          <h3>Clientas VIP</h3>
+          <div class="stat-value" id="cli-vip" style="color:#93690a;">0</div>
+          <div class="stat-change">Top compradoras</div>
+        </div>
+        <div class="stat-card green">
           <div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div>
           <h3>Total Recaudado</h3>
           <div class="stat-value" id="cli-revenue">S/ 0</div>
@@ -1893,6 +1943,23 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div class="stat-change">Con más de 1 compra</div>
         </div>
       </div>
+
+      <div style="background:var(--card);border:1.5px solid var(--line2);border-radius:16px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px;">
+        <div style="width:38px;height:38px;border-radius:11px;background:var(--sky-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-crown" style="color:#c98a12;"></i></div>
+        <div style="font-size:12px;color:var(--muted);flex:1;">
+          <strong style="color:var(--text2);">Mejor Cliente:</strong> <span id="cli-best">—</span>
+          <span id="cli-best-amt" style="color:var(--rose);font-weight:800;margin-left:6px;"></span>
+        </div>
+      </div>
+
+      <div class="cli-filters">
+        <button class="cli-chip active" data-filter="all" onclick="setClientsFilter('all',this)"><i class="fas fa-users"></i> Todos <span class="cli-chip-count" id="cnt-all">0</span></button>
+        <button class="cli-chip" data-filter="bolsita" onclick="setClientsFilter('bolsita',this)"><i class="fas fa-shopping-bag"></i> Con bolsita abierta <span class="cli-chip-count" id="cnt-bolsita">0</span></button>
+        <button class="cli-chip" data-filter="deudor" onclick="setClientsFilter('deudor',this)"><i class="fas fa-clock"></i> Deudores <span class="cli-chip-count" id="cnt-deudor">0</span></button>
+        <button class="cli-chip" data-filter="vip" onclick="setClientsFilter('vip',this)"><i class="fas fa-crown"></i> VIP <span class="cli-chip-count" id="cnt-vip">0</span></button>
+        <button class="cli-chip" data-filter="recurrente" onclick="setClientsFilter('recurrente',this)"><i class="fas fa-repeat"></i> Recurrentes <span class="cli-chip-count" id="cnt-recurrente">0</span></button>
+      </div>
+
       <div class="section">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-users" style="color:var(--rose)"></i> Clientes</div>
@@ -1907,11 +1974,27 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div class="table-wrap">
             <table class="orders-table">
               <thead>
-                <tr><th>DNI</th><th>Nombre</th><th>Apellido</th><th>WhatsApp</th><th>Destino</th><th>Compras</th><th>Total Invertido</th><th>Último pedido</th><th>Acciones</th></tr>
+                <tr><th>Cliente</th><th>DNI</th><th>WhatsApp</th><th>Destino</th><th>Compras</th><th>Total Invertido</th><th>Bolsita / Saldo</th><th>Último pedido</th><th>Acciones</th></tr>
               </thead>
               <tbody id="clients-table-body"></tbody>
             </table>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== MODAL: DETALLE DE CLIENTE ====== -->
+    <div class="modal-overlay" id="client-detail-modal">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title"><i class="fas fa-id-card" style="color:var(--rose);"></i> Ficha de Cliente</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Historial completo, bolsitas y abonos</div>
+          </div>
+          <button class="modal-close" onclick="closeClientDetailModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="client-detail-body">
+          <!-- se llena dinámicamente -->
         </div>
       </div>
     </div>
@@ -5703,6 +5786,10 @@ async function removeRibbonFromProduct(pid) {
 // ============================================
 // CLIENTES (auto desde ventas)
 // ============================================
+// Umbral para considerar una clienta VIP (ajustable según tu negocio)
+const CLIENT_VIP_TOTAL = 300;   // S/ invertidos en total
+const CLIENT_VIP_COUNT = 5;     // o cantidad de compras
+
 function buildClientsFromOrders() {
   const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
   const map = {};
@@ -5711,16 +5798,27 @@ function buildClientsFromOrders() {
     if (!map[key]) {
       map[key] = {
         dni: o.dni||'', name: o.name||'', lastname: o.lastname||'',
-        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null, destino: o.destination||o.destino||'', _key: key
+        phone: o.phone||o.whatsapp||'', total: 0, count: 0, lastDate: null, destino: o.destination||o.destino||'', _key: key,
+        orders: [], deudaTotal: 0, adelantoBolsita: 0, bolsitaTotal: 0, bolsitasCount: 0
       };
     }
     map[key].total += parseFloat(o.total)||0;
     map[key].count += 1;
+    map[key].orders.push(o);
     const d = o.created_at ? new Date(o.created_at) : null;
     if (d && (!map[key].lastDate || d > map[key].lastDate)) map[key].lastDate = d;
     // prefer whatsapp if available
     if (o.whatsapp && o.whatsapp.trim()) map[key].phone = o.whatsapp.trim();
     if (o.destination || o.destino) map[key].destino = o.destination || o.destino;
+    // Bolsita activa: pedido con adelanto registrado y saldo pendiente (fiado por TikTok Live u otro)
+    const deuda = parseFloat(o.deuda)||0;
+    const adelanto = parseFloat(o.adelanto)||0;
+    if (deuda > 0 && o.status !== 'cancelled') {
+      map[key].deudaTotal += deuda;
+      map[key].adelantoBolsita += adelanto;
+      map[key].bolsitaTotal += (parseFloat(o.total)||0);
+      map[key].bolsitasCount += 1;
+    }
   });
   // Apply overrides
   Object.values(map).forEach(cl => {
@@ -5734,25 +5832,68 @@ function buildClientsFromOrders() {
       if (ov.nota) cl.nota = ov.nota;
       cl._overridden = true;
     }
+    cl.hasBolsita = cl.bolsitasCount > 0;
+    cl.isVIP = cl.total >= CLIENT_VIP_TOTAL || cl.count >= CLIENT_VIP_COUNT;
+    cl.isRecurrente = cl.count > 1;
+    // Pedidos ordenados del más reciente al más antiguo
+    cl.orders.sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
   });
   return Object.values(map).sort((a,b) => b.total - a.total);
+}
+
+let clientsCurrentFilter = 'all';
+function setClientsFilter(filter, btnEl) {
+  clientsCurrentFilter = filter;
+  document.querySelectorAll('.cli-chip').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  renderClientsSection();
+}
+
+function initialsOf(name, lastname) {
+  const a = (name||'').trim().charAt(0);
+  const b = (lastname||'').trim().charAt(0);
+  return ((a+b) || (name||'?').charAt(0) || '?').toUpperCase();
 }
 
 function renderClientsSection() {
   const clients = buildClientsFromOrders();
   const search = (document.getElementById('clients-search')?.value||'').toLowerCase();
-  const filtered = clients.filter(cl =>
+
+  const bySearch = clients.filter(cl =>
     !search ||
     `${cl.name} ${cl.lastname}`.toLowerCase().includes(search) ||
     cl.dni.includes(search) ||
     cl.phone.includes(search)
   );
 
-  // Stats
+  // Contadores para los chips (sobre el resultado de la búsqueda)
+  const counts = {
+    all: bySearch.length,
+    bolsita: bySearch.filter(c => c.hasBolsita).length,
+    deudor: bySearch.filter(c => c.deudaTotal > 0).length,
+    vip: bySearch.filter(c => c.isVIP).length,
+    recurrente: bySearch.filter(c => c.isRecurrente).length
+  };
+  Object.keys(counts).forEach(k => { const el = document.getElementById('cnt-'+k); if (el) el.textContent = counts[k]; });
+
+  let filtered = bySearch;
+  if (clientsCurrentFilter === 'bolsita') filtered = bySearch.filter(c => c.hasBolsita);
+  else if (clientsCurrentFilter === 'deudor') filtered = bySearch.filter(c => c.deudaTotal > 0);
+  else if (clientsCurrentFilter === 'vip') filtered = bySearch.filter(c => c.isVIP);
+  else if (clientsCurrentFilter === 'recurrente') filtered = bySearch.filter(c => c.isRecurrente);
+
+  // Stats generales (sobre todos los clientes, no solo el filtro)
   const totalRevenue = clients.reduce((a,c) => a+c.total, 0);
   const best = clients[0];
-  const recurring = clients.filter(c => c.count > 1).length;
+  const recurring = clients.filter(c => c.isRecurrente).length;
+  const bolsitasActivas = clients.filter(c => c.hasBolsita).length;
+  const porCobrar = clients.reduce((a,c) => a+c.deudaTotal, 0);
+  const vipCount = clients.filter(c => c.isVIP).length;
+
   document.getElementById('cli-total').textContent = clients.length;
+  document.getElementById('cli-bolsitas').textContent = bolsitasActivas;
+  document.getElementById('cli-porcobrar').textContent = 'S/ '+porCobrar.toFixed(2);
+  document.getElementById('cli-vip').textContent = vipCount;
   document.getElementById('cli-best').textContent = best ? `${best.name} ${best.lastname}`.trim()||'—' : '—';
   document.getElementById('cli-best-amt').textContent = best ? `S/ ${best.total.toFixed(2)}` : '';
   document.getElementById('cli-revenue').textContent = 'S/ '+totalRevenue.toFixed(2);
@@ -5763,25 +5904,47 @@ function renderClientsSection() {
   const body = document.getElementById('clients-table-body');
   if (!body) return;
   if (!filtered.length) {
-    body.innerHTML = `<tr><td colspan="8"><div class="empty-state" style="padding:40px;text-align:center;"><div class="empty-icon">👥</div><h3>Sin clientes aún</h3><p>Los clientes aparecen automáticamente desde las ventas.</p></div></td></tr>`;
+    body.innerHTML = `<tr><td colspan="9"><div class="empty-state" style="padding:40px;text-align:center;"><div class="empty-icon">👥</div><h3>Sin clientes en este filtro</h3><p>Prueba con otro filtro o revisa tu búsqueda.</p></div></td></tr>`;
     return;
   }
   body.innerHTML = filtered.map(cl => {
     const lastDate = cl.lastDate ? cl.lastDate.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
     const waUrl = cl.phone ? `https://wa.me/51${cl.phone.replace(/^51/,'')}?text=${encodeURIComponent(`Hola ${cl.name}, somos D'Zoe Perú 👗`)}` : '';
-    return `<tr>
+    const pct = cl.bolsitaTotal > 0 ? Math.min(100, Math.round((cl.adelantoBolsita/cl.bolsitaTotal)*100)) : 0;
+    const bolsitaCell = cl.hasBolsita
+      ? `<div class="cli-progress-wrap">
+           <span class="badge-bolsita"><i class="fas fa-shopping-bag"></i> ${cl.bolsitasCount} bolsita${cl.bolsitasCount>1?'s':''}</span>
+           <div class="cli-progress-bar"><div class="cli-progress-fill" style="width:${pct}%;"></div></div>
+           <div class="cli-progress-label"><span>Abonó S/ ${cl.adelantoBolsita.toFixed(2)}</span><span style="color:var(--orange);">Debe S/ ${cl.deudaTotal.toFixed(2)}</span></div>
+         </div>`
+      : `<span style="color:var(--muted);font-size:12px;">Sin bolsita</span>`;
+    return `<tr class="${cl.isVIP?'client-row-vip':''}">
+      <td>
+        <div class="cli-name-cell">
+          <div class="avatar-circle ${cl.isVIP?'vip':''}">${initialsOf(cl.name,cl.lastname)}</div>
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <strong>${cl.name||'—'} ${cl.lastname||''}</strong>
+              ${cl._overridden?'<span style="font-size:9px;background:var(--lav-light);color:var(--lavender);padding:1px 6px;border-radius:99px;font-weight:700;">Editado</span>':''}
+            </div>
+            <div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap;">
+              ${cl.isVIP?'<span class="badge-vip"><i class="fas fa-crown"></i> VIP</span>':''}
+              ${cl.isRecurrente?'<span class="badge-recurrente"><i class="fas fa-repeat"></i> Recurrente</span>':''}
+            </div>
+          </div>
+        </div>
+      </td>
       <td><span style="font-family:monospace;font-size:12px;background:var(--bg2);padding:2px 8px;border-radius:6px;">${cl.dni||'—'}</span></td>
-      <td><strong>${cl.name||'—'}</strong>${cl._overridden?'<span style="font-size:9px;background:var(--lav-light);color:var(--lavender);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700;">Editado</span>':''}</td>
-      <td>${cl.lastname||'—'}</td>
       <td>${cl.phone ? `<a href="${waUrl}" target="_blank" style="color:var(--green);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px;"><i class="fab fa-whatsapp"></i> ${cl.phone}</a>` : '—'}</td>
       <td>${cl.destino ? `<span style="background:var(--sky-light);color:var(--sky);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;"><i class="fas fa-location-dot"></i> ${cl.destino}</span>` : '<span style="color:var(--muted);font-size:12px;">—</span>'}</td>
       <td style="text-align:center;"><span style="background:var(--blue-light);color:var(--blue);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${cl.count}</span></td>
       <td><span style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--rose);">S/ ${cl.total.toFixed(2)}</span>${cl.nota?`<div style="font-size:10px;color:var(--muted);margin-top:2px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${cl.nota}">📝 ${cl.nota}</div>`:''}</td>
+      <td>${bolsitaCell}</td>
       <td style="font-size:12px;color:var(--muted);">${lastDate}</td>
       <td>
         <div style="display:flex;gap:5px;">
+          <button class="icon-btn" style="background:var(--rose-xlight);color:var(--rose-dark);" onclick="openClientDetailModal('${cl._key}')" title="Ver ficha completa"><i class="fas fa-eye"></i></button>
           ${waUrl ? `<a href="${waUrl}" target="_blank" class="icon-btn" style="background:#dcfce7;color:#16a34a;display:flex;align-items:center;justify-content:center;text-decoration:none;" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
-          <button class="icon-btn edit-btn" onclick="filterSalesByClient('${cl.dni||cl.phone}')" title="Ver pedidos"><i class="fas fa-receipt"></i></button>
           <button class="icon-btn" style="background:var(--lav-light);color:var(--lavender);" onclick="openEditClientModal('${cl._key}')" title="Editar cliente"><i class="fas fa-user-pen"></i></button>
         </div>
       </td>
@@ -5794,6 +5957,74 @@ function filterSalesByClient(key) {
   const inp = document.getElementById('sales-search');
   if (inp) { inp.value = key; filterSales(); }
 }
+
+// ============================================
+// FICHA / DETALLE DE CLIENTE (bolsitas + historial)
+// ============================================
+function openClientDetailModal(key) {
+  const clients = buildClientsFromOrders();
+  const cl = clients.find(c => c._key === key);
+  if (!cl) return;
+  const waUrl = cl.phone ? `https://wa.me/51${cl.phone.replace(/^51/,'')}?text=${encodeURIComponent(`Hola ${cl.name}, somos D'Zoe Perú 👗`)}` : '';
+
+  const ordersHtml = cl.orders.map(o => {
+    const total = parseFloat(o.total)||0;
+    const adelanto = parseFloat(o.adelanto)||0;
+    const deuda = parseFloat(o.deuda)||0;
+    const isOpen = deuda > 0 && o.status !== 'cancelled';
+    const pct = total > 0 ? Math.min(100, Math.round((adelanto/total)*100)) : 0;
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    const items = (o.items||[]).map(i => `${i.name}${i.size?' (T:'+i.size+')':''}${i.qty?' x'+i.qty:''}`).join(', ') || 'Sin detalle de productos';
+    const statusBadge = o.status==='cancelled' ? '<span class="order-status status-cancelled">Cancelado</span>'
+      : (isOpen ? '<span class="badge-bolsita"><i class="fas fa-shopping-bag"></i> Bolsita abierta</span>' : '<span class="order-status status-confirmed">Pagado</span>');
+    return `<div class="cli-bolsita-card ${isOpen?'open':''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div style="font-size:12px;color:var(--muted);">${date} · <span class="order-id">#${String(o.id).slice(-6)}</span></div>
+        ${statusBadge}
+      </div>
+      <div class="cli-bolsita-items"><i class="fas fa-gift" style="color:var(--rose);"></i> ${items}</div>
+      <div class="cli-progress-bar"><div class="cli-progress-fill" style="width:${pct}%;"></div></div>
+      <div class="cli-progress-label" style="margin-top:6px;">
+        <span>Total S/ ${total.toFixed(2)} · Abonó <strong style="color:var(--mint);">S/ ${adelanto.toFixed(2)}</strong></span>
+        ${deuda>0 ? `<span style="color:var(--orange);font-weight:800;">Debe S/ ${deuda.toFixed(2)}</span>` : '<span style="color:var(--green);font-weight:800;">✔ Sin saldo</span>'}
+      </div>
+      ${isOpen ? `<button class="btn btn-primary btn-sm" style="margin-top:10px;background:var(--sky);border-color:var(--sky);" onclick="closeClientDetailModal();openAdelantoPlus(${o.id})"><i class="fas fa-plus"></i> Registrar abono</button>` : ''}
+    </div>`;
+  }).join('') || `<div class="empty-state" style="padding:20px;text-align:center;"><p>Sin pedidos registrados aún.</p></div>`;
+
+  document.getElementById('client-detail-body').innerHTML = `
+    <div class="cli-detail-head">
+      <div class="cli-detail-avatar ${cl.isVIP?'vip':''}">${initialsOf(cl.name,cl.lastname)}</div>
+      <div style="flex:1;">
+        <div style="font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          ${cl.name||'—'} ${cl.lastname||''}
+          ${cl.isVIP?'<span class="badge-vip"><i class="fas fa-crown"></i> VIP</span>':''}
+          ${cl.hasBolsita?'<span class="badge-bolsita"><i class="fas fa-shopping-bag"></i> Bolsita activa</span>':''}
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">
+          DNI: ${cl.dni||'—'} · ${cl.destino||'Sin destino'} ${cl.phone?` · <a href="${waUrl}" target="_blank" style="color:var(--green);font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> ${cl.phone}</a>`:''}
+        </div>
+        ${cl.nota?`<div style="font-size:12px;color:var(--lavender);margin-top:5px;">📝 ${cl.nota}</div>`:''}
+      </div>
+    </div>
+    <div class="cli-mini-stats">
+      <div class="cli-mini-stat"><div class="lbl">Compras</div><div class="val">${cl.count}</div></div>
+      <div class="cli-mini-stat"><div class="lbl">Total invertido</div><div class="val" style="color:var(--rose);">S/ ${cl.total.toFixed(2)}</div></div>
+      <div class="cli-mini-stat"><div class="lbl">Debe ahora</div><div class="val" style="color:${cl.deudaTotal>0?'var(--orange)':'var(--green)'};">S/ ${cl.deudaTotal.toFixed(2)}</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fas fa-receipt"></i> Bolsitas y pedidos</div>
+    ${ordersHtml}
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="btn btn-ghost" style="flex:1;" onclick="closeClientDetailModal();openEditClientModal('${cl._key}')"><i class="fas fa-user-pen"></i> Editar cliente</button>
+      <button class="btn btn-ghost" onclick="closeClientDetailModal()">Cerrar</button>
+    </div>
+  `;
+  document.getElementById('client-detail-modal').classList.add('open');
+}
+function closeClientDetailModal() {
+  document.getElementById('client-detail-modal').classList.remove('open');
+}
+document.getElementById('client-detail-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
 
 // ============================================
 // PROVEEDORES
@@ -6726,6 +6957,7 @@ async function marcarDeudaPagada(id) {
     await supabaseClient.from('orders').update({ adelanto: o.total, deuda: 0, status: 'confirmed' }).eq('id', id);
   }
   renderDeudores(); filterSales();
+  if (document.getElementById('clients-section')?.style.display !== 'none') renderClientsSection();
   showAlert(`✅ Deuda de ${o.name} cancelada — pago completo`);
 }
 
@@ -6774,6 +7006,7 @@ async function saveAdelantoPlus() {
   }
   document.getElementById('adelanto-plus-modal').classList.remove('open');
   renderDeudores(); filterSales();
+  if (document.getElementById('clients-section')?.style.display !== 'none') renderClientsSection();
   showAlert(nuevaDeuda === 0 ? `✅ ${o.name} canceló toda su deuda` : `✅ Abono de S/ ${monto.toFixed(2)} registrado · Queda: S/ ${nuevaDeuda.toFixed(2)}`);
 }
 document.getElementById('adelanto-plus-modal')?.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
