@@ -1986,6 +1986,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         <div class="section-header">
           <div class="section-title"><i class="fas fa-users" style="color:var(--rose)"></i> Clientes</div>
           <div class="inventory-controls">
+            <button class="btn btn-primary btn-sm" style="background:var(--rose-dark);" onclick="openNewClientModal()" title="Registrar una nueva clienta con sus productos"><i class="fas fa-user-plus"></i> Nueva clienta</button>
             <button class="btn btn-ghost btn-sm" onclick="checkClientDuplicates(true)" title="Buscar posibles clientas duplicadas"><i class="fas fa-magnifying-glass"></i> Buscar duplicados</button>
             <div class="search-input-wrap">
               <i class="fas fa-search"></i>
@@ -2018,6 +2019,69 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
         <div class="modal-body" id="client-detail-body">
           <!-- se llena dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== MODAL: NUEVA CLIENTA (productos manuales) ====== -->
+    <div class="modal-overlay" id="new-client-modal">
+      <div class="modal" style="max-width:600px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title"><i class="fas fa-user-plus" style="color:var(--rose);"></i> Nueva clienta</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra sus datos y los productos que llevó, con el precio de cada uno</div>
+          </div>
+          <button class="modal-close" onclick="closeNewClientModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group"><label>Nombre *</label><input type="text" id="ncli-name" placeholder="Nombre"></div>
+            <div class="form-group"><label>Apellido</label><input type="text" id="ncli-lastname" placeholder="Apellido"></div>
+            <div class="form-group"><label>DNI</label><input type="text" id="ncli-dni" placeholder="12345678"></div>
+            <div class="form-group"><label>Teléfono / WhatsApp</label><input type="text" id="ncli-phone" placeholder="9XXXXXXXX"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Destino Shalom</label><input type="text" id="ncli-destination" placeholder="Ej: Huancayo, Piura..."></div>
+          </div>
+
+          <div style="margin-top:18px;">
+            <label style="font-weight:700;font-size:13px;color:var(--text2);display:block;margin-bottom:8px;"><i class="fas fa-bag-shopping" style="color:var(--rose);"></i> Productos que llevó</label>
+            <div style="display:grid;grid-template-columns:1fr 110px 80px 34px;gap:8px;margin-bottom:6px;">
+              <span style="font-size:11px;color:var(--muted);">Producto</span>
+              <span style="font-size:11px;color:var(--muted);">Precio (S/)</span>
+              <span style="font-size:11px;color:var(--muted);">Cant.</span>
+              <span></span>
+            </div>
+            <div id="ncli-items-body"><!-- filas dinámicas --></div>
+            <button type="button" class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addNewClientProductRow()"><i class="fas fa-plus"></i> Agregar producto</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;">
+            <div class="form-group">
+              <label>Método de pago</label>
+              <select id="ncli-method">
+                <option value="yape">💜 Yape</option>
+                <option value="plin">💙 Plin</option>
+                <option value="sip">💚 Sip</option>
+                <option value="bank">🏦 Transferencia</option>
+                <option value="cash">💵 Efectivo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="color:var(--orange);font-weight:700;"><i class="fas fa-hand-holding-dollar"></i> Adelanto (S/)</label>
+              <input type="number" id="ncli-adelanto" placeholder="0.00" step="0.01" min="0" value="0" oninput="updateNewClientTotal()" style="border-color:var(--orange);">
+            </div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Nota</label><input type="text" id="ncli-note" placeholder="Opcional..."></div>
+          </div>
+          <div id="ncli-deuda-preview" style="margin-top:4px;font-size:12px;color:var(--orange);font-weight:700;display:none;"></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:14px 18px;background:var(--green-light);border-radius:14px;border:1.5px solid rgba(46,156,107,.25);">
+            <span style="font-weight:700;color:var(--green);">Total</span>
+            <span id="ncli-total-preview" style="font-family:Baloo2,cursive;font-size:24px;font-weight:800;color:var(--green);">S/ 0.00</span>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="saveNewClient()"><i class="fas fa-user-plus"></i> Guardar clienta</button>
+            <button class="btn btn-ghost" onclick="closeNewClientModal()">Cancelar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -6207,6 +6271,130 @@ function _mergeRowHtml(cl, idx) {
   </label>`;
 }
 
+// ============================================
+// NUEVA CLIENTA (con productos manuales)
+// ============================================
+let ncliRowSeq = 0;
+
+function _ncliRowHtml() {
+  ncliRowSeq++;
+  return `<div class="ncli-item-row" data-row="${ncliRowSeq}" style="display:grid;grid-template-columns:1fr 110px 80px 34px;gap:8px;align-items:center;margin-bottom:8px;">
+    <input type="text" class="ncli-item-name" placeholder="Ej: Pantalón jean" oninput="updateNewClientTotal()">
+    <input type="number" class="ncli-item-price" placeholder="0.00" step="0.01" min="0" oninput="updateNewClientTotal()">
+    <input type="number" class="ncli-item-qty" placeholder="1" min="1" value="1" oninput="updateNewClientTotal()">
+    <button type="button" class="icon-btn" style="background:var(--rose-light);color:var(--rose);" onclick="removeNewClientProductRow(this)" title="Quitar producto"><i class="fas fa-trash"></i></button>
+  </div>`;
+}
+
+function addNewClientProductRow() {
+  const body = document.getElementById('ncli-items-body');
+  body.insertAdjacentHTML('beforeend', _ncliRowHtml());
+}
+
+function removeNewClientProductRow(btn) {
+  const body = document.getElementById('ncli-items-body');
+  const row = btn.closest('.ncli-item-row');
+  if (row) row.remove();
+  // Siempre dejar al menos una fila disponible
+  if (!body.querySelector('.ncli-item-row')) addNewClientProductRow();
+  updateNewClientTotal();
+}
+
+function _ncliCollectItems() {
+  return Array.from(document.querySelectorAll('#ncli-items-body .ncli-item-row')).map(row => ({
+    name: row.querySelector('.ncli-item-name').value.trim(),
+    price: parseFloat(row.querySelector('.ncli-item-price').value) || 0,
+    qty: parseInt(row.querySelector('.ncli-item-qty').value) || 1
+  })).filter(it => it.name && it.price > 0);
+}
+
+function updateNewClientTotal() {
+  const items = _ncliCollectItems();
+  const total = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const adelanto = parseFloat(document.getElementById('ncli-adelanto')?.value) || 0;
+  const deuda = Math.max(0, total - adelanto);
+  document.getElementById('ncli-total-preview').textContent = 'S/ ' + total.toFixed(2);
+  const deudaEl = document.getElementById('ncli-deuda-preview');
+  if (deudaEl) {
+    if (adelanto > 0 && adelanto < total) {
+      deudaEl.style.display = 'block'; deudaEl.style.color = 'var(--orange)';
+      deudaEl.textContent = `⚠️ Adelanta S/ ${adelanto.toFixed(2)} · Queda debiendo: S/ ${deuda.toFixed(2)}`;
+    } else if (adelanto >= total && total > 0) {
+      deudaEl.style.display = 'block'; deudaEl.style.color = 'var(--green)';
+      deudaEl.textContent = '✅ Pago completo';
+    } else {
+      deudaEl.style.display = 'none';
+    }
+  }
+}
+
+function openNewClientModal() {
+  ['ncli-name','ncli-lastname','ncli-dni','ncli-phone','ncli-destination','ncli-note'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('ncli-adelanto').value = 0;
+  document.getElementById('ncli-method').value = 'yape';
+  document.getElementById('ncli-total-preview').textContent = 'S/ 0.00';
+  const deudaEl = document.getElementById('ncli-deuda-preview');
+  if (deudaEl) deudaEl.style.display = 'none';
+  document.getElementById('ncli-items-body').innerHTML = '';
+  addNewClientProductRow();
+  document.getElementById('new-client-modal').classList.add('open');
+}
+
+function closeNewClientModal() {
+  document.getElementById('new-client-modal').classList.remove('open');
+}
+
+async function saveNewClient() {
+  const name = document.getElementById('ncli-name').value.trim();
+  if (!name) { showAlert('Ingresa el nombre de la clienta', 'error'); return; }
+
+  const items = _ncliCollectItems();
+  if (!items.length) { showAlert('Agrega al menos un producto con nombre y precio', 'error'); return; }
+
+  const total = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const adelanto = parseFloat(document.getElementById('ncli-adelanto').value) || 0;
+  const deuda = Math.max(0, total - adelanto);
+  const phone = document.getElementById('ncli-phone').value.trim();
+
+  const orderData = {
+    id: Date.now(),
+    name,
+    lastname: document.getElementById('ncli-lastname').value.trim(),
+    dni: document.getElementById('ncli-dni').value.trim(),
+    phone,
+    whatsapp: phone,
+    destination: document.getElementById('ncli-destination').value.trim(),
+    payment_method: document.getElementById('ncli-method').value,
+    note: document.getElementById('ncli-note').value.trim(),
+    items,
+    total,
+    adelanto,
+    deuda,
+    status: adelanto > 0 && deuda > 0 ? 'pending' : 'confirmed',
+    manual: true,
+    created_at: new Date().toISOString()
+  };
+
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('orders').insert([orderData]);
+    if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
+  }
+
+  orders.unshift(orderData);
+  closeNewClientModal();
+  updateStats();
+  updateDashboard();
+  filterSales();
+  renderClientsSection();
+  showAlert(`✅ Clienta registrada — S/ ${total.toFixed(2)}`);
+}
+
+document.getElementById('new-client-modal')?.addEventListener('click', function(e) {
+  if (e.target === this) closeNewClientModal();
+});
+
 function openMergeModal(keys) {
   if (!keys || keys.length < 2) { showAlert('Selecciona al menos 2 clientas para unir', 'error'); return; }
   const clients = buildClientsFromOrders();
@@ -6222,10 +6410,23 @@ function openMergeModal(keys) {
       <button class="btn btn-ghost" onclick="closeMergeModal()">Cancelar</button>
     </div>
   `;
+  // Si el modal de "posibles duplicadas" está abierto, lo ocultamos temporalmente
+  // para que este modal (mismo z-index) no quede tapado detrás de él.
+  const dupModal = document.getElementById('dup-suggest-modal');
+  if (dupModal && dupModal.classList.contains('open')) {
+    dupModal.classList.remove('open');
+    dupModal.dataset.wasOpenBeforeMerge = '1';
+  }
   document.getElementById('merge-client-modal').classList.add('open');
 }
 function closeMergeModal() {
   document.getElementById('merge-client-modal').classList.remove('open');
+  // Si veníamos del modal de duplicadas, lo volvemos a mostrar al cancelar/cerrar.
+  const dupModal = document.getElementById('dup-suggest-modal');
+  if (dupModal && dupModal.dataset.wasOpenBeforeMerge === '1') {
+    delete dupModal.dataset.wasOpenBeforeMerge;
+    dupModal.classList.add('open');
+  }
 }
 document.getElementById('merge-client-modal')?.addEventListener('click', function(e) { if (e.target===this) closeMergeModal(); });
 
