@@ -552,6 +552,16 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .cli-bolsita-card.open { border-color: var(--sky); background: var(--sky-light); }
 .cli-bolsita-items { font-size: 12px; color: var(--text2); margin: 6px 0 10px; line-height: 1.5; }
 
+.cli-merge-bar { display: flex; align-items: center; justify-content: space-between; background: var(--rose-dark); color: #fff; border-radius: 16px; padding: 12px 18px; margin-bottom: 18px; font-size: 13px; font-weight: 700; box-shadow: 0 10px 26px rgba(138,111,170,.32); animation: cliMergeBarIn .25s ease; }
+@keyframes cliMergeBarIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+#clients-table-body input[type="checkbox"], #cli-select-all { width: 16px; height: 16px; cursor: pointer; accent-color: var(--rose-dark); }
+
+.cli-dup-banner-inner { display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, var(--sky-light), var(--lav-light)); border: 1.5px solid var(--sky); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px; }
+.cli-dup-banner-inner .icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.6); display: flex; align-items: center; justify-content: center; font-size: 17px; color: #1476a8; flex-shrink: 0; }
+.dup-group-card { border: 1.5px solid var(--line2); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; }
+.dup-group-member { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--line2); font-size: 12.5px; }
+.dup-group-member:last-of-type { border-bottom: none; }
+
 /* Sales filters */
 .sales-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .sales-stat { background: var(--bg); border-radius: 14px; padding: 12px 18px; border: 1.5px solid var(--line2); display: flex; flex-direction: column; gap: 4px; }
@@ -1960,10 +1970,23 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         <button class="cli-chip" data-filter="recurrente" onclick="setClientsFilter('recurrente',this)"><i class="fas fa-repeat"></i> Recurrentes <span class="cli-chip-count" id="cnt-recurrente">0</span></button>
       </div>
 
+      <!-- Aviso de posibles duplicados -->
+      <div id="cli-dup-banner" style="display:none;"></div>
+
+      <!-- Barra de selección para fusionar -->
+      <div id="cli-merge-bar" class="cli-merge-bar" style="display:none;">
+        <span><i class="fas fa-user-group"></i> <strong id="cli-merge-count">0</strong> clientas seleccionadas</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" style="background:var(--rose-dark);" onclick="openMergeModal(Array.from(selectedClientKeys))"><i class="fas fa-object-ungroup"></i> Unir en una sola</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearClientSelection()">Cancelar</button>
+        </div>
+      </div>
+
       <div class="section">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-users" style="color:var(--rose)"></i> Clientes</div>
           <div class="inventory-controls">
+            <button class="btn btn-ghost btn-sm" onclick="checkClientDuplicates(true)" title="Buscar posibles clientas duplicadas"><i class="fas fa-magnifying-glass"></i> Buscar duplicados</button>
             <div class="search-input-wrap">
               <i class="fas fa-search"></i>
               <input type="text" class="search-input" id="clients-search" placeholder="Buscar por nombre o DNI..." oninput="renderClientsSection()">
@@ -1974,7 +1997,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
           <div class="table-wrap">
             <table class="orders-table">
               <thead>
-                <tr><th>Cliente</th><th>DNI</th><th>WhatsApp</th><th>Destino</th><th>Compras</th><th>Total Invertido</th><th>Bolsita / Saldo</th><th>Último pedido</th><th>Acciones</th></tr>
+                <tr><th style="width:34px;"><input type="checkbox" id="cli-select-all" onchange="toggleSelectAllClients(this)" title="Seleccionar todas"></th><th>Cliente</th><th>DNI</th><th>WhatsApp</th><th>Destino</th><th>Compras</th><th>Total Invertido</th><th>Bolsita / Saldo</th><th>Último pedido</th><th>Acciones</th></tr>
               </thead>
               <tbody id="clients-table-body"></tbody>
             </table>
@@ -1998,6 +2021,77 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         </div>
       </div>
     </div>
+
+    <!-- ====== MODAL: UNIR CLIENTAS DUPLICADAS ====== -->
+    <div class="modal-overlay" id="merge-client-modal">
+      <div class="modal" style="max-width:560px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title"><i class="fas fa-object-ungroup" style="color:var(--rose);"></i> Unir clientas duplicadas</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Elige cuál registro se queda como principal. Las compras de todas se juntarán ahí.</div>
+          </div>
+          <button class="modal-close" onclick="closeMergeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="merge-client-body"><!-- se llena dinámicamente --></div>
+      </div>
+    </div>
+
+    <!-- ====== MODAL: DETECTAR DUPLICADOS ====== -->
+    <div class="modal-overlay" id="dup-suggest-modal">
+      <div class="modal" style="max-width:600px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title"><i class="fas fa-magnifying-glass" style="color:var(--rose);"></i> Posibles clientas duplicadas</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Detectadas por mismo teléfono o nombre similar</div>
+          </div>
+          <button class="modal-close" onclick="document.getElementById('dup-suggest-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="dup-suggest-body"><!-- se llena dinámicamente --></div>
+      </div>
+    </div>
+
+    <!-- ====== MODAL: AGREGAR PRODUCTO A LA BOLSITA ====== -->
+    <div class="modal-overlay" id="add-item-bolsita-modal">
+      <div class="modal" style="max-width:480px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title"><i class="fas fa-cart-plus" style="color:var(--sky);"></i> Agregar producto a la bolsita</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="aib-client-label"></div>
+          </div>
+          <button class="modal-close" onclick="closeAddItemToBolsita()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Producto *</label>
+            <input type="text" id="aib-product-input" list="aib-product-list" placeholder="Escribe para buscar..." oninput="onAibProductInput()" autocomplete="off">
+            <datalist id="aib-product-list"></datalist>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group">
+              <label>Talla *</label>
+              <select id="aib-size" onchange="updateAibPreview()"><option value="">— Selecciona producto primero —</option></select>
+            </div>
+            <div class="form-group">
+              <label>Precio (S/)</label>
+              <input type="number" id="aib-price" step="0.01" oninput="updateAibPreview()">
+            </div>
+            <div class="form-group">
+              <label>Cantidad *</label>
+              <input type="number" id="aib-qty" value="1" min="1" oninput="updateAibPreview()">
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 16px;background:var(--sky-light);border-radius:14px;">
+            <span style="font-weight:700;color:#1476a8;">Se suma a la bolsita</span>
+            <span id="aib-total-preview" style="font-family:Baloo2,cursive;font-size:20px;font-weight:800;color:#1476a8;">S/ 0.00</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-primary" style="flex:1;background:var(--sky);border-color:var(--sky);" onclick="confirmAddItemToBolsita()"><i class="fas fa-plus"></i> Agregar a la bolsita</button>
+            <button class="btn btn-ghost" onclick="closeAddItemToBolsita()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- ====== PROVEEDORES ====== -->
     <div id="suppliers-section" class="page-section" style="display:none;">
@@ -3585,11 +3679,12 @@ async function loadAllData() {
   showToast('Cargando datos...');
   // returns promise so callers can chain .then()
   if (!supabaseClient) { showAlert('No se encontró config.js', 'error'); return; }
-  const [productsRes, categoriesRes, ordersRes, clientOverridesRes] = await Promise.all([
+  const [productsRes, categoriesRes, ordersRes, clientOverridesRes, clientMergesRes] = await Promise.all([
     supabaseClient.from('products').select('*').order('created_at', { ascending: false }),
     supabaseClient.from('categories').select('*').order('name'),
     supabaseClient.from('orders').select('*').order('created_at', { ascending: false }),
-    supabaseClient.from('client_overrides').select('*')
+    supabaseClient.from('client_overrides').select('*'),
+    supabaseClient.from('client_merges').select('*')
   ]);
   products = productsRes.data || [];
   categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color }));
@@ -3613,6 +3708,12 @@ async function loadAllData() {
       };
     });
     localStorage.setItem('dzoe_client_overrides', JSON.stringify(overridesMap));
+  }
+  // Sincronizar fusiones de clientes duplicados desde Supabase (si la tabla existe)
+  if (clientMergesRes && !clientMergesRes.error && clientMergesRes.data && clientMergesRes.data.length) {
+    const localMerges = getClientMerges();
+    clientMergesRes.data.forEach(row => { if (row.alias_key && row.canonical_key) localMerges[row.alias_key] = row.canonical_key; });
+    localStorage.setItem('dzoe_client_merges', JSON.stringify(localMerges));
   }
   if (!categories.length) {
     categories = [{ name:'Bebés', emoji:'👶', color:'#c2617a' },{ name:'Niñas', emoji:'🎀', color:'#7c3aed' },{ name:'Niños', emoji:'👦', color:'#2563eb' }];
@@ -5790,11 +5891,26 @@ async function removeRibbonFromProduct(pid) {
 const CLIENT_VIP_TOTAL = 300;   // S/ invertidos en total
 const CLIENT_VIP_COUNT = 5;     // o cantidad de compras
 
+// ── FUSIÓN DE CLIENTES DUPLICADOS ──
+// Cuando dos registros son en realidad la misma persona (p.ej. una venta sin DNI),
+// guardamos un mapeo alias -> clave canónica para agruparlas en una sola clienta.
+function getClientMerges() {
+  return JSON.parse(localStorage.getItem('dzoe_client_merges') || '{}');
+}
+function resolveMergeKey(key, merges) {
+  let cur = key;
+  const seen = new Set();
+  while (merges[cur] && !seen.has(cur)) { seen.add(cur); cur = merges[cur]; }
+  return cur;
+}
+
 function buildClientsFromOrders() {
   const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+  const merges = getClientMerges();
   const map = {};
   orders.forEach(o => {
-    const key = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
+    const rawKey = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
+    const key = resolveMergeKey(rawKey, merges);
     if (!map[key]) {
       map[key] = {
         dni: o.dni||'', name: o.name||'', lastname: o.lastname||'',
@@ -5807,8 +5923,13 @@ function buildClientsFromOrders() {
     map[key].orders.push(o);
     const d = o.created_at ? new Date(o.created_at) : null;
     if (d && (!map[key].lastDate || d > map[key].lastDate)) map[key].lastDate = d;
+    // Completar datos faltantes con lo que traiga cualquiera de los pedidos fusionados
+    if (!map[key].dni && o.dni && o.dni.trim()) map[key].dni = o.dni.trim();
+    if (!map[key].name && o.name) map[key].name = o.name;
+    if (!map[key].lastname && o.lastname) map[key].lastname = o.lastname;
     // prefer whatsapp if available
     if (o.whatsapp && o.whatsapp.trim()) map[key].phone = o.whatsapp.trim();
+    else if (!map[key].phone && o.phone) map[key].phone = o.phone;
     if (o.destination || o.destino) map[key].destino = o.destination || o.destino;
     // Bolsita activa: pedido con adelanto registrado y saldo pendiente (fiado por TikTok Live u otro)
     const deuda = parseFloat(o.deuda)||0;
@@ -5904,7 +6025,8 @@ function renderClientsSection() {
   const body = document.getElementById('clients-table-body');
   if (!body) return;
   if (!filtered.length) {
-    body.innerHTML = `<tr><td colspan="9"><div class="empty-state" style="padding:40px;text-align:center;"><div class="empty-icon">👥</div><h3>Sin clientes en este filtro</h3><p>Prueba con otro filtro o revisa tu búsqueda.</p></div></td></tr>`;
+    body.innerHTML = `<tr><td colspan="10"><div class="empty-state" style="padding:40px;text-align:center;"><div class="empty-icon">👥</div><h3>Sin clientes en este filtro</h3><p>Prueba con otro filtro o revisa tu búsqueda.</p></div></td></tr>`;
+    checkClientDuplicates(false);
     return;
   }
   body.innerHTML = filtered.map(cl => {
@@ -5919,6 +6041,7 @@ function renderClientsSection() {
          </div>`
       : `<span style="color:var(--muted);font-size:12px;">Sin bolsita</span>`;
     return `<tr class="${cl.isVIP?'client-row-vip':''}">
+      <td><input type="checkbox" ${selectedClientKeys.has(cl._key)?'checked':''} onchange="toggleClientSelect('${cl._key}', this.checked)"></td>
       <td>
         <div class="cli-name-cell">
           <div class="avatar-circle ${cl.isVIP?'vip':''}">${initialsOf(cl.name,cl.lastname)}</div>
@@ -5950,6 +6073,8 @@ function renderClientsSection() {
       </td>
     </tr>`;
   }).join('');
+  updateMergeBar();
+  checkClientDuplicates(false);
 }
 
 function filterSalesByClient(key) {
@@ -5988,7 +6113,10 @@ function openClientDetailModal(key) {
         <span>Total S/ ${total.toFixed(2)} · Abonó <strong style="color:var(--mint);">S/ ${adelanto.toFixed(2)}</strong></span>
         ${deuda>0 ? `<span style="color:var(--orange);font-weight:800;">Debe S/ ${deuda.toFixed(2)}</span>` : '<span style="color:var(--green);font-weight:800;">✔ Sin saldo</span>'}
       </div>
-      ${isOpen ? `<button class="btn btn-primary btn-sm" style="margin-top:10px;background:var(--sky);border-color:var(--sky);" onclick="closeClientDetailModal();openAdelantoPlus(${o.id})"><i class="fas fa-plus"></i> Registrar abono</button>` : ''}
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        ${isOpen ? `<button class="btn btn-primary btn-sm" style="background:var(--sky);border-color:var(--sky);" onclick="closeClientDetailModal();openAdelantoPlus(${o.id})"><i class="fas fa-plus"></i> Registrar abono</button>` : ''}
+        ${o.status!=='cancelled' ? `<button class="btn btn-sm" style="background:var(--rose-xlight);color:var(--rose-dark);font-weight:700;" onclick="openAddItemToBolsita(${o.id})"><i class="fas fa-cart-plus"></i> Agregar producto</button>` : ''}
+      </div>
     </div>`;
   }).join('') || `<div class="empty-state" style="padding:20px;text-align:center;"><p>Sin pedidos registrados aún.</p></div>`;
 
@@ -6025,6 +6153,288 @@ function closeClientDetailModal() {
   document.getElementById('client-detail-modal').classList.remove('open');
 }
 document.getElementById('client-detail-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
+
+// ============================================
+// SELECCIÓN MÚLTIPLE + FUSIÓN DE CLIENTES DUPLICADOS
+// ============================================
+let selectedClientKeys = new Set();
+
+function toggleClientSelect(key, checked) {
+  if (checked) selectedClientKeys.add(key); else selectedClientKeys.delete(key);
+  updateMergeBar();
+}
+function toggleSelectAllClients(checkboxEl) {
+  document.querySelectorAll('#clients-table-body input[type="checkbox"]').forEach(cb => {
+    cb.checked = checkboxEl.checked;
+    const tr = cb.closest('tr');
+    const btn = tr?.querySelector('[onclick^="openClientDetailModal"]');
+    if (btn) {
+      const key = btn.getAttribute('onclick').match(/openClientDetailModal\('(.+?)'\)/)?.[1];
+      if (key) { if (checkboxEl.checked) selectedClientKeys.add(key); else selectedClientKeys.delete(key); }
+    }
+  });
+  updateMergeBar();
+}
+function clearClientSelection() {
+  selectedClientKeys.clear();
+  const selAll = document.getElementById('cli-select-all');
+  if (selAll) selAll.checked = false;
+  renderClientsSection();
+}
+function updateMergeBar() {
+  const bar = document.getElementById('cli-merge-bar');
+  const count = document.getElementById('cli-merge-count');
+  if (!bar) return;
+  if (selectedClientKeys.size >= 2) {
+    bar.style.display = 'flex';
+    if (count) count.textContent = selectedClientKeys.size;
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+function _mergeRowHtml(cl, idx) {
+  return `<label class="dup-group-member" style="cursor:pointer;">
+    <span style="display:flex;align-items:center;gap:10px;">
+      <input type="radio" name="merge-primary" value="${cl._key}" ${idx===0?'checked':''}>
+      <span class="avatar-circle" style="width:32px;height:32px;font-size:12px;">${initialsOf(cl.name,cl.lastname)}</span>
+      <span>
+        <strong>${cl.name||'—'} ${cl.lastname||''}</strong>
+        <div style="font-size:11px;color:var(--muted);">DNI: ${cl.dni||'—'} · ${cl.phone||'sin teléfono'} · ${cl.count} compra${cl.count>1?'s':''}</div>
+      </span>
+    </span>
+    <strong style="color:var(--rose);">S/ ${cl.total.toFixed(2)}</strong>
+  </label>`;
+}
+
+function openMergeModal(keys) {
+  if (!keys || keys.length < 2) { showAlert('Selecciona al menos 2 clientas para unir', 'error'); return; }
+  const clients = buildClientsFromOrders();
+  const group = clients.filter(c => keys.includes(c._key));
+  if (group.length < 2) { showAlert('No se encontraron las clientas seleccionadas', 'error'); return; }
+  // Ordenar sugiriendo como principal a quien tenga más datos / más compras
+  group.sort((a,b) => (b.dni?1:0)-(a.dni?1:0) || b.total-a.total);
+  document.getElementById('merge-client-body').innerHTML = `
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Al unir, todas las compras, bolsitas y saldos pendientes de estas clientas se juntarán bajo el registro principal.</div>
+    <div class="dup-group-card" style="margin-bottom:16px;">${group.map((cl,i) => _mergeRowHtml(cl,i)).join('')}</div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="confirmMerge()"><i class="fas fa-object-ungroup"></i> Unir clientas</button>
+      <button class="btn btn-ghost" onclick="closeMergeModal()">Cancelar</button>
+    </div>
+  `;
+  document.getElementById('merge-client-modal').classList.add('open');
+}
+function closeMergeModal() {
+  document.getElementById('merge-client-modal').classList.remove('open');
+}
+document.getElementById('merge-client-modal')?.addEventListener('click', function(e) { if (e.target===this) closeMergeModal(); });
+
+async function confirmMerge() {
+  const body = document.getElementById('merge-client-body');
+  const radios = body.querySelectorAll('input[name="merge-primary"]');
+  const allKeys = Array.from(radios).map(r => r.value);
+  const primaryKey = Array.from(radios).find(r => r.checked)?.value;
+  if (!primaryKey) { showAlert('Elige cuál registro se queda como principal', 'error'); return; }
+  const aliasKeys = allKeys.filter(k => k !== primaryKey);
+
+  // 1) Guardar mapeo de fusión (localStorage, con intento de sincronizar a Supabase)
+  const merges = getClientMerges();
+  aliasKeys.forEach(k => { merges[k] = primaryKey; });
+  localStorage.setItem('dzoe_client_merges', JSON.stringify(merges));
+  if (supabaseClient) {
+    try {
+      await supabaseClient.from('client_merges').upsert(
+        aliasKeys.map(k => ({ alias_key: k, canonical_key: primaryKey, updated_at: new Date().toISOString() })),
+        { onConflict: 'alias_key' }
+      );
+    } catch (e) {
+      console.warn('No se pudo sincronizar la fusión con Supabase (¿falta la tabla client_merges?). Se guardó localmente.', e);
+    }
+  }
+
+  // 2) Combinar datos (dni/nombre/teléfono/destino/nota) tomando lo mejor de cada una, sin perder info
+  const clientsBefore = buildClientsFromOrders(); // aún sin aplicar el nuevo merge en memoria de `orders`
+  // (buildClientsFromOrders ya vuelve a leer merges desde localStorage, así que esto ya refleja la unión)
+  const merged = clientsBefore.find(c => c._key === primaryKey);
+  if (merged) {
+    const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
+    const ov = {
+      name: merged.name, lastname: merged.lastname, dni: merged.dni,
+      phone: merged.phone, destino: merged.destino, nota: overrides[primaryKey]?.nota || merged.nota || ''
+    };
+    overrides[primaryKey] = ov;
+    localStorage.setItem('dzoe_client_overrides', JSON.stringify(overrides));
+    if (supabaseClient) {
+      try {
+        await supabaseClient.from('client_overrides').upsert({ client_key: primaryKey, ...ov, updated_at: new Date().toISOString() }, { onConflict: 'client_key' });
+      } catch (e) { console.warn('No se pudo sincronizar el override tras la fusión', e); }
+    }
+  }
+
+  closeMergeModal();
+  selectedClientKeys.clear();
+  document.getElementById('dup-suggest-modal')?.classList.remove('open');
+  renderClientsSection();
+  showAlert(`✅ Clientas unidas correctamente (${aliasKeys.length + 1} registros → 1)`);
+}
+
+// ============================================
+// DETECCIÓN AUTOMÁTICA DE POSIBLES DUPLICADOS
+// ============================================
+function _normPhone(p) { return String(p||'').replace(/\D/g,'').slice(-9); }
+function _normFullName(cl) { return `${cl.name||''} ${cl.lastname||''}`.trim().toLowerCase().replace(/\s+/g,' '); }
+
+function findDuplicateSuggestions(clients) {
+  const byPhone = {}, byName = {};
+  clients.forEach(cl => {
+    const ph = _normPhone(cl.phone);
+    if (ph && ph.length >= 8) { (byPhone[ph] = byPhone[ph]||[]).push(cl); }
+    const nm = _normFullName(cl);
+    if (nm && nm.length >= 5) { (byName[nm] = byName[nm]||[]).push(cl); }
+  });
+  const groupsMap = {}; // key: sorted client keys joined -> group
+  [...Object.values(byPhone), ...Object.values(byName)].forEach(g => {
+    const uniq = Array.from(new Map(g.map(c => [c._key, c])).values());
+    if (uniq.length < 2) return;
+    const gid = uniq.map(c => c._key).sort().join('|');
+    groupsMap[gid] = uniq;
+  });
+  return Object.values(groupsMap);
+}
+
+function checkClientDuplicates(openModal) {
+  const clients = buildClientsFromOrders();
+  const groups = findDuplicateSuggestions(clients);
+  const banner = document.getElementById('cli-dup-banner');
+  if (banner) {
+    banner.innerHTML = groups.length ? `
+      <div class="cli-dup-banner-inner">
+        <div class="icon"><i class="fas fa-user-group"></i></div>
+        <div style="flex:1;font-size:13px;color:var(--text2);">
+          <strong>Detectamos ${groups.length} posible${groups.length>1?'s':''} grupo${groups.length>1?'s':''} de clientas duplicadas</strong>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">Mismo teléfono o nombre — probablemente compraron sin dejar DNI la primera vez.</div>
+        </div>
+        <button class="btn btn-primary btn-sm" style="background:#1476a8;" onclick="openDuplicatesModal()"><i class="fas fa-magnifying-glass"></i> Revisar</button>
+      </div>` : '';
+    banner.style.display = groups.length ? 'block' : 'none';
+  }
+  if (openModal) openDuplicatesModal();
+}
+
+function openDuplicatesModal() {
+  const clients = buildClientsFromOrders();
+  const groups = findDuplicateSuggestions(clients);
+  const body = document.getElementById('dup-suggest-body');
+  if (!groups.length) {
+    body.innerHTML = `<div class="empty-state" style="padding:30px;text-align:center;"><div class="empty-icon">✅</div><h3>Sin duplicados detectados</h3><p>No encontramos clientas repetidas por teléfono o nombre.</p></div>`;
+  } else {
+    body.innerHTML = groups.map((g, gi) => `
+      <div class="dup-group-card">
+        ${g.map(cl => `<div class="dup-group-member"><span><strong>${cl.name||'—'} ${cl.lastname||''}</strong><div style="font-size:11px;color:var(--muted);">DNI: ${cl.dni||'—'} · ${cl.phone||'sin teléfono'}</div></span><span style="color:var(--rose);font-weight:700;">S/ ${cl.total.toFixed(2)}</span></div>`).join('')}
+        <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;background:var(--rose-dark);" onclick="openMergeModal(${JSON.stringify(g.map(c=>c._key))})"><i class="fas fa-object-ungroup"></i> Unir estas ${g.length}</button>
+      </div>
+    `).join('');
+  }
+  document.getElementById('dup-suggest-modal').classList.add('open');
+}
+document.getElementById('dup-suggest-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
+
+// ============================================
+// AGREGAR PRODUCTO A UNA BOLSITA YA EXISTENTE
+// ============================================
+let aibOrderId = null;
+let aibSelectedProduct = null;
+
+function openAddItemToBolsita(orderId) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+  aibOrderId = orderId;
+  aibSelectedProduct = null;
+  document.getElementById('aib-client-label').textContent = `Para ${o.name||''} ${o.lastname||''} · Pedido #${String(o.id).slice(-6)}`;
+  document.getElementById('aib-product-input').value = '';
+  document.getElementById('aib-price').value = '';
+  document.getElementById('aib-qty').value = 1;
+  document.getElementById('aib-size').innerHTML = '<option value="">— Selecciona producto primero —</option>';
+  document.getElementById('aib-total-preview').textContent = 'S/ 0.00';
+  // Poblar datalist con productos activos que tengan stock
+  const list = document.getElementById('aib-product-list');
+  list.innerHTML = (products||[])
+    .filter(p => (p.sizes||[]).some(s => (s.stock||0) > 0))
+    .map(p => `<option value="${_escJs(p.name)}"></option>`).join('');
+  document.getElementById('add-item-bolsita-modal').classList.add('open');
+}
+function closeAddItemToBolsita() {
+  document.getElementById('add-item-bolsita-modal').classList.remove('open');
+  aibOrderId = null; aibSelectedProduct = null;
+}
+function onAibProductInput() {
+  const typed = _normName(document.getElementById('aib-product-input').value);
+  const p = (products||[]).find(pr => _normName(pr.name) === typed);
+  const sizeSel = document.getElementById('aib-size');
+  if (!p) { sizeSel.innerHTML = '<option value="">— Producto no encontrado —</option>'; aibSelectedProduct = null; updateAibPreview(); return; }
+  aibSelectedProduct = p;
+  sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
+    (p.sizes||[]).filter(s => (s.stock||0) > 0).map(s =>
+      `<option value="${s.size}" data-price="${s.price||0}">${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})</option>`).join('');
+  sizeSel.onchange = () => {
+    const opt = sizeSel.options[sizeSel.selectedIndex];
+    if (opt && opt.dataset.price) document.getElementById('aib-price').value = parseFloat(opt.dataset.price).toFixed(2);
+    updateAibPreview();
+  };
+  updateAibPreview();
+}
+function updateAibPreview() {
+  const price = parseFloat(document.getElementById('aib-price')?.value)||0;
+  const qty = parseInt(document.getElementById('aib-qty')?.value)||1;
+  document.getElementById('aib-total-preview').textContent = 'S/ ' + (price*qty).toFixed(2);
+}
+async function confirmAddItemToBolsita() {
+  const o = orders.find(x => x.id === aibOrderId);
+  if (!o) return;
+  const p = aibSelectedProduct;
+  const sizeSel = document.getElementById('aib-size');
+  const size = sizeSel.value;
+  if (!p || !size) { showAlert('Selecciona un producto y talla válidos', 'error'); return; }
+  const price = parseFloat(document.getElementById('aib-price').value)||0;
+  const qty = parseInt(document.getElementById('aib-qty').value)||1;
+  if (!price || !qty) { showAlert('Completa precio y cantidad', 'error'); return; }
+
+  const subtotal = price * qty;
+  const newItem = { productId: p.id, name: p.name, size, price, qty, cost: (p.sizes?.find(s => s.size === size)?.cost || 0) };
+  const newItems = [...(o.items||[]), newItem];
+  const newTotal = (parseFloat(o.total)||0) + subtotal;
+  const newDeuda = Math.max(0, newTotal - (parseFloat(o.adelanto)||0));
+  const newStatus = newDeuda > 0 ? 'pending' : (o.status||'confirmed');
+
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('orders').update({ items: newItems, total: newTotal, deuda: newDeuda, status: newStatus }).eq('id', o.id);
+    if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
+  }
+  o.items = newItems; o.total = newTotal; o.deuda = newDeuda; o.status = newStatus;
+
+  // Descontar stock de la talla agregada
+  const sizeObj = p.sizes?.find(s => s.size === size);
+  if (sizeObj) {
+    const newStock = Math.max(0, (sizeObj.stock||0) - qty);
+    const updatedSizes = p.sizes.map(s => s.size === size ? { ...s, stock: newStock } : s);
+    const totalStockLeft = updatedSizes.reduce((a,s) => a+(s.stock||0), 0);
+    const updatePayload = { sizes: updatedSizes };
+    if (totalStockLeft === 0) updatePayload.status = 'inactive';
+    if (supabaseClient) {
+      const { error: stockErr } = await supabaseClient.from('products').update(updatePayload).eq('id', p.id);
+      if (!stockErr) { p.sizes = updatedSizes; if (totalStockLeft===0) p.status='inactive'; }
+    } else {
+      p.sizes = updatedSizes; if (totalStockLeft===0) p.status='inactive';
+    }
+  }
+
+  closeAddItemToBolsita();
+  filterInventory(); filterSales();
+  renderClientsSection();
+  openClientDetailModal(resolveMergeKey(o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`, getClientMerges()));
+  showAlert(`✅ ${p.name} (${size}) agregado a la bolsita — nuevo total S/ ${newTotal.toFixed(2)}`);
+}
+document.getElementById('add-item-bolsita-modal')?.addEventListener('click', function(e) { if (e.target===this) closeAddItemToBolsita(); });
 
 // ============================================
 // PROVEEDORES
