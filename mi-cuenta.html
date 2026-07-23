@@ -4159,10 +4159,18 @@ function salesRowHtml(o) {
 
 async function updateOrderStatus(id, newStatus) {
   if (!supabaseClient) return;
+  const o = orders.find(o => o.id === id);
+  if (!o) return;
+  const wasCancelled = o.status === 'cancelled';
   const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
   if (error) { showAlert('Error al actualizar', 'error'); return; }
-  const o = orders.find(o => o.id === id);
-  if (o) o.status = newStatus;
+  o.status = newStatus;
+  // Al cancelar, el producto vuelve a estar disponible; al reactivar un pedido cancelado, se vuelve a descontar
+  if (newStatus === 'cancelled' && !wasCancelled) {
+    await _restoreStockForItems(o.items);
+  } else if (wasCancelled && newStatus !== 'cancelled') {
+    await _decrementStockForItems(o.items);
+  }
   updateDashboard();
   showAlert('Estado actualizado');
 }
@@ -4640,6 +4648,10 @@ async function deleteSale(id) {
   if (supabaseClient) {
     const { error } = await supabaseClient.from('orders').delete().eq('id', id);
     if (error) { showAlert('Error al eliminar: ' + error.message, 'error'); return; }
+  }
+  // Si el pedido no estaba ya cancelado, su stock nunca se restauró — lo devolvemos al eliminarlo
+  if (o && o.status !== 'cancelled') {
+    await _restoreStockForItems(o.items);
   }
   orders = orders.filter(x => x.id !== id);
   filterSales();
@@ -6435,6 +6447,65 @@ function closeNewClientModal() {
   document.getElementById('new-client-modal').classList.remove('open');
 }
 
+// ============================================
+// STOCK: descontar al vender, restaurar al cancelar/eliminar
+// ============================================
+async function _decrementStockForItems(items) {
+  if (!items || !items.length) return;
+  const touchedIds = new Set();
+  for (const it of items) {
+    if (!it.productId) continue;
+    const p = products.find(x => String(x.id) === String(it.productId));
+    if (!p || !p.sizes) continue;
+    const sizeObj = it.size ? p.sizes.find(s => s.size === it.size) : p.sizes[0];
+    if (!sizeObj) continue;
+    sizeObj.stock = Math.max(0, (sizeObj.stock || 0) - (it.qty || 1));
+    touchedIds.add(String(p.id));
+  }
+  for (const pid of touchedIds) {
+    const p = products.find(x => String(x.id) === pid);
+    if (!p) continue;
+    const totalStock = (p.sizes || []).reduce((a, s) => a + (s.stock || 0), 0);
+    if (totalStock === 0) {
+      p.status = 'inactive';
+      showAlert('⚠️ Stock agotado — producto marcado como Inactivo');
+    }
+    if (supabaseClient) {
+      const updatePayload = { sizes: p.sizes };
+      if (totalStock === 0) updatePayload.status = 'inactive';
+      await supabaseClient.from('products').update(updatePayload).eq('id', p.id);
+    }
+  }
+  if (touchedIds.size) filterInventory();
+}
+
+async function _restoreStockForItems(items) {
+  if (!items || !items.length) return;
+  const touchedIds = new Set();
+  for (const it of items) {
+    if (!it.productId) continue;
+    const p = products.find(x => String(x.id) === String(it.productId));
+    if (!p || !p.sizes) continue;
+    const sizeObj = it.size ? p.sizes.find(s => s.size === it.size) : p.sizes[0];
+    if (!sizeObj) continue;
+    sizeObj.stock = (sizeObj.stock || 0) + (it.qty || 1);
+    touchedIds.add(String(p.id));
+  }
+  for (const pid of touchedIds) {
+    const p = products.find(x => String(x.id) === pid);
+    if (!p) continue;
+    const totalStock = (p.sizes || []).reduce((a, s) => a + (s.stock || 0), 0);
+    const reactivate = totalStock > 0 && p.status === 'inactive';
+    if (reactivate) p.status = 'active';
+    if (supabaseClient) {
+      const updatePayload = { sizes: p.sizes };
+      if (reactivate) updatePayload.status = 'active';
+      await supabaseClient.from('products').update(updatePayload).eq('id', p.id);
+    }
+  }
+  if (touchedIds.size) filterInventory();
+}
+
 async function saveNewClient() {
   const name = document.getElementById('ncli-name').value.trim();
   if (!name) { showAlert('Ingresa el nombre de la clienta', 'error'); return; }
@@ -6470,6 +6541,9 @@ async function saveNewClient() {
     const { error } = await supabaseClient.from('orders').insert([orderData]);
     if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
   }
+
+  // Descontar del inventario los productos reales que se vincularon por el buscador
+  await _decrementStockForItems(items);
 
   orders.unshift(orderData);
   closeNewClientModal();
