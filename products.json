@@ -1324,20 +1324,6 @@
     "url": "/productos/enterizo-osito-blue.html"
   },
   {
-    "id": 1784131564149,
-    "slug": "conjunto-boston-azul-marino-2-piezas",
-    "name": "Conjunto Boston Azul marino 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxjMH_YRzaJuJ6TrPzemVNfORl4e9tDc_1UKMsDnDD-nH0tdrLrN4q2eAkcyrPS-WT2W4kRE5BUab-7KBYgRWNWMiaTHchFlk5zYgWdXYINz5PgWATegsx1gPwzMO4JN8cT9Rpkn7gbPjWVcMUC68hK0kXLPrO9prg0mQBL0nBc-ULa2sMtdJls21i8ggr/s1600/jf6.png",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niño"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-boston-azul-marino-2-piezas.html"
-  },
-  {
     "id": 1780370345736,
     "slug": "conjunto-overol-mr-gansito-2-piezas",
     "name": "Conjunto Overol Mr Gansito 2 piezas",
@@ -1364,6 +1350,20 @@
     ],
     "inStock": true,
     "url": "/productos/sueter-mia-amore-blanco.html"
+  },
+  {
+    "id": 1784131564149,
+    "slug": "conjunto-boston-azul-marino-2-piezas",
+    "name": "Conjunto Boston Azul marino 2 piezas",
+    "price": 60,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxjMH_YRzaJuJ6TrPzemVNfORl4e9tDc_1UKMsDnDD-nH0tdrLrN4q2eAkcyrPS-WT2W4kRE5BUab-7KBYgRWNWMiaTHchFlk5zYgWdXYINz5PgWATegsx1gPwzMO4JN8cT9Rpkn7gbPjWVcMUC68hK0kXLPrO9prg0mQBL0nBc-ULa2sMtdJls21i8ggr/s1600/jf6.png",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niño"
+    ],
+    "inStock": false,
+    "url": "/productos/conjunto-boston-azul-marino-2-piezas.html"
   },
   {
     "id": 1782835411498,
