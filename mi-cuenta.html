@@ -4602,11 +4602,6 @@ async function saveManualSale() {
   document.getElementById(id)?.addEventListener('input', updateManualSaleTotal);
 });
 
-// ── Close manual sale modal on outside click ──
-document.getElementById('manual-sale-modal')?.addEventListener('click', function(e) {
-  if (e.target === this) closeManualSale();
-});
-
 // ============================================
 // QUICK CONFIRM SALE
 // ============================================
@@ -4664,10 +4659,6 @@ async function doConfirmSale(id) {
   filterSales();
   showAlert('✅ Venta confirmada');
 }
-
-document.getElementById('confirm-sale-modal')?.addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
-});
 
 function exportSalesCSV() {
   const headers = ['ID','Cliente','DNI','Teléfono','Destino','Total','Método','Estado','Fecha'];
@@ -6211,7 +6202,6 @@ function openClientDetailModal(key) {
 function closeClientDetailModal() {
   document.getElementById('client-detail-modal').classList.remove('open');
 }
-document.getElementById('client-detail-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
 
 // ============================================
 // SELECCIÓN MÚLTIPLE + FUSIÓN DE CLIENTES DUPLICADOS
@@ -6490,10 +6480,6 @@ async function saveNewClient() {
   showAlert(`✅ Clienta registrada — S/ ${total.toFixed(2)}`);
 }
 
-document.getElementById('new-client-modal')?.addEventListener('click', function(e) {
-  if (e.target === this) closeNewClientModal();
-});
-
 function openMergeModal(keys) {
   if (!keys || keys.length < 2) { showAlert('Selecciona al menos 2 clientas para unir', 'error'); return; }
   const clients = buildClientsFromOrders();
@@ -6527,7 +6513,6 @@ function closeMergeModal() {
     dupModal.classList.add('open');
   }
 }
-document.getElementById('merge-client-modal')?.addEventListener('click', function(e) { if (e.target===this) closeMergeModal(); });
 
 async function confirmMerge() {
   const body = document.getElementById('merge-client-body');
@@ -6646,7 +6631,6 @@ function openDuplicatesModal() {
   }
   document.getElementById('dup-suggest-modal').classList.add('open');
 }
-document.getElementById('dup-suggest-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
 
 // ============================================
 // AGREGAR PRODUCTO A UNA BOLSITA YA EXISTENTE
@@ -6743,7 +6727,6 @@ async function confirmAddItemToBolsita() {
   openClientDetailModal(resolveMergeKey(o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`, getClientMerges()));
   showAlert(`✅ ${p.name} (${size}) agregado a la bolsita — nuevo total S/ ${newTotal.toFixed(2)}`);
 }
-document.getElementById('add-item-bolsita-modal')?.addEventListener('click', function(e) { if (e.target===this) closeAddItemToBolsita(); });
 
 // ============================================
 // PROVEEDORES
@@ -6965,7 +6948,6 @@ function updateOrderStatus(supplierId, orderId, newStatus) {
 }
 
 // close order modal on outside click
-document.getElementById('order-modal')?.addEventListener('click', function(e){ if(e.target===this) closeOrderModal(); });
 
 // ============================================
 // NAVIGATION
@@ -7038,13 +7020,6 @@ function updateClock() {
 
 function openMobileSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); }
 function closeMobileSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); }
-
-// ============================================
-// CLOSE MODAL OUTSIDE CLICK
-// ============================================
-document.getElementById('sale-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeSaleModal();
-});
 
 // ============================================
 // INIT
@@ -7429,8 +7404,6 @@ function renderCaja() {
   }
 }
 
-document.getElementById('gasto-modal')?.addEventListener('click', function(e) { if (e.target===this) closeExpenseModal(); });
-document.getElementById('presupuesto-modal')?.addEventListener('click', function(e) { if (e.target===this) closePresupuestoModal(); });
 
 // ============================================
 // PRÉSTAMOS
@@ -7542,7 +7515,6 @@ function renderPrestamos() {
     </div>`).join('') : '<div style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">Sin préstamos registrados</div>';
 }
 
-document.getElementById('prestamo-modal')?.addEventListener('click', function(e) { if (e.target===this) closeLoanModal(); });
 
 // ============================================
 // DUPLICAR PRODUCTO
@@ -7606,7 +7578,6 @@ async function removeOffer() {
   filterInventory();
   showAlert('Oferta eliminada');
 }
-document.getElementById('offer-modal')?.addEventListener('click', function(e) { if (e.target===this) this.classList.remove('open'); });
 
 // ============================================
 // DEUDORES
@@ -7728,7 +7699,6 @@ async function saveAdelantoPlus() {
   if (document.getElementById('clients-section')?.style.display !== 'none') renderClientsSection();
   showAlert(nuevaDeuda === 0 ? `✅ ${o.name} canceló toda su deuda` : `✅ Abono de S/ ${monto.toFixed(2)} registrado · Queda: S/ ${nuevaDeuda.toFixed(2)}`);
 }
-document.getElementById('adelanto-plus-modal')?.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
 
 // Hook deudores into filterSales override
 const _origFilterSalesDeuda = filterSales;
@@ -7840,10 +7810,6 @@ async function saveClientEdit() {
   renderClientsSection();
   showAlert('✅ Cliente actualizado');
 }
-
-document.getElementById('edit-client-modal')?.addEventListener('click', function(e) {
-  if (e.target === this) closeEditClientModal();
-});
 
 // ============================================
 // BLOG ADMIN
