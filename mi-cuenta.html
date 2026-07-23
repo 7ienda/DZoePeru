@@ -6522,6 +6522,15 @@ function checkClientDuplicates(openModal) {
   if (openModal) openDuplicatesModal();
 }
 
+function _escAttr(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function openDuplicatesModal() {
   const clients = buildClientsFromOrders();
   const groups = findDuplicateSuggestions(clients);
@@ -6532,7 +6541,7 @@ function openDuplicatesModal() {
     body.innerHTML = groups.map((g, gi) => `
       <div class="dup-group-card">
         ${g.map(cl => `<div class="dup-group-member"><span><strong>${cl.name||'—'} ${cl.lastname||''}</strong><div style="font-size:11px;color:var(--muted);">DNI: ${cl.dni||'—'} · ${cl.phone||'sin teléfono'}</div></span><span style="color:var(--rose);font-weight:700;">S/ ${cl.total.toFixed(2)}</span></div>`).join('')}
-        <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;background:var(--rose-dark);" onclick="openMergeModal(${JSON.stringify(g.map(c=>c._key))})"><i class="fas fa-object-ungroup"></i> Unir estas ${g.length}</button>
+        <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;background:var(--rose-dark);" data-keys="${_escAttr(JSON.stringify(g.map(c=>c._key)))}" onclick="openMergeModal(JSON.parse(this.dataset.keys))"><i class="fas fa-object-ungroup"></i> Unir estas ${g.length}</button>
       </div>
     `).join('');
   }
