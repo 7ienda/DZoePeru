@@ -2044,12 +2044,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 
           <div style="margin-top:18px;">
             <label style="font-weight:700;font-size:13px;color:var(--text2);display:block;margin-bottom:8px;"><i class="fas fa-bag-shopping" style="color:var(--rose);"></i> Productos que llevó</label>
-            <div style="display:grid;grid-template-columns:1fr 110px 80px 34px;gap:8px;margin-bottom:6px;">
-              <span style="font-size:11px;color:var(--muted);">Producto</span>
-              <span style="font-size:11px;color:var(--muted);">Precio (S/)</span>
-              <span style="font-size:11px;color:var(--muted);">Cant.</span>
-              <span></span>
-            </div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Busca el producto en tu inventario para ver su foto y confirmar que es el correcto. Si no lo encuentras, puedes escribirlo igual como producto libre.</div>
             <div id="ncli-items-body"><!-- filas dinámicas --></div>
             <button type="button" class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addNewClientProductRow()"><i class="fas fa-plus"></i> Agregar producto</button>
           </div>
@@ -6272,17 +6267,30 @@ function _mergeRowHtml(cl, idx) {
 }
 
 // ============================================
-// NUEVA CLIENTA (con productos manuales)
+// NUEVA CLIENTA (con buscador inteligente de productos)
 // ============================================
 let ncliRowSeq = 0;
 
+function _ncliNormalize(str) {
+  return String(str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+
 function _ncliRowHtml() {
   ncliRowSeq++;
-  return `<div class="ncli-item-row" data-row="${ncliRowSeq}" style="display:grid;grid-template-columns:1fr 110px 80px 34px;gap:8px;align-items:center;margin-bottom:8px;">
-    <input type="text" class="ncli-item-name" placeholder="Ej: Pantalón jean" oninput="updateNewClientTotal()">
-    <input type="number" class="ncli-item-price" placeholder="0.00" step="0.01" min="0" oninput="updateNewClientTotal()">
-    <input type="number" class="ncli-item-qty" placeholder="1" min="1" value="1" oninput="updateNewClientTotal()">
-    <button type="button" class="icon-btn" style="background:var(--rose-light);color:var(--rose);" onclick="removeNewClientProductRow(this)" title="Quitar producto"><i class="fas fa-trash"></i></button>
+  return `<div class="ncli-item-row" data-row="${ncliRowSeq}" data-product-id="" data-selected-name="" style="border:1.5px solid var(--border);border-radius:12px;padding:10px;margin-bottom:10px;">
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="ncli-item-thumb" style="width:40px;height:40px;border-radius:8px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;">👗</div>
+      <div style="flex:1;min-width:0;position:relative;">
+        <input type="text" class="ncli-item-name" placeholder="Busca el producto en tu inventario..." autocomplete="off" oninput="ncliSearchProducts(this)" onfocus="ncliSearchProducts(this)">
+        <div class="ncli-item-results" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;max-height:230px;overflow-y:auto;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.15);"></div>
+      </div>
+      <button type="button" class="icon-btn" style="background:var(--rose-light);color:var(--rose);flex-shrink:0;" onclick="removeNewClientProductRow(this)" title="Quitar producto"><i class="fas fa-trash"></i></button>
+    </div>
+    <div class="ncli-item-extra" style="display:flex;gap:8px;margin-top:8px;">
+      <select class="ncli-item-size" style="display:none;flex:1.4;" onchange="ncliSizeChanged(this)"></select>
+      <input type="number" class="ncli-item-price" placeholder="Precio S/" step="0.01" min="0" style="flex:1;" oninput="updateNewClientTotal()">
+      <input type="number" class="ncli-item-qty" placeholder="Cant." min="1" value="1" style="width:70px;" oninput="updateNewClientTotal()">
+    </div>
   </div>`;
 }
 
@@ -6300,12 +6308,103 @@ function removeNewClientProductRow(btn) {
   updateNewClientTotal();
 }
 
+function ncliSearchProducts(inputEl) {
+  const row = inputEl.closest('.ncli-item-row');
+  const resultsBox = row.querySelector('.ncli-item-results');
+  // Si el texto ya no coincide con el producto elegido, se desvincula (vuelve a ser producto libre)
+  if (row.dataset.productId && inputEl.value !== row.dataset.selectedName) {
+    row.dataset.productId = '';
+    row.dataset.selectedName = '';
+    row.querySelector('.ncli-item-thumb').innerHTML = '👗';
+    const sizeSel = row.querySelector('.ncli-item-size');
+    sizeSel.style.display = 'none'; sizeSel.innerHTML = '';
+  }
+  const q = _ncliNormalize(inputEl.value);
+  if (!q) { resultsBox.style.display = 'none'; resultsBox.innerHTML = ''; return; }
+  const matches = products.filter(p => _ncliNormalize(p.name).includes(q)).slice(0, 8);
+  if (!matches.length) {
+    resultsBox.innerHTML = `<div style="padding:10px 12px;font-size:12px;color:var(--muted);">Sin coincidencias en tu inventario — se guardará como producto libre: "${inputEl.value.trim()}"</div>`;
+    resultsBox.style.display = 'block';
+    return;
+  }
+  resultsBox.innerHTML = matches.map(p => {
+    const img = (p.images&&p.images[0])||p.image||'';
+    const prices = (p.sizes||[]).map(s=>s.price||0);
+    const min = prices.length?Math.min(...prices):0, max = prices.length?Math.max(...prices):0;
+    const stock = (p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0);
+    return `<div class="ncli-result-item" data-pid="${_escAttr(p.id)}" onclick="ncliSelectProduct(this)" style="display:flex;gap:8px;align-items:center;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);">
+      ${img?`<img src="${img}" style="width:34px;height:34px;border-radius:7px;object-fit:cover;flex-shrink:0;">`:'<div style="width:34px;height:34px;border-radius:7px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">👗</div>'}
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+        <div style="font-size:11px;color:var(--muted);">S/ ${min.toFixed(2)}${max>min?' – S/ '+max.toFixed(2):''} · stock ${stock}${stock<=0?' ⚠️ agotado':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  resultsBox.style.display = 'block';
+}
+
+function ncliSelectProduct(el) {
+  const pid = el.dataset.pid;
+  const p = products.find(x => String(x.id) === String(pid));
+  if (!p) return;
+  const row = el.closest('.ncli-item-row');
+  row.dataset.productId = p.id;
+  row.dataset.selectedName = p.name;
+
+  const nameInput = row.querySelector('.ncli-item-name');
+  nameInput.value = p.name;
+
+  const thumb = row.querySelector('.ncli-item-thumb');
+  const img = (p.images&&p.images[0])||p.image||'';
+  thumb.innerHTML = img ? `<img src="${img}" style="width:100%;height:100%;object-fit:cover;">` : '👗';
+
+  const sizeSel = row.querySelector('.ncli-item-size');
+  const priceInput = row.querySelector('.ncli-item-price');
+  if ((p.sizes||[]).length > 1) {
+    sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
+      p.sizes.map(s => `<option value="${s.size}" data-price="${s.price||0}">${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})</option>`).join('');
+    sizeSel.style.display = 'block';
+    priceInput.value = '';
+  } else {
+    sizeSel.style.display = 'none'; sizeSel.innerHTML = '';
+    priceInput.value = ((p.sizes&&p.sizes[0]&&p.sizes[0].price)||0).toFixed(2);
+  }
+
+  row.querySelector('.ncli-item-results').style.display = 'none';
+  row.querySelector('.ncli-item-results').innerHTML = '';
+  updateNewClientTotal();
+}
+
+function ncliSizeChanged(sel) {
+  const row = sel.closest('.ncli-item-row');
+  const opt = sel.options[sel.selectedIndex];
+  const priceInput = row.querySelector('.ncli-item-price');
+  if (opt && opt.dataset.price) priceInput.value = parseFloat(opt.dataset.price).toFixed(2);
+  updateNewClientTotal();
+}
+
+// Cierra el desplegable de resultados al hacer clic fuera de su fila
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('.ncli-item-row').forEach(row => {
+    const nameInput = row.querySelector('.ncli-item-name');
+    const results = row.querySelector('.ncli-item-results');
+    if (results && nameInput && !nameInput.contains(e.target) && !results.contains(e.target)) {
+      results.style.display = 'none';
+    }
+  });
+});
+
 function _ncliCollectItems() {
-  return Array.from(document.querySelectorAll('#ncli-items-body .ncli-item-row')).map(row => ({
-    name: row.querySelector('.ncli-item-name').value.trim(),
-    price: parseFloat(row.querySelector('.ncli-item-price').value) || 0,
-    qty: parseInt(row.querySelector('.ncli-item-qty').value) || 1
-  })).filter(it => it.name && it.price > 0);
+  return Array.from(document.querySelectorAll('#ncli-items-body .ncli-item-row')).map(row => {
+    const sizeSel = row.querySelector('.ncli-item-size');
+    return {
+      productId: row.dataset.productId || null,
+      name: row.querySelector('.ncli-item-name').value.trim(),
+      size: (sizeSel && sizeSel.style.display !== 'none') ? sizeSel.value : '',
+      price: parseFloat(row.querySelector('.ncli-item-price').value) || 0,
+      qty: parseInt(row.querySelector('.ncli-item-qty').value) || 1
+    };
+  }).filter(it => it.name && it.price > 0);
 }
 
 function updateNewClientTotal() {
