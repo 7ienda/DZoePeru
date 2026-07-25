@@ -721,6 +721,62 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .caja-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; font-weight: 600; }
 .caja-empty i { font-size: 32px; margin-bottom: 10px; display: block; opacity: .4; }
 
+/* ============================================
+   BLOG — EDITOR PREMIUM (WYSIWYG) + SEO
+   ============================================ */
+.blog-editor-wrap { border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); overflow: hidden; }
+.blog-editor-toolbar { display: flex; flex-wrap: wrap; gap: 3px; padding: 8px; background: var(--bg2); border-bottom: 1.5px solid var(--border); position: sticky; top: 0; z-index: 2; }
+.blog-editor-toolbar .et-sep { width: 1px; background: var(--border); margin: 4px 4px; align-self: stretch; }
+.et-btn {
+  width: 32px; height: 32px; border: none; background: transparent; border-radius: 8px;
+  color: var(--text2); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.et-btn:hover { background: var(--rose-soft); color: var(--rose-dark); }
+.et-btn.active { background: var(--rose); color: #fff; }
+.et-btn-wide { width: auto; padding: 0 10px; font-size: 11.5px; font-weight: 800; gap: 5px; }
+.blog-editor-area {
+  min-height: 260px; max-height: 480px; overflow-y: auto; padding: 18px 20px;
+  font-family: 'Nunito', sans-serif; font-size: 14.5px; line-height: 1.75; color: var(--text);
+  outline: none;
+}
+.blog-editor-area:empty::before { content: attr(data-placeholder); color: var(--muted); pointer-events: none; }
+.blog-editor-area h2 { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; margin: 22px 0 10px; color: var(--text); line-height: 1.2; }
+.blog-editor-area h3 { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.blog-editor-area p { margin-bottom: 12px; }
+.blog-editor-area ul, .blog-editor-area ol { padding-left: 22px; margin-bottom: 12px; }
+.blog-editor-area li { margin-bottom: 5px; }
+.blog-editor-area a { color: var(--rose-dark); text-decoration: underline; }
+.blog-editor-area img { max-width: 100%; border-radius: 12px; margin: 10px 0; }
+.blog-editor-area .article-tip { background: var(--rose-soft); border-left: 4px solid var(--rose); border-radius: 0 14px 14px 0; padding: 14px 18px; margin: 16px 0; }
+.blog-editor-area .article-tip-label { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--rose-dark); margin-bottom: 6px; }
+.blog-editor-area .article-tip p { margin-bottom: 0; }
+.blog-editor-area .article-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.blog-editor-area .article-table th { background: var(--rose-dark); color: #fff; padding: 8px 12px; text-align: left; }
+.blog-editor-area .article-table td { padding: 8px 12px; border-bottom: 1px solid var(--line2); }
+.blog-editor-html { display: none; width: 100%; min-height: 260px; max-height: 480px; padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 12.5px; line-height: 1.6; border: none; outline: none; background: var(--bg2); color: var(--text); resize: vertical; }
+.blog-editor-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--bg2); border-top: 1.5px solid var(--border); font-size: 11px; color: var(--muted); font-weight: 700; }
+
+.seo-panel { background: var(--bg2); border: 1.5px dashed var(--border); border-radius: var(--radius-sm); padding: 16px; margin-top: 14px; }
+.seo-panel-title { font-size: 12px; font-weight: 800; color: var(--rose-dark); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.seo-preview { background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+.seo-preview-url { font-size: 11px; color: #1a0dab; opacity: .75; margin-bottom: 3px; }
+body.dark-mode .seo-preview-url { color: #8ab4f8; }
+.seo-preview-title { font-size: 15px; color: #1a0dab; font-weight: 500; margin-bottom: 2px; line-height: 1.3; }
+body.dark-mode .seo-preview-title { color: #8ab4f8; }
+.seo-preview-desc { font-size: 12.5px; color: var(--text2); line-height: 1.4; }
+.seo-char-count { font-size: 10.5px; color: var(--muted); text-align: right; margin-top: 3px; }
+.seo-char-count.warn { color: var(--orange); }
+.seo-char-count.bad { color: var(--red); }
+.seo-score-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 800; }
+.seo-score-badge.good { background: var(--green-light); color: var(--green); }
+.seo-score-badge.mid { background: var(--orange-light); color: var(--orange); }
+.seo-score-badge.bad { background: var(--red-light); color: var(--red); }
+.slug-input-wrap { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 0 10px; }
+.slug-input-wrap span { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.slug-input-wrap input { border: none; background: transparent; padding: 9px 0; font-size: 12.5px; flex: 1; min-width: 0; color: var(--text); font-family: 'Courier New', monospace; }
+.slug-input-wrap input:focus { outline: none; }
+
 </style>
 </head>
 <body>
@@ -2279,9 +2335,50 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
         <div class="section-body" id="blog-form-body">
           <div class="form-grid">
             <div style="display:flex;flex-direction:column;gap:14px;">
-              <div class="form-group"><label>Título del post *</label><input type="text" id="blog-titulo" placeholder="Ej: Los 5 pijamas más cómodos para bebés"></div>
-              <div class="form-group"><label>Extracto / Descripción corta</label><textarea id="blog-extracto" rows="2" placeholder="Resumen breve que aparece en la lista del blog..."></textarea></div>
-              <div class="form-group"><label>Contenido completo</label><textarea id="blog-contenido" rows="7" placeholder="Escribe el artículo completo aquí..."></textarea></div>
+              <div class="form-group"><label>Título del post *</label><input type="text" id="blog-titulo" placeholder="Ej: Los 5 pijamas más cómodos para bebés" oninput="onBlogTituloInput()"></div>
+              <div class="form-group"><label>URL amigable (slug)</label>
+                <div class="slug-input-wrap">
+                  <span>dzoeperu.com/blog.html#/post/</span>
+                  <input type="text" id="blog-slug" placeholder="titulo-del-post" oninput="blogSlugTouched=true;updateSeoPreview()">
+                </div>
+              </div>
+              <div class="form-group"><label>Extracto / Descripción corta</label><textarea id="blog-extracto" rows="2" placeholder="Resumen breve que aparece en la lista del blog..." oninput="updateSeoPreview()"></textarea></div>
+
+              <div class="form-group">
+                <label>Contenido completo</label>
+                <div class="blog-editor-wrap">
+                  <div class="blog-editor-toolbar" id="blog-editor-toolbar">
+                    <button type="button" class="et-btn" title="Deshacer" onclick="beCmd('undo')"><i class="fas fa-rotate-left"></i></button>
+                    <button type="button" class="et-btn" title="Rehacer" onclick="beCmd('redo')"><i class="fas fa-rotate-right"></i></button>
+                    <div class="et-sep"></div>
+                    <button type="button" class="et-btn et-btn-wide" title="Párrafo" onclick="beFormatBlock('P')">Párrafo</button>
+                    <button type="button" class="et-btn et-btn-wide" title="Encabezado H2" onclick="beFormatBlock('H2')">H2</button>
+                    <button type="button" class="et-btn et-btn-wide" title="Encabezado H3" onclick="beFormatBlock('H3')">H3</button>
+                    <div class="et-sep"></div>
+                    <button type="button" class="et-btn" title="Negrita" onclick="beCmd('bold')"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="et-btn" title="Cursiva" onclick="beCmd('italic')"><i class="fas fa-italic"></i></button>
+                    <button type="button" class="et-btn" title="Subrayado" onclick="beCmd('underline')"><i class="fas fa-underline"></i></button>
+                    <div class="et-sep"></div>
+                    <button type="button" class="et-btn" title="Lista con viñetas" onclick="beCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                    <button type="button" class="et-btn" title="Lista numerada" onclick="beCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+                    <div class="et-sep"></div>
+                    <button type="button" class="et-btn" title="Enlace" onclick="beInsertLink()"><i class="fas fa-link"></i></button>
+                    <button type="button" class="et-btn" title="Insertar imagen" onclick="beInsertImage()"><i class="fas fa-image"></i></button>
+                    <button type="button" class="et-btn" title="Insertar tabla" onclick="beInsertTable()"><i class="fas fa-table"></i></button>
+                    <button type="button" class="et-btn" title="Recuadro de consejo" onclick="beInsertTip()"><i class="fas fa-lightbulb"></i></button>
+                    <div class="et-sep"></div>
+                    <button type="button" class="et-btn" title="Limpiar formato" onclick="beCmd('removeFormat')"><i class="fas fa-text-slash"></i></button>
+                    <button type="button" class="et-btn et-btn-wide" id="blog-html-toggle-btn" title="Ver/editar código HTML" onclick="toggleBlogHtmlView()"><i class="fas fa-code"></i> HTML</button>
+                  </div>
+                  <div class="blog-editor-area" id="blog-contenido" contenteditable="true" data-placeholder="Escribe el artículo completo aquí... usa la barra de herramientas para dar formato" oninput="onBlogContentInput()"></div>
+                  <textarea class="blog-editor-html" id="blog-contenido-html"></textarea>
+                  <div class="blog-editor-footer">
+                    <span><i class="fas fa-align-left"></i> <span id="blog-word-count">0</span> palabras</span>
+                    <span><i class="fas fa-clock"></i> <span id="blog-read-time">0</span> min de lectura</span>
+                  </div>
+                </div>
+              </div>
+
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                 <div class="form-group"><label>Categoría</label>
                   <input type="text" id="blog-categoria" placeholder="Ej: Tips, Novedades, Guías..." list="blog-cat-list">
@@ -2289,10 +2386,23 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
                 </div>
                 <div class="form-group"><label>Etiquetas (separadas por comas)</label><input type="text" id="blog-tags" placeholder="bebés, pijamas, invierno"></div>
               </div>
+
+              <div class="seo-panel">
+                <div class="seo-panel-title"><i class="fas fa-magnifying-glass-chart"></i> SEO — Cómo se verá en Google <span id="seo-score-badge" class="seo-score-badge mid" style="margin-left:auto;">⏳ Calculando…</span></div>
+                <div class="seo-preview">
+                  <div class="seo-preview-url">dzoeperu.com › blog.html › <span id="seo-prev-slug">post</span></div>
+                  <div class="seo-preview-title" id="seo-prev-title">Título del post — D'Zoe Perú</div>
+                  <div class="seo-preview-desc" id="seo-prev-desc">La descripción corta aparecerá aquí...</div>
+                </div>
+                <div class="form-group"><label>Título SEO (meta title)</label><input type="text" id="blog-seo-title" placeholder="Se usa el título del post si lo dejas vacío" oninput="updateSeoPreview()"><div class="seo-char-count" id="seo-title-count">0/60</div></div>
+                <div class="form-group" style="margin-top:10px;"><label>Descripción SEO (meta description)</label><textarea id="blog-seo-desc" rows="2" placeholder="Se usa el extracto si lo dejas vacío" oninput="updateSeoPreview()"></textarea><div class="seo-char-count" id="seo-desc-count">0/155</div></div>
+                <div class="form-group" style="margin-top:10px;"><label>Palabra clave principal</label><input type="text" id="blog-focus-kw" placeholder="Ej: guía de tallas ropa infantil Perú" oninput="updateSeoPreview()"></div>
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:14px;">
               <div class="form-group"><label>URL de imagen de portada</label><input type="text" id="blog-imagen" placeholder="https://..." oninput="previewBlogImg()"></div>
               <div id="blog-img-preview" style="width:100%;height:160px;border-radius:14px;background:var(--bg2);border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:13px;">Vista previa</div>
+              <div class="form-group"><label>Texto alternativo de la imagen (ALT — SEO)</label><input type="text" id="blog-imagen-alt" placeholder="Ej: Guía de tallas ropa infantil Perú - D'Zoe Perú"></div>
               <div class="form-group"><label>Autor</label><input type="text" id="blog-autor" placeholder="Ej: D'Zoe Perú" value="D'Zoe Perú"></div>
               <div class="form-group"><label>Fecha de publicación</label><input type="date" id="blog-fecha"></div>
               <div class="form-group"><label>Estado</label>
@@ -7891,13 +8001,184 @@ async function saveClientEdit() {
 let blogPosts = JSON.parse(localStorage.getItem('dzoe_blog_posts') || '[]');
 let editingBlogId = null;
 let blogStatus = 'published';
+let blogSlugTouched = false; // true una vez que el usuario edita el slug a mano
 
 function saveBlogPosts() { localStorage.setItem('dzoe_blog_posts', JSON.stringify(blogPosts)); }
+
+// ── Carga inicial desde Supabase (con fallback a localStorage) ──
+async function loadBlogPostsFromSupabase() {
+  if (!supabaseClient) { renderBlogList(); return; }
+  try {
+    const { data, error } = await supabaseClient.from('blog_posts').select('*').order('created_at', { ascending: false });
+    if (!error && data) {
+      blogPosts = data.map(p => ({
+        id: p.id, slug: p.slug, titulo: p.titulo, extracto: p.extracto, contenido: p.contenido,
+        categoria: p.categoria, tags: p.tags || [], imagen: p.imagen, imagen_alt: p.imagen_alt,
+        autor: p.autor, fecha: p.fecha, status: p.status, featured: p.featured,
+        seo_title: p.seo_title, seo_desc: p.seo_desc, focus_kw: p.focus_kw, reading_time: p.reading_time,
+        created_at: p.created_at, updated_at: p.updated_at
+      }));
+      saveBlogPosts();
+    }
+  } catch (e) { console.warn('blog_posts load error', e); }
+  renderBlogList();
+}
 
 function selectBlogStatus(val, el) {
   blogStatus = val;
   document.querySelectorAll('#blog-status-pills .status-pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
+}
+
+// ══════════════════════════════════════════════
+//  EDITOR PREMIUM (WYSIWYG) — comandos de la barra
+// ══════════════════════════════════════════════
+function beArea() { return document.getElementById('blog-contenido'); }
+
+function beFocus() { beArea()?.focus(); }
+
+function beCmd(cmd, val = null) {
+  beFocus();
+  document.execCommand(cmd, false, val);
+  onBlogContentInput();
+}
+
+function beFormatBlock(tag) {
+  beFocus();
+  document.execCommand('formatBlock', false, tag);
+  onBlogContentInput();
+}
+
+function beInsertLink() {
+  const url = prompt('Ingresa la URL del enlace (ej: https://dzoeperu.com/index.html#productos):');
+  if (!url) return;
+  beFocus();
+  document.execCommand('createLink', false, url);
+  onBlogContentInput();
+}
+
+function beInsertImage() {
+  const url = prompt('URL de la imagen a insertar dentro del artículo:');
+  if (!url) return;
+  const alt = prompt('Texto alternativo (ALT) de la imagen (para SEO y accesibilidad):', '') || '';
+  beFocus();
+  document.execCommand('insertHTML', false, `<img src="${url}" alt="${alt.replace(/"/g,'&quot;')}" loading="lazy">`);
+  onBlogContentInput();
+}
+
+function beInsertTable() {
+  const cols = parseInt(prompt('¿Cuántas columnas necesita la tabla?', '3')) || 3;
+  const rows = parseInt(prompt('¿Cuántas filas de datos (sin contar encabezado)?', '3')) || 3;
+  let thead = '<tr>' + Array.from({length: cols}, (_,i)=>`<th>Columna ${i+1}</th>`).join('') + '</tr>';
+  let tbody = '';
+  for (let r = 0; r < rows; r++) tbody += '<tr>' + Array.from({length: cols}, ()=>`<td>—</td>`).join('') + '</tr>';
+  beFocus();
+  document.execCommand('insertHTML', false, `<table class="article-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table><p><br></p>`);
+  onBlogContentInput();
+}
+
+function beInsertTip() {
+  beFocus();
+  document.execCommand('insertHTML', false, `<div class="article-tip"><div class="article-tip-label">💡 Consejo D'Zoe</div><p>Escribe aquí tu consejo o dato destacado...</p></div><p><br></p>`);
+  onBlogContentInput();
+}
+
+function toggleBlogHtmlView() {
+  const area = beArea();
+  const html = document.getElementById('blog-contenido-html');
+  const btn = document.getElementById('blog-html-toggle-btn');
+  const showingCode = html.style.display === 'block';
+  if (showingCode) {
+    // Volver a modo visual: tomar el HTML editado y renderizarlo
+    area.innerHTML = html.value;
+    area.style.display = 'block';
+    html.style.display = 'none';
+    btn.classList.remove('active');
+  } else {
+    html.value = area.innerHTML;
+    area.style.display = 'none';
+    html.style.display = 'block';
+    btn.classList.add('active');
+  }
+  onBlogContentInput();
+}
+
+function getBlogContentHtml() {
+  const html = document.getElementById('blog-contenido-html');
+  if (html && html.style.display === 'block') return html.value.trim();
+  return beArea()?.innerHTML.trim() || '';
+}
+
+function setBlogContentHtml(html) {
+  beArea().innerHTML = html || '';
+  document.getElementById('blog-contenido-html').value = html || '';
+}
+
+function onBlogContentInput() {
+  const text = beArea()?.innerText || '';
+  const words = (text.trim().match(/\S+/g) || []).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  document.getElementById('blog-word-count').textContent = words;
+  document.getElementById('blog-read-time').textContent = minutes;
+}
+
+// ── Slug automático a partir del título ──
+function slugify(str) {
+  return (str || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function onBlogTituloInput() {
+  if (!blogSlugTouched) {
+    document.getElementById('blog-slug').value = slugify(document.getElementById('blog-titulo').value);
+  }
+  updateSeoPreview();
+}
+
+// ── Panel SEO: preview estilo Google + contador de caracteres ──
+function updateSeoPreview() {
+  const titulo = document.getElementById('blog-titulo')?.value.trim() || 'Título del post';
+  const slug = document.getElementById('blog-slug')?.value.trim() || slugify(titulo) || 'post';
+  const extracto = document.getElementById('blog-extracto')?.value.trim() || '';
+  const seoTitle = document.getElementById('blog-seo-title')?.value.trim();
+  const seoDesc = document.getElementById('blog-seo-desc')?.value.trim();
+  const finalTitle = seoTitle || `${titulo} — D'Zoe Perú`;
+  const finalDesc = seoDesc || extracto || 'Descubre este artículo en el blog de D\'Zoe Perú, ropa infantil importada premium.';
+
+  document.getElementById('seo-prev-slug').textContent = slug;
+  document.getElementById('seo-prev-title').textContent = finalTitle;
+  document.getElementById('seo-prev-desc').textContent = finalDesc;
+
+  const tc = document.getElementById('blog-seo-title')?.value.length || 0;
+  const dc = document.getElementById('blog-seo-desc')?.value.length || 0;
+  const tEl = document.getElementById('seo-title-count');
+  const dEl = document.getElementById('seo-desc-count');
+  tEl.textContent = `${tc}/60`;
+  tEl.className = 'seo-char-count' + (tc > 60 ? ' bad' : tc > 50 ? ' warn' : '');
+  dEl.textContent = `${dc}/155`;
+  dEl.className = 'seo-char-count' + (dc > 155 ? ' bad' : dc > 140 ? ' warn' : '');
+
+  // Puntaje simple: título, extracto, categoría, palabra clave, alt de imagen, longitud de contenido
+  const kw = document.getElementById('blog-focus-kw')?.value.trim();
+  const alt = document.getElementById('blog-imagen-alt')?.value.trim();
+  const cat = document.getElementById('blog-categoria')?.value.trim();
+  const wordCount = parseInt(document.getElementById('blog-word-count')?.textContent || '0');
+  let score = 0;
+  if (titulo.length >= 20) score++;
+  if (extracto.length >= 50) score++;
+  if (kw) score++;
+  if (alt) score++;
+  if (cat) score++;
+  if (wordCount >= 300) score++;
+  if (kw && titulo.toLowerCase().includes(kw.toLowerCase())) score++;
+  const badge = document.getElementById('seo-score-badge');
+  if (score >= 6) { badge.textContent = '🟢 SEO excelente'; badge.className = 'seo-score-badge good'; }
+  else if (score >= 3) { badge.textContent = '🟠 SEO aceptable'; badge.className = 'seo-score-badge mid'; }
+  else { badge.textContent = '🔴 SEO por mejorar'; badge.className = 'seo-score-badge bad'; }
 }
 
 function previewBlogImg() {
@@ -7919,9 +8200,18 @@ function toggleBlogForm(show) {
 function clearBlogForm() {
   editingBlogId = null;
   blogStatus = 'published';
-  ['blog-titulo','blog-extracto','blog-contenido','blog-categoria','blog-tags','blog-imagen','blog-autor'].forEach(id => {
+  blogSlugTouched = false;
+  ['blog-titulo','blog-extracto','blog-categoria','blog-tags','blog-imagen','blog-imagen-alt','blog-autor','blog-slug','blog-seo-title','blog-seo-desc','blog-focus-kw'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = id === 'blog-autor' ? "D'Zoe Perú" : '';
   });
+  setBlogContentHtml('');
+  const htmlArea = document.getElementById('blog-contenido-html');
+  const visArea = document.getElementById('blog-contenido');
+  if (htmlArea) htmlArea.style.display = 'none';
+  if (visArea) visArea.style.display = 'block';
+  document.getElementById('blog-html-toggle-btn')?.classList.remove('active');
+  onBlogContentInput();
+  updateSeoPreview();
   const fd = document.getElementById('blog-fecha');
   if (fd) fd.value = new Date().toISOString().slice(0,10);
   const prev = document.getElementById('blog-img-preview');
@@ -7934,28 +8224,61 @@ function clearBlogForm() {
   document.getElementById('blog-save-btn-text').textContent = 'Publicar post';
 }
 
-function saveBlogPost() {
+async function saveBlogPost() {
   const titulo = document.getElementById('blog-titulo')?.value.trim();
   if (!titulo) { showAlert('El título es requerido', 'error'); return; }
+  let slug = slugify(document.getElementById('blog-slug')?.value.trim() || titulo);
+  if (!slug) { showAlert('El slug/URL amigable es requerido', 'error'); return; }
+  // Evitar slugs duplicados con otro post
+  const dupe = blogPosts.find(p => p.slug === slug && p.id !== editingBlogId);
+  if (dupe) slug = `${slug}-${Date.now().toString().slice(-4)}`;
+
+  const contenido = getBlogContentHtml();
+  const words = (beArea()?.innerText.trim().match(/\S+/g) || []).length;
+  const reading_time = Math.max(1, Math.round(words / 200));
+
   const post = {
     id: editingBlogId || Date.now(),
+    slug,
     titulo,
     extracto: document.getElementById('blog-extracto')?.value.trim() || '',
-    contenido: document.getElementById('blog-contenido')?.value.trim() || '',
+    contenido,
     categoria: document.getElementById('blog-categoria')?.value.trim() || 'General',
     tags: (document.getElementById('blog-tags')?.value || '').split(',').map(t=>t.trim()).filter(Boolean),
     imagen: document.getElementById('blog-imagen')?.value.trim() || '',
+    imagen_alt: document.getElementById('blog-imagen-alt')?.value.trim() || titulo,
     autor: document.getElementById('blog-autor')?.value.trim() || "D'Zoe Perú",
     fecha: document.getElementById('blog-fecha')?.value || new Date().toISOString().slice(0,10),
     status: blogStatus,
     featured: document.getElementById('blog-featured-toggle')?.classList.contains('on') || false,
+    seo_title: document.getElementById('blog-seo-title')?.value.trim() || '',
+    seo_desc: document.getElementById('blog-seo-desc')?.value.trim() || '',
+    focus_kw: document.getElementById('blog-focus-kw')?.value.trim() || '',
+    reading_time,
     updated_at: new Date().toISOString()
   };
+
+  if (supabaseClient) {
+    try {
+      if (editingBlogId) {
+        const { error } = await supabaseClient.from('blog_posts').update(post).eq('id', editingBlogId);
+        if (error) throw error;
+      } else {
+        post.created_at = new Date().toISOString();
+        const { error } = await supabaseClient.from('blog_posts').insert([post]);
+        if (error) throw error;
+      }
+    } catch (e) {
+      console.warn('blog_posts save error', e);
+      showAlert('⚠️ No se pudo guardar en Supabase, se guardó localmente. Revisa la tabla blog_posts.', 'error');
+    }
+  }
+
   if (editingBlogId) {
     const idx = blogPosts.findIndex(p => p.id === editingBlogId);
-    if (idx !== -1) blogPosts[idx] = post;
+    if (idx !== -1) blogPosts[idx] = post; else blogPosts.unshift(post);
   } else {
-    post.created_at = new Date().toISOString();
+    post.created_at = post.created_at || new Date().toISOString();
     blogPosts.unshift(post);
   }
   saveBlogPosts();
@@ -7971,15 +8294,23 @@ function editBlogPost(id) {
   if (!post) return;
   editingBlogId = id;
   blogStatus = post.status || 'published';
+  blogSlugTouched = true;
   document.getElementById('blog-titulo').value = post.titulo || '';
+  document.getElementById('blog-slug').value = post.slug || slugify(post.titulo);
   document.getElementById('blog-extracto').value = post.extracto || '';
-  document.getElementById('blog-contenido').value = post.contenido || '';
+  setBlogContentHtml(post.contenido || '');
   document.getElementById('blog-categoria').value = post.categoria || '';
   document.getElementById('blog-tags').value = (post.tags||[]).join(', ');
   document.getElementById('blog-imagen').value = post.imagen || '';
+  document.getElementById('blog-imagen-alt').value = post.imagen_alt || '';
   document.getElementById('blog-autor').value = post.autor || "D'Zoe Perú";
   document.getElementById('blog-fecha').value = post.fecha || '';
+  document.getElementById('blog-seo-title').value = post.seo_title || '';
+  document.getElementById('blog-seo-desc').value = post.seo_desc || '';
+  document.getElementById('blog-focus-kw').value = post.focus_kw || '';
   previewBlogImg();
+  onBlogContentInput();
+  updateSeoPreview();
   document.querySelectorAll('#blog-status-pills .status-pill').forEach(p => {
     p.classList.toggle('selected', p.dataset.bstatus === blogStatus);
   });
@@ -7991,8 +8322,12 @@ function editBlogPost(id) {
   document.getElementById('blog-form-section')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function deleteBlogPost(id) {
+async function deleteBlogPost(id) {
   if (!confirm('¿Eliminar este post?')) return;
+  if (supabaseClient) {
+    try { await supabaseClient.from('blog_posts').delete().eq('id', id); }
+    catch (e) { console.warn('blog_posts delete error', e); }
+  }
   blogPosts = blogPosts.filter(p => p.id !== id);
   saveBlogPosts();
   renderBlogList();
@@ -8000,10 +8335,14 @@ function deleteBlogPost(id) {
   showAlert('Post eliminado');
 }
 
-function toggleBlogPostStatus(id) {
+async function toggleBlogPostStatus(id) {
   const post = blogPosts.find(p => p.id === id);
   if (!post) return;
   post.status = post.status === 'published' ? 'draft' : 'published';
+  if (supabaseClient) {
+    try { await supabaseClient.from('blog_posts').update({ status: post.status }).eq('id', id); }
+    catch (e) { console.warn('blog_posts status error', e); }
+  }
   saveBlogPosts();
   renderBlogList();
   updateBlogStats();
@@ -8060,6 +8399,7 @@ function renderBlogList() {
         <td>${statusBadge}</td>
         <td>
           <div style="display:flex;gap:5px;">
+            ${p.status==='published' && p.slug ? `<a class="icon-btn" href="blog.html#/post/${p.slug}" target="_blank" style="background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;text-decoration:none;" title="Ver en el blog"><i class="fas fa-arrow-up-right-from-square"></i></a>` : ''}
             <button class="icon-btn" style="background:${p.status==='published'?'var(--orange-light)':'var(--green-light)'};color:${p.status==='published'?'var(--orange)':'var(--green)'};" onclick="toggleBlogPostStatus(${p.id})" title="${p.status==='published'?'Pasar a borrador':'Publicar'}"><i class="fas fa-${p.status==='published'?'eye-slash':'eye'}"></i></button>
             <button class="icon-btn edit-btn" onclick="editBlogPost(${p.id})" title="Editar"><i class="fas fa-pen"></i></button>
             <button class="icon-btn delete-btn" onclick="deleteBlogPost(${p.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
@@ -8241,7 +8581,7 @@ function renderDigitalesList() {
 const _origGoToSection = goToSection;
 goToSection = function(sectionId) {
   _origGoToSection.apply(this, arguments);
-  if (sectionId === 'blog-admin-section') { renderBlogList(); const fd=document.getElementById('blog-fecha'); if(fd&&!fd.value) fd.value=new Date().toISOString().slice(0,10); }
+  if (sectionId === 'blog-admin-section') { loadBlogPostsFromSupabase(); const fd=document.getElementById('blog-fecha'); if(fd&&!fd.value) fd.value=new Date().toISOString().slice(0,10); }
   if (sectionId === 'digitales-admin-section') renderDigitalesList();
   if (sectionId === 'almacen-section') loadAlmacenList();
 };
