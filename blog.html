@@ -104,7 +104,7 @@ window.SUPABASE_CONFIG = {
   --peach-light: #FBE8D0;   /* melocotón claro */
   --sky:         #A0D0E8;   /* azul bebé */
   --sky-light:   #D4EDF8;   /* azul muy claro */
-  --cream:       #FBF7FF;   /* blanco lavanda ultra suave */
+  --cream:       #FFFFFF;   /* fondo blanco de la web — idéntico a index.html */
   --sand:        #F5EDD8;   /* arena/beige */
   --sand-dark:   #D4C4A0;   /* arena oscuro */
   --text:        #2D2545;   /* morado oscuro elegante */
@@ -2226,6 +2226,11 @@ async function incrementView(articleId) {
 }
 
 /* ===== ABRIR / CERRAR ARTÍCULO ===== */
+const _defaultMeta = {
+  title: document.title,
+  desc: document.querySelector('meta[name="description"]')?.getAttribute('content') || ''
+};
+
 function openArticle(id){
   const overlay = document.getElementById('modal-overlay');
   document.querySelectorAll('.article-modal').forEach(m => m.style.display = 'none');
@@ -2237,11 +2242,20 @@ function openArticle(id){
   overlay.scrollTop = 0;
   // Registrar vista real
   incrementView(id);
+  // SEO dinámico: título, meta descripción y URL amigable para este artículo
+  const seoTitle = target.dataset.seoTitle;
+  const seoDesc = target.dataset.seoDesc;
+  if (seoTitle) document.title = seoTitle;
+  if (seoDesc) document.querySelector('meta[name="description"]')?.setAttribute('content', seoDesc);
+  if (history.pushState) history.pushState(null, '', '#/post/' + id);
 }
 
 function closeArticle(){
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  document.title = _defaultMeta.title;
+  document.querySelector('meta[name="description"]')?.setAttribute('content', _defaultMeta.desc);
+  if (history.pushState) history.pushState(null, '', location.pathname);
 }
 
 function closeArticleOnOverlay(e){
@@ -2274,8 +2288,148 @@ function showNotif(msg){
   setTimeout(() => n.remove(), 3500);
 }
 
+/* ══════════════════════════════════════════════
+   POSTS DINÁMICOS — cargados desde el panel admin (Supabase)
+   ══════════════════════════════════════════════ */
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600&q=80';
+
+function escapeHtml(str){
+  return (str||'').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatBlogDate(fecha){
+  if(!fecha) return '';
+  try {
+    return new Date(fecha + 'T12:00:00').toLocaleDateString('es-PE', { day:'numeric', month:'long', year:'numeric' });
+  } catch(e){ return fecha; }
+}
+
+function categorySlug(cat){
+  return (cat||'general').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function buildBlogCardHtml(post){
+  const img = post.imagen || FALLBACK_IMG;
+  const alt = escapeHtml(post.imagen_alt || post.titulo);
+  const cat = categorySlug(post.categoria);
+  return `<article class="blog-card reveal visible" data-cat="${cat}" data-dynamic="1" onclick="openArticle('${post.slug}')" role="button" tabindex="0" aria-label="Leer artículo: ${escapeHtml(post.titulo)}">
+    <div class="blog-card-img"><img src="${img}" alt="${alt}" loading="lazy"></div>
+    <div class="blog-card-body">
+      <div class="blog-card-date">${formatBlogDate(post.fecha)}</div>
+      <h3>${escapeHtml(post.titulo)}</h3>
+      <p>${escapeHtml(post.extracto || '')}</p>
+      <span class="blog-card-link-text">Seguir leyendo</span>
+    </div>
+  </article>`;
+}
+
+function buildArticleModalHtml(post){
+  const img = post.imagen || FALLBACK_IMG;
+  const alt = escapeHtml(post.imagen_alt || post.titulo);
+  const seoTitle = escapeHtml((post.seo_title || (post.titulo + " — D'Zoe Perú")));
+  const seoDesc = escapeHtml(post.seo_desc || post.extracto || '');
+  return `<div class="article-modal" id="article-${post.slug}" style="display:none;" data-seo-title="${seoTitle}" data-seo-desc="${seoDesc}">
+    <div class="article-modal-hero">
+      <img src="${img}" alt="${alt}" loading="lazy">
+      <div class="article-modal-hero-overlay"><h1>${escapeHtml(post.titulo)}</h1></div>
+      <button class="article-close" onclick="closeArticle()" aria-label="Cerrar artículo">✕</button>
+    </div>
+    <div class="article-body">
+      <div class="article-meta-bar">
+        <div class="article-author">
+          <div class="article-author-avatar">📝</div>
+          <div>
+            <div class="article-author-name">${escapeHtml(post.autor || "D'Zoe Perú")}</div>
+            <div class="article-author-date">${formatBlogDate(post.fecha)}</div>
+          </div>
+        </div>
+        <div class="article-meta-pills">
+          <span class="article-pill cat">${escapeHtml(post.categoria || 'Blog')}</span>
+          <span class="article-pill time">${post.reading_time || 5} min de lectura</span>
+        </div>
+      </div>
+      <div class="article-content">
+        ${post.contenido || ''}
+        <div class="article-cta">
+          <h3>¿Lista para comprar?</h3>
+          <p>Descubre nuestra colección completa de ropa infantil importada premium.</p>
+          <a href="index.html#productos" aria-label="Ver productos D'Zoe Perú">🛍️ Ver colección completa →</a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function ensureCategoryFilterButton(cat){
+  if(!cat) return;
+  const slug = categorySlug(cat);
+  const wrap = document.querySelector('.blog-filters');
+  if(!wrap || wrap.querySelector(`[data-cat-btn="${slug}"]`)) return;
+  const btn = document.createElement('button');
+  btn.className = 'blog-filter-btn';
+  btn.dataset.catBtn = slug;
+  btn.textContent = cat;
+  btn.onclick = () => filterBlog(slug, btn);
+  wrap.appendChild(btn);
+}
+
+async function loadDynamicBlogPosts(){
+  const sb = getSupabase();
+  if(!sb) return;
+  try {
+    const { data, error } = await sb.from('blog_posts').select('*').eq('status','published').order('fecha', { ascending:false });
+    if(error || !data || !data.length) return;
+
+    const grid = document.getElementById('blog-grid');
+    const overlay = document.getElementById('modal-overlay');
+    if(!grid || !overlay) return;
+
+    // Post destacado primero
+    data.sort((a,b) => (b.featured?1:0) - (a.featured?1:0));
+
+    data.forEach(post => {
+      if(!post.slug) return;
+      ensureCategoryFilterButton(post.categoria);
+      grid.insertAdjacentHTML('afterbegin', buildBlogCardHtml(post));
+      overlay.insertAdjacentHTML('beforeend', buildArticleModalHtml(post));
+    });
+
+    loadAllViews();
+    injectBlogPostsSchema(data);
+
+    // Si la URL apunta a un post específico, lo abrimos automáticamente
+    const match = location.hash.match(/^#\/post\/(.+)$/);
+    if(match) openArticle(decodeURIComponent(match[1]));
+  } catch(e){ console.warn('loadDynamicBlogPosts error', e); }
+}
+
+// Datos estructurados schema.org para que Google entienda cada artículo
+function injectBlogPostsSchema(posts){
+  const graph = posts.filter(p => p.slug).map(p => ({
+    "@type": "BlogPosting",
+    "headline": p.titulo,
+    "description": p.seo_desc || p.extracto || '',
+    "image": p.imagen || FALLBACK_IMG,
+    "datePublished": p.fecha,
+    "dateModified": p.updated_at || p.fecha,
+    "author": { "@type": "Organization", "name": p.autor || "D'Zoe Perú" },
+    "publisher": { "@type": "Organization", "name": "D'Zoe Perú", "logo": { "@type": "ImageObject", "url": "https://dzoeperu.com/og-image.jpg" } },
+    "mainEntityOfPage": `https://dzoeperu.com/blog.html#/post/${p.slug}`,
+    "keywords": (p.tags||[]).join(', ') || p.focus_kw || ''
+  }));
+  if(!graph.length) return;
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+  document.head.appendChild(s);
+}
+
 /* ===== INIT ===== */
-document.addEventListener('DOMContentLoaded', loadAllViews);
+document.addEventListener('DOMContentLoaded', () => {
+  loadAllViews();
+  loadDynamicBlogPosts();
+});
 </script>
 </body>
 </html>
