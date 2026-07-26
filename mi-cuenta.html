@@ -6567,7 +6567,16 @@ async function _decrementStockForItems(items) {
     if (!it.productId) continue;
     const p = products.find(x => String(x.id) === String(it.productId));
     if (!p || !p.sizes) continue;
-    const sizeObj = it.size ? p.sizes.find(s => s.size === it.size) : p.sizes[0];
+    let sizeObj = null;
+    if (it.size) {
+      sizeObj = p.sizes.find(s => s.size === it.size);
+    } else if (p.sizes.length === 1) {
+      sizeObj = p.sizes[0];
+    } else {
+      // Producto con varias tallas y sin talla especificada: no adivinar, para no descontar la talla equivocada
+      console.warn(`No se descontó stock de "${p.name}": tiene varias tallas y el pedido no especifica cuál.`);
+      continue;
+    }
     if (!sizeObj) continue;
     sizeObj.stock = Math.max(0, (sizeObj.stock || 0) - (it.qty || 1));
     touchedIds.add(String(p.id));
@@ -6596,7 +6605,15 @@ async function _restoreStockForItems(items) {
     if (!it.productId) continue;
     const p = products.find(x => String(x.id) === String(it.productId));
     if (!p || !p.sizes) continue;
-    const sizeObj = it.size ? p.sizes.find(s => s.size === it.size) : p.sizes[0];
+    let sizeObj = null;
+    if (it.size) {
+      sizeObj = p.sizes.find(s => s.size === it.size);
+    } else if (p.sizes.length === 1) {
+      sizeObj = p.sizes[0];
+    } else {
+      console.warn(`No se restauró stock de "${p.name}": tiene varias tallas y el pedido no especifica cuál.`);
+      continue;
+    }
     if (!sizeObj) continue;
     sizeObj.stock = (sizeObj.stock || 0) + (it.qty || 1);
     touchedIds.add(String(p.id));
@@ -6622,6 +6639,16 @@ async function saveNewClient() {
 
   const items = _ncliCollectItems();
   if (!items.length) { showAlert('Agrega al menos un producto con nombre y precio', 'error'); return; }
+
+  // Validar que si el producto está vinculado al inventario y tiene varias tallas, se haya elegido una talla
+  for (const it of items) {
+    if (!it.productId) continue;
+    const p = products.find(x => String(x.id) === String(it.productId));
+    if (p && (p.sizes||[]).length > 1 && !it.size) {
+      showAlert(`⚠️ Selecciona la talla de "${p.name}" antes de guardar (tiene varias tallas y no se puede descontar del stock correcto)`, 'error');
+      return;
+    }
+  }
 
   const total = items.reduce((sum, it) => sum + it.price * it.qty, 0);
   const adelanto = parseFloat(document.getElementById('ncli-adelanto').value) || 0;
