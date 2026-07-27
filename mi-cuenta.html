@@ -374,7 +374,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .product-card:hover .product-card-img img { transform: scale(1.04); }
 .product-card-badge { position: absolute; bottom: 10px; left: 10px; background: var(--rose); color: #fff; font-size: 9px; padding: 3px 10px; border-radius: 99px; font-weight: 800; letter-spacing: .04em; }
 .product-card-badge.inactive { background: var(--muted); }
-.product-corner-badges { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 6px; }
+.product-corner-badges { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: 90%; }
 .product-seo-badge, .product-origin-badge { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
 .product-seo-badge.seo-ok { color: var(--green); }
 .product-seo-badge.seo-bad { color: var(--orange); }
@@ -798,17 +798,19 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <div class="login-error" id="login-error">
       <i class="fas fa-exclamation-circle"></i> <span id="login-error-msg">Correo o contraseña incorrectos</span>
     </div>
-    <label class="login-label">Correo</label>
-    <div class="login-input-wrap">
-      <input type="email" class="login-input" id="login-user" placeholder="tu@correo.com" autocomplete="username">
-      <i class="fas fa-user login-input-icon"></i>
-    </div>
-    <label class="login-label">Contraseña</label>
-    <div class="login-input-wrap">
-      <input type="password" class="login-input" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
-      <i class="fas fa-eye login-input-icon" id="toggle-pass" onclick="togglePassVisible()" style="cursor:pointer;"></i>
-    </div>
-    <button class="login-btn" id="login-submit-btn" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
+    <form id="login-form" autocomplete="on" onsubmit="event.preventDefault(); doLogin(); return false;">
+      <label class="login-label">Correo</label>
+      <div class="login-input-wrap">
+        <input type="email" class="login-input" id="login-user" name="email" placeholder="tu@correo.com" autocomplete="username">
+        <i class="fas fa-user login-input-icon"></i>
+      </div>
+      <label class="login-label">Contraseña</label>
+      <div class="login-input-wrap">
+        <input type="password" class="login-input" id="login-pass" name="password" placeholder="••••••••" autocomplete="current-password">
+        <i class="fas fa-eye login-input-icon" id="toggle-pass" onclick="togglePassVisible()" style="cursor:pointer;"></i>
+      </div>
+      <button type="submit" class="login-btn" id="login-submit-btn"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar al panel</button>
+    </form>
   </div>
 </div>
 
@@ -4301,12 +4303,54 @@ function productSeoBadgeHtml(p) {
     : `<div class="product-seo-badge seo-bad" title="Alguna imagen tiene un nombre de archivo poco descriptivo para SEO"><i class="fas fa-triangle-exclamation"></i></div>`;
 }
 
-// Badge de Origen: usa el campo 🔒 Origen (proveedor) que ya se guarda por talla (size_origins).
-// Si el producto no tiene ningún Origen cargado, no se muestra badge.
+// Badge de Origen: usa el campo 🔒 Proveedor que ya se guarda por talla (size_origins,
+// ahora es un objeto {proveedor, productId, url, nota, ...} por talla, no texto plano).
+// Si el producto no tiene ningún proveedor cargado, no se muestra badge.
 function productOriginBadgeHtml(p) {
-  const origins = [...new Set(Object.values(p.size_origins || {}).map(v => (v||'').trim()).filter(Boolean))];
+  const origins = [...new Set(Object.values(p.size_origins || {})
+    .map(v => (typeof v === 'string' ? v : (v && v.proveedor)) || '')
+    .map(s => s.trim())
+    .filter(Boolean))];
   if (!origins.length) return '';
-  return `<div class="product-origin-badge" title="Origen: ${origins.join(', ')}"><i class="fas fa-lock"></i></div>`;
+  return `<div class="product-origin-badge" title="Proveedor: ${origins.join(', ')}"><i class="fas fa-lock"></i></div>`;
+}
+
+// Nombre del producto: ¿es bueno para SEO? Evita nombres genéricos, muy cortos,
+// o de una sola palabra (ej: "Producto 1", "Conjunto", "test") — se espera algo
+// descriptivo como "Conjunto Teddy Bear" o "Vestido Flores Primavera".
+function isSeoFriendlyProductName(name) {
+  const clean = (name || '').trim();
+  if (!clean) return null;
+  const badPatterns = [
+    /^producto[-_ ]?\d*$/i, /^prod[-_ ]?\d*$/i, /^item[-_ ]?\d*$/i,
+    /^nuevo[-_ ]?\d*$/i, /^test\d*$/i, /^prueba\d*$/i, /^sin[-_ ]?nombre$/i,
+    /^\d+$/, /^[a-f0-9]{6,}$/i
+  ];
+  if (badPatterns.some(rx => rx.test(clean))) return false;
+  const words = clean.split(/\s+/).filter(Boolean);
+  const realWords = words.filter(w => /^[a-zA-Zà-úÀ-Ú]{3,}$/.test(w));
+  // Un buen nombre SEO tiene al menos 2 palabras descriptivas (no solo "Conjunto")
+  if (realWords.length < 2) return false;
+  if (clean.length < 8) return false;
+  if (clean.length > 70) return false; // demasiado largo para el <title> de la tienda
+  return true;
+}
+
+function productNameSeoBadgeHtml(p) {
+  const ok = isSeoFriendlyProductName(p.name);
+  if (ok === null) return '';
+  return ok
+    ? `<div class="product-seo-badge seo-ok" title="El nombre del producto es bueno para SEO"><i class="fas fa-heading"></i></div>`
+    : `<div class="product-seo-badge seo-bad" title="El nombre del producto podría mejorar para SEO: agrega palabras descriptivas (ej: 'Conjunto Teddy Bear' en vez de 'Conjunto')"><i class="fas fa-heading"></i></div>`;
+}
+
+// Color: se usa en el SEO de la tienda (alt de imágenes, título de la página y Schema.org),
+// así que se avisa si el producto no tiene color cargado.
+function productColorBadgeHtml(p) {
+  const hasColor = Boolean(p.color && p.color.trim());
+  return hasColor
+    ? `<div class="product-seo-badge seo-ok" title="Color: ${p.color}"><i class="fas fa-palette"></i></div>`
+    : `<div class="product-seo-badge seo-bad" title="Este producto no tiene color asignado (afecta el SEO: alt de fotos, título y Schema.org)"><i class="fas fa-palette"></i></div>`;
 }
 
 function productCardHtml(p) {
@@ -4324,7 +4368,7 @@ function productCardHtml(p) {
       ${ribbonLabel ? `<div class="product-ribbon" style="${ribbonStyle}">${ribbonLabel}</div>` : ''}
       ${p.featured?'<div style="position:absolute;top:10px;right:10px;background:#fef3c7;color:#d97706;font-size:9px;padding:3px 8px;border-radius:99px;font-weight:700;">⭐ Destacado</div>':''}
       <div class="product-card-badge ${p.status==='inactive'?'inactive':''}">${p.status==='inactive'?'Inactivo':'Activo'}</div>
-      <div class="product-corner-badges">${productOriginBadgeHtml(p)}${productSeoBadgeHtml(p)}</div>
+      <div class="product-corner-badges">${productOriginBadgeHtml(p)}${productSeoBadgeHtml(p)}${productNameSeoBadgeHtml(p)}${productColorBadgeHtml(p)}</div>
     </div>
     <div class="product-card-body">
       <div class="product-name">${p.name}</div>
