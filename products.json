@@ -218,22 +218,6 @@
     "url": "/productos/pantalon-jean-lazitos-bordados.html"
   },
   {
-    "id": 1780090012758,
-    "slug": "vestido-con-chaqueta-jean-conjunto-2-piezas",
-    "name": "Vestido con chaqueta jean conjunto 2 piezas",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioYa9vZrhlrMHNlk3KBiPX8HVKmep6bpHhksgcfNdxPpwl38_zy64r6BrdOJQ1m8SJ7FiH1LWnDpjLq875V9vXiUA91rv4Fl95xr9ZWFs37YXnJKDtCYi9t726K3o1EViy9aavjeL1jfelUGlFGZLtzAVd5_4ZeJ_FFvHzixkkycwY8gYK-VbqgA4LSeVH/s16000/ves2.png",
-    "categories": [
-      "Vestidos",
-      "Conjunto 2 piezas",
-      "Niña",
-      "Casacas",
-      "Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/vestido-con-chaqueta-jean-conjunto-2-piezas.html"
-  },
-  {
     "id": 1783126798487,
     "slug": "conjunto-felta-estrellita-2-piezas",
     "name": "Conjunto Felta estrellita 2 piezas",
@@ -300,20 +284,6 @@
     ],
     "inStock": true,
     "url": "/productos/cardigan-multi-corazones.html"
-  },
-  {
-    "id": 1780351395912,
-    "slug": "casaca-jean-apeluchado",
-    "name": "Casaca Jean apeluchado",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkgAEdx23wcFk6lOMXISs2wi-IzO1wMv0O3gIWPPl9sS4ll3oE8VXXntK-5eNLVxxPIvAzY0_iyrqTWmgimMMIUWtnA9lsOJ0X4qE61HMBYVQd9POrJrc1crthibpAosxA2j7zfS49ctk9ATKsdnfBSzD3thsIe_dm2E3-H_oY-xVt4octJ3bsNROnVtg/s1600/cjn1.png",
-    "categories": [
-      "Niño",
-      "Jeans",
-      "Casacas"
-    ],
-    "inStock": true,
-    "url": "/productos/casaca-jean-apeluchado.html"
   },
   {
     "id": 1780351237888,
@@ -509,7 +479,7 @@
     "slug": "casaca-peluche-osito",
     "name": "Casaca Peluche Osito",
     "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhI_akP8TmaTUL4j6Qm0ych5qVevEByuYiYZCQBy5buv_A_XVBktt0LT2K5Xs0rDbu8bEEIYtswmOgRk3KD3oh18SCfhiR4i-rBIygjx6HONm9IAF5WNJri6vG0S3r-wiRZ7zp8uO_RZ89H7gwOCeE1yWo8CVn7JwIlz1Nosv9iAUiw7M2PxZhuXzibc0o-/s1600/csc1.png",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgq23E6l2bA8lxFxOHaZFih9cJGC3uwZO_zFHTa5nLh1xVEU8073lt1mS8mBIrHgYwPgS_SKBcPtwf7etkkykgYacNxAI8-YhCTl1q3Koljce7xKT-PW1gKroAtVuF8cPfrA4XfihyVphTrSECu-olMPrY3hIKmZftXfX31iYp-bsUiuXQeZUjVu62xVvCE/s1600/casaca-peluche-osito-modelo.webp",
     "categories": [
       "Casacas",
       "Jeans",
@@ -843,22 +813,6 @@
     "url": "/productos/conjunto-bunny-felpa-3-piezas.html"
   },
   {
-    "id": 1780375151271,
-    "slug": "conjunto-dino-safari-dos-piezas",
-    "name": "Conjunto Dino Safari dos piezas",
-    "price": 40,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJApNjL0nmEElgIy1pMPEJ5aLs6ic_sl85soKE90bJsmZHBpE3sinS67u3IG3e75s-S_ZME5DGWHGbjfJ9MV1KENchCVSLZ1MLY1TA1-l3dqqqnCV2pMJbrfcuV1WU04yrvNvhfBTVAPmaLUlyo21vtWDvm6iZeCmEQGlursQIMMv03I_SVjhyRXet6BRs/s16000/cdi2.png",
-    "categories": [
-      "Niño",
-      "Jeans",
-      "Conjunto Pantalon",
-      "Camisas",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-dino-safari-dos-piezas.html"
-  },
-  {
     "id": 1784131109884,
     "slug": "conjunto-baseball-00-2-piezas",
     "name": "Conjunto baseball 00 2 piezas",
@@ -874,18 +828,17 @@
   },
   {
     "id": 1780413238517,
-    "slug": "conjunto-3-piezas-boy-confort",
-    "name": "Conjunto 3 piezas Boy confort",
+    "slug": "conjunto-boy-confort-3-piezas",
+    "name": "Conjunto Boy confort 3 piezas",
     "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwESf7R0o_drq_27Ya1z_zwWnW5cHOE7aFElhDoMIqmRRGXGombTsULtvuon7Pq2PJmbrPjZNJUjCQOZC_ZITbkeJqYzdnjeR9yS4gCSTeH15x5_ExqT9LWx4lfpzZH8SEVWSzcoK5POD1b-xekvNK_Ok3p0yNLpTp0ryXp16598TibvfQ9vT0vgwk-JeF/s1600/pl2.png",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEideIILSdJHh8wBs9hX_dpQJqLe70D8HrGsFGBOlUKjwj1o6JutuSIZHRKdRTty3qEYlsCFH2dFrgnRGrFbVTbDTilVjGVSPoi83MAY34WcOAZg4Un1dI1ba1EGNbElr_PjUdBIhKw57uZUlk678tEIGCt-0Qkl4U36Gcj8S9dfueXYP2VbM_d2Xsl9nXkk/s1600/conjunto-boy-confort-3-piezas-modelo.webp",
     "categories": [
       "Conjunto Pantalon",
       "Niño",
-      "Conjunto 3 piezas",
-      "Chalecos"
+      "Conjunto 3 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-3-piezas-boy-confort.html"
+    "url": "/productos/conjunto-boy-confort-3-piezas.html"
   },
   {
     "id": 1782835357855,
@@ -945,18 +898,18 @@
     "url": "/productos/conjunto-dark-m-2-piezas.html"
   },
   {
-    "id": 1780414516324,
-    "slug": "conjunto-plomo-mickey-3-piezas",
-    "name": "Conjunto Plomo Mickey 3 piezas",
-    "price": 52,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi03indwEi9XuCWnjY1FUjpC2PO-P3bZtF0JoOzNtutGFUePtVgtjVyNNoWEkUopRgZlt460q1KHSd0QcZ7u-ucHaE12iqRuZghaDA_0F0w6jFEInLFXOjKtZKPV6FZqXpQXQtH_gBm75-apBrk2CqLIUt5_sbZxU0alX_3z-tQgpyeiZfB8dFE1XUcQqG-/s16000/mick1.png",
+    "id": 1780414311596,
+    "slug": "conjunto-brown-dog-2-piezas",
+    "name": "Conjunto Brown Dog 2 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQc8N005FSFNbzIlPf0ELCJ0044KB87nG2zRYhPPnovCdDlhyphenhyphenCmpZhZYR2pw7fsmax6JJXyUGsm9C_D2hyphenhyphengVrUdjqWTfU4PDJs1oUnBt6Zbb6mKeQ4kLszyeqrUsWM2JdNNrz7kyiVWPtWJVhkPTYH4_qsVHH1-M64O8dGG0A5YJTsRI-Rkk9lVPXvZ6pE/s1600/conjunto-brown-dog-2-piezas-modelo.webp",
     "categories": [
-      "Conjunto Pantalon",
       "Niño",
-      "Conjunto 3 piezas"
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-plomo-mickey-3-piezas.html"
+    "url": "/productos/conjunto-brown-dog-2-piezas.html"
   },
   {
     "id": 1780415883954,
@@ -983,20 +936,6 @@
     ],
     "inStock": true,
     "url": "/productos/casaca-pink-forrito-osito-bear.html"
-  },
-  {
-    "id": 1780414311596,
-    "slug": "conjunto-brown-dog-2-piezas",
-    "name": "Conjunto Brown Dog 2 piezas",
-    "price": 42,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIcCyJwzxVlMGxF8NvYKnCwF1DaY8304WnZV52PtaIrxllpHb09Tza8Y85_zcf0pLgDKOvbNDVS5e82o2pZi5eCU1XA1-iIoWkWeSsWyie8XX1DGw_DP6u580bSGJPB8POMEEQ2YZsk8f2xm_OiGG5jgipykuK9W7BEyz5rt-OZYqXxKncnnSFZONXjNrp/s1600/pm1.png",
-    "categories": [
-      "Niño",
-      "Conjunto Pantalon",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-brown-dog-2-piezas.html"
   },
   {
     "id": 1780414600403,
@@ -1039,20 +978,6 @@
     ],
     "inStock": false,
     "url": "/productos/conjunto-black-mickey-3-piezas.html"
-  },
-  {
-    "id": 1780413926796,
-    "slug": "conjunto-mickey-plomo-3-piezas",
-    "name": "Conjunto Mickey plomo 3 piezas",
-    "price": 49,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYwaSwQswrfvb7QSVn-g0SbD8-TVzGAyggKwDmbv8UNwYPoyINM5_OV_lEKlU5qQQ2Wi7MFwcRSbY1aDkZcP0-UWvuwpQTYD4z4EjFQG1bwGF0Bs1sYRVd-JlIJurVbi_Zt2uEK05xnqov79yK_vkeoAgg4MeKLgrlVas8hzHbZTn4TmNRCUS_ZywcTTH1/s16000/mic2.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niño",
-      "Conjunto 3 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-mickey-plomo-3-piezas.html"
   },
   {
     "id": 1780416194801,
@@ -2020,6 +1945,19 @@
     "url": "/productos/conjunto-lola-bunny-3-piezas.html"
   },
   {
+    "id": 1780350774615,
+    "slug": "casaca-osito-amarillo",
+    "name": "Casaca osito amarillo",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGAIULxscl-EK30Gp8mubRbDYa4Yo6SpNoqrK7-6VKWkPbrgQA3345Rt8SyelZpLHK1Sallilcci94VzFVsV_gHwGD8FtbT15EmelMTAEfKc-IC4iDtdFQwUqolyIdKS9DQ2z43Wg-qj5EoKWypWIchL5SCQUoD4KHNf2dTnGH5ZrPLuG_dBsTbYioZVt_/s1600/casaca-osito-amarillo-modelo.webp",
+    "categories": [
+      "Casacas",
+      "Niño"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-osito-amarillo.html"
+  },
+  {
     "id": 1783387683635,
     "slug": "conjunto-jean-verano-kids",
     "name": "Conjunto jean verano kids",
@@ -2048,19 +1986,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-conejitos-peludito-celeste-3-piezas.html"
-  },
-  {
-    "id": 1780350774615,
-    "slug": "casaca-osito-amarillo",
-    "name": "Casaca osito amarillo",
-    "price": 50,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfgNNvkfyOhO4NqiWbk1-5hSiY_XXBjWpJ_KrrzhiEW3p1YfE9248Y7OdVftyNsYg8W-0YrP2uwPjpI5dJfS2C0lgfqnoGUXOUGd644rbhQmZ7wP75VJXb8ltnIbjVXrEYnOi8kFjEqNpeBquhyphenhyphen9haJp_EQEkZkQgWtyv2xfbQVGM4BiJYun6l4lRNP6-O/s16000/oa1.png",
-    "categories": [
-      "Casacas",
-      "Niño"
-    ],
-    "inStock": true,
-    "url": "/productos/casaca-osito-amarillo.html"
   },
   {
     "id": 1782835311475,
@@ -2366,20 +2291,6 @@
     "url": "/productos/sueter-canastita-rosado.html"
   },
   {
-    "id": 1780412182735,
-    "slug": "purple-cotton-bunny-2-piezas",
-    "name": "Purple cotton bunny 2 piezas",
-    "price": 42,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwtj8l8IPfDwIxWjVg-IztsVNb4zojcHlntiA7dOTgFEtPzRX4PjenBrXbbJGE66qqq9Jk2x59pWkV-2gDyIsdVjHIpmr4KphG0iDkjsx6jsYOX7BDx2tCnfLnOWg-MIylOviiqgXfpabo9OH1otXvwpQ18utLEnF-lJTzGsg-vq_LKLOCOmXR2flr9Fa9/s16000/cat1.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niña",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/purple-cotton-bunny-2-piezas.html"
-  },
-  {
     "id": 1784662240426,
     "slug": "pantalon-jean-noche-de-estrellas",
     "name": "Pantalon Jean noche de estrellas",
@@ -2408,21 +2319,6 @@
     ],
     "inStock": true,
     "url": "/productos/pantalon-jean-fresa-rasgada-moderno.html"
-  },
-  {
-    "id": 1780372374344,
-    "slug": "conjunto-mallita-fresa-3-piezas",
-    "name": "Conjunto Mallita Fresa 3 piezas",
-    "price": 38,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbiDy45npCiSaEoZH6AG9ExP3jSQv-Jeo5nUl0p_dApJM1RzE-RkzWhnMlMCVYEen8UOpN5qIi3R2PLBBVN0upC-1Lq34ReDUTkmDQsj4Dae8dKd0osgW8sQx_ORe-m8wXfVSjoB9Y3sxx1_JNHNjSQ-Ssl9Vv96df8MaPDEoO_HgLUFHAwD5_5vb6SU9q/s1600/fre1.png",
-    "categories": [
-      "Conjunto Pantalon",
-      "Jeans",
-      "Niña",
-      "Conjunto 3 piezas"
-    ],
-    "inStock": false,
-    "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
   },
   {
     "id": 1783126465387,
@@ -4686,5 +4582,105 @@
     ],
     "inStock": false,
     "url": "/productos/conjunto-hilo-flor-blanca-2-piezas.html"
+  },
+  {
+    "id": 1780375151271,
+    "slug": "conjunto-dino-safari-dos-piezas",
+    "name": "Conjunto Dino Safari dos piezas",
+    "price": 40,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZ4di0H0orJITfZD2tPuKm3yhvH1bw0A2p7BxGA-lww0Cn7MbNn6qto6VWUY0IiOdzQc2IGx1HpPRkpSj9ilscMuCFh0fpPQyfpmpuFDS8rT1PYBAtiDgOBrs3ifVf4XB-HM8CWl2EhRlcluAVFW9y_m1SjLQSqqN-5TwMuYCvSvv97ZtrwHWMnN4ToTIL/s1600/conjunto-dino-safari-dos-piezas-modelo.webp",
+    "categories": [
+      "Niño",
+      "Conjunto Pantalon",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-dino-safari-dos-piezas.html"
+  },
+  {
+    "id": 1780413926796,
+    "slug": "conjunto-mickey-plomo-3-piezas",
+    "name": "Conjunto Mickey plomo 3 piezas",
+    "price": 49,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXBLsL58IbmI2UTegAfPJ2u2Zl3bejbfcl9MLbo2m4ONp0CCgm3c5seVAYwyn8DqC7EY8dNDNRG9hAEcxpIl0Gb_s7Ive6tcLU09pGHxuUoJdR9r8OBU2qKRts1pLo9B7CVy7sPPRwTn2EoyCUb8Vf2H-4p7t8HJwKyqoM8Hy11O9wddPuIKtWj3UBEHFg/s1600/conjunto-mickey-plomo-3-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-mickey-plomo-3-piezas.html"
+  },
+  {
+    "id": 1780090012758,
+    "slug": "vestido-con-chaqueta-jean-conjunto-2-piezas",
+    "name": "Vestido con chaqueta jean conjunto 2 piezas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6q_wleArI5l_LS4lTQMZjRKS-rbtmF32EI5Ztv49dgh54mlHeXY4w4z9pDrPN3jy6WT7uonkmsZhrw9g0Q7beA2Qsg3VMcL3-ex_ADhDc4bIyVQX2YYinqf0NrdcCzHLnvWFPHD6qDmr8QExUf6fKiB6jNRk1Qxu4eUs2k19AMhQVd07QzaS0yftD9VVC/s1600/vestido-con-chaqueta-jean-conjunto-2-piezas-modelo.webp",
+    "categories": [
+      "Vestidos",
+      "Conjunto 2 piezas",
+      "Niña",
+      "Casacas",
+      "Jeans"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-con-chaqueta-jean-conjunto-2-piezas.html"
+  },
+  {
+    "id": 1780414516324,
+    "slug": "conjunto-plomo-mickey-3-piezas",
+    "name": "Conjunto Plomo Mickey 3 piezas",
+    "price": 52,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEizdvts3jmNSmR0teYxcvvrH3EnVsMWolIjQK4YXJgCUurCKK3qjZumk_O6JyXAMY8bKVqzfJ1WJjRFEAnovZEjj2SJpC3Z3bzGuL2pNWNlMEzaTjZeZ3Crv1DRkjXpZBNx051Ur1WTfpBFBaesAVZuFiggIPp5nxkvEl9PSB8UIa8lkaDjECWgMYzkmslA/s1600/conjunto-plomo-mickey-3-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-plomo-mickey-3-piezas.html"
+  },
+  {
+    "id": 1780412182735,
+    "slug": "purple-cotton-bunny-2-piezas",
+    "name": "Purple cotton bunny 2 piezas",
+    "price": 42,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiC92nZjtYU_sEVpsPtem5Dl9mnk2WrNiFQIML7XDt-MgcTu1QOWvwLKnFOj2AFMAMcL3-Et3O06Eg8QJ7UCN7_8dN0fd3aWsH8zc1FydBcKFG0nrS8XGyfJDvwY8V3KL7schqC4yaatwMupix8yCZJFluUbJseTTATf_LgEj-TX_boxkfaQEgAknI38Sr7/s1600/conjunto-purple-cotton-bunny-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niña",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/purple-cotton-bunny-2-piezas.html"
+  },
+  {
+    "id": 1780351395912,
+    "slug": "casaca-jean-apeluchado",
+    "name": "Casaca Jean apeluchado",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_u15rOYO_8cviDE1a1PCxHLRNKRB3Uu_CnZ0Ew9m0IHWGtcD4HWlx8ySt8d7OTjJf_SzPrEF_1Q4Tgvh4xn9MjrtSePzBBW7bfBFP_ogOea6vQgN-k9e8V8dJ5ytPQULyWUy2iOu5sF_lYr-VOsQvcCA3_mX_n5wp3p9pvbQeBX4x6x_7WJZ-9wGPAvBb/s1600/casaca-jean-apeluchado-modelo.webp",
+    "categories": [
+      "Niño",
+      "Jeans",
+      "Casacas"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-jean-apeluchado.html"
+  },
+  {
+    "id": 1780372374344,
+    "slug": "conjunto-mallita-fresa-3-piezas",
+    "name": "Conjunto Mallita Fresa 3 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxhjYwE4Dx-0Yxj3GI2gVuLzYQeu1IKDphpReJPgvqXBrRvQYjgRbHN-g9YgpfTYl77nsF6DO1abDbratrKnGmniH15ypJcqvptKahYqHmVCdOsDjJig5BZ_1Qo_TZvrs8q1l1PdiOVzgtHfqyKjpmFmMARabtwelSSrCBxAmTjYspr22xIpnWJX3u0rCS/s1600/conjunto-mallita-fresa-3-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niña",
+      "Conjunto 3 piezas"
+    ],
+    "inStock": false,
+    "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
   }
 ]
