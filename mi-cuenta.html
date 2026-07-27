@@ -4344,13 +4344,12 @@ function productNameSeoBadgeHtml(p) {
     : `<div class="product-seo-badge seo-bad" title="El nombre del producto podría mejorar para SEO: agrega palabras descriptivas (ej: 'Conjunto Teddy Bear' en vez de 'Conjunto')"><i class="fas fa-heading"></i></div>`;
 }
 
-// Color: se usa en el SEO de la tienda (alt de imágenes, título de la página y Schema.org),
-// así que se avisa si el producto no tiene color cargado.
+// Color: se usa en el SEO de la tienda (alt de imágenes, título de la página y Schema.org).
+// Si el producto no tiene color, no se muestra badge (igual que el de Proveedor).
 function productColorBadgeHtml(p) {
   const hasColor = Boolean(p.color && p.color.trim());
-  return hasColor
-    ? `<div class="product-seo-badge seo-ok" title="Color: ${p.color}"><i class="fas fa-palette"></i></div>`
-    : `<div class="product-seo-badge seo-bad" title="Este producto no tiene color asignado (afecta el SEO: alt de fotos, título y Schema.org)"><i class="fas fa-palette"></i></div>`;
+  if (!hasColor) return '';
+  return `<div class="product-seo-badge seo-ok" title="Color: ${p.color}"><i class="fas fa-palette"></i></div>`;
 }
 
 function productCardHtml(p) {
