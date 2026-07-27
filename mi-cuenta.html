@@ -837,6 +837,8 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <button class="menu-btn" data-section="reingreso-section" onclick="goToSection('reingreso-section');loadReingresoAlerts();"><i class="fas fa-bell" style="color:var(--rose);"></i><span>Alertas Reingreso</span></button>
     <button class="menu-btn" data-section="clients-section"><i class="fas fa-users"></i><span>Clientes</span><span class="badge" id="badge-clients">0</span></button>
     <button class="menu-btn" data-section="suppliers-section"><i class="fas fa-truck"></i><span>Proveedores</span><span class="badge" id="badge-suppliers">0</span></button>
+    <span class="menu-label">Compras</span>
+    <button class="menu-btn" data-section="bolsas-section" onclick="goToSection('bolsas-section');renderBolsasSection();"><i class="fas fa-basket-shopping" style="color:#e07856;"></i><span style="color:#e07856;">Compras (Carritos)</span><span class="badge" id="badge-bolsas" style="background:rgba(224,120,86,.25);">0</span></button>
     <span class="menu-label">Finanzas</span>
     <button class="menu-btn" data-section="caja-section"><i class="fas fa-cash-register"></i><span>Caja</span><span class="badge" id="badge-caja">0</span></button>
     <button class="menu-btn" data-section="prestamos-section"><i class="fas fa-hand-holding-dollar"></i><span>Préstamos</span><span class="badge" id="badge-prestamos">0</span></button>
@@ -1292,6 +1294,10 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <div id="sizes-container"></div>
               <button class="add-size-btn" onclick="addSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
+            <div class="form-divider">📦 Abastecimiento — Proveedores de este producto</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px;margin-top:-10px;">Guarda el ID y el link de cada importador (Temu, Shein, Maybe, Andrew, etc.) para volver a pedirlo con un clic cuando se agote el stock.</div>
+            <div id="sourcing-container"></div>
+            <button class="add-size-btn" onclick="addSourcingRow()"><i class="fas fa-plus-circle"></i> Agregar proveedor</button>
             <div style="display:flex;gap:12px;margin-top:24px;">
               <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-floppy-disk"></i> <span id="save-btn-text">Guardar producto</span></button>
               <button class="btn btn-ghost" onclick="clearForm()">Cancelar</button>
@@ -2308,6 +2314,199 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           <div style="display:flex;gap:10px;margin-top:20px;">
             <button class="btn btn-primary" style="flex:1;" onclick="saveOrder()"><i class="fas fa-floppy-disk"></i> Guardar orden</button>
             <button class="btn btn-ghost" onclick="closeOrderModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== BOLSAS DE COMPRA (Importaciones: Temu, Shein, etc.) ====== -->
+    <div id="bolsas-section" class="page-section" style="display:none;">
+      <div class="stats-grid" style="margin-bottom:24px;">
+        <div class="stat-card">
+          <div class="stat-card-icon"><i class="fas fa-basket-shopping"></i></div>
+          <h3>Compras este mes</h3>
+          <div class="stat-value" id="bolsa-mes-gastado">S/ 0.00</div>
+          <div class="stat-change" id="bolsa-mes-count">0 carritos</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-card-icon"><i class="fas fa-cart-shopping"></i></div>
+          <h3>Carritos Activos</h3>
+          <div class="stat-value" id="bolsa-activos-count">0</div>
+          <div class="stat-change">Sin recibir aún</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-card-icon"><i class="fas fa-truck-fast"></i></div>
+          <h3>En Tránsito</h3>
+          <div class="stat-value" id="bolsa-transito-count">0</div>
+          <div class="stat-change">Viniendo en camino</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-card-icon"><i class="fas fa-box-open"></i></div>
+          <h3>Por Recibir</h3>
+          <div class="stat-value" id="bolsa-porrecibir-count">0</div>
+          <div class="stat-change">Productos pendientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><i class="fas fa-tag"></i></div>
+          <h3>Costo Promedio</h3>
+          <div class="stat-value" id="bolsa-costo-promedio">S/ 0.00</div>
+          <div class="stat-change">Por prenda</div>
+        </div>
+      </div>
+
+      <!-- Nuevo carrito -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="bolsa-form-title">Nuevo Carrito de Compra</span></div>
+          <button class="btn btn-ghost btn-sm" onclick="clearBolsaForm()"><i class="fas fa-broom"></i> Limpiar</button>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;align-items:flex-end;">
+            <div class="form-group">
+              <label>Importador / Tienda *</label>
+              <select id="bolsa-proveedor" onchange="toggleBolsaProveedorOtro()">
+                <option value="Temu">🛍️ Temu</option>
+                <option value="Shein">👗 Shein</option>
+                <option value="Maybe">🧸 Maybe</option>
+                <option value="Andrew">📦 Andrew</option>
+                <option value="Otro">✏️ Otro (especificar)</option>
+              </select>
+            </div>
+            <div class="form-group" id="bolsa-proveedor-otro-wrap" style="display:none;">
+              <label>Nombre del importador</label>
+              <input type="text" id="bolsa-proveedor-otro" placeholder="Ej: AliExpress">
+            </div>
+            <div class="form-group">
+              <label>Fecha de compra</label>
+              <input type="date" id="bolsa-fecha">
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select id="bolsa-estado">
+                <option value="preparando">🟡 Preparando pedido</option>
+                <option value="comprado">🔵 Comprado</option>
+                <option value="transito">🟣 En tránsito</option>
+                <option value="recibido">🟢 Recibido</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Llegada estimada (opcional)</label>
+              <input type="date" id="bolsa-fecha-llegada">
+            </div>
+            <div class="form-group">
+              <label>Nota (opcional)</label>
+              <input type="text" id="bolsa-nota" placeholder="Ej: Pedido ropa bebé invierno">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="saveBolsa()"><i class="fas fa-floppy-disk"></i> <span id="bolsa-save-btn-text">Crear carrito</span></button>
+            <button class="btn btn-ghost" onclick="clearBolsaForm()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+        <select class="filter-select" id="bolsa-filter-proveedor" onchange="renderBolsasSection()">
+          <option value="">Todos los importadores</option>
+          <option value="Temu">Temu</option>
+          <option value="Shein">Shein</option>
+          <option value="Maybe">Maybe</option>
+          <option value="Andrew">Andrew</option>
+          <option value="Otro">Otros</option>
+        </select>
+        <select class="filter-select" id="bolsa-filter-estado" onchange="renderBolsasSection()">
+          <option value="">Todos los estados</option>
+          <option value="preparando">🟡 Preparando</option>
+          <option value="comprado">🔵 Comprado</option>
+          <option value="transito">🟣 En tránsito</option>
+          <option value="recibido">🟢 Recibido</option>
+        </select>
+      </div>
+
+      <!-- Lista de carritos -->
+      <div id="bolsas-list-container"></div>
+
+      <!-- Comparación de proveedores -->
+      <div class="section" style="margin-top:24px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-scale-balanced" style="color:var(--rose)"></i> Comparación de Importadores</div>
+        </div>
+        <div class="section-body">
+          <div class="table-wrap">
+            <table class="orders-table" style="width:100%;">
+              <thead><tr><th>Importador</th><th>Carritos</th><th>Productos</th><th>Total invertido</th><th>Costo promedio/prenda</th></tr></thead>
+              <tbody id="bolsa-comparativa-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historial de precios por producto -->
+      <div class="section" style="margin-top:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-clock-rotate-left" style="color:var(--rose)"></i> Historial de Precios por Producto</div>
+        </div>
+        <div class="section-body">
+          <div class="search-input-wrap" style="margin-bottom:14px;max-width:340px;">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="bolsa-historial-search" placeholder="Buscar por ID o descripción..." oninput="renderBolsaHistorial()">
+          </div>
+          <div id="bolsa-historial-container" style="color:var(--muted);font-size:12px;">Escribe un ID o descripción para ver su historial de precios entre importadores.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: agregar producto a un carrito de compra -->
+    <div class="modal-overlay" id="bolsa-item-modal">
+      <div class="modal" style="max-width:520px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">🏷️ Agregar Producto</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="bolsa-item-modal-sub"></div>
+          </div>
+          <button class="modal-close" onclick="closeBolsaItemModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group"><label>ID del producto *</label><input type="text" id="bi-productid" placeholder="Ej: 601099632xxxx"></div>
+          <div class="form-group" style="margin-top:12px;"><label>Descripción (opcional)</label><input type="text" id="bi-desc" placeholder="Ej: Body manga larga bebé"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+            <div class="form-group"><label>Imagen (URL, opcional)</label><input type="text" id="bi-imagen" placeholder="https://..."></div>
+            <div class="form-group"><label>Link del producto (opcional)</label><input type="text" id="bi-link" placeholder="https://..."></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+            <div class="form-group"><label>Costo unitario (S/) *</label><input type="number" id="bi-costo" step="0.01" placeholder="0.00" oninput="updateBolsaItemPreview()"></div>
+            <div class="form-group"><label>Cantidad</label><input type="number" id="bi-cantidad" value="1" min="1" oninput="updateBolsaItemPreview()"></div>
+          </div>
+          <div style="background:var(--rose-xlight);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;">Subtotal</span>
+            <span style="font-family:Baloo2,cursive;font-size:20px;font-weight:700;color:var(--rose);" id="bi-subtotal-preview">S/ 0.00</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="saveBolsaItem()"><i class="fas fa-floppy-disk"></i> Agregar producto</button>
+            <button class="btn btn-ghost" onclick="closeBolsaItemModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal: Ficha de Abastecimiento / Reabastecer producto -->
+    <div class="modal-overlay" id="sourcing-modal">
+      <div class="modal" style="max-width:640px;">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">📦 Ficha de Abastecimiento</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="sourcing-modal-sub"></div>
+          </div>
+          <button class="modal-close" onclick="closeSourcingModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div id="sourcing-modal-table"></div>
+
+          <div style="background:var(--rose-xlight);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:18px;" id="sourcing-reabastecer-box">
+            <div style="font-weight:800;font-size:14px;margin-bottom:10px;"><i class="fas fa-star" style="color:#d97706;"></i> Reabastecer</div>
+            <div id="sourcing-reabastecer-content"></div>
           </div>
         </div>
       </div>
@@ -3791,6 +3990,10 @@ function clearForm() {
   if (sizesContainer) {
     sizesContainer.innerHTML = '<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar talla"</div>';
   }
+
+  productSourcing = [];
+  const sourcingContainer = document.getElementById('sourcing-container');
+  if (sourcingContainer) renderSourcingList();
   
   const formTitle = document.getElementById('form-section-title');
   if (formTitle) formTitle.textContent = 'Agregar producto';
@@ -3829,6 +4032,10 @@ async function deleteProduct(id) {
 let products = [], categories = [], orders = [];
 let selectedCategories = [], editingProductId = null;
 let productSizes = [], productImages = [], featuredValue = false, statusValue = 'active';
+let productSourcing = [];
+let currentSourcingProductId = null;
+const SOURCING_PROVEEDORES = ['Temu','Shein','Maybe','Andrew','Otro'];
+const SOURCING_EMOJI = { Temu:'🟠', Shein:'⚫', Maybe:'🧸', Andrew:'🔵', Otro:'⚪' };
 let selectedEmoji = '👶', selectedCatColor = '#c2617a';
 
 // Inventory pagination
@@ -4155,6 +4362,7 @@ function productCardHtml(p) {
       <div class="product-footer">
         <div class="product-price">S/ ${minPrice.toFixed(2)}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="icon-btn" style="background:#ffe8dc;color:#e07856;" onclick="openSourcingModal(${p.id})" title="Abastecimiento / Reabastecer"><i class="fas fa-basket-shopping"></i></button>
           <button class="icon-btn" style="background:#ede9fe;color:#7c3aed;" onclick="markAsNewArrival(${p.id})" title="Marcar como nuevo ingreso"><i class="fas fa-arrow-up-from-bracket"></i></button>
           <button class="icon-btn" style="background:var(--green-light);color:var(--green);" onclick="openManualSale(${p.id})" title="Registrar venta"><i class="fas fa-cash-register"></i></button>
           <button class="icon-btn" style="background:var(--orange-light);color:var(--orange);" onclick="openOfferModal(${p.id})" title="Poner en oferta"><i class="fas fa-tag"></i></button>
@@ -4839,6 +5047,10 @@ function editProduct(id) {
   // ── Tallas ───────────────────────────────────────────────────
   renderSizesList();
 
+  // ── Abastecimiento (proveedores) ─────────────────────────────
+  productSourcing = Array.isArray(p.sourcing) ? JSON.parse(JSON.stringify(p.sourcing)) : [];
+  renderSourcingList();
+
   // ── Destacado ────────────────────────────────────────────────
   const featuredToggle = document.getElementById('featured-toggle');
   if (featuredToggle) featuredToggle.className = 'toggle-group' + (featuredValue ? ' on' : '');
@@ -4913,6 +5125,28 @@ async function saveProduct() {
   // 📌 FECHA EN EL FORMATO CORRECTO PARA timestamptz
   const now = new Date().toISOString();
 
+  // 📦 Abastecimiento — si el precio de un proveedor cambió respecto a la
+  // versión anterior, el precio viejo se guarda en su historial antes de sobrescribirlo.
+  const existingSourcing = existingProduct?.sourcing || [];
+  const finalSourcing = productSourcing
+    .filter(s => (s.productId && s.productId.trim()) || (s.url && s.url.trim()))
+    .map(s => {
+      const prev = existingSourcing.find(e => e.proveedor === s.proveedor && e.productId === s.productId);
+      const historial = prev?.historial ? [...prev.historial] : [];
+      if (prev && Number(prev.precio) !== Number(s.precio) && prev.precio) {
+        historial.push({ precio: Number(prev.precio), fecha: prev.fecha || now.slice(0,10) });
+      }
+      return {
+        proveedor: s.proveedor,
+        productId: (s.productId||'').trim(),
+        url: (s.url||'').trim(),
+        precio: Number(s.precio) || 0,
+        fecha: s.fecha || now.slice(0,10),
+        principal: Boolean(s.principal),
+        historial
+      };
+    });
+
   // 🆕 Detectar si el stock total aumentó respecto al producto existente.
   // Si subió (ej: 1 → 2, o 0 → 1), se marca como "nuevo ingreso" y sube al inicio.
   // Si bajó o quedó igual (ej: por una venta), NO se toca la fecha de stock.
@@ -4934,9 +5168,16 @@ async function saveProduct() {
     status: statusValue || 'active',
     categories: selectedCategories.length ? selectedCategories : [],
     sizes: finalSizes,
+    sourcing: finalSourcing,
     created_at: existingProduct?.created_at || now,
     stock_updated_at: stockUpdatedAt
   };
+
+  // ⚠️ SI TU TABLA 'products' AÚN NO TIENE LA COLUMNA "sourcing", créala una vez
+  // en el SQL Editor de Supabase con:
+  //   alter table products add column if not exists sourcing jsonb default '[]'::jsonb;
+  // Si no puedes crearla ahora, descomenta la línea de abajo para que no falle el guardado:
+  // delete productData.sourcing;
 
   // ⚠️ SI ALGÚN CAMPO NO EXISTE EN TU TABLA, ELIMÍNALO AQUÍ:
   // 👇 Ejemplo: si no tienes 'featured', descomenta esta línea:
@@ -5825,6 +6066,112 @@ function renderSizesList() {
 
 function addSizeRow() { productSizes.push({size:sizeOptions[0],price:0,cost:0,stock:0,origen:''}); renderSizesList(); }
 function removeSizeRow(i) { productSizes.splice(i,1); renderSizesList(); }
+
+// ============================================
+// ABASTECIMIENTO (proveedores por producto)
+// ============================================
+function renderSourcingList() {
+  const container = document.getElementById('sourcing-container'); if (!container) return;
+  if (!productSourcing.length) { container.innerHTML = '<div style="color:var(--muted);padding:12px;">➕ Haz clic en "Agregar proveedor"</div>'; return; }
+  container.innerHTML = productSourcing.map((s,i) => `
+    <div style="display:grid;grid-template-columns:110px 1fr 1fr 100px 130px 34px 34px;gap:8px;align-items:center;margin-bottom:8px;">
+      <select class="src-proveedor" data-i="${i}">${SOURCING_PROVEEDORES.map(opt=>`<option value="${opt}" ${opt===s.proveedor?'selected':''}>${SOURCING_EMOJI[opt]} ${opt}</option>`).join('')}</select>
+      <input type="text" class="src-id" data-i="${i}" value="${s.productId||''}" placeholder="ID del producto">
+      <input type="text" class="src-url" data-i="${i}" value="${s.url||''}" placeholder="Link (https://...)">
+      <input type="number" class="src-precio" data-i="${i}" value="${s.precio||0}" placeholder="Precio" step="0.01">
+      <input type="date" class="src-fecha" data-i="${i}" value="${s.fecha||''}">
+      <button type="button" class="remove-size" title="${s.principal?'Proveedor principal':'Marcar como principal'}" style="${s.principal?'background:#fef3c7;color:#d97706;':''}" onclick="setSourcingPrincipal(${i})"><i class="fas fa-star"></i></button>
+      <button type="button" class="remove-size" onclick="removeSourcingRow(${i})"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+  document.querySelectorAll('.src-proveedor').forEach(el=>el.addEventListener('change',function(){productSourcing[this.dataset.i].proveedor=this.value;}));
+  document.querySelectorAll('.src-id').forEach(el=>el.addEventListener('input',function(){productSourcing[this.dataset.i].productId=this.value;}));
+  document.querySelectorAll('.src-url').forEach(el=>el.addEventListener('input',function(){productSourcing[this.dataset.i].url=this.value;}));
+  document.querySelectorAll('.src-precio').forEach(el=>el.addEventListener('input',function(){productSourcing[this.dataset.i].precio=parseFloat(this.value)||0;}));
+  document.querySelectorAll('.src-fecha').forEach(el=>el.addEventListener('input',function(){productSourcing[this.dataset.i].fecha=this.value;}));
+}
+
+function addSourcingRow() {
+  productSourcing.push({ proveedor: SOURCING_PROVEEDORES[0], productId:'', url:'', precio:0, fecha:new Date().toISOString().slice(0,10), principal: productSourcing.length===0, historial:[] });
+  renderSourcingList();
+}
+function removeSourcingRow(i) { productSourcing.splice(i,1); renderSourcingList(); }
+function setSourcingPrincipal(i) { productSourcing.forEach((s,idx)=>s.principal = idx===i); renderSourcingList(); }
+
+// ============================================
+// MODAL: FICHA DE ABASTECIMIENTO / REABASTECER
+// ============================================
+function openSourcingModal(productId) {
+  const p = products.find(x => x.id === productId); if (!p) return;
+  currentSourcingProductId = productId;
+  document.getElementById('sourcing-modal-sub').textContent = p.name;
+  renderSourcingModalTable(p);
+  document.getElementById('sourcing-modal').classList.add('open');
+}
+
+function closeSourcingModal() {
+  document.getElementById('sourcing-modal').classList.remove('open');
+  currentSourcingProductId = null;
+}
+
+function renderSourcingModalTable(p) {
+  const list = p.sourcing || [];
+  const tableEl = document.getElementById('sourcing-modal-table');
+  const box = document.getElementById('sourcing-reabastecer-box');
+  if (!list.length) {
+    tableEl.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);">Este producto no tiene proveedores registrados aún.<br>Ve a "Editar producto" → sección 📦 Abastecimiento para agregarlos.</div>`;
+    if (box) box.style.display = 'none';
+    return;
+  }
+  if (box) box.style.display = 'block';
+  tableEl.innerHTML = `<div class="table-wrap"><table class="orders-table" style="width:100%;">
+    <thead><tr><th></th><th>Proveedor</th><th>ID</th><th>Precio</th><th>Última compra</th><th></th></tr></thead>
+    <tbody>
+      ${list.map((s,i) => `<tr>
+        <td>${s.principal?'⭐':''}</td>
+        <td>${SOURCING_EMOJI[s.proveedor]||'⚪'} ${s.proveedor}</td>
+        <td style="font-weight:700;">${s.url?`<a href="${s.url}" target="_blank" rel="noopener" style="color:var(--rose);text-decoration:none;">${s.productId||'—'} <i class="fas fa-arrow-up-right-from-square" style="font-size:9px;"></i></a>`:(s.productId||'—')}</td>
+        <td>S/ ${parseFloat(s.precio||0).toFixed(2)}</td>
+        <td>${s.fecha||'—'}</td>
+        <td>${(s.historial&&s.historial.length)?`<button class="btn btn-ghost btn-sm" onclick="toggleSourcingHistorial(${i})"><i class="fas fa-clock-rotate-left"></i></button>`:''}</td>
+      </tr>
+      ${(s.historial&&s.historial.length)?`<tr id="sourcing-hist-${i}" style="display:none;"><td></td><td colspan="5"><div style="font-size:11px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;padding:6px 0;">${s.historial.map(h=>`<span>${h.fecha}: S/ ${parseFloat(h.precio).toFixed(2)}</span>`).join('')}</div></td></tr>`:''}`).join('')}
+    </tbody>
+  </table></div>`;
+
+  renderReabastecerBox(p);
+}
+
+function toggleSourcingHistorial(i) {
+  const el = document.getElementById(`sourcing-hist-${i}`);
+  if (el) el.style.display = el.style.display === 'none' ? 'table-row' : 'none';
+}
+
+function renderReabastecerBox(p) {
+  const list = p.sourcing || [];
+  if (!list.length) return;
+  const principal = list.find(s => s.principal) || [...list].sort((a,b) => (a.precio||0) - (b.precio||0))[0];
+  const stockActual = (p.sizes||[]).reduce((a,s) => a + (Number(s.stock)||0), 0);
+  const allPrecios = list.flatMap(s => [s.precio, ...(s.historial||[]).map(h => h.precio)]).filter(v => v);
+  const promedio = allPrecios.length ? allPrecios.reduce((a,b) => a+b, 0) / allPrecios.length : 0;
+  const sugerida = Math.max(10 - stockActual, 5);
+  document.getElementById('sourcing-reabastecer-content').innerHTML = `
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;">
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Proveedor recomendado</div><div style="font-weight:700;">${SOURCING_EMOJI[principal.proveedor]||''} ${principal.proveedor}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Último precio</div><div style="font-weight:700;">S/ ${parseFloat(principal.precio||0).toFixed(2)}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Precio promedio</div><div style="font-weight:700;">S/ ${promedio.toFixed(2)}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Stock actual</div><div style="font-weight:700;">${stockActual}</div></div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+      <div class="form-group" style="max-width:120px;"><label>Cantidad a pedir</label><input type="number" id="reab-cantidad" value="${sugerida}" min="1" oninput="updateReabastecerCosto(${principal.precio||0})"></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Costo estimado</div><div style="font-family:Baloo2,cursive;font-size:20px;font-weight:700;color:var(--rose);" id="reab-costo-estimado">S/ ${(sugerida*(principal.precio||0)).toFixed(2)}</div></div>
+      ${principal.url?`<a href="${principal.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;"><i class="fas fa-arrow-up-right-from-square"></i> Abrir ${principal.proveedor}</a>`:''}
+    </div>`;
+}
+
+function updateReabastecerCosto(precio) {
+  const cant = parseInt(document.getElementById('reab-cantidad')?.value) || 0;
+  document.getElementById('reab-costo-estimado').textContent = 'S/ ' + (cant*precio).toFixed(2);
+}
 
 // ============================================
 // SETTINGS
@@ -7161,6 +7508,317 @@ function updateOrderStatus(supplierId, orderId, newStatus) {
 // close order modal on outside click
 
 // ============================================
+// COMPRAS / CARRITOS (Temu, Shein, Maybe, Andrew, otros importadores)
+// ============================================
+let bolsas = [];
+let currentBolsaId = null;
+
+const BOLSA_PROVEEDOR_EMOJI = { Temu:'🛍️', Shein:'👗', Maybe:'🧸', Andrew:'📦', Otro:'✏️' };
+const BOLSA_ESTADO_INFO = {
+  preparando: { label:'Preparando pedido', dot:'🟡', color:'var(--orange)', bg:'var(--orange-light)' },
+  comprado:   { label:'Comprado',          dot:'🔵', color:'var(--blue)',   bg:'var(--blue-light)' },
+  transito:   { label:'En tránsito',       dot:'🟣', color:'var(--purple)', bg:'var(--purple-light)' },
+  recibido:   { label:'Recibido',          dot:'🟢', color:'var(--green)',  bg:'var(--green-light)' }
+};
+
+function loadBolsas() { bolsas = JSON.parse(localStorage.getItem('dzoe_bolsas_compra')||'[]'); }
+function saveBolsasStorage() { localStorage.setItem('dzoe_bolsas_compra', JSON.stringify(bolsas)); }
+
+function toggleBolsaProveedorOtro() {
+  const sel = document.getElementById('bolsa-proveedor');
+  const wrap = document.getElementById('bolsa-proveedor-otro-wrap');
+  if (wrap) wrap.style.display = sel.value === 'Otro' ? 'block' : 'none';
+}
+
+function clearBolsaForm() {
+  document.getElementById('bolsa-proveedor').value = 'Temu';
+  toggleBolsaProveedorOtro();
+  const otro = document.getElementById('bolsa-proveedor-otro'); if (otro) otro.value = '';
+  const fecha = document.getElementById('bolsa-fecha'); if (fecha) fecha.value = new Date().toISOString().slice(0,10);
+  const estado = document.getElementById('bolsa-estado'); if (estado) estado.value = 'preparando';
+  const llegada = document.getElementById('bolsa-fecha-llegada'); if (llegada) llegada.value = '';
+  const nota = document.getElementById('bolsa-nota'); if (nota) nota.value = '';
+}
+
+function saveBolsa() {
+  const proveedor = document.getElementById('bolsa-proveedor')?.value || 'Temu';
+  const proveedorOtro = document.getElementById('bolsa-proveedor-otro')?.value.trim();
+  if (proveedor === 'Otro' && !proveedorOtro) { showAlert('Escribe el nombre del importador', 'error'); return; }
+  const bolsa = {
+    id: Date.now(),
+    proveedor,
+    proveedorOtro: proveedor === 'Otro' ? proveedorOtro : '',
+    fecha: document.getElementById('bolsa-fecha')?.value || new Date().toISOString().slice(0,10),
+    estado: document.getElementById('bolsa-estado')?.value || 'preparando',
+    fechaLlegada: document.getElementById('bolsa-fecha-llegada')?.value || '',
+    nota: document.getElementById('bolsa-nota')?.value.trim() || '',
+    items: [],
+    createdAt: new Date().toISOString()
+  };
+  bolsas.unshift(bolsa);
+  saveBolsasStorage();
+  clearBolsaForm();
+  renderBolsasSection();
+  showAlert('✅ Carrito de compra creado');
+}
+
+function deleteBolsa(id) {
+  if (!confirm('¿Eliminar este carrito de compra y todos sus productos?')) return;
+  bolsas = bolsas.filter(b => b.id !== id);
+  saveBolsasStorage();
+  renderBolsasSection();
+  showAlert('Carrito eliminado');
+}
+
+function bolsaProveedorLabel(b) {
+  const emoji = BOLSA_PROVEEDOR_EMOJI[b.proveedor] || '🛒';
+  const nombre = b.proveedor === 'Otro' ? (b.proveedorOtro || 'Otro') : b.proveedor;
+  return `${emoji} ${nombre}`;
+}
+
+function bolsaTotal(b) {
+  return (b.items || []).reduce((sum, it) => sum + (parseFloat(it.costo) || 0) * (parseInt(it.cantidad) || 1), 0);
+}
+
+function bolsaItemCount(b) {
+  return (b.items || []).reduce((sum, it) => sum + (parseInt(it.cantidad) || 1), 0);
+}
+
+function setBolsaEstado(bolsaId, estado) {
+  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
+  b.estado = estado;
+  saveBolsasStorage();
+  renderBolsasSection();
+}
+
+function recibirBolsa(bolsaId) {
+  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
+  const todosOk = confirm('¿Recibiste TODOS los productos de este carrito?\n\nAceptar = Sí, llegó todo completo\nCancelar = No, faltaron productos');
+  if (!todosOk) {
+    const faltantes = prompt('Escribe los ID de los productos que NO llegaron, separados por coma:');
+    if (faltantes === null) return;
+    const idsFaltantes = faltantes.split(',').map(s=>s.trim()).filter(Boolean);
+    b.items = (b.items||[]).map(it => idsFaltantes.includes(String(it.productId)) ? {...it, faltante:true} : {...it, faltante:false});
+    showAlert('Carrito marcado como recibido con productos faltantes anotados');
+  } else {
+    b.items = (b.items||[]).map(it => ({...it, faltante:false}));
+    showAlert('✅ Carrito recibido completo. Recuerda agregar el stock en Inventario/Almacén.');
+  }
+  b.estado = 'recibido';
+  saveBolsasStorage();
+  renderBolsasSection();
+}
+
+function openBolsaItemModal(bolsaId) {
+  currentBolsaId = bolsaId;
+  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
+  document.getElementById('bolsa-item-modal-sub').textContent = `${bolsaProveedorLabel(b)} · ${b.fecha}`;
+  document.getElementById('bi-productid').value = '';
+  document.getElementById('bi-desc').value = '';
+  document.getElementById('bi-imagen').value = '';
+  document.getElementById('bi-link').value = '';
+  document.getElementById('bi-costo').value = '';
+  document.getElementById('bi-cantidad').value = '1';
+  updateBolsaItemPreview();
+  document.getElementById('bolsa-item-modal').classList.add('open');
+}
+
+function closeBolsaItemModal() {
+  document.getElementById('bolsa-item-modal').classList.remove('open');
+  currentBolsaId = null;
+}
+
+function updateBolsaItemPreview() {
+  const costo = parseFloat(document.getElementById('bi-costo')?.value) || 0;
+  const cantidad = parseInt(document.getElementById('bi-cantidad')?.value) || 1;
+  document.getElementById('bi-subtotal-preview').textContent = 'S/ ' + (costo * cantidad).toFixed(2);
+}
+
+function saveBolsaItem() {
+  const b = bolsas.find(x => x.id === currentBolsaId); if (!b) return;
+  const productId = document.getElementById('bi-productid')?.value.trim();
+  const costo = parseFloat(document.getElementById('bi-costo')?.value) || 0;
+  const cantidad = parseInt(document.getElementById('bi-cantidad')?.value) || 1;
+  if (!productId) { showAlert('Ingresa el ID del producto', 'error'); return; }
+  if (!costo) { showAlert('Ingresa el costo unitario', 'error'); return; }
+  const item = {
+    id: Date.now(),
+    productId,
+    desc: document.getElementById('bi-desc')?.value.trim() || '',
+    imagen: document.getElementById('bi-imagen')?.value.trim() || '',
+    link: document.getElementById('bi-link')?.value.trim() || '',
+    costo, cantidad
+  };
+  b.items = b.items || [];
+  b.items.push(item);
+  saveBolsasStorage();
+  closeBolsaItemModal();
+  renderBolsasSection();
+  showAlert(`✅ Producto agregado — total del carrito: S/ ${bolsaTotal(b).toFixed(2)}`);
+}
+
+function deleteBolsaItem(bolsaId, itemId) {
+  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
+  b.items = (b.items || []).filter(it => it.id !== itemId);
+  saveBolsasStorage();
+  renderBolsasSection();
+  showAlert('Producto eliminado del carrito');
+}
+
+function toggleBolsaItems(bolsaId) {
+  const el = document.getElementById(`bolsa-items-${bolsaId}`);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderBolsasSection() {
+  const container = document.getElementById('bolsas-list-container');
+  if (!container) return;
+  const filtroProv = document.getElementById('bolsa-filter-proveedor')?.value || '';
+  const filtroEstado = document.getElementById('bolsa-filter-estado')?.value || '';
+  const filtered = bolsas.filter(b => (!filtroProv || b.proveedor === filtroProv) && (!filtroEstado || b.estado === filtroEstado));
+
+  // ── Stats globales ──
+  const now = new Date();
+  const mesActual = bolsas.filter(b => { const d = new Date(b.fecha); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear(); });
+  const mesGastado = mesActual.reduce((sum,b)=>sum+bolsaTotal(b),0);
+  document.getElementById('bolsa-mes-gastado').textContent = 'S/ ' + mesGastado.toFixed(2);
+  document.getElementById('bolsa-mes-count').textContent = `${mesActual.length} carrito(s)`;
+
+  const activos = bolsas.filter(b => b.estado !== 'recibido');
+  document.getElementById('bolsa-activos-count').textContent = activos.length;
+
+  const transito = bolsas.filter(b => b.estado === 'transito');
+  document.getElementById('bolsa-transito-count').textContent = transito.length;
+
+  const porRecibir = activos.reduce((sum,b)=>sum+bolsaItemCount(b),0);
+  document.getElementById('bolsa-porrecibir-count').textContent = porRecibir;
+
+  const totalItemsGlobal = bolsas.reduce((sum,b)=>sum+bolsaItemCount(b),0);
+  const totalGastadoGlobal = bolsas.reduce((sum,b)=>sum+bolsaTotal(b),0);
+  document.getElementById('bolsa-costo-promedio').textContent = 'S/ ' + (totalItemsGlobal ? (totalGastadoGlobal/totalItemsGlobal) : 0).toFixed(2);
+
+  const badge = document.getElementById('badge-bolsas');
+  if (badge) badge.textContent = bolsas.length || 0;
+
+  // ── Lista de carritos ──
+  if (!filtered.length) {
+    container.innerHTML = `<div class="section"><div class="section-body" style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <i class="fas fa-basket-shopping" style="font-size:36px;opacity:.3;margin-bottom:10px;display:block;"></i>
+      No hay carritos de compra que coincidan.<br>Crea uno arriba 👆
+    </div></div>`;
+  } else {
+    container.innerHTML = filtered.map(b => {
+      const total = bolsaTotal(b);
+      const est = BOLSA_ESTADO_INFO[b.estado] || BOLSA_ESTADO_INFO.preparando;
+      const itemsHtml = (b.items||[]).length ? `
+        <div class="table-wrap" style="margin-top:14px;">
+          <table class="orders-table" style="width:100%;">
+            <thead><tr>
+              <th>Imagen</th><th>ID Producto</th><th>Descripción</th><th>Costo unit.</th><th>Cant.</th><th>Subtotal</th><th></th>
+            </tr></thead>
+            <tbody>
+              ${b.items.map(it => `<tr style="${it.faltante?'opacity:.55;':''}">
+                <td>${it.imagen?`<img src="${it.imagen}" style="width:34px;height:34px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">`:'—'}</td>
+                <td style="font-weight:700;">${it.link?`<a href="${it.link}" target="_blank" rel="noopener" style="color:var(--rose);text-decoration:none;">${it.productId} <i class="fas fa-arrow-up-right-from-square" style="font-size:9px;"></i></a>`:it.productId}</td>
+                <td style="color:var(--muted);">${it.desc||'—'}${it.faltante?' <span style="color:var(--red);font-weight:700;">(faltante)</span>':''}</td>
+                <td>S/ ${parseFloat(it.costo).toFixed(2)}</td>
+                <td>${it.cantidad}</td>
+                <td style="font-weight:700;color:var(--rose);">S/ ${(it.costo*it.cantidad).toFixed(2)}</td>
+                <td><button class="icon-btn delete-btn" style="width:26px;height:26px;" title="Eliminar producto" onclick="deleteBolsaItem(${b.id},${it.id})"><i class="fas fa-trash" style="font-size:10px;"></i></button></td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>` : `<div style="font-size:12px;color:var(--muted);margin-top:10px;font-style:italic;">Sin productos aún. Haz clic en "+ Producto" para agregar el primero.</div>`;
+
+      return `<div class="section" style="margin-bottom:16px;">
+        <div class="section-body" style="padding:20px 24px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:180px;">
+              <div style="font-family:Baloo2,cursive;font-size:18px;font-weight:700;">${bolsaProveedorLabel(b)}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 ${b.fecha} · 📦 ${bolsaItemCount(b)} producto(s)${b.fechaLlegada?` · ⏳ llega ${b.fechaLlegada}`:''}</div>
+              ${b.nota?`<div style="font-size:12px;margin-top:4px;font-style:italic;color:var(--text2);">${b.nota}</div>`:''}
+              <select onchange="setBolsaEstado(${b.id},this.value)" style="margin-top:8px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;border:none;background:${est.bg};color:${est.color};">
+                ${Object.entries(BOLSA_ESTADO_INFO).map(([k,v])=>`<option value="${k}" ${k===b.estado?'selected':''}>${v.dot} ${v.label}</option>`).join('')}
+              </select>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Total carrito</div>
+              <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:700;color:var(--rose);">S/ ${total.toFixed(2)}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
+              <button class="btn btn-ghost btn-sm" onclick="toggleBolsaItems(${b.id})"><i class="fas fa-eye"></i> Ver productos</button>
+              <button class="btn btn-primary btn-sm" onclick="openBolsaItemModal(${b.id})"><i class="fas fa-plus"></i> Producto</button>
+              ${b.estado!=='recibido'?`<button class="btn btn-sm" style="background:var(--green-light);color:var(--green);" onclick="recibirBolsa(${b.id})"><i class="fas fa-box-open"></i> Recibir pedido</button>`:''}
+              <button class="btn btn-danger btn-sm" onclick="deleteBolsa(${b.id})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <div id="bolsa-items-${b.id}" style="display:none;">${itemsHtml}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Comparación de importadores ──
+  const grupos = {};
+  bolsas.forEach(b => {
+    const key = bolsaProveedorLabel(b);
+    if (!grupos[key]) grupos[key] = { carritos:0, productos:0, total:0 };
+    grupos[key].carritos += 1;
+    grupos[key].productos += bolsaItemCount(b);
+    grupos[key].total += bolsaTotal(b);
+  });
+  const compBody = document.getElementById('bolsa-comparativa-body');
+  if (compBody) {
+    const rows = Object.entries(grupos).sort((a,b)=>b[1].total-a[1].total);
+    compBody.innerHTML = rows.length ? rows.map(([nombre,g]) => `<tr>
+      <td style="font-weight:700;">${nombre}</td>
+      <td>${g.carritos}</td>
+      <td>${g.productos}</td>
+      <td style="color:var(--rose);font-weight:700;">S/ ${g.total.toFixed(2)}</td>
+      <td>S/ ${(g.productos ? g.total/g.productos : 0).toFixed(2)}</td>
+    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:16px;">Aún no hay datos suficientes</td></tr>`;
+  }
+
+  renderBolsaHistorial();
+}
+
+function renderBolsaHistorial() {
+  const el = document.getElementById('bolsa-historial-container');
+  if (!el) return;
+  const q = (document.getElementById('bolsa-historial-search')?.value || '').trim().toLowerCase();
+  if (!q) { el.innerHTML = 'Escribe un ID o descripción para ver su historial de precios entre importadores.'; return; }
+
+  const matches = [];
+  bolsas.forEach(b => {
+    (b.items||[]).forEach(it => {
+      if (String(it.productId).toLowerCase().includes(q) || (it.desc||'').toLowerCase().includes(q)) {
+        matches.push({ ...it, proveedor: bolsaProveedorLabel(b), fecha: b.fecha });
+      }
+    });
+  });
+  if (!matches.length) { el.innerHTML = `<div style="color:var(--muted);">Sin coincidencias para "${q}"</div>`; return; }
+
+  matches.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+  const costos = matches.map(m => parseFloat(m.costo)||0);
+  const min = Math.min(...costos), max = Math.max(...costos), avg = costos.reduce((a,c)=>a+c,0)/costos.length;
+  const mejor = matches.find(m => parseFloat(m.costo) === min);
+
+  el.innerHTML = `
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Más barato</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--green);">S/ ${min.toFixed(2)} · ${mejor?.proveedor||''}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Más caro</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--red);">S/ ${max.toFixed(2)}</div></div>
+      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Promedio</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;">S/ ${avg.toFixed(2)}</div></div>
+    </div>
+    <div class="table-wrap">
+      <table class="orders-table" style="width:100%;">
+        <thead><tr><th>Fecha</th><th>Importador</th><th>ID</th><th>Descripción</th><th>Costo</th></tr></thead>
+        <tbody>
+          ${matches.map(m => `<tr><td>${m.fecha}</td><td>${m.proveedor}</td><td style="font-weight:700;">${m.productId}</td><td>${m.desc||'—'}</td><td>S/ ${parseFloat(m.costo).toFixed(2)}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+// ============================================
 // NAVIGATION
 // ============================================
 function goToSection(sectionId) {
@@ -7170,8 +7828,8 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'bolsas-section':'fa-basket-shopping', 'settings-section':'fa-sliders', 'caja-section':'fa-cash-register', 'prestamos-section':'fa-hand-holding-dollar', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'bolsas-section':'Compras (Carritos)', 'settings-section':'Configuración', 'caja-section':'Caja', 'prestamos-section':'Préstamos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -7184,6 +7842,7 @@ function goToSection(sectionId) {
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') renderSuppliersSection();
+  if (sectionId === 'bolsas-section') renderBolsasSection();
   if (sectionId === 'add-product-section') {
     // Asegurar que el tab activo esté visible
     const prodForm = document.getElementById('tab-product-form');
@@ -7268,6 +7927,11 @@ document.getElementById('ribbon-name-input')?.addEventListener('input', updateRi
 // Init suppliers
 loadSuppliers();
 document.getElementById('badge-suppliers').textContent = suppliers.length || 0;
+
+// Init compras / carritos
+loadBolsas();
+document.getElementById('badge-bolsas').textContent = bolsas.length || 0;
+clearBolsaForm();
 
 checkSession();
 
