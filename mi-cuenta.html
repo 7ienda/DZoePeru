@@ -1375,6 +1375,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           <div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div>
           <div style="display:flex;align-items:center;gap:10px;">
             <span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span>
+            <button class="btn btn-ghost btn-sm" onclick="cleanupOrphanCategories()" title="Busca productos con categorías que ya fueron eliminadas y las quita"><i class="fas fa-broom"></i> Limpiar huérfanas</button>
             <button class="btn btn-ghost btn-sm" onclick="addCategoryGroup()"><i class="fas fa-folder-plus"></i> Nuevo grupo</button>
           </div>
         </div>
@@ -5604,7 +5605,48 @@ async function deleteCategory(name) {
   categories = categories.filter(c=>c.name!==name);
   if (supabaseClient) await supabaseClient.from('categories').delete().eq('name',name);
   saveCatAssignment(name, undefined);
-  renderCategoriesList(); renderCategorySelect(); updateStats(); showAlert('Categoría eliminada');
+  // Quitar la categoría eliminada de todos los productos que la tenían asignada
+  const affected = products.filter(p => (p.categories||[]).includes(name));
+  for (const p of affected) {
+    p.categories = (p.categories||[]).filter(cn => cn !== name);
+    if (supabaseClient) await supabaseClient.from('products').update({ categories: p.categories }).eq('id', p.id);
+  }
+  renderCategoriesList(); renderCategorySelect(); updateStats(); filterInventory();
+  showAlert(affected.length ? `Categoría eliminada y quitada de ${affected.length} producto(s)` : 'Categoría eliminada');
+}
+
+// ══════════════════════════════════════════════
+//  LIMPIEZA DE CATEGORÍAS HUÉRFANAS
+//  (productos que referencian categorías que ya no existen
+//   en la tabla `categories`, ej. por borrados hechos antes
+//   de este arreglo, o registros importados manualmente)
+// ══════════════════════════════════════════════
+async function findOrphanCategoryProducts() {
+  const validNames = new Set(categories.map(c => c.name));
+  return products
+    .map(p => ({ p, orphans: (p.categories||[]).filter(cn => !validNames.has(cn)) }))
+    .filter(x => x.orphans.length);
+}
+
+async function cleanupOrphanCategories() {
+  const affected = await findOrphanCategoryProducts();
+  if (!affected.length) { showAlert('No se encontraron categorías huérfanas ✅'); return; }
+
+  const orphanNames = [...new Set(affected.flatMap(x => x.orphans))];
+  const list = affected.map(x => `• ${x.p.name} → ${x.orphans.join(', ')}`).join('\n');
+  const ok = confirm(
+    `Se encontraron ${affected.length} producto(s) con categorías que ya no existen:\n\n${list}\n\n` +
+    `Categorías huérfanas: ${orphanNames.join(', ')}\n\n` +
+    `¿Quitar estas categorías de los productos afectados? (los productos NO se eliminan, solo se les quita la etiqueta de categoría inválida)`
+  );
+  if (!ok) return;
+
+  for (const { p, orphans } of affected) {
+    p.categories = (p.categories||[]).filter(cn => !orphans.includes(cn));
+    if (supabaseClient) await supabaseClient.from('products').update({ categories: p.categories }).eq('id', p.id);
+  }
+  updateStats(); filterInventory(); renderCategoriesList();
+  showAlert(`✅ Limpieza completa: ${affected.length} producto(s) corregido(s)`);
 }
 
 async function saveCategoryToSupabase(cat) { if (supabaseClient) await supabaseClient.from('categories').upsert({name:cat.name,color:cat.color},{onConflict:'name'}); saveCatAssignment(cat.name, cat.group); }
