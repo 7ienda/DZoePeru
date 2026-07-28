@@ -369,8 +369,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 18px; }
 .product-card { background: var(--card); border-radius: 20px; overflow: hidden; border: 1.5px solid var(--line2); transition: transform .22s, box-shadow .22s; box-shadow: var(--shadow); }
 .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.product-card-img { height: 185px; overflow: hidden; position: relative; background: var(--bg2); }
-.product-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.product-card-img { height: 185px; overflow: hidden; position: relative; background: var(--bg2); padding: 10px; box-sizing: border-box; }
+.product-card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s; }
 .product-card:hover .product-card-img img { transform: scale(1.04); }
 .product-card-badge { position: absolute; bottom: 10px; left: 10px; background: var(--rose); color: #fff; font-size: 9px; padding: 3px 10px; border-radius: 99px; font-weight: 800; letter-spacing: .04em; }
 .product-card-badge.inactive { background: var(--muted); }
@@ -4358,7 +4358,7 @@ function productCardHtml(p) {
   const minPrice = p.sizes?.length ? Math.min(...p.sizes.map(s=>s.price||0)) : 0;
   const totalCost = (p.sizes||[]).reduce((a,s)=>a+((s.cost||0)*(s.stock||0)),0);
   const totalProfit = (p.sizes||[]).reduce((a,s)=>a+((s.price||0)-(s.cost||0))*(s.stock||0),0);
-  const cats = (p.categories||[]).slice(0,1).join(', ');
+  const catsHtml = (p.categories||[]).map(cn => `<span style="background:var(--rose-soft);color:var(--rose-dark);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;">${cn}</span>`).join('');
   // Ribbon logic: manual ribbon OR auto "Nuevo" for last 5 products
   const ribbonLabel = getRibbonLabel(p);
   const ribbonStyle = getRibbonStyle(ribbonLabel);
@@ -4372,7 +4372,7 @@ function productCardHtml(p) {
     </div>
     <div class="product-card-body">
       <div class="product-name">${p.name}</div>
-      ${cats?`<div style="font-size:10px;color:var(--muted);margin-bottom:6px;">${cats}</div>`:''}
+      ${catsHtml?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">${catsHtml}</div>`:''}
       <div class="product-metrics">
         <div class="metric-item"><div class="metric-label">Precio desde</div><div class="metric-val rose">${p.offer_price ? `<span style="text-decoration:line-through;opacity:.5;font-size:11px;">S/${minPrice.toFixed(2)}</span> <span style="color:var(--orange);">S/${parseFloat(p.offer_price).toFixed(2)}</span>` : `S/${minPrice.toFixed(2)}`}</div></div>
         <div class="metric-item"><div class="metric-label">Costo total</div><div class="metric-val orange">S/${totalCost.toFixed(2)}</div></div>
@@ -4726,7 +4726,7 @@ function renderSoldProducts() {
   grid.innerHTML = filtered.map((s, i) => {
     const prod = s._prod;
     const img = prod?.images?.[0] || prod?.image || '';
-    const cats = (prod?.categories||[]).slice(0,1).join(', ');
+    const catsHtml = (prod?.categories||[]).map(cn => `<span style="background:var(--rose-soft);color:var(--rose-dark);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;">${cn}</span>`).join('');
     const margin = s.totalRevenue > 0 ? (s.totalProfit / s.totalRevenue * 100) : 0;
     const isTop3 = i < 3;
     const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
@@ -4775,7 +4775,7 @@ function renderSoldProducts() {
       </div>
       <div class="product-card-body">
         <div class="product-name">${s.name}</div>
-        ${cats?`<div style="font-size:10px;color:var(--muted);margin-bottom:6px;">${cats}</div>`:''}
+        ${catsHtml?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">${catsHtml}</div>`:''}
         <div class="product-metrics">
           <div class="metric-item"><div class="metric-label">Unidades</div><div class="metric-val rose">${s.totalQty}</div></div>
           <div class="metric-item"><div class="metric-label">Ingresos</div><div class="metric-val orange">S/${s.totalRevenue.toFixed(2)}</div></div>
@@ -5943,7 +5943,7 @@ function changeAlmacenPageSize() {
 
 function upcomingCardHtml(u) {
   const img        = (u.images && u.images[0]) || u.image || '';
-  const cats       = (u.categories || []).slice(0, 1).join(', ');
+  const catsHtml   = (u.categories || []).map(cn => `<span style="background:var(--rose-soft);color:var(--rose-dark);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;">${cn}</span>`).join('');
   const isArrived  = u.estimated_date && Date.now() >= new Date(u.estimated_date).getTime();
   const dateStr    = u.estimated_date
     ? new Date(u.estimated_date).toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' })
@@ -5963,7 +5963,7 @@ function upcomingCardHtml(u) {
     </div>
     <div class="product-card-body">
       <div class="product-name">${u.name || '—'}</div>
-      ${cats ? `<div style="font-size:10px;color:var(--muted);margin-bottom:4px;">${cats}</div>` : ''}
+      ${catsHtml ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;">${catsHtml}</div>` : ''}
       <div style="font-size:10px;color:#7c3aed;margin-bottom:6px;font-weight:600;"><i class="fas fa-calendar" style="margin-right:4px;"></i>${dateStr}</div>
       <div class="product-metrics">
         <div class="metric-item"><div class="metric-label">Precio desde</div><div class="metric-val rose">S/${minPrice.toFixed(2)}</div></div>
