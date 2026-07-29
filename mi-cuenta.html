@@ -6617,7 +6617,14 @@ function openClientDetailModal(key) {
     const isOpen = deuda > 0 && o.status !== 'cancelled';
     const pct = total > 0 ? Math.min(100, Math.round((adelanto/total)*100)) : 0;
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
-    const items = (o.items||[]).map(i => `${i.name}${i.size?' (T:'+i.size+')':''}${i.qty?' x'+i.qty:''}`).join(', ') || 'Sin detalle de productos';
+    const canEditItems = o.status !== 'cancelled';
+    const itemsListHtml = (o.items||[]).length
+      ? (o.items||[]).map((i, idx) => `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line2);">
+          <span style="flex:1;">${i.name}${i.size?' (T:'+i.size+')':''}${i.qty?' x'+i.qty:''}${i.price?' · S/ '+((parseFloat(i.price)||0)*(parseInt(i.qty)||1)).toFixed(2):''}</span>
+          ${canEditItems ? `<button class="icon-btn" style="background:var(--rose-xlight);color:var(--rose-dark);width:26px;height:26px;flex-shrink:0;" title="Quitar de la bolsita (devuelve el stock)" onclick="removeItemFromBolsita(${o.id}, ${idx})"><i class="fas fa-trash" style="font-size:11px;"></i></button>` : ''}
+        </div>`).join('')
+      : '<div style="color:var(--muted);padding:4px 0;">Sin detalle de productos</div>';
     const statusBadge = o.status==='cancelled' ? '<span class="order-status status-cancelled">Cancelado</span>'
       : (isOpen ? '<span class="badge-bolsita"><i class="fas fa-shopping-bag"></i> Bolsita abierta</span>' : '<span class="order-status status-confirmed">Pagado</span>');
     return `<div class="cli-bolsita-card ${isOpen?'open':''}">
@@ -6625,7 +6632,8 @@ function openClientDetailModal(key) {
         <div style="font-size:12px;color:var(--muted);">${date} · <span class="order-id">#${String(o.id).slice(-6)}</span></div>
         ${statusBadge}
       </div>
-      <div class="cli-bolsita-items"><i class="fas fa-gift" style="color:var(--rose);"></i> ${items}</div>
+      <div class="cli-bolsita-items"><i class="fas fa-gift" style="color:var(--rose);"></i> Productos:</div>
+      ${itemsListHtml}
       <div class="cli-progress-bar"><div class="cli-progress-fill" style="width:${pct}%;"></div></div>
       <div class="cli-progress-label" style="margin-top:6px;">
         <span>Total S/ ${total.toFixed(2)} · Abonó <strong style="color:var(--mint);">S/ ${adelanto.toFixed(2)}</strong></span>
@@ -7283,6 +7291,60 @@ async function confirmAddItemToBolsita() {
   renderClientsSection();
   openClientDetailModal(resolveMergeKey(o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`, getClientMerges()));
   showAlert(`✅ ${p.name} (${size}) agregado a la bolsita — nuevo total S/ ${newTotal.toFixed(2)}`);
+}
+
+// ============================================
+// QUITAR PRODUCTO DE UNA BOLSITA (por error) — devuelve el stock
+// ============================================
+async function removeItemFromBolsita(orderId, itemIndex) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o || !o.items || !o.items[itemIndex]) return;
+  const item = o.items[itemIndex];
+  const qty = parseInt(item.qty) || 1;
+  const price = parseFloat(item.price) || 0;
+
+  if (!confirm(`¿Quitar "${item.name}${item.size ? ' (T:' + item.size + ')' : ''}" de la bolsita?\n\nSe recalculará el total del pedido y el stock se devolverá al producto.`)) return;
+
+  const subtotal = price * qty;
+  const newItems = o.items.filter((_, idx) => idx !== itemIndex);
+  const newTotal = Math.max(0, (parseFloat(o.total) || 0) - subtotal);
+  const newAdelanto = Math.min(parseFloat(o.adelanto) || 0, newTotal);
+  const newDeuda = Math.max(0, newTotal - newAdelanto);
+  const newStatus = newItems.length === 0 ? 'cancelled' : (newDeuda > 0 ? 'pending' : 'confirmed');
+
+  const orderPayload = { items: newItems, total: newTotal, adelanto: newAdelanto, deuda: newDeuda, status: newStatus };
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('orders').update(orderPayload).eq('id', o.id);
+    if (error) { showAlert('Error al guardar: ' + error.message, 'error'); return; }
+  }
+  Object.assign(o, orderPayload);
+
+  // Devolver el stock a la talla del producto
+  const p = (products || []).find(pr => pr.id === item.productId);
+  if (p) {
+    const sizeObj = p.sizes?.find(s => s.size === item.size);
+    if (sizeObj) {
+      const newStock = (sizeObj.stock || 0) + qty;
+      const updatedSizes = p.sizes.map(s => s.size === item.size ? { ...s, stock: newStock } : s);
+      const productPayload = { sizes: updatedSizes };
+      if (p.status === 'inactive' && newStock > 0) productPayload.status = 'active';
+      if (supabaseClient) {
+        const { error: stockErr } = await supabaseClient.from('products').update(productPayload).eq('id', p.id);
+        if (!stockErr) { p.sizes = updatedSizes; if (productPayload.status) p.status = productPayload.status; }
+      } else {
+        p.sizes = updatedSizes; if (productPayload.status) p.status = productPayload.status;
+      }
+    } else {
+      showAlert(`⚠️ Se quitó "${item.name}" pero no se encontró la talla ${item.size||''} en el producto para devolver el stock automáticamente`, 'error');
+    }
+  } else {
+    showAlert(`⚠️ Se quitó "${item.name}" pero el producto ya no existe — no se pudo devolver el stock automáticamente`, 'error');
+  }
+
+  filterInventory(); filterSales();
+  renderClientsSection();
+  openClientDetailModal(resolveMergeKey(o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`, getClientMerges()));
+  showAlert(`🗑️ "${item.name}" quitado de la bolsita — stock devuelto y total actualizado a S/ ${newTotal.toFixed(2)}`);
 }
 
 // ============================================
