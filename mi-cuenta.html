@@ -7319,32 +7319,37 @@ async function removeItemFromBolsita(orderId, itemIndex) {
   }
   Object.assign(o, orderPayload);
 
-  // Devolver el stock a la talla del producto
-  const p = (products || []).find(pr => pr.id === item.productId);
+  // Devolver el stock a la talla del producto (busca por productId, y si no existe —
+  // ventas antiguas sin ese dato— cae a un match por nombre normalizado)
+  const p = _findSoldProduct(item);
+  let stockMsg = '';
   if (p) {
-    const sizeObj = p.sizes?.find(s => s.size === item.size);
+    const targetSize = _normName(item.size);
+    const sizeObj = p.sizes?.find(s => _normName(s.size) === targetSize);
     if (sizeObj) {
       const newStock = (sizeObj.stock || 0) + qty;
-      const updatedSizes = p.sizes.map(s => s.size === item.size ? { ...s, stock: newStock } : s);
+      const updatedSizes = p.sizes.map(s => s === sizeObj ? { ...s, stock: newStock } : s);
       const productPayload = { sizes: updatedSizes };
       if (p.status === 'inactive' && newStock > 0) productPayload.status = 'active';
       if (supabaseClient) {
         const { error: stockErr } = await supabaseClient.from('products').update(productPayload).eq('id', p.id);
         if (!stockErr) { p.sizes = updatedSizes; if (productPayload.status) p.status = productPayload.status; }
+        else stockMsg = ` ⚠️ (no se pudo actualizar el stock: ${stockErr.message})`;
       } else {
         p.sizes = updatedSizes; if (productPayload.status) p.status = productPayload.status;
       }
+      if (!stockMsg) stockMsg = ` — stock de "${p.name}" (T:${item.size||'—'}) devuelto: ${sizeObj.stock||0} → ${newStock}`;
     } else {
-      showAlert(`⚠️ Se quitó "${item.name}" pero no se encontró la talla ${item.size||''} en el producto para devolver el stock automáticamente`, 'error');
+      stockMsg = ` ⚠️ no se encontró la talla "${item.size||''}" en "${p.name}" para devolver el stock, revísalo manualmente`;
     }
   } else {
-    showAlert(`⚠️ Se quitó "${item.name}" pero el producto ya no existe — no se pudo devolver el stock automáticamente`, 'error');
+    stockMsg = ` ⚠️ no se encontró el producto original ("${item.name}") para devolver el stock, revísalo manualmente`;
   }
 
   filterInventory(); filterSales();
   renderClientsSection();
   openClientDetailModal(resolveMergeKey(o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`, getClientMerges()));
-  showAlert(`🗑️ "${item.name}" quitado de la bolsita — stock devuelto y total actualizado a S/ ${newTotal.toFixed(2)}`);
+  showAlert(`🗑️ "${item.name}" quitado de la bolsita — nuevo total S/ ${newTotal.toFixed(2)}${stockMsg}`, p && stockMsg.includes('devuelto') ? 'success' : 'error');
 }
 
 // ============================================
