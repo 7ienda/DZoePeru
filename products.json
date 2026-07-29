@@ -2583,6 +2583,19 @@
     "url": "/productos/conjunto-rey-azul-2-piezas.html"
   },
   {
+    "id": 1783629840197,
+    "slug": "overol-jean-estampado-kitty",
+    "name": "Overol Jean estampado Kitty",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZgnU6QIlR4qgxE6nA86-z8jVpnGi8tcNoj4eslY1xPPxSW35lQ7QWQh645fU7kiFBX2zfj1PSilyJKCnisRCQSpoKcfYPUkRxoInsz6s1HgMAT67BipFVbBtp-KADTj-WR6D3DYO88xHucD_PNAS-_ebHplpDIUF8MlHzBwOg74kfrEFtnfUyeEXHeKHa/s1600/overol-jean-estampado-kitty.webp",
+    "categories": [
+      "Overoles",
+      "Jeans"
+    ],
+    "inStock": true,
+    "url": "/productos/overol-jean-estampado-kitty.html"
+  },
+  {
     "id": 1784664332952,
     "slug": "pantalon-jean-flores-de-otono",
     "name": "Pantalon Jean flores de otoño",
@@ -2611,19 +2624,6 @@
     ],
     "inStock": true,
     "url": "/productos/pantalon-jean-car-flash.html"
-  },
-  {
-    "id": 1783629840197,
-    "slug": "overol-kitty",
-    "name": "Overol Kitty",
-    "price": 50,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJqzU_pa45ucCcc1Ubqaq-MuBDzweMCE5EsT_RIANvuueIRI2-wFo-bAN6i1Xb3f-wr7amTvCeCjRUyIz5f6xWpjOBLo7JFKCLGoYCZIgxA1fEf7y4o0DOPDl2whYiIh9nndF5QSIfWJTw5WdCMmVGKc_y0shT151ZcKormfZaeQChpNZq6ouz5kNx0wsM/s16000/oo2.png",
-    "categories": [
-      "Overoles",
-      "Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/overol-kitty.html"
   },
   {
     "id": 1783629764839,
@@ -2655,16 +2655,16 @@
   },
   {
     "id": 1783629843911,
-    "slug": "overol-primavera-rosalia",
-    "name": "Overol primavera rosalia",
+    "slug": "overol-jean-bordado-primavera-rosalia",
+    "name": "overol jean bordado primavera rosalia",
     "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS93hSU4JLTF1x8zDYuKu2FKWiES0ZsT-Rh7aFgvjklXfN0OjH-_T9ehvz5kpqTZxqm6fsR1tOTBKWTno3gh2xM-WJJYAoKIUXCyC1aah9D3ag6PmfOVs9YvphqJrgXKI4wzT3DvNtbN852N-1Z8bXhNrChiICVyLGPiFHeaHHqyXTbH6Perb4JZyBoO08/s16000/ov2.png",
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiK-18vOp9SpRvSD6isUycZ4FrSEpr7i5meS9Tq7LQX3P0XwiEWPf4v3ItfVhoFia6_MjIGpNRlF-5yRJAycIncGMk1kvR_hOxJ8GoNsSkWR7h1Kl2JgVCA2h6C_7UIuKhurAn1z_rUwCcoTJTx2kiAuYn_Ta4Be1EjAqlLZ4h1tbyY7at8wKWf1Cmy6vN8/s1600/overol-jean-bordado-primavera-rosalia.webp",
     "categories": [
       "Overoles",
       "Bebita"
     ],
     "inStock": true,
-    "url": "/productos/overol-primavera-rosalia.html"
+    "url": "/productos/overol-jean-bordado-primavera-rosalia.html"
   },
   {
     "id": 1784155787021,
