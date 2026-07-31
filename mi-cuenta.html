@@ -5491,8 +5491,10 @@ function editProduct(id) {
 
   // ── Estado global ────────────────────────────────────────────
   editingProductId   = id;
-  productSizes       = (p.sizes || []).map(s => {
-    const raw = (p.size_origins || {})[s.size];
+  productSizes       = (p.sizes || []).map((s, idx) => {
+    const origins = p.size_origins || {};
+    const compositeKey = idx + '::' + s.size;
+    const raw = origins[compositeKey] !== undefined ? origins[compositeKey] : origins[s.size];
     let detail = { proveedor: '', productId: '', url: '', fecha: '', nota: '', historial: [], reabCantidad: 5 };
     if (raw && typeof raw === 'object') {
       detail = { ...detail, ...raw };
@@ -5608,10 +5610,12 @@ async function saveProduct() {
   // guarda un objeto por talla con proveedor, ID, link, nota e historial de costo.
   const existingSizeSourcing = existingProduct?.size_origins || {};
   const sizeOrigins = {};
-  productSizes.forEach(s => {
+  productSizes.forEach((s, idx) => {
     if (!s.size || !s.size.trim()) return;
-    const key = s.size.trim();
-    const prev = existingSizeSourcing[key];
+    const plainKey = s.size.trim();
+    const key = idx + '::' + plainKey; // clave única por fila: evita que 2 tallas con el mismo nombre (ej: conjunto 2 piezas) compartan el mismo proveedor
+    const prevRaw = existingSizeSourcing[key] !== undefined ? existingSizeSourcing[key] : existingSizeSourcing[plainKey];
+    const prev = prevRaw;
     const prevIsObj = prev && typeof prev === 'object';
     const prevCost = prevIsObj && prev.cost_snapshot !== undefined ? Number(prev.cost_snapshot) : null;
     const historial = (prevIsObj && Array.isArray(prev.historial)) ? [...prev.historial] : [];
@@ -8008,8 +8012,9 @@ function computeOrigenStats() {
 
   (products||[]).forEach(p => {
     const origins = p.size_origins || {};
-    (p.sizes||[]).forEach(s => {
-      const raw = origins[s.size];
+    (p.sizes||[]).forEach((s, idx) => {
+      const compositeKey = idx + '::' + s.size;
+      const raw = origins[compositeKey] !== undefined ? origins[compositeKey] : origins[s.size];
       const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
       if (!proveedor) { sinProveedorStock += Number(s.stock)||0; sinProveedorProducts.add(p.id); return; }
       const st = ensure(proveedor);
