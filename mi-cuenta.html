@@ -572,6 +572,71 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .sales-stat-val { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--text); }
 .sales-summary-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
 
+/* ============================================
+   VENTAS — DASHBOARD PREMIUM
+   ============================================ */
+.ventas-hero-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.ventas-hero-card {
+  position: relative; overflow: hidden; border-radius: var(--radius); padding: 22px 26px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  color: #fff; box-shadow: 0 14px 32px rgba(138,111,170,.30); display: flex; flex-direction: column; gap: 6px;
+}
+.ventas-hero-card::after {
+  content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(255,255,255,.10);
+}
+.ventas-hero-card .vh-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.20); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 4px; }
+.ventas-hero-card .vh-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
+.ventas-hero-card .vh-value { font-family: 'Baloo 2', cursive; font-size: 30px; font-weight: 800; line-height: 1.1; }
+.ventas-hero-card .vh-sub { font-size: 12px; font-weight: 600; opacity: .9; }
+.ventas-hero-card.plain {
+  background: var(--card); color: var(--text); border: 1.5px solid var(--line2); box-shadow: var(--shadow);
+}
+.ventas-hero-card.plain::after { display: none; }
+.ventas-hero-card.plain .vh-icon { background: var(--orange-light); color: var(--orange); }
+.ventas-hero-card.plain .vh-label { color: var(--muted); opacity: 1; }
+.ventas-hero-card.plain .vh-value { color: var(--text); }
+.ventas-hero-card.plain .vh-sub { color: var(--muted); }
+.ventas-hero-card.mint .vh-icon { background: var(--mint-soft); color: var(--mint); }
+
+.ventas-chip-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 22px; }
+.ventas-chip {
+  background: var(--card); border: 1.5px solid var(--line2); border-radius: 16px; padding: 13px 16px;
+  display: flex; align-items: center; gap: 12px; transition: transform .2s, box-shadow .2s;
+}
+.ventas-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.ventas-chip .vc-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.ventas-chip .vc-label { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.ventas-chip .vc-value { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.15; }
+.ventas-chip .vc-value.small { font-size: 12.5px; font-weight: 700; font-family: 'Nunito', sans-serif; }
+
+/* Filtros en formato pill premium */
+.ventas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.ventas-search-wrap { position: relative; }
+.ventas-search-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+.ventas-search-wrap input { padding: 10px 14px 10px 36px; border-radius: 99px; border: 1.5px solid var(--line); font-family: 'Nunito',sans-serif; font-size: 13px; background: var(--bg); color: var(--text); min-width: 200px; }
+.ventas-pill-select { padding: 9px 14px; border-radius: 99px; border: 1.5px solid var(--line); background: var(--bg); color: var(--text2); font-family: 'Nunito',sans-serif; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.ventas-export-btn { border-radius: 99px; }
+
+/* Cliente con avatar en la tabla de ventas */
+.sale-client-cell { display: flex; align-items: center; gap: 10px; }
+.sale-client-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--sky), #4a9bc4); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+.sale-client-name { font-weight: 800; font-size: 13px; line-height: 1.2; }
+.sale-client-sub { font-size: 10.5px; color: var(--muted); }
+
+/* Miniaturas de productos en el modal de detalle de venta */
+.sale-detail-item-img { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--line2); flex-shrink: 0; }
+.sale-detail-item-noimg { width: 46px; height: 46px; border-radius: 10px; background: var(--rose-light); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+
+@media (max-width: 1180px) {
+  .ventas-hero-grid { grid-template-columns: 1fr 1fr; }
+  .ventas-chip-row { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width: 720px) {
+  .ventas-hero-grid { grid-template-columns: 1fr; }
+  .ventas-chip-row { grid-template-columns: repeat(2,1fr); }
+}
+
 /* Sale detail modal */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,10,40,.55); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
 .modal-overlay.open { display: flex; }
@@ -1430,62 +1495,73 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <!-- ====== VENTAS ====== -->
     <div id="sales-section" class="page-section" style="display:none;">
       <!-- Summary cards mejoradas -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" id="sales-summary-row">
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-sack-dollar" style="color:var(--rose-dark);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Total cobrado</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--rose);" id="sales-total-amt">S/ 0.00</div></div>
+      <!-- Hero: los 3 números que más importan de un vistazo -->
+      <div class="ventas-hero-grid">
+        <div class="ventas-hero-card">
+          <div class="vh-icon"><i class="fas fa-sack-dollar"></i></div>
+          <div class="vh-label">Total cobrado</div>
+          <div class="vh-value" id="sales-total-amt">S/ 0.00</div>
+          <div class="vh-sub" id="sales-confirmed-sub">0 confirmados</div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--lav-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-receipt" style="color:var(--lavender);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Pedidos</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--lavender);" id="sales-count">0</div><div style="font-size:10px;color:var(--muted);" id="sales-confirmed-sub">0 confirmados</div></div>
+        <div class="ventas-hero-card mint">
+          <div class="vh-icon"><i class="fas fa-coins"></i></div>
+          <div class="vh-label">Cobrado hoy</div>
+          <div class="vh-value" id="sales-today">S/ 0.00</div>
+          <div class="vh-sub">Ingresos confirmados del día</div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-clock" style="color:var(--orange);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Pendientes</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--orange);" id="sales-pending-count">0</div><div style="font-size:10px;color:var(--muted);" id="sales-deuda-sub">S/ 0.00 en deuda</div></div>
+        <div class="ventas-hero-card plain">
+          <div class="vh-icon"><i class="fas fa-clock"></i></div>
+          <div class="vh-label">Pendientes</div>
+          <div class="vh-value" id="sales-pending-count">0</div>
+          <div class="vh-sub" id="sales-deuda-sub">S/ 0.00 en deuda</div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--mint-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-chart-line" style="color:var(--mint);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Ticket promedio</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--mint);" id="sales-avg">S/ 0.00</div></div>
+      </div>
+
+      <!-- Chips: métricas de apoyo, escaneables rápido -->
+      <div class="ventas-chip-row" id="sales-summary-row">
+        <div class="ventas-chip">
+          <div class="vc-icon" style="background:var(--lav-light);color:var(--lavender);"><i class="fas fa-receipt"></i></div>
+          <div><div class="vc-label">Pedidos</div><div class="vc-value" id="sales-count">0</div></div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-coins" style="color:var(--green);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Cobrado hoy</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="sales-today">S/ 0.00</div></div>
+        <div class="ventas-chip">
+          <div class="vc-icon" style="background:var(--mint-soft);color:var(--mint);"><i class="fas fa-chart-line"></i></div>
+          <div><div class="vc-label">Ticket promedio</div><div class="vc-value" id="sales-avg">S/ 0.00</div></div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--sky-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-mobile-screen" style="color:var(--sky);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Método + usado</div><div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--sky);" id="sales-top-method">—</div></div>
+        <div class="ventas-chip">
+          <div class="vc-icon" style="background:var(--sky-light);color:var(--sky);"><i class="fas fa-mobile-screen"></i></div>
+          <div><div class="vc-label">Método + usado</div><div class="vc-value small" id="sales-top-method">—</div></div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-ban" style="color:var(--red);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Cancelados</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--red);" id="sales-cancelled-count">0</div></div>
+        <div class="ventas-chip">
+          <div class="vc-icon" style="background:var(--red-light);color:var(--red);"><i class="fas fa-ban"></i></div>
+          <div><div class="vc-label">Cancelados</div><div class="vc-value" id="sales-cancelled-count">0</div></div>
         </div>
-        <div style="background:var(--card);border-radius:16px;padding:16px 20px;border:1px solid var(--line2);display:flex;align-items:center;gap:14px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--peach-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-star" style="color:var(--peach);"></i></div>
-          <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Producto top</div><div style="font-size:13px;font-weight:700;color:var(--peach);line-height:1.2;margin-top:2px;" id="sales-top-product">—</div></div>
+        <div class="ventas-chip">
+          <div class="vc-icon" style="background:var(--peach-light);color:var(--peach);"><i class="fas fa-star"></i></div>
+          <div><div class="vc-label">Producto top</div><div class="vc-value small" id="sales-top-product">—</div></div>
         </div>
       </div>
       <div class="section">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-receipt" style="color:var(--rose)"></i> Registro de Ventas</div>
-          <div class="sales-filters">
-            <div class="search-input-wrap">
+          <div class="ventas-toolbar">
+            <div class="ventas-search-wrap">
               <i class="fas fa-search"></i>
-              <input type="text" class="search-input" id="sales-search" placeholder="Buscar cliente..." oninput="filterSales()">
+              <input type="text" id="sales-search" placeholder="Buscar cliente..." oninput="filterSales()">
             </div>
-            <select class="filter-select" id="sales-status-filter" onchange="filterSales()">
+            <select class="ventas-pill-select" id="sales-status-filter" onchange="filterSales()">
               <option value="">Todos los estados</option>
-              <option value="pending">Pendientes</option>
-              <option value="confirmed">Confirmados</option>
-              <option value="cancelled">Cancelados</option>
+              <option value="pending">⏳ Pendientes</option>
+              <option value="confirmed">✅ Confirmados</option>
+              <option value="cancelled">❌ Cancelados</option>
             </select>
-            <select class="filter-select" id="sales-method-filter" onchange="filterSales()">
+            <select class="ventas-pill-select" id="sales-method-filter" onchange="filterSales()">
               <option value="">Todos los métodos</option>
-              <option value="yape">Yape</option>
-              <option value="plin">Plin</option>
-              <option value="sip">Sip</option>
-              <option value="bank">Interbank</option>
+              <option value="yape">💜 Yape</option>
+              <option value="plin">💙 Plin</option>
+              <option value="sip">💚 Sip</option>
+              <option value="bank">🏦 Interbank</option>
             </select>
-            <button class="btn btn-ghost btn-sm" onclick="exportSalesCSV()"><i class="fas fa-download"></i> Exportar CSV</button>
+            <button class="btn btn-ghost btn-sm ventas-export-btn" onclick="exportSalesCSV()"><i class="fas fa-download"></i> Exportar CSV</button>
           </div>
         </div>
         <div class="section-body" style="padding:0 0 28px;">
@@ -2799,6 +2875,16 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
             <div style="margin-top:10px;"><button class="btn btn-secondary" onclick="changeAdminPassword()"><i class="fas fa-key"></i> Cambiar contraseña</button></div>
           </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line2);">
+            <div style="font-weight:700;margin-bottom:4px;">📦 Proveedores de abastecimiento</div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Son las opciones que aparecen en el campo "Proveedor" de cada talla, en Agregar Producto (ej: Temu, Shein). Agrega los tuyos, edita el nombre/emoji, o quita los que no uses.</div>
+            <div id="sourcing-proveedores-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="text" id="new-sourcing-emoji" placeholder="🏷️" maxlength="4" style="width:56px;text-align:center;">
+              <input type="text" id="new-sourcing-name" placeholder="Nombre del proveedor (ej: AliExpress)" style="flex:1;">
+              <button class="btn btn-primary btn-sm" onclick="addSourcingProveedor()"><i class="fas fa-plus"></i> Agregar</button>
+            </div>
+          </div>
           <div style="margin-top:24px;"><button class="btn btn-primary" onclick="withLoading(this, saveSettings)"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
         </div>
       </div>
@@ -4090,8 +4176,111 @@ let products = [], categories = [], orders = [];
 let selectedCategories = [], editingProductId = null;
 let productSizes = [], productImages = [], featuredValue = false, statusValue = 'active';
 let expandedSizeDetails = new Set();
-const SOURCING_PROVEEDORES = ['Temu','Shein','Maybe','Andrew','Otro'];
-const SOURCING_EMOJI = { Temu:'🟠', Shein:'⚫', Maybe:'🧸', Andrew:'🔵', Otro:'⚪' };
+// ============================================
+// PROVEEDORES DE ABASTECIMIENTO (Temu, Shein, etc.)
+// Editable desde Configuración → Proveedores de abastecimiento
+// ============================================
+const SOURCING_STORAGE_KEY = 'dzoe_sourcing_proveedores';
+let SOURCING_PROVEEDORES = [];
+let SOURCING_EMOJI = {};
+
+function loadSourcingProveedores() {
+  const raw = localStorage.getItem(SOURCING_STORAGE_KEY);
+  if (raw) {
+    try {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length) return arr;
+    } catch (e) {}
+  }
+  // Valores por defecto (primera vez que se abre el panel)
+  return [
+    { name: 'Temu', emoji: '🟠' },
+    { name: 'Shein', emoji: '⚫' },
+    { name: 'Maybe', emoji: '🧸' },
+    { name: 'Andrew', emoji: '🔵' },
+    { name: 'Otro', emoji: '⚪' }
+  ];
+}
+function saveSourcingProveedoresList(arr) {
+  localStorage.setItem(SOURCING_STORAGE_KEY, JSON.stringify(arr));
+  refreshSourcingGlobals();
+}
+function refreshSourcingGlobals() {
+  const list = loadSourcingProveedores();
+  SOURCING_PROVEEDORES = list.map(p => p.name);
+  SOURCING_EMOJI = {};
+  list.forEach(p => { SOURCING_EMOJI[p.name] = p.emoji || '⚪'; });
+}
+refreshSourcingGlobals();
+
+function renderSourcingProveedoresConfig() {
+  const cont = document.getElementById('sourcing-proveedores-list');
+  if (!cont) return;
+  const list = loadSourcingProveedores();
+  if (!list.length) {
+    cont.innerHTML = `<div style="font-size:12px;color:var(--muted);padding:8px 0;">Aún no tienes proveedores agregados.</div>`;
+    return;
+  }
+  cont.innerHTML = list.map(p => `
+    <div style="display:flex;gap:8px;align-items:center;background:var(--rose-soft,#faf3f6);padding:8px 10px;border-radius:12px;">
+      <input type="text" value="${p.emoji || ''}" maxlength="4" style="width:46px;text-align:center;border:1.5px solid var(--line);border-radius:8px;padding:8px 4px;font-size:15px;" onchange="updateSourcingProveedor('${p.name.replace(/'/g, "\\'")}','emoji',this.value)">
+      <input type="text" value="${p.name}" style="flex:1;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;font-weight:700;" onchange="updateSourcingProveedor('${p.name.replace(/'/g, "\\'")}','name',this.value)">
+      <button class="btn btn-ghost btn-sm" style="color:var(--red);padding:8px 12px;" onclick="deleteSourcingProveedor('${p.name.replace(/'/g, "\\'")}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+    </div>
+  `).join('');
+}
+
+function addSourcingProveedor() {
+  const nameInput = document.getElementById('new-sourcing-name');
+  const emojiInput = document.getElementById('new-sourcing-emoji');
+  const name = nameInput.value.trim();
+  if (!name) { showAlert('Escribe el nombre del proveedor', 'error'); return; }
+  const list = loadSourcingProveedores();
+  if (list.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+    showAlert(`Ya existe un proveedor llamado "${name}"`, 'error');
+    return;
+  }
+  list.push({ name, emoji: emojiInput.value.trim() || '🏷️' });
+  saveSourcingProveedoresList(list);
+  nameInput.value = '';
+  emojiInput.value = '';
+  renderSourcingProveedoresConfig();
+  showAlert(`Proveedor "${name}" agregado ✅`);
+}
+
+function updateSourcingProveedor(oldName, field, value) {
+  const list = loadSourcingProveedores();
+  const item = list.find(p => p.name === oldName);
+  if (!item) return;
+  if (field === 'name') {
+    const newName = value.trim();
+    if (!newName) { renderSourcingProveedoresConfig(); return; }
+    if (list.some(p => p.name !== oldName && p.name.toLowerCase() === newName.toLowerCase())) {
+      showAlert(`Ya existe un proveedor llamado "${newName}"`, 'error');
+      renderSourcingProveedoresConfig();
+      return;
+    }
+    item.name = newName;
+    showAlert('Nota: los productos ya guardados con el nombre anterior no cambian automáticamente.', 'success');
+  } else if (field === 'emoji') {
+    item.emoji = value.trim() || '🏷️';
+  }
+  saveSourcingProveedoresList(list);
+  renderSourcingProveedoresConfig();
+}
+
+async function deleteSourcingProveedor(name) {
+  const ok = await customConfirm(
+    `¿Eliminar "${name}" de la lista de proveedores?\n\nLos productos que ya usan este proveedor no se modifican, solo dejará de aparecer como opción para nuevos productos.`,
+    { title: 'Eliminar proveedor' }
+  );
+  if (!ok) return;
+  const list = loadSourcingProveedores().filter(p => p.name !== name);
+  saveSourcingProveedoresList(list);
+  renderSourcingProveedoresConfig();
+  showAlert(`Proveedor "${name}" eliminado`);
+}
+
 let selectedEmoji = '👶', selectedCatColor = '#c2617a';
 
 // ============================================
@@ -4254,9 +4443,9 @@ function updateDashboard() {
   let _profitSold = 0;
   orders.filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
-      const prod = products.find(p => p.name === it.name);
+      const prod = _findSoldProduct(it);
       const sizeObj = prod?.sizes?.find(s => s.size === it.size);
-      const cost = sizeObj?.cost || 0;
+      const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
       const price = it.price || sizeObj?.price || 0;
       _profitSold += (price - cost) * (it.qty || 1);
     });
@@ -4571,17 +4760,21 @@ function salesRowHtml(o) {
   const statusCls = { confirmed:'status-confirmed', cancelled:'status-cancelled' }[o.status] || 'status-pending';
   const statusLabel = { confirmed:'✅ Confirmado', cancelled:'❌ Cancelado' }[o.status] || '⏳ Pendiente';
   const itemsHtml = (o.items||[]).slice(0,2).map(it => {
-    const prod = products.find(p => p.name === it.name);
-    const img = it.img || (prod?.images?.[0]) || prod?.image || '';
+    // Prioriza siempre la imagen ACTUAL del producto en inventario (usa el mismo
+    // matching robusto por productId/nombre que "Productos vendidos"); solo si el
+    // producto ya no existe en el catálogo, cae al snapshot guardado en la venta.
+    const prod = _findSoldProduct(it);
+    const img = (prod?.images?.[0]) || prod?.image || it.img || '';
     return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
       ${img ? `<img src="${img}" style="width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0;border:1px solid var(--line2);" onerror="this.style.display='none'">` : '<div style="width:32px;height:32px;border-radius:6px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">👗</div>'}
       <div><div style="font-size:11px;font-weight:600;line-height:1.2;">${it.name||'?'}</div><div style="font-size:10px;color:var(--muted);">${it.size?'T: '+it.size+' · ':''}x${it.qty||1}</div></div>
     </div>`;
   }).join('') + ((o.items||[]).length>2?`<span class="item-tag">+${(o.items||[]).length-2} más</span>`:'');
   const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const _initials = ((cl.name||'?').trim()[0]||'?').toUpperCase() + ((cl.lastname||'').trim()[0]||'').toUpperCase();
   return `<tr>
     <td><span class="order-id">${String(o.id).slice(-6)}</span></td>
-    <td><strong>${cl.name} ${cl.lastname}</strong></td>
+    <td><div class="sale-client-cell"><div class="sale-client-avatar">${_initials}</div><div><div class="sale-client-name">${cl.name} ${cl.lastname}</div><div class="sale-client-sub">${cl.phone||'sin teléfono'}</div></div></div></td>
     <td>${cl.dni||'—'}</td>
     <td>${cl.phone||'—'}</td>
     <td style="max-width:130px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${cl.destination}">${cl.destination||'—'}</td>
@@ -4645,7 +4838,10 @@ function openSaleDetail(id) {
   const itemsHtml = (o.items||[]).map(it => {
     const _sub = ((it.price||0)*(it.qty||1)).toFixed(2);
     const _sizeHtml = it.size ? '<div style="font-size:11px;color:var(--muted);">Talla: '+it.size+'</div>' : '';
-    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line2);"><div><div style="font-weight:600;font-size:14px;">'+(it.name||'—')+'</div>'+_sizeHtml+'</div><div style="text-align:right;"><div style="font-size:12px;color:var(--muted);">x'+(it.qty||1)+'</div><div style="font-weight:700;color:var(--rose);">S/ '+_sub+'</div></div></div>';
+    const _prod = _findSoldProduct(it);
+    const _img = (_prod?.images?.[0]) || _prod?.image || it.img || '';
+    const _imgHtml = _img ? '<img src="'+_img+'" class="sale-detail-item-img" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{className:\'sale-detail-item-noimg\',textContent:\'👗\'}))">' : '<div class="sale-detail-item-noimg">👗</div>';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line2);"><div style="display:flex;align-items:center;gap:12px;">'+_imgHtml+'<div><div style="font-weight:600;font-size:14px;">'+(it.name||'—')+'</div>'+_sizeHtml+'</div></div><div style="text-align:right;"><div style="font-size:12px;color:var(--muted);">x'+(it.qty||1)+'</div><div style="font-weight:700;color:var(--rose);">S/ '+_sub+'</div></div></div>';
   }).join('');
   document.getElementById('modal-sale-title').textContent = `Pedido #${String(o.id).slice(-6)}`;
   document.getElementById('modal-sale-body').innerHTML = `
@@ -8048,6 +8244,7 @@ function goToSection(sectionId) {
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') renderSuppliersSection();
+  if (sectionId === 'settings-section') renderSourcingProveedoresConfig();
   if (sectionId === 'bolsas-section') renderBolsasSection();
   if (sectionId === 'add-product-section') {
     // Asegurar que el tab activo esté visible
