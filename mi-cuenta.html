@@ -681,6 +681,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 body.dark-mode .origen-card.rank1 { background: linear-gradient(180deg, #302710, var(--card) 40%); }
 .origen-card.rank2 { border-color: #b7c1cc88; }
 .origen-card.rank3 { border-color: #c98a4b66; }
+.origen-card.unassigned { border-style: dashed; border-color: var(--muted); opacity: .88; }
+.origen-card.unassigned .origen-card-emoji { background: var(--bg2); }
 .origen-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .origen-card-emoji { width: 46px; height: 46px; border-radius: 14px; background: var(--rose-xlight); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
 .origen-card-name { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); }
@@ -7990,6 +7992,18 @@ function toggleOrigenProducts(key) {
 // Proveedores de abastecimiento), cuánto stock actual tiene, cuánto se ha vendido,
 // cuánto dinero generó y cuál es su producto estrella. Usa size_origins por talla
 // (fuente confiable) y el matching robusto por productId para las ventas.
+// Busca el dato de origen/proveedor de una talla vendida. Los pedidos solo guardan
+// el TEXTO de la talla (no la posición/índice), así que probamos primero la clave
+// antigua (texto plano) y si no existe, buscamos cualquier clave compuesta "idx::talla"
+// que termine en esa talla (formato nuevo, usado desde que separamos tallas duplicadas).
+function _getOriginForSize(prod, sizeText) {
+  const origins = prod?.size_origins || {};
+  if (origins[sizeText] !== undefined) return origins[sizeText];
+  const suffix = '::' + sizeText;
+  const key = Object.keys(origins).find(k => k.endsWith(suffix));
+  return key ? origins[key] : undefined;
+}
+
 function computeOrigenStats() {
   const configList = loadSourcingProveedores(); // [{name, emoji}]
   const map = {}; // key: nombre proveedor -> stats
@@ -8025,18 +8039,34 @@ function computeOrigenStats() {
     });
   });
 
+  let sinProveedorSoldUnits = 0, sinProveedorSoldRevenue = 0, sinProveedorSoldProfit = 0;
+
   (orders||[]).filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
       const prod = _findSoldProduct(it);
-      if (!prod) return;
-      const raw = (prod.size_origins||{})[it.size];
-      const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
-      if (!proveedor) return;
-      const st = ensure(proveedor);
-      const sizeObj = prod.sizes?.find(sz => sz.size === it.size);
+      const qty = it.qty || 1;
+      const sizeObj = prod?.sizes?.find(sz => sz.size === it.size);
       const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
       const price = it.price || sizeObj?.price || 0;
-      const qty = it.qty || 1;
+
+      // Producto no encontrado en el catálogo actual (eliminado o renombrado sin vincular
+      // en "Productos Vendidos") → no sabemos su proveedor, pero la venta SÍ debe contar.
+      if (!prod) {
+        sinProveedorSoldUnits += qty;
+        sinProveedorSoldRevenue += price*qty;
+        sinProveedorSoldProfit += (price-cost)*qty;
+        return;
+      }
+
+      const raw = _getOriginForSize(prod, it.size);
+      const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
+      if (!proveedor) {
+        sinProveedorSoldUnits += qty;
+        sinProveedorSoldRevenue += price*qty;
+        sinProveedorSoldProfit += (price-cost)*qty;
+        return;
+      }
+      const st = ensure(proveedor);
       st.soldUnits += qty;
       st.soldRevenue += price*qty;
       st.soldProfit += (price-cost)*qty;
@@ -8050,17 +8080,28 @@ function computeOrigenStats() {
     return { ...st, productCount: st.productIds.size, topProductName: topEntry?.[0]||'', topProductQty: topEntry?.[1]||0, topProduct };
   });
 
-  return { list, sinProveedorStock, sinProveedorProducts: sinProveedorProducts.size };
+  // Bucket especial "Sin proveedor": para que el stock/ventas que aún no tienen
+  // proveedor asignado también se vean reflejados en el panel (no solo en el aviso).
+  if (sinProveedorProducts.size > 0 || sinProveedorSoldUnits > 0) {
+    list.push({
+      name: 'Sin proveedor asignado', emoji: '❓', isUnassigned: true,
+      stockUnits: sinProveedorStock, stockValue: 0, productCount: sinProveedorProducts.size,
+      soldUnits: sinProveedorSoldUnits, soldRevenue: sinProveedorSoldRevenue, soldProfit: sinProveedorSoldProfit,
+      topProductName: '', topProductQty: 0, topProduct: null, lastPurchase: '',
+    });
+  }
+
+  return { list, sinProveedorStock, sinProveedorProducts: sinProveedorProducts.size, sinProveedorSoldUnits, sinProveedorSoldRevenue, sinProveedorSoldProfit };
 }
 
 function renderOrigenAnalytics() {
   const container = document.getElementById('origen-analytics-container'); if (!container) return;
-  const { list, sinProveedorStock, sinProveedorProducts } = computeOrigenStats();
+  const { list, sinProveedorStock, sinProveedorProducts, sinProveedorSoldUnits, sinProveedorSoldRevenue, sinProveedorSoldProfit } = computeOrigenStats();
 
   const totalStockValue = list.reduce((a,s)=>a+s.stockValue,0);
   const totalSoldRevenue = list.reduce((a,s)=>a+s.soldRevenue,0);
   const totalSoldProfit = list.reduce((a,s)=>a+s.soldProfit,0);
-  const topByRevenue = [...list].sort((a,b)=>b.soldRevenue-a.soldRevenue)[0];
+  const topByRevenue = [...list].filter(s=>!s.isUnassigned).sort((a,b)=>b.soldRevenue-a.soldRevenue)[0];
 
   const sortFns = {
     revenue: (a,b)=>b.soldRevenue-a.soldRevenue,
@@ -8095,10 +8136,13 @@ function renderOrigenAnalytics() {
       </div>
     </div>`;
 
-  if (sinProveedorProducts > 0) {
+  if (sinProveedorProducts > 0 || sinProveedorSoldUnits > 0) {
+    const parts = [];
+    if (sinProveedorProducts > 0) parts.push(`<b>${sinProveedorProducts} producto(s)</b> con tallas sin proveedor (${sinProveedorStock} unidades en stock)`);
+    if (sinProveedorSoldUnits > 0) parts.push(`<b>${sinProveedorSoldUnits} unidad(es) vendidas</b> (S/ ${sinProveedorSoldRevenue.toFixed(2)}) que aún no tienen proveedor asignado`);
     html += `<div class="origen-alert">
       <div class="oa-icon"><i class="fas fa-triangle-exclamation"></i></div>
-      <div class="oa-text"><b>${sinProveedorProducts} producto(s)</b> tienen tallas sin proveedor asignado (${sinProveedorStock} unidades en stock sin clasificar). Asígnalos desde <b>Agregar Producto → Editar</b> para verlos reflejados aquí.</div>
+      <div class="oa-text">${parts.join(' · ')}. Se muestran agrupados en la tarjeta "❓ Sin proveedor asignado" más abajo — asígnalos desde <b>Agregar Producto → Editar</b> para que pasen al proveedor correcto.</div>
     </div>`;
   }
 
@@ -8116,18 +8160,20 @@ function renderOrigenAnalytics() {
     html += `<div class="empty-state"><div class="empty-icon">🚚</div><h3>Sin proveedores configurados</h3><p>Agrega tus proveedores de origen en Configuración → Proveedores de abastecimiento.</p></div>`;
   } else {
     html += `<div class="origen-grid">${sorted.map((s,i) => {
-      const isTop3 = i < 3 && (origenSortBy==='revenue' ? s.soldRevenue>0 : origenSortBy==='stock' ? s.stockValue>0 : origenSortBy==='sold' ? s.soldUnits>0 : s.soldProfit>0);
+      const isTop3 = !s.isUnassigned && i < 3 && (origenSortBy==='revenue' ? s.soldRevenue>0 : origenSortBy==='stock' ? s.stockValue>0 : origenSortBy==='sold' ? s.soldUnits>0 : s.soldProfit>0);
       const barVal = origenSortBy==='stock' ? s.stockValue : origenSortBy==='sold' ? s.soldUnits : origenSortBy==='profit' ? s.soldProfit : s.soldRevenue;
       const barPct = Math.max(3, Math.round(barVal/maxForBar*100));
       const margin = s.soldRevenue>0 ? (s.soldProfit/s.soldRevenue*100) : 0;
       const key = _escJs(s.name).replace(/[^a-zA-Z0-9]/g,'_');
       const topImg = s.topProduct ? ((s.topProduct.images?.[0])||s.topProduct.image||'') : '';
-      const prodsOfProveedor = (products||[]).filter(p => Object.values(p.size_origins||{}).some(v => v && typeof v==='object' && v.proveedor === s.name));
+      const prodsOfProveedor = s.isUnassigned
+        ? (products||[]).filter(p => (p.sizes||[]).some(sz => { const raw = _getOriginForSize(p, sz.size); return !(raw && typeof raw==='object' && raw.proveedor); }))
+        : (products||[]).filter(p => Object.values(p.size_origins||{}).some(v => v && typeof v==='object' && v.proveedor === s.name));
 
-      return `<div class="origen-card${isTop3?' rank'+(i+1):''}">
+      return `<div class="origen-card${isTop3?' rank'+(i+1):''}${s.isUnassigned?' unassigned':''}">
         <div class="origen-card-head">
           <div class="origen-card-emoji">${s.emoji}</div>
-          <div><div class="origen-card-name">${s.name}</div><div style="font-size:11px;color:var(--muted);">${s.productCount} producto(s) con este origen</div></div>
+          <div><div class="origen-card-name">${s.name}</div><div style="font-size:11px;color:var(--muted);">${s.productCount} producto(s)${s.isUnassigned?' con tallas sin proveedor':' con este origen'}</div></div>
           ${isTop3?`<div class="origen-card-rank-badge" style="background:${rankColors[i]}22;color:${rankColors[i]};">${medals[i]} #${i+1}</div>`:''}
         </div>
         <div class="origen-metrics-grid">
