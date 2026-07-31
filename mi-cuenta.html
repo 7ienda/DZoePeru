@@ -592,6 +592,20 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .btn-ghost { background: transparent; border: 1.5px solid var(--line); color: var(--text2); }
 .btn-ghost:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-xlight); }
 .btn-danger { background: var(--red-light); color: var(--red); }
+.btn-loading { opacity: .75; cursor: not-allowed; justify-content: center; }
+.btn-loading i.fa-spinner { font-size: 15px; }
+.btn-danger-solid { background: var(--red); color: #fff; box-shadow: 0 6px 20px rgba(212,32,32,.28); }
+.btn-danger-solid:hover { background: #b81a1a; transform: translateY(-1px); }
+
+/* Modal de confirmación premium (reemplaza confirm() nativo) */
+#confirm-modal .modal { max-width: 400px; text-align: center; }
+#confirm-modal .modal-body { padding: 8px 32px 32px; }
+.confirm-modal-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--red-light); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 18px; }
+.confirm-modal-icon.info { background: var(--rose-soft); color: var(--rose-dark); }
+#confirm-modal-title { font-family: 'Baloo 2', cursive; font-size: 19px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+#confirm-modal-msg { font-size: 13.5px; color: var(--text2); line-height: 1.5; margin-bottom: 24px; }
+.confirm-modal-actions { display: flex; gap: 10px; justify-content: center; }
+.confirm-modal-actions .btn { flex: 1; justify-content: center; }
 .btn-green { background: var(--green-light); color: var(--green); }
 
 /* Toast */
@@ -1126,7 +1140,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;">Ingresar datos manualmente</div>
               <div id="countries-manual-inputs" style="display:flex;flex-direction:column;gap:8px;"></div>
               <button class="btn btn-ghost btn-sm" style="margin-top:8px;font-size:11px;" onclick="addCountryRow()"><i class="fas fa-plus"></i> Agregar país</button>
-              <button class="btn btn-primary btn-sm" style="margin-top:8px;font-size:11px;margin-left:6px;" onclick="saveCountriesData()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+              <button class="btn btn-primary btn-sm" style="margin-top:8px;font-size:11px;margin-left:6px;" onclick="withLoading(this, saveCountriesData)"><i class="fas fa-floppy-disk"></i> Guardar</button>
             </div>
           </div>
         </div>
@@ -1153,7 +1167,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
                   <label style="font-size:11px;">Nº visitas</label>
                   <input type="number" id="visit-count-input" min="0" placeholder="Ej: 120" style="padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;font-family:'Nunito',sans-serif;background:var(--card);color:var(--text);width:100%;">
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="saveVisitEntry()" style="font-size:11px;padding:8px 12px;"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-primary btn-sm" onclick="withLoading(this, saveVisitEntry)" style="font-size:11px;padding:8px 12px;"><i class="fas fa-plus"></i></button>
               </div>
             </div>
           </div>
@@ -1275,7 +1289,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <button class="btn btn-ghost btn-sm" onclick="clearForm()"><i class="fas fa-broom"></i> Limpiar</button>
           </div>
           <div class="section-body">
-            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear"></div>
+            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear" oninput="checkDuplicateNameLive('product-name','product-name-dup-msg',()=>editingProductId,'product')"><div id="product-name-dup-msg" style="display:none;color:#e74c3c;font-size:11.5px;font-weight:700;margin-top:4px;"></div></div>
             <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea></div>
             <div class="form-grid" style="margin-top:16px;">
               <div class="form-group">
@@ -1301,7 +1315,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <button class="add-size-btn" onclick="addSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
             <div style="display:flex;gap:12px;margin-top:24px;">
-              <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-floppy-disk"></i> <span id="save-btn-text">Guardar producto</span></button>
+              <button class="btn btn-primary" onclick="withLoading(this, saveProduct)"><i class="fas fa-floppy-disk"></i> <span id="save-btn-text">Guardar producto</span></button>
               <button class="btn btn-ghost" onclick="clearForm()">Cancelar</button>
             </div>
           </div>
@@ -1316,7 +1330,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <button class="btn btn-ghost btn-sm" onclick="clearUpcomingForm()"><i class="fas fa-broom"></i> Limpiar</button>
           </div>
           <div class="section-body">
-            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="upcoming-name" placeholder="Ej: Conjunto Primavera 2025"></div>
+            <div class="form-group"><label>Nombre del producto *</label><input type="text" id="upcoming-name" placeholder="Ej: Conjunto Primavera 2025" oninput="checkDuplicateNameLive('upcoming-name','upcoming-name-dup-msg',()=>editingUpcomingId,'upcoming')"><div id="upcoming-name-dup-msg" style="display:none;color:#e74c3c;font-size:11.5px;font-weight:700;margin-top:4px;"></div></div>
             <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="upcoming-description" rows="2" placeholder="Descripción breve..."></textarea></div>
 
             <div class="form-grid" style="margin-top:16px;">
@@ -1356,7 +1370,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
 
             <div style="display:flex;gap:12px;margin-top:24px;">
-              <button class="btn btn-primary" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="saveUpcomingProduct()">
+              <button class="btn btn-primary" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:#7c3aed;" onclick="withLoading(this, saveUpcomingProduct)">
                 <i class="fas fa-floppy-disk"></i> <span id="upcoming-save-btn-text">Guardar Próximo Ingreso</span>
               </button>
               <button class="btn btn-ghost" onclick="clearUpcomingForm()">Cancelar</button>
@@ -1711,6 +1725,21 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     </div>
 
     <!-- Modal: Nuevo Gasto -->
+    <!-- Modal de confirmación premium (reemplaza confirm() nativo del navegador) -->
+    <div class="modal-overlay" id="confirm-modal">
+      <div class="modal">
+        <div class="modal-body">
+          <div class="confirm-modal-icon" id="confirm-modal-icon"><i class="fas fa-triangle-exclamation"></i></div>
+          <div id="confirm-modal-title">¿Estás segura?</div>
+          <div id="confirm-modal-msg">Esta acción no se puede deshacer.</div>
+          <div class="confirm-modal-actions">
+            <button class="btn btn-ghost" id="confirm-modal-cancel" onclick="_resolveConfirmModal(false)">Cancelar</button>
+            <button class="btn btn-danger-solid" id="confirm-modal-ok" onclick="_resolveConfirmModal(true)">Sí, continuar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-overlay" id="gasto-modal">
       <div class="modal" style="max-width:480px;">
         <div class="modal-head">
@@ -1752,7 +1781,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div class="form-group" style="grid-column:1/-1;"><label>Nota adicional</label><input type="text" id="gasto-nota" placeholder="Opcional..."></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveGasto()"><i class="fas fa-floppy-disk"></i> Guardar gasto</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveGasto)"><i class="fas fa-floppy-disk"></i> Guardar gasto</button>
             <button class="btn btn-ghost" onclick="closeExpenseModal()">Cancelar</button>
           </div>
         </div>
@@ -1770,7 +1799,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Define cuánto puedes gastar por categoría cada mes.</div>
           <div style="display:flex;flex-direction:column;gap:12px;" id="presupuesto-inputs"></div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="savePresupuesto()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, savePresupuesto)"><i class="fas fa-floppy-disk"></i> Guardar</button>
             <button class="btn btn-ghost" onclick="closePresupuestoModal()">Cancelar</button>
           </div>
         </div>
@@ -1897,7 +1926,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
           <div id="ap-preview" style="text-align:center;font-weight:700;font-size:13px;margin:-4px 0 12px;min-height:20px;"></div>
           <div style="display:flex;gap:10px;">
-            <button class="btn btn-primary" style="flex:1;background:var(--sky);border-color:var(--sky);" onclick="saveAdelantoPlus()"><i class="fas fa-floppy-disk"></i> Guardar abono</button>
+            <button class="btn btn-primary" style="flex:1;background:var(--sky);border-color:var(--sky);" onclick="withLoading(this, saveAdelantoPlus)"><i class="fas fa-floppy-disk"></i> Guardar abono</button>
             <button class="btn btn-ghost" onclick="document.getElementById('adelanto-plus-modal').classList.remove('open')">Cancelar</button>
           </div>
         </div>
@@ -1925,7 +1954,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <input type="number" id="offer-price-input" placeholder="Ej: 25.00" step="0.01" min="0" style="border-color:var(--orange);font-size:18px;font-weight:700;">
           </div>
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-primary" style="flex:1;background:var(--orange);border-color:var(--orange);" onclick="saveOffer()"><i class="fas fa-tag"></i> Aplicar oferta</button>
+            <button class="btn btn-primary" style="flex:1;background:var(--orange);border-color:var(--orange);" onclick="withLoading(this, saveOffer)"><i class="fas fa-tag"></i> Aplicar oferta</button>
             <button class="btn btn-ghost" style="color:var(--red);" onclick="removeOffer()"><i class="fas fa-times"></i> Quitar oferta</button>
           </div>
         </div>
@@ -1955,7 +1984,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div class="form-group" style="grid-column:1/-1;"><label>Nota</label><input type="text" id="loan-nota" placeholder="Motivo o descripción..."></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveLoan()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveLoan)"><i class="fas fa-floppy-disk"></i> Guardar</button>
             <button class="btn btn-ghost" onclick="closeLoanModal()">Cancelar</button>
           </div>
         </div>
@@ -2139,7 +2168,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
 
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="saveNewClient()"><i class="fas fa-user-plus"></i> Guardar clienta</button>
+            <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="withLoading(this, saveNewClient)"><i class="fas fa-user-plus"></i> Guardar clienta</button>
             <button class="btn btn-ghost" onclick="closeNewClientModal()">Cancelar</button>
           </div>
         </div>
@@ -2272,7 +2301,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div class="form-group"><label>Notas</label><input type="text" id="sup-notes" placeholder="Observaciones..."></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="saveSupplier()"><i class="fas fa-floppy-disk"></i> <span id="sup-save-btn-text">Guardar proveedor</span></button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveSupplier)"><i class="fas fa-floppy-disk"></i> <span id="sup-save-btn-text">Guardar proveedor</span></button>
             <button class="btn btn-ghost" onclick="clearSupplierForm()">Cancelar</button>
           </div>
         </div>
@@ -2315,7 +2344,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Saldo pendiente</div><div style="font-family:Baloo2,cursive;font-size:18px;font-weight:700;color:var(--rose);" id="ord-prev-balance">S/ 0.00</div></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveOrder()"><i class="fas fa-floppy-disk"></i> Guardar orden</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveOrder)"><i class="fas fa-floppy-disk"></i> Guardar orden</button>
             <button class="btn btn-ghost" onclick="closeOrderModal()">Cancelar</button>
           </div>
         </div>
@@ -2402,7 +2431,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="saveBolsa()"><i class="fas fa-floppy-disk"></i> <span id="bolsa-save-btn-text">Crear carrito</span></button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveBolsa)"><i class="fas fa-floppy-disk"></i> <span id="bolsa-save-btn-text">Crear carrito</span></button>
             <button class="btn btn-ghost" onclick="clearBolsaForm()">Cancelar</button>
           </div>
         </div>
@@ -2486,7 +2515,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <span style="font-family:Baloo2,cursive;font-size:20px;font-weight:700;color:var(--rose);" id="bi-subtotal-preview">S/ 0.00</span>
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveBolsaItem()"><i class="fas fa-floppy-disk"></i> Agregar producto</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveBolsaItem)"><i class="fas fa-floppy-disk"></i> Agregar producto</button>
             <button class="btn btn-ghost" onclick="closeBolsaItemModal()">Cancelar</button>
           </div>
         </div>
@@ -2600,7 +2629,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
           </div>
           <div style="display:flex;gap:12px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="saveBlogPost()"><i class="fas fa-floppy-disk"></i> <span id="blog-save-btn-text">Publicar post</span></button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveBlogPost)"><i class="fas fa-floppy-disk"></i> <span id="blog-save-btn-text">Publicar post</span></button>
             <button class="btn btn-ghost" onclick="clearBlogForm()">Cancelar</button>
           </div>
         </div>
@@ -2692,7 +2721,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
           </div>
           <div style="display:flex;gap:12px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="saveDigital()"><i class="fas fa-floppy-disk"></i> <span id="dig-save-btn-text">Guardar producto digital</span></button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveDigital)"><i class="fas fa-floppy-disk"></i> <span id="dig-save-btn-text">Guardar producto digital</span></button>
             <button class="btn btn-ghost" onclick="clearDigForm()">Cancelar</button>
           </div>
         </div>
@@ -2747,7 +2776,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <i class="fas fa-info-circle" style="color:var(--sky);"></i> Los cambios se aplican como una nota extra al cliente. Los datos originales provienen de las ventas.
           </div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveClientEdit()"><i class="fas fa-floppy-disk"></i> Guardar cambios</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveClientEdit)"><i class="fas fa-floppy-disk"></i> Guardar cambios</button>
             <button class="btn btn-ghost" onclick="closeEditClientModal()">Cancelar</button>
           </div>
         </div>
@@ -2770,7 +2799,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
             <div style="margin-top:10px;"><button class="btn btn-secondary" onclick="changeAdminPassword()"><i class="fas fa-key"></i> Cambiar contraseña</button></div>
           </div>
-          <div style="margin-top:24px;"><button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
+          <div style="margin-top:24px;"><button class="btn btn-primary" onclick="withLoading(this, saveSettings)"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
         </div>
       </div>
     </div>
@@ -3055,7 +3084,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="flex:1;background:var(--card);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);">Preview: <span id="rp-preview" style="display:inline-block;padding:3px 12px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:#c2617a;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;">LISTÓN</span></div>
-              <button class="btn btn-primary btn-sm" onclick="saveRibbonPro()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+              <button class="btn btn-primary btn-sm" onclick="withLoading(this, saveRibbonPro)"><i class="fas fa-floppy-disk"></i> Guardar</button>
               <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ribbon-pro-form').style.display='none'">Cancelar</button>
             </div>
           </div>
@@ -3134,7 +3163,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div><div style="font-family:Baloo2,cursive;font-size:20px;font-weight:800;color:var(--green);letter-spacing:.06em;" id="promo-preview-code">CÓDIGO</div><div style="font-size:12px;color:var(--green);font-weight:600;" id="promo-preview-desc">Descuento aplicado al checkout</div></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-primary" onclick="savePromocion()"><i class="fas fa-ticket"></i> Crear cupón</button>
+            <button class="btn btn-primary" onclick="withLoading(this, savePromocion)"><i class="fas fa-ticket"></i> Crear cupón</button>
             <button class="btn btn-ghost" onclick="clearPromoForm()"><i class="fas fa-broom"></i> Limpiar</button>
           </div>
         </div>
@@ -3174,7 +3203,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div class="form-group"><label>Motivo estimado</label><select id="ca-motivo"><option value="precio">Precio</option><option value="envio">Costo de envío</option><option value="duda">Dudas sobre el producto</option><option value="otro">Otro</option></select></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-primary" onclick="saveCarritoAbandonado()"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveCarritoAbandonado)"><i class="fas fa-floppy-disk"></i> Guardar</button>
           </div>
         </div>
       </div>
@@ -3208,7 +3237,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div class="form-group" style="grid-column:span 3;"><label>Productos incluidos (IDs separados por coma)</label><input type="text" id="drop-products" placeholder="Buscar productos..."></div>
           </div>
           <div style="margin-top:16px;display:flex;gap:10px;">
-            <button class="btn btn-primary" onclick="saveDrop()"><i class="fas fa-floppy-disk"></i> Publicar Drop</button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveDrop)"><i class="fas fa-floppy-disk"></i> Publicar Drop</button>
             <button class="btn btn-ghost" onclick="document.getElementById('drops-form-container').style.display='none'">Cancelar</button>
           </div>
         </div>
@@ -3237,7 +3266,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <button class="btn btn-ghost btn-sm" onclick="addLookbookProductRow()" style="margin-top:8px;"><i class="fas fa-plus"></i> Agregar prenda</button>
           </div>
           <div style="margin-top:16px;display:flex;gap:10px;">
-            <button class="btn btn-primary" onclick="saveLookbook()"><i class="fas fa-floppy-disk"></i> Guardar Lookbook</button>
+            <button class="btn btn-primary" onclick="withLoading(this, saveLookbook)"><i class="fas fa-floppy-disk"></i> Guardar Lookbook</button>
             <button class="btn btn-ghost" onclick="document.getElementById('lookbook-form-container').style.display='none'">Cancelar</button>
           </div>
         </div>
@@ -3282,7 +3311,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <div class="form-group"><label>Ventas hoy</label><input type="number" id="ana-ventas-hoy" placeholder="0" min="0"></div>
               <div class="form-group"><label>Carritos abandonados</label><input type="number" id="ana-abandon-hoy" placeholder="0" min="0"></div>
             </div>
-            <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="saveAnalyticsPro()"><i class="fas fa-floppy-disk"></i> Guardar métricas</button>
+            <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="withLoading(this, saveAnalyticsPro)"><i class="fas fa-floppy-disk"></i> Guardar métricas</button>
           </div>
         </div>
       </div>
@@ -3386,7 +3415,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               </div>
 
               <div style="display:flex;gap:10px;">
-                <button class="btn btn-primary" onclick="saveSeoProduct()"><i class="fas fa-floppy-disk"></i> Guardar SEO</button>
+                <button class="btn btn-primary" onclick="withLoading(this, saveSeoProduct)"><i class="fas fa-floppy-disk"></i> Guardar SEO</button>
                 <button class="btn btn-ghost" onclick="clearSeoForm()"><i class="fas fa-broom"></i> Limpiar</button>
               </div>
             </div>
@@ -3772,7 +3801,7 @@ Te escribimos de *D'Zoe Perú* con una buena noticia:
         <span id="ms-total-preview" style="font-family:Baloo2,cursive;font-size:24px;font-weight:800;color:var(--green);">S/ 0.00</span>
       </div>
       <div style="display:flex;gap:10px;margin-top:16px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="saveManualSale()"><i class="fas fa-cash-register"></i> Guardar venta</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveManualSale)"><i class="fas fa-cash-register"></i> Guardar venta</button>
         <button class="btn btn-ghost" onclick="closeManualSale()">Cancelar</button>
       </div>
     </div>
@@ -3909,11 +3938,60 @@ async function checkSession() {
   loadAllData().then(() => goToSection('dashboard-section'));
 }
 
-function logout() {
-  if (confirm('¿Cerrar sesión?')) {
+async function logout() {
+  const ok = await customConfirm('¿Seguro que quieres cerrar sesión?', { title: 'Cerrar sesión', confirmText: 'Sí, salir', danger: false });
+  if (ok) {
     supabaseClient?.auth.signOut().then(() => location.reload());
   }
 
+}
+
+// ─── LOADING STATE EN BOTONES ───────────────
+// Envuelve cualquier función save/guardar (sync o async): deshabilita el botón,
+// muestra un spinner mientras se ejecuta, y restaura el contenido original al terminar.
+async function withLoading(btnEl, fn) {
+  if (!btnEl || btnEl.disabled) return;
+  const originalHTML = btnEl.innerHTML;
+  const originalMinWidth = btnEl.style.minWidth;
+  btnEl.style.minWidth = btnEl.offsetWidth + 'px';
+  btnEl.disabled = true;
+  btnEl.classList.add('btn-loading');
+  btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  try {
+    await Promise.resolve(fn());
+  } finally {
+    btnEl.disabled = false;
+    btnEl.classList.remove('btn-loading');
+    btnEl.innerHTML = originalHTML;
+    btnEl.style.minWidth = originalMinWidth;
+  }
+}
+
+// ─── CONFIRM MODAL (reemplaza confirm() nativo) ──
+let _confirmModalResolve = null;
+function customConfirm(message, opts = {}) {
+  const {
+    title = '¿Estás segura?',
+    confirmText = 'Sí, continuar',
+    cancelText = 'Cancelar',
+    danger = true
+  } = opts;
+  return new Promise(resolve => {
+    _confirmModalResolve = resolve;
+    document.getElementById('confirm-modal-icon').className = 'confirm-modal-icon' + (danger ? '' : ' info');
+    document.getElementById('confirm-modal-icon').innerHTML = `<i class="fas ${danger ? 'fa-triangle-exclamation' : 'fa-circle-question'}"></i>`;
+    document.getElementById('confirm-modal-title').textContent = title;
+    document.getElementById('confirm-modal-msg').innerHTML = String(message).replace(/\n/g, '<br>');
+    const okBtn = document.getElementById('confirm-modal-ok');
+    okBtn.textContent = confirmText;
+    okBtn.className = 'btn ' + (danger ? 'btn-danger-solid' : 'btn-primary');
+    document.getElementById('confirm-modal-cancel').textContent = cancelText;
+    document.getElementById('confirm-modal').classList.add('open');
+  });
+}
+function _resolveConfirmModal(val) {
+  document.getElementById('confirm-modal').classList.remove('open');
+  if (_confirmModalResolve) { _confirmModalResolve(val); _confirmModalResolve = null; }
 }
 
 // ─── NAVEGACIÓN ─────────────────────────────
@@ -3982,7 +4060,7 @@ function clearForm() {
 }
 
 async function deleteProduct(id) {
-  if (!confirm('¿Eliminar este producto?')) return;
+  if (!(await customConfirm('¿Eliminar este producto? Esta acción no se puede deshacer.', { title: 'Eliminar producto' }))) return;
   
   if (supabaseClient) {
     const { error } = await supabaseClient
@@ -4015,6 +4093,54 @@ let expandedSizeDetails = new Set();
 const SOURCING_PROVEEDORES = ['Temu','Shein','Maybe','Andrew','Otro'];
 const SOURCING_EMOJI = { Temu:'🟠', Shein:'⚫', Maybe:'🧸', Andrew:'🔵', Otro:'⚪' };
 let selectedEmoji = '👶', selectedCatColor = '#c2617a';
+
+// ============================================
+// VALIDACIÓN DE NOMBRES DUPLICADOS
+// (Agregar Producto + Agregar Próximo Ingreso)
+// ============================================
+function normalizeProductName(str) {
+  return (str || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Busca si el nombre ya existe en Inventario o en Próximos Ingresos.
+// excludeId + excludeType permiten que, al EDITAR, el propio producto no cuente como duplicado.
+function findDuplicateProductName(name, excludeId = null, excludeType = null) {
+  const target = normalizeProductName(name);
+  if (!target) return null;
+
+  const inInventory = (window._allProducts || products || []).find(p =>
+    normalizeProductName(p.name) === target &&
+    !(excludeType === 'product' && excludeId != null && String(p.id) === String(excludeId))
+  );
+  if (inInventory) return { ...inInventory, _origen: 'inventario' };
+
+  const inAlmacen = (almacenItems || []).find(u =>
+    normalizeProductName(u.name) === target &&
+    !(excludeType === 'upcoming' && excludeId != null && String(u.id) === String(excludeId))
+  );
+  if (inAlmacen) return { ...inAlmacen, _origen: 'próximo ingreso' };
+
+  return null;
+}
+
+// Feedback visual mientras se escribe (input rojo + mensaje) — no bloquea, solo avisa
+function checkDuplicateNameLive(inputId, msgId, excludeIdGetter, excludeType) {
+  const input = document.getElementById(inputId);
+  const msg = document.getElementById(msgId);
+  if (!input) return;
+  const dup = findDuplicateProductName(input.value, excludeIdGetter ? excludeIdGetter() : null, excludeType);
+  if (dup) {
+    input.style.borderColor = 'var(--red, #e74c3c)';
+    if (msg) { msg.style.display = 'block'; msg.textContent = `⚠️ Ya existe un producto con ese nombre (en ${dup._origen}).`; }
+  } else {
+    input.style.borderColor = '';
+    if (msg) { msg.style.display = 'none'; msg.textContent = ''; }
+  }
+}
 
 // Inventory pagination
 let inventoryCurrentPage = 1, inventoryPageSize = 24;
@@ -4980,7 +5106,7 @@ async function quickConfirmSale(id) {
 async function deleteSale(id) {
   const o = orders.find(x => x.id === id);
   const name = o ? `${o.name||''} ${o.lastname||''}`.trim() : String(id).slice(-6);
-  if (!confirm(`¿Eliminar la venta de "${name}"?\nEsta acción no se puede deshacer.`)) return;
+  if (!(await customConfirm(`¿Eliminar la venta de "${name}"?\nEsta acción no se puede deshacer.`, { title: 'Eliminar venta' }))) return;
   if (supabaseClient) {
     const { error } = await supabaseClient.from('orders').delete().eq('id', id);
     if (error) { showAlert('Error al eliminar: ' + error.message, 'error'); return; }
@@ -5122,6 +5248,12 @@ async function markAsNewArrival(id) {
 async function saveProduct() {
   const name = document.getElementById('product-name').value.trim();
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
+
+  const dupProduct = findDuplicateProductName(name, editingProductId, 'product');
+  if (dupProduct) {
+    showAlert(`Ya tienes un producto llamado "${name}" (en ${dupProduct._origen}). Usa un nombre distinto.`, 'error');
+    return;
+  }
 
   const desc = document.getElementById('product-description').value.trim();
   const color = document.getElementById('product-color').value.trim();
@@ -5404,6 +5536,13 @@ async function saveUpcomingProduct() {
   const month = monthEl ? parseInt(monthEl.value) : null;
   const year = new Date().getFullYear();
   if (!name) { showAlert('Nombre requerido', 'error'); return; }
+
+  const dupUpcoming = findDuplicateProductName(name, editingUpcomingId, 'upcoming');
+  if (dupUpcoming) {
+    showAlert(`Ya tienes un producto llamado "${name}" (en ${dupUpcoming._origen}). Usa un nombre distinto.`, 'error');
+    return;
+  }
+
   if (day === null || isNaN(day)) { showAlert('Selecciona día y mes', 'error'); return; }
   const dateObj = new Date(year, month, day, 12, 0, 0);
   const dateVal = dateObj.toISOString();
@@ -5484,7 +5623,7 @@ async function editUpcoming(id) {
 }
 
 async function deleteUpcoming(id) {
-  if (!confirm('¿Eliminar este próximo ingreso?')) return;
+  if (!(await customConfirm('¿Eliminar este próximo ingreso?', { title: 'Eliminar próximo ingreso' }))) return;
   if (!supabaseClient) return;
   const { error } = await supabaseClient.from('upcoming_products').delete().eq('id', id);
   if (error) { showAlert('Error al eliminar', 'error'); return; }
@@ -5493,7 +5632,7 @@ async function deleteUpcoming(id) {
 }
 
 async function promoteUpcomingAdmin(id) {
-  if (!confirm('¿Pasar a la tienda como producto disponible?')) return;
+  if (!(await customConfirm('¿Pasar este producto a la tienda como disponible?', { title: 'Pasar a la tienda', confirmText: 'Sí, publicar', danger: false }))) return;
   if (!supabaseClient) return;
   const { data: up } = await supabaseClient.from('upcoming_products').select('*').eq('id', id).single();
   if (!up) return;
@@ -5601,7 +5740,7 @@ async function addCategory() {
 }
 
 async function deleteCategory(name) {
-  if (!confirm(`¿Eliminar categoría "${name}"?`)) return;
+  if (!(await customConfirm(`¿Eliminar la categoría "${name}"?`, { title: 'Eliminar categoría' }))) return;
   categories = categories.filter(c=>c.name!==name);
   if (supabaseClient) await supabaseClient.from('categories').delete().eq('name',name);
   saveCatAssignment(name, undefined);
@@ -5634,10 +5773,11 @@ async function cleanupOrphanCategories() {
 
   const orphanNames = [...new Set(affected.flatMap(x => x.orphans))];
   const list = affected.map(x => `• ${x.p.name} → ${x.orphans.join(', ')}`).join('\n');
-  const ok = confirm(
+  const ok = await customConfirm(
     `Se encontraron ${affected.length} producto(s) con categorías que ya no existen:\n\n${list}\n\n` +
     `Categorías huérfanas: ${orphanNames.join(', ')}\n\n` +
-    `¿Quitar estas categorías de los productos afectados? (los productos NO se eliminan, solo se les quita la etiqueta de categoría inválida)`
+    `¿Quitar estas categorías de los productos afectados? (los productos NO se eliminan, solo se les quita la etiqueta de categoría inválida)`,
+    { title: 'Limpiar categorías huérfanas', confirmText: 'Sí, limpiar', danger: false }
   );
   if (!ok) return;
 
@@ -5677,8 +5817,8 @@ function addCategoryGroup() {
   renderCategoriesList();
   showAlert('Grupo creado');
 }
-function deleteCatGroup(gname) {
-  if (!confirm(`¿Eliminar el grupo "${gname}"?\nLas categorías pasarán a "Sin grupo".`)) return;
+async function deleteCatGroup(gname) {
+  if (!(await customConfirm(`¿Eliminar el grupo "${gname}"?\nLas categorías pasarán a "Sin grupo".`, { title: 'Eliminar grupo' }))) return;
   saveCatGroups(loadCatGroups().filter(g => g.name !== gname));
   categories.forEach(c => { if (c.group === gname) { delete c.group; saveCatAssignment(c.name, undefined); } });
   renderCategoriesList();
@@ -6372,8 +6512,8 @@ function saveRibbonItem() {
 
 function editRibbon(id) { openRibbonForm(id); }
 
-function deleteRibbon(id) {
-  if (!confirm('¿Eliminar este listón?')) return;
+async function deleteRibbon(id) {
+  if (!(await customConfirm('¿Eliminar este listón?', { title: 'Eliminar listón' }))) return;
   const ribbons = loadRibbons().filter(r=>r.id!==id);
   saveRibbons(ribbons);
   renderRibbonsSection();
@@ -7303,7 +7443,7 @@ async function removeItemFromBolsita(orderId, itemIndex) {
   const qty = parseInt(item.qty) || 1;
   const price = parseFloat(item.price) || 0;
 
-  if (!confirm(`¿Quitar "${item.name}${item.size ? ' (T:' + item.size + ')' : ''}" de la bolsita?\n\nSe recalculará el total del pedido y el stock se devolverá al producto.`)) return;
+  if (!(await customConfirm(`¿Quitar "${item.name}${item.size ? ' (T:' + item.size + ')' : ''}" de la bolsita?\n\nSe recalculará el total del pedido y el stock se devolverá al producto.`, { title: 'Quitar producto' }))) return;
 
   const subtotal = price * qty;
   const newItems = o.items.filter((_, idx) => idx !== itemIndex);
@@ -7421,8 +7561,8 @@ function editSupplier(id) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function deleteSupplier(id) {
-  if (!confirm('¿Eliminar este proveedor?')) return;
+async function deleteSupplier(id) {
+  if (!(await customConfirm('¿Eliminar este proveedor?', { title: 'Eliminar proveedor' }))) return;
   suppliers = suppliers.filter(s=>s.id!==id);
   saveSuppliers();
   renderSuppliersSection();
@@ -7483,8 +7623,8 @@ function saveOrder() {
   showAlert('✅ Orden guardada');
 }
 
-function deleteOrder(supplierId, orderId) {
-  if (!confirm('¿Eliminar esta orden?')) return;
+async function deleteOrder(supplierId, orderId) {
+  if (!(await customConfirm('¿Eliminar esta orden?', { title: 'Eliminar orden' }))) return;
   const sup = suppliers.find(s=>s.id===supplierId); if(!sup) return;
   sup.orders = (sup.orders||[]).filter(o=>o.id!==orderId);
   saveSuppliers();
@@ -7628,8 +7768,8 @@ function saveBolsa() {
   showAlert('✅ Carrito de compra creado');
 }
 
-function deleteBolsa(id) {
-  if (!confirm('¿Eliminar este carrito de compra y todos sus productos?')) return;
+async function deleteBolsa(id) {
+  if (!(await customConfirm('¿Eliminar este carrito de compra y todos sus productos?', { title: 'Eliminar carrito' }))) return;
   bolsas = bolsas.filter(b => b.id !== id);
   saveBolsasStorage();
   renderBolsasSection();
@@ -7657,9 +7797,9 @@ function setBolsaEstado(bolsaId, estado) {
   renderBolsasSection();
 }
 
-function recibirBolsa(bolsaId) {
+async function recibirBolsa(bolsaId) {
   const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
-  const todosOk = confirm('¿Recibiste TODOS los productos de este carrito?\n\nAceptar = Sí, llegó todo completo\nCancelar = No, faltaron productos');
+  const todosOk = await customConfirm('¿Recibiste TODOS los productos de este carrito?', { title: 'Recibir carrito', confirmText: 'Sí, llegó todo', cancelText: 'No, faltaron productos', danger: false });
   if (!todosOk) {
     const faltantes = prompt('Escribe los ID de los productos que NO llegaron, separados por coma:');
     if (faltantes === null) return;
@@ -8088,8 +8228,8 @@ function saveGasto() {
   showAlert('✅ Gasto registrado — S/ ' + monto.toFixed(2));
 }
 
-function deleteGasto(id) {
-  if (!confirm('¿Eliminar este gasto?')) return;
+async function deleteGasto(id) {
+  if (!(await customConfirm('¿Eliminar este gasto?', { title: 'Eliminar gasto' }))) return;
   gastos = gastos.filter(g => g.id !== id);
   saveGastos();
   renderCaja();
@@ -8400,8 +8540,8 @@ function markLoanPaid(id) {
   if (l) { l.status = l.status === 'paid' ? 'pending' : 'paid'; savePrestamos(); renderPrestamos(); }
 }
 
-function deleteLoan(id) {
-  if (!confirm('¿Eliminar este préstamo?')) return;
+async function deleteLoan(id) {
+  if (!(await customConfirm('¿Eliminar este préstamo?', { title: 'Eliminar préstamo' }))) return;
   prestamos = prestamos.filter(p => p.id !== id);
   savePrestamos();
   renderPrestamos();
@@ -8582,7 +8722,7 @@ function renderDeudores() {
 async function marcarDeudaPagada(id) {
   const o = orders.find(x => x.id === id);
   if (!o) return;
-  if (!confirm(`¿Marcar a ${o.name} como deuda cancelada (pago completo)?`)) return;
+  if (!(await customConfirm(`¿Marcar a ${o.name} como deuda cancelada (pago completo)?`, { title: 'Marcar deuda pagada', confirmText: 'Sí, marcar', danger: false }))) return;
   o.adelanto = o.total; o.deuda = 0; o.status = 'confirmed';
   if (supabaseClient) {
     await supabaseClient.from('orders').update({ adelanto: o.total, deuda: 0, status: 'confirmed' }).eq('id', id);
@@ -9080,7 +9220,7 @@ function editBlogPost(id) {
 }
 
 async function deleteBlogPost(id) {
-  if (!confirm('¿Eliminar este post?')) return;
+  if (!(await customConfirm('¿Eliminar este post del blog?', { title: 'Eliminar post' }))) return;
   if (supabaseClient) {
     try { await supabaseClient.from('blog_posts').delete().eq('id', id); }
     catch (e) { console.warn('blog_posts delete error', e); }
@@ -9269,8 +9409,8 @@ function editDigital(id) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function deleteDigital(id) {
-  if (!confirm('¿Eliminar este producto digital?')) return;
+async function deleteDigital(id) {
+  if (!(await customConfirm('¿Eliminar este producto digital?', { title: 'Eliminar producto digital' }))) return;
   digitales = digitales.filter(d => d.id !== id);
   saveDigitalesData();
   renderDigitalesList();
@@ -9705,7 +9845,7 @@ function niLimpiarForm() {
 }
 
 async function niBorrarConfig() {
-  if (!confirm('¿Borrar la configuración del Nuevo Ingreso?')) return;
+  if (!(await customConfirm('¿Borrar la configuración del Nuevo Ingreso?', { title: 'Borrar configuración' }))) return;
 
   /* 1️⃣ Borrar en Supabase */
   if (supabaseClient) {
@@ -9852,7 +9992,7 @@ if (typeof nameMap !== 'undefined') nameMap['nuevo-ingreso-section'] = '⭐ Nuev
   <label>Meta Access Token</label>
   <input id="meta-access-token" type="password">
 
-  <button onclick="saveMetaConfig()">Guardar configuración</button>
+  <button onclick="withLoading(this, saveMetaConfig)">Guardar configuración</button>
   <button onclick="connectMetaCatalog()">Conectar catálogo</button>
 </div>
 
@@ -10450,7 +10590,7 @@ async function removeRibbonProFromProduct(pid) {
 }
 
 async function deleteRibbonPro(id) {
-  if (!confirm('¿Eliminar este listón?')) return;
+  if (!(await customConfirm('¿Eliminar este listón?', { title: 'Eliminar listón' }))) return;
   if (supabaseClient) {
     const { error } = await supabaseClient.from('ribbons_pro').delete().eq('id', String(id));
     if (error) { showAlert('Error: ' + error.message, 'error'); return; }
