@@ -637,6 +637,85 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
   .ventas-chip-row { grid-template-columns: repeat(2,1fr); }
 }
 
+/* ============================================
+   PROVEEDORES — TABS + ANÁLISIS POR ORIGEN
+   ============================================ */
+.sup-tabs { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+.sup-tab-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 99px; border: 1.5px solid var(--line); background: var(--card); color: var(--text2); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all .22s; }
+.sup-tab-btn:hover { border-color: var(--rose); color: var(--rose-dark); transform: translateY(-1px); }
+.sup-tab-btn.active { background: var(--rose-dark); border-color: var(--rose-dark); color: #fff; box-shadow: 0 8px 20px rgba(138,111,170,.32); }
+.sup-tab-btn .sup-tab-badge { background: rgba(0,0,0,.12); padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: 700; }
+.sup-tab-btn.active .sup-tab-badge { background: rgba(255,255,255,.25); }
+.sup-tab-pane { animation: cliMergeBarIn .25s ease; }
+
+/* Hero de resumen del análisis por origen */
+.origen-hero-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.origen-hero-card { position: relative; overflow: hidden; border-radius: var(--radius); padding: 20px 24px; background: var(--card); border: 1.5px solid var(--line2); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; }
+.origen-hero-card.gold { background: linear-gradient(135deg, #f0b840, #c98a12); color: #fff; border: none; box-shadow: 0 14px 32px rgba(201,138,18,.30); }
+.origen-hero-card.gold::after { content:''; position:absolute; right:-30px; top:-30px; width:140px; height:140px; border-radius:50%; background: rgba(255,255,255,.14); }
+.origen-hero-card .oh-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--rose-xlight); color: var(--rose-dark); display: flex; align-items: center; justify-content: center; font-size: 17px; margin-bottom: 2px; }
+.origen-hero-card.gold .oh-icon { background: rgba(255,255,255,.22); color: #fff; }
+.origen-hero-card .oh-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.origen-hero-card.gold .oh-label { color: rgba(255,255,255,.85); }
+.origen-hero-card .oh-value { font-family: 'Baloo 2', cursive; font-size: 24px; font-weight: 800; color: var(--text); line-height: 1.15; }
+.origen-hero-card.gold .oh-value { color: #fff; }
+.origen-hero-card .oh-sub { font-size: 12px; font-weight: 600; color: var(--muted); }
+.origen-hero-card.gold .oh-sub { color: rgba(255,255,255,.9); }
+
+.origen-alert { display: flex; align-items: center; gap: 14px; background: var(--orange-light); border: 1.5px dashed var(--orange); border-radius: 16px; padding: 14px 18px; margin-bottom: 20px; }
+.origen-alert .oa-icon { width: 38px; height: 38px; border-radius: 11px; background: rgba(255,255,255,.6); color: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.origen-alert .oa-text { font-size: 12.5px; color: var(--text2); flex: 1; }
+.origen-alert .oa-text b { color: var(--orange); }
+
+.origen-sort-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.origen-sort-bar .osb-title { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); }
+.origen-sort-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.origen-sort-chip { padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--line); background: var(--card); color: var(--text2); font-size: 11.5px; font-weight: 800; cursor: pointer; transition: all .2s; }
+.origen-sort-chip:hover { border-color: var(--rose); color: var(--rose-dark); }
+.origen-sort-chip.active { background: var(--rose-dark); border-color: var(--rose-dark); color: #fff; }
+
+.origen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.origen-card { background: var(--card); border: 1.5px solid var(--line2); border-radius: 20px; padding: 20px 22px; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; position: relative; }
+.origen-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.origen-card.rank1 { border-color: #d4af3766; background: linear-gradient(180deg, #fdf8ec, var(--card) 40%); }
+body.dark-mode .origen-card.rank1 { background: linear-gradient(180deg, #302710, var(--card) 40%); }
+.origen-card.rank2 { border-color: #b7c1cc88; }
+.origen-card.rank3 { border-color: #c98a4b66; }
+.origen-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.origen-card-emoji { width: 46px; height: 46px; border-radius: 14px; background: var(--rose-xlight); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.origen-card-name { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); }
+.origen-card-rank-badge { margin-left: auto; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
+.origen-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.origen-metric { background: var(--bg); border-radius: 12px; padding: 10px 12px; }
+.origen-metric .om-label { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+.origen-metric .om-value { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: var(--text); }
+.origen-progress-wrap { margin-bottom: 12px; }
+.origen-progress-label { display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+.origen-progress-bar { height: 8px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
+.origen-progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--rose), var(--rose-dark)); transition: width .5s ease; }
+.origen-top-product { display: flex; align-items: center; gap: 10px; background: var(--rose-soft); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; }
+.origen-top-product img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.origen-top-product .otp-noimg { width: 32px; height: 32px; border-radius: 8px; background: var(--rose-light); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.origen-top-product .otp-label { font-size: 9.5px; font-weight: 800; color: var(--rose-dark); text-transform: uppercase; letter-spacing: .05em; }
+.origen-top-product .otp-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.origen-toggle-list { text-align: center; font-size: 11.5px; font-weight: 800; color: var(--rose-dark); cursor: pointer; padding: 6px; border-top: 1px dashed var(--line2); margin-top: 4px; }
+.origen-toggle-list:hover { color: var(--rose); }
+.origen-products-list { display: none; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 280px; overflow-y: auto; }
+.origen-products-list.open { display: flex; }
+.origen-product-row { display: flex; align-items: center; gap: 10px; background: var(--bg); border-radius: 10px; padding: 7px 10px; }
+.origen-product-row img { width: 30px; height: 30px; border-radius: 7px; object-fit: cover; flex-shrink: 0; }
+.origen-product-row .opr-noimg { width: 30px; height: 30px; border-radius: 7px; background: var(--rose-light); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.origen-product-row .opr-name { font-size: 11.5px; font-weight: 700; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.origen-product-row .opr-stock { font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+@media (max-width: 1180px) {
+  .origen-hero-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .origen-hero-grid { grid-template-columns: 1fr; }
+  .origen-metrics-grid { grid-template-columns: 1fr 1fr; }
+}
+
 /* Sale detail modal */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,10,40,.55); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
 .modal-overlay.open { display: flex; }
@@ -2324,6 +2403,12 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
     <!-- ====== PROVEEDORES ====== -->
     <div id="suppliers-section" class="page-section" style="display:none;">
+      <div class="sup-tabs">
+        <button class="sup-tab-btn active" data-tab="directorio" onclick="switchSupplierTab('directorio')"><i class="fas fa-address-book"></i> Directorio</button>
+        <button class="sup-tab-btn" data-tab="origen" onclick="switchSupplierTab('origen')"><i class="fas fa-chart-pie"></i> Análisis por Origen <span class="sup-tab-badge">Temu, Shein...</span></button>
+      </div>
+
+      <div id="sup-tab-directorio" class="sup-tab-pane">
       <!-- Dashboard -->
       <div class="stats-grid" style="margin-bottom:24px;">
         <div class="stat-card">
@@ -2385,6 +2470,11 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
       <!-- Suppliers list -->
       <div id="suppliers-list-container"></div>
+      </div><!-- /sup-tab-directorio -->
+
+      <div id="sup-tab-origen" class="sup-tab-pane" style="display:none;">
+        <div id="origen-analytics-container"></div>
+      </div><!-- /sup-tab-origen -->
     </div>
 
     <!-- Order modal for supplier -->
@@ -7871,6 +7961,200 @@ async function deleteOrder(supplierId, orderId) {
   showAlert('Orden eliminada');
 }
 
+// ============================================
+// PROVEEDORES — ANÁLISIS POR ORIGEN (Temu/Shein/etc.)
+// ============================================
+function switchSupplierTab(tab) {
+  document.querySelectorAll('.sup-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  const dir = document.getElementById('sup-tab-directorio');
+  const org = document.getElementById('sup-tab-origen');
+  if (dir) dir.style.display = tab === 'directorio' ? '' : 'none';
+  if (org) org.style.display = tab === 'origen' ? '' : 'none';
+  if (tab === 'directorio') renderSuppliersSection();
+  else renderOrigenAnalytics();
+}
+
+let origenSortBy = 'revenue'; // 'revenue' | 'stock' | 'sold' | 'profit'
+function setOrigenSort(mode) { origenSortBy = mode; renderOrigenAnalytics(); }
+
+function toggleOrigenProducts(key) {
+  const el = document.getElementById('origen-products-'+key);
+  if (el) el.classList.toggle('open');
+}
+
+// Calcula, para cada Proveedor de origen (el campo 🔒 configurado en Configuración →
+// Proveedores de abastecimiento), cuánto stock actual tiene, cuánto se ha vendido,
+// cuánto dinero generó y cuál es su producto estrella. Usa size_origins por talla
+// (fuente confiable) y el matching robusto por productId para las ventas.
+function computeOrigenStats() {
+  const configList = loadSourcingProveedores(); // [{name, emoji}]
+  const map = {}; // key: nombre proveedor -> stats
+  const ensure = (name) => {
+    if (!map[name]) {
+      const cfg = configList.find(c => c.name === name);
+      map[name] = {
+        name, emoji: cfg?.emoji || '🏷️',
+        stockUnits: 0, stockValue: 0, productIds: new Set(),
+        soldUnits: 0, soldRevenue: 0, soldProfit: 0,
+        lastPurchase: '', productSold: {}, // name -> qty
+      };
+    }
+    return map[name];
+  };
+  // Pre-crea todos los proveedores configurados aunque tengan 0 uso, para que se vean en el panel
+  configList.forEach(c => ensure(c.name));
+
+  let sinProveedorStock = 0, sinProveedorProducts = new Set();
+
+  (products||[]).forEach(p => {
+    const origins = p.size_origins || {};
+    (p.sizes||[]).forEach(s => {
+      const raw = origins[s.size];
+      const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
+      if (!proveedor) { sinProveedorStock += Number(s.stock)||0; sinProveedorProducts.add(p.id); return; }
+      const st = ensure(proveedor);
+      st.stockUnits += Number(s.stock)||0;
+      st.stockValue += (Number(s.stock)||0) * (Number(s.cost)||0);
+      st.productIds.add(p.id);
+      if (raw.fecha && raw.fecha > st.lastPurchase) st.lastPurchase = raw.fecha;
+    });
+  });
+
+  (orders||[]).filter(o => o.status === 'confirmed').forEach(o => {
+    (o.items||[]).forEach(it => {
+      const prod = _findSoldProduct(it);
+      if (!prod) return;
+      const raw = (prod.size_origins||{})[it.size];
+      const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
+      if (!proveedor) return;
+      const st = ensure(proveedor);
+      const sizeObj = prod.sizes?.find(sz => sz.size === it.size);
+      const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
+      const price = it.price || sizeObj?.price || 0;
+      const qty = it.qty || 1;
+      st.soldUnits += qty;
+      st.soldRevenue += price*qty;
+      st.soldProfit += (price-cost)*qty;
+      st.productSold[prod.name] = (st.productSold[prod.name]||0) + qty;
+    });
+  });
+
+  const list = Object.values(map).map(st => {
+    const topEntry = Object.entries(st.productSold).sort((a,b)=>b[1]-a[1])[0];
+    const topProduct = topEntry ? products.find(p => p.name === topEntry[0]) : null;
+    return { ...st, productCount: st.productIds.size, topProductName: topEntry?.[0]||'', topProductQty: topEntry?.[1]||0, topProduct };
+  });
+
+  return { list, sinProveedorStock, sinProveedorProducts: sinProveedorProducts.size };
+}
+
+function renderOrigenAnalytics() {
+  const container = document.getElementById('origen-analytics-container'); if (!container) return;
+  const { list, sinProveedorStock, sinProveedorProducts } = computeOrigenStats();
+
+  const totalStockValue = list.reduce((a,s)=>a+s.stockValue,0);
+  const totalSoldRevenue = list.reduce((a,s)=>a+s.soldRevenue,0);
+  const totalSoldProfit = list.reduce((a,s)=>a+s.soldProfit,0);
+  const topByRevenue = [...list].sort((a,b)=>b.soldRevenue-a.soldRevenue)[0];
+
+  const sortFns = {
+    revenue: (a,b)=>b.soldRevenue-a.soldRevenue,
+    stock:   (a,b)=>b.stockValue-a.stockValue,
+    sold:    (a,b)=>b.soldUnits-a.soldUnits,
+    profit:  (a,b)=>b.soldProfit-a.soldProfit,
+  };
+  const sorted = [...list].sort(sortFns[origenSortBy] || sortFns.revenue);
+  const maxForBar = Math.max(1, ...sorted.map(s => origenSortBy==='stock' ? s.stockValue : origenSortBy==='sold' ? s.soldUnits : origenSortBy==='profit' ? s.soldProfit : s.soldRevenue));
+  const medals = ['🥇','🥈','🥉'];
+  const rankColors = ['#D4AF37','#B7C1CC','#C98A4B'];
+
+  let html = `
+    <div class="origen-hero-grid">
+      <div class="origen-hero-card gold">
+        <div class="oh-icon"><i class="fas fa-crown"></i></div>
+        <div class="oh-label">Proveedor top (ingresos)</div>
+        <div class="oh-value">${topByRevenue && topByRevenue.soldRevenue>0 ? topByRevenue.emoji+' '+topByRevenue.name : '—'}</div>
+        <div class="oh-sub">${topByRevenue && topByRevenue.soldRevenue>0 ? 'S/ '+topByRevenue.soldRevenue.toFixed(2)+' generados' : 'Aún sin ventas vinculadas'}</div>
+      </div>
+      <div class="origen-hero-card">
+        <div class="oh-icon"><i class="fas fa-warehouse"></i></div>
+        <div class="oh-label">Invertido en stock actual</div>
+        <div class="oh-value">S/ ${totalStockValue.toFixed(2)}</div>
+        <div class="oh-sub">Costo de todo lo que tienes guardado</div>
+      </div>
+      <div class="origen-hero-card">
+        <div class="oh-icon"><i class="fas fa-sack-dollar"></i></div>
+        <div class="oh-label">Ganancia generada</div>
+        <div class="oh-value" style="color:var(--green);">S/ ${totalSoldProfit.toFixed(2)}</div>
+        <div class="oh-sub">De S/ ${totalSoldRevenue.toFixed(2)} vendidos en total</div>
+      </div>
+    </div>`;
+
+  if (sinProveedorProducts > 0) {
+    html += `<div class="origen-alert">
+      <div class="oa-icon"><i class="fas fa-triangle-exclamation"></i></div>
+      <div class="oa-text"><b>${sinProveedorProducts} producto(s)</b> tienen tallas sin proveedor asignado (${sinProveedorStock} unidades en stock sin clasificar). Asígnalos desde <b>Agregar Producto → Editar</b> para verlos reflejados aquí.</div>
+    </div>`;
+  }
+
+  html += `<div class="origen-sort-bar">
+    <div class="osb-title"><i class="fas fa-layer-group" style="color:var(--rose);"></i> Proveedores de origen</div>
+    <div class="origen-sort-chips">
+      <button class="origen-sort-chip ${origenSortBy==='revenue'?'active':''}" onclick="setOrigenSort('revenue')">💰 Ingresos</button>
+      <button class="origen-sort-chip ${origenSortBy==='stock'?'active':''}" onclick="setOrigenSort('stock')">📦 Stock</button>
+      <button class="origen-sort-chip ${origenSortBy==='sold'?'active':''}" onclick="setOrigenSort('sold')">🛍️ Vendidos</button>
+      <button class="origen-sort-chip ${origenSortBy==='profit'?'active':''}" onclick="setOrigenSort('profit')">📈 Ganancia</button>
+    </div>
+  </div>`;
+
+  if (!sorted.length) {
+    html += `<div class="empty-state"><div class="empty-icon">🚚</div><h3>Sin proveedores configurados</h3><p>Agrega tus proveedores de origen en Configuración → Proveedores de abastecimiento.</p></div>`;
+  } else {
+    html += `<div class="origen-grid">${sorted.map((s,i) => {
+      const isTop3 = i < 3 && (origenSortBy==='revenue' ? s.soldRevenue>0 : origenSortBy==='stock' ? s.stockValue>0 : origenSortBy==='sold' ? s.soldUnits>0 : s.soldProfit>0);
+      const barVal = origenSortBy==='stock' ? s.stockValue : origenSortBy==='sold' ? s.soldUnits : origenSortBy==='profit' ? s.soldProfit : s.soldRevenue;
+      const barPct = Math.max(3, Math.round(barVal/maxForBar*100));
+      const margin = s.soldRevenue>0 ? (s.soldProfit/s.soldRevenue*100) : 0;
+      const key = _escJs(s.name).replace(/[^a-zA-Z0-9]/g,'_');
+      const topImg = s.topProduct ? ((s.topProduct.images?.[0])||s.topProduct.image||'') : '';
+      const prodsOfProveedor = (products||[]).filter(p => Object.values(p.size_origins||{}).some(v => v && typeof v==='object' && v.proveedor === s.name));
+
+      return `<div class="origen-card${isTop3?' rank'+(i+1):''}">
+        <div class="origen-card-head">
+          <div class="origen-card-emoji">${s.emoji}</div>
+          <div><div class="origen-card-name">${s.name}</div><div style="font-size:11px;color:var(--muted);">${s.productCount} producto(s) con este origen</div></div>
+          ${isTop3?`<div class="origen-card-rank-badge" style="background:${rankColors[i]}22;color:${rankColors[i]};">${medals[i]} #${i+1}</div>`:''}
+        </div>
+        <div class="origen-metrics-grid">
+          <div class="origen-metric"><div class="om-label">Stock actual</div><div class="om-value">${s.stockUnits} und</div></div>
+          <div class="origen-metric"><div class="om-label">Valor de stock</div><div class="om-value" style="color:var(--orange);">S/${s.stockValue.toFixed(0)}</div></div>
+          <div class="origen-metric"><div class="om-label">Vendidos</div><div class="om-value" style="color:var(--rose);">${s.soldUnits} und</div></div>
+          <div class="origen-metric"><div class="om-label">Ingresos</div><div class="om-value" style="color:var(--green);">S/${s.soldRevenue.toFixed(0)}</div></div>
+        </div>
+        <div class="origen-progress-wrap">
+          <div class="origen-progress-label"><span>Margen de ganancia</span><span>${margin.toFixed(0)}%</span></div>
+          <div class="origen-progress-bar"><div class="origen-progress-fill" style="width:${barPct}%;background:${isTop3?rankColors[i]:'var(--rose)'};"></div></div>
+        </div>
+        ${s.topProductName ? `<div class="origen-top-product">
+          ${topImg?`<img src="${topImg}" onerror="this.remove()">`:`<div class="otp-noimg">👗</div>`}
+          <div><div class="otp-label">Producto estrella</div><div class="otp-name">${s.topProductName} · ${s.topProductQty} vendidos</div></div>
+        </div>` : ''}
+        ${s.lastPurchase ? `<div style="font-size:11px;color:var(--muted);margin-bottom:8px;"><i class="fas fa-calendar-days"></i> Última compra registrada: ${new Date(s.lastPurchase+'T00:00:00').toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'})}</div>` : ''}
+        ${prodsOfProveedor.length ? `<div class="origen-toggle-list" onclick="toggleOrigenProducts('${key}')"><i class="fas fa-chevron-down"></i> Ver ${prodsOfProveedor.length} producto(s)</div>
+        <div class="origen-products-list" id="origen-products-${key}">
+          ${prodsOfProveedor.map(p => {
+            const img = (p.images?.[0])||p.image||'';
+            const stock = (p.sizes||[]).reduce((a,sz)=>a+(Number(sz.stock)||0),0);
+            return `<div class="origen-product-row">${img?`<img src="${img}" onerror="this.remove()">`:'<div class="opr-noimg">👗</div>'}<div class="opr-name">${p.name}</div><div class="opr-stock">${stock} en stock</div></div>`;
+          }).join('')}
+        </div>` : ''}
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
 function renderSuppliersSection() {
   loadSuppliers();
   const totalOrders = suppliers.reduce((a,s)=>(s.orders||[]).filter(o=>o.status!=='received'&&o.status!=='cancelled').length+a,0);
@@ -8286,7 +8570,7 @@ function goToSection(sectionId) {
   if (sectionId === 'prestamos-section') setTimeout(renderPrestamos, 50);
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
-  if (sectionId === 'suppliers-section') renderSuppliersSection();
+  if (sectionId === 'suppliers-section') { renderSuppliersSection(); if (document.getElementById('sup-tab-origen')?.style.display !== 'none') renderOrigenAnalytics(); }
   if (sectionId === 'settings-section') renderSourcingProveedoresConfig();
   if (sectionId === 'bolsas-section') renderBolsasSection();
   if (sectionId === 'add-product-section') {
