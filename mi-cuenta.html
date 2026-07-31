@@ -1510,7 +1510,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
             <div class="form-divider">Tallas — Precio referencial y Costo</div>
             <div class="sizes-section">
-              <div class="size-header"><span>Talla</span><span>Precio ref.</span><span>Costo compra</span><span>Stock est.</span><span>🔒 Origen</span><span></span></div>
+              <div class="size-header"><span>Talla</span><span>Precio ref.</span><span>Costo compra</span><span>Stock est.</span><span>🔒 Proveedor</span><span></span></div>
               <div id="upcoming-sizes-container"></div>
               <button class="add-size-btn" onclick="addUpcomingSizeRow()"><i class="fas fa-plus-circle"></i> Agregar talla</button>
             </div>
@@ -5831,12 +5831,14 @@ function addUpcomingSizeRow(sz) {
   const row = document.createElement('div');
   row.className = 'size-row';
   const opts = sizeOptions.map(opt => `<option value="${opt}" ${opt===(sz?.size||sizeOptions[0])?'selected':''}>${opt}</option>`).join('');
+  const proveedorOpts = `<option value="" ${!sz?.origen?'selected':''}>— Proveedor —</option>` +
+    SOURCING_PROVEEDORES.map(opt => `<option value="${opt}" ${opt===sz?.origen?'selected':''}>${SOURCING_EMOJI[opt]||'⚪'} ${opt}</option>`).join('');
   row.innerHTML = `
     <select class="up-sz-size" onchange="syncUpcomingSizes()">${opts}</select>
     <input type="number" placeholder="0" value="${sz?.price||''}" class="up-sz-price" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.cost||''}" class="up-sz-cost" oninput="syncUpcomingSizes()">
     <input type="number" placeholder="0" value="${sz?.stock||''}" class="up-sz-stock" oninput="syncUpcomingSizes()">
-    <input type="text" placeholder="Ej: Proveedor China" value="${sz?.origen||''}" class="up-sz-origen" oninput="syncUpcomingSizes()">
+    <select class="up-sz-origen" onchange="syncUpcomingSizes()">${proveedorOpts}</select>
     <button class="remove-size-btn" onclick="this.parentElement.remove();syncUpcomingSizes()"><i class="fas fa-times"></i></button>`;
   c.appendChild(row);
   syncUpcomingSizes();
@@ -5900,10 +5902,12 @@ async function saveUpcomingProduct() {
   syncUpcomingImages();
   syncUpcomingSizes();
 
-  // 🔒 Origen por talla — aparte de "sizes" (esa sí la puede leer la tienda)
+  // 🔒 Origen por talla — aparte de "sizes" (esa sí la puede leer la tienda).
+  // Se guarda como objeto {proveedor:...} para ser consistente con el formato que
+  // usa "Agregar Producto" y que "Análisis por Origen" pueda contar estas ventas.
   const upSizeOrigins = {};
   upcomingSizes.forEach(s => {
-    if (s.size && s.origen && s.origen.trim()) upSizeOrigins[s.size] = s.origen.trim();
+    if (s.size && s.origen && s.origen.trim()) upSizeOrigins[s.size] = { proveedor: s.origen.trim() };
   });
   const cleanUpcomingSizes = upcomingSizes.map(({ size, price, cost, stock }) => ({ size, price, cost, stock }));
 
@@ -5966,7 +5970,11 @@ async function editUpcoming(id) {
   upcomingImages.forEach(url => addUpcomingImageInput(url));
   renderUpcomingPreview();
   document.getElementById('upcoming-sizes-container').innerHTML = '';
-  (data.sizes || []).forEach(sz => addUpcomingSizeRow({ ...sz, origen: (data.size_origins || {})[sz.size] || '' }));
+  (data.sizes || []).forEach(sz => {
+    const rawOrigin = (data.size_origins || {})[sz.size];
+    const origen = typeof rawOrigin === 'string' ? rawOrigin : (rawOrigin && rawOrigin.proveedor) || '';
+    addUpcomingSizeRow({ ...sz, origen });
+  });
   document.getElementById('upcoming-form-title').textContent = 'Editar Próximo Ingreso';
   document.getElementById('upcoming-save-btn-text').textContent = 'Actualizar';
   setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 120);
