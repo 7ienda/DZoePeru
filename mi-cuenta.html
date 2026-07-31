@@ -4579,7 +4579,7 @@ function updateDashboard() {
   orders.filter(o => o.status === 'confirmed').forEach(o => {
     (o.items||[]).forEach(it => {
       const prod = _findSoldProduct(it);
-      const sizeObj = prod?.sizes?.find(s => s.size === it.size);
+      const sizeObj = _getSizeObjForItem(prod, it);
       const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
       const price = it.price || sizeObj?.price || 0;
       _profitSold += (price - cost) * (it.qty || 1);
@@ -5270,8 +5270,8 @@ function openManualSale(productId) {
   // Populate sizes
   const sizeSel = document.getElementById('ms-size');
   sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
-    (p.sizes||[]).map(s =>
-      `<option value="${s.size}" data-price="${s.price||0}" data-cost="${s.cost||0}" data-stock="${s.stock||0}">
+    (p.sizes||[]).map((s, idx) =>
+      `<option value="${s.size}" data-index="${idx}" data-price="${s.price||0}" data-cost="${s.cost||0}" data-stock="${s.stock||0}">
         ${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})
       </option>`).join('');
 
@@ -5327,7 +5327,10 @@ function closeManualSale() {
 async function saveManualSale() {
   const p = products.find(x => x.id === manualSaleProductId);
   if (!p) return;
-  const size = document.getElementById('ms-size').value;
+  const sizeSelEl = document.getElementById('ms-size');
+  const size = sizeSelEl.value;
+  const selectedOpt = sizeSelEl.options[sizeSelEl.selectedIndex];
+  const sizeIndex = selectedOpt && selectedOpt.dataset.index !== undefined ? parseInt(selectedOpt.dataset.index) : null;
   const price = parseFloat(document.getElementById('ms-price').value)||0;
   const qty = parseInt(document.getElementById('ms-qty').value)||1;
   const name = document.getElementById('ms-name').value.trim();
@@ -5350,7 +5353,7 @@ async function saveManualSale() {
     destination: document.getElementById('ms-destination').value.trim(),
     payment_method: document.getElementById('ms-method').value,
     note: noteTxt,
-    items: [{ productId: p.id, name: p.name, size, price, qty, cost: (p.sizes?.find(s => s.size === size)?.cost || 0) }],
+    items: [{ productId: p.id, name: p.name, size, sizeIndex, price, qty, cost: (sizeIndex != null ? p.sizes?.[sizeIndex]?.cost : p.sizes?.find(s => s.size === size)?.cost) || 0 }],
     total: totalVal,
     adelanto: adelantoVal,
     deuda: deudaVal,
@@ -5365,11 +5368,13 @@ async function saveManualSale() {
   }
 
   // ── Descontar stock de la talla vendida ──
-  const sizeObj = p.sizes?.find(s => s.size === size);
+  // Se usa el índice exacto (sizeIndex) en vez de solo el texto de la talla, para no
+  // afectar por error otra talla con el mismo nombre pero de un proveedor distinto.
+  const sizeObj = (sizeIndex != null && p.sizes?.[sizeIndex]?.size === size) ? p.sizes[sizeIndex] : p.sizes?.find(s => s.size === size);
   if (sizeObj) {
     const newStock = Math.max(0, (sizeObj.stock || 0) - qty);
     sizeObj.stock = newStock;
-    const updatedSizes = p.sizes.map(s => s.size === size ? { ...s, stock: newStock } : s);
+    const updatedSizes = p.sizes.map((s, i) => (sizeIndex != null ? i === sizeIndex : s.size === size) ? { ...s, stock: newStock } : s);
     // Si stock total llega a 0 → pasar a Inactivo automáticamente
     const totalStockLeft = updatedSizes.reduce((a, s) => a + (s.stock || 0), 0);
     const newStatus = totalStockLeft === 0 ? 'inactive' : p.status;
@@ -7397,7 +7402,9 @@ async function _decrementStockForItems(items) {
     const p = products.find(x => String(x.id) === String(it.productId));
     if (!p || !p.sizes) continue;
     let sizeObj = null;
-    if (it.size) {
+    if (it.sizeIndex != null && p.sizes[it.sizeIndex] && p.sizes[it.sizeIndex].size === it.size) {
+      sizeObj = p.sizes[it.sizeIndex];
+    } else if (it.size) {
       sizeObj = p.sizes.find(s => s.size === it.size);
     } else if (p.sizes.length === 1) {
       sizeObj = p.sizes[0];
@@ -7435,7 +7442,9 @@ async function _restoreStockForItems(items) {
     const p = products.find(x => String(x.id) === String(it.productId));
     if (!p || !p.sizes) continue;
     let sizeObj = null;
-    if (it.size) {
+    if (it.sizeIndex != null && p.sizes[it.sizeIndex] && p.sizes[it.sizeIndex].size === it.size) {
+      sizeObj = p.sizes[it.sizeIndex];
+    } else if (it.size) {
       sizeObj = p.sizes.find(s => s.size === it.size);
     } else if (p.sizes.length === 1) {
       sizeObj = p.sizes[0];
@@ -7707,8 +7716,8 @@ function onAibProductInput() {
   if (!p) { sizeSel.innerHTML = '<option value="">— Producto no encontrado —</option>'; aibSelectedProduct = null; updateAibPreview(); return; }
   aibSelectedProduct = p;
   sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
-    (p.sizes||[]).filter(s => (s.stock||0) > 0).map(s =>
-      `<option value="${s.size}" data-price="${s.price||0}">${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})</option>`).join('');
+    (p.sizes||[]).map((s, idx) => ({ s, idx })).filter(x => (x.s.stock||0) > 0).map(({s, idx}) =>
+      `<option value="${s.size}" data-index="${idx}" data-price="${s.price||0}">${s.size} — S/ ${(s.price||0).toFixed(2)} (stock: ${s.stock||0})</option>`).join('');
   sizeSel.onchange = () => {
     const opt = sizeSel.options[sizeSel.selectedIndex];
     if (opt && opt.dataset.price) document.getElementById('aib-price').value = parseFloat(opt.dataset.price).toFixed(2);
@@ -7727,13 +7736,15 @@ async function confirmAddItemToBolsita() {
   const p = aibSelectedProduct;
   const sizeSel = document.getElementById('aib-size');
   const size = sizeSel.value;
+  const selectedAibOpt = sizeSel.options[sizeSel.selectedIndex];
+  const sizeIndex = selectedAibOpt && selectedAibOpt.dataset.index !== undefined ? parseInt(selectedAibOpt.dataset.index) : null;
   if (!p || !size) { showAlert('Selecciona un producto y talla válidos', 'error'); return; }
   const price = parseFloat(document.getElementById('aib-price').value)||0;
   const qty = parseInt(document.getElementById('aib-qty').value)||1;
   if (!price || !qty) { showAlert('Completa precio y cantidad', 'error'); return; }
 
   const subtotal = price * qty;
-  const newItem = { productId: p.id, name: p.name, size, price, qty, cost: (p.sizes?.find(s => s.size === size)?.cost || 0) };
+  const newItem = { productId: p.id, name: p.name, size, sizeIndex, price, qty, cost: (sizeIndex != null ? p.sizes?.[sizeIndex]?.cost : p.sizes?.find(s => s.size === size)?.cost) || 0 };
   const newItems = [...(o.items||[]), newItem];
   const newTotal = (parseFloat(o.total)||0) + subtotal;
   const newDeuda = Math.max(0, newTotal - (parseFloat(o.adelanto)||0));
@@ -7745,11 +7756,12 @@ async function confirmAddItemToBolsita() {
   }
   o.items = newItems; o.total = newTotal; o.deuda = newDeuda; o.status = newStatus;
 
-  // Descontar stock de la talla agregada
-  const sizeObj = p.sizes?.find(s => s.size === size);
+  // Descontar stock de la talla agregada (usando el índice exacto para no
+  // afectar por error otra talla con el mismo nombre de un proveedor distinto)
+  const sizeObj = (sizeIndex != null && p.sizes?.[sizeIndex]?.size === size) ? p.sizes[sizeIndex] : p.sizes?.find(s => s.size === size);
   if (sizeObj) {
     const newStock = Math.max(0, (sizeObj.stock||0) - qty);
-    const updatedSizes = p.sizes.map(s => s.size === size ? { ...s, stock: newStock } : s);
+    const updatedSizes = p.sizes.map((s, i) => (sizeIndex != null ? i === sizeIndex : s.size === size) ? { ...s, stock: newStock } : s);
     const totalStockLeft = updatedSizes.reduce((a,s) => a+(s.stock||0), 0);
     const updatePayload = { sizes: updatedSizes };
     if (totalStockLeft === 0) updatePayload.status = 'inactive';
@@ -7996,12 +8008,43 @@ function toggleOrigenProducts(key) {
 // el TEXTO de la talla (no la posición/índice), así que probamos primero la clave
 // antigua (texto plano) y si no existe, buscamos cualquier clave compuesta "idx::talla"
 // que termine en esa talla (formato nuevo, usado desde que separamos tallas duplicadas).
-function _getOriginForSize(prod, sizeText) {
+function _getOriginForSize(prod, sizeText, sizeIndex) {
   const origins = prod?.size_origins || {};
+  const sizes = prod?.sizes || [];
+  // Si dos tallas comparten el mismo texto (ej. "Único") pero tienen proveedores
+  // distintos, hay que anclar la búsqueda al índice exacto de esa talla en el
+  // arreglo — el mismo criterio que usa el descuento de stock (p.sizes.find) —
+  // en vez de recorrer las claves de size_origins en orden de inserción, que
+  // puede no coincidir y devolver el proveedor equivocado.
+  const idx = (sizeIndex != null) ? sizeIndex : sizes.findIndex(s => s.size === sizeText);
+  if (idx !== -1) {
+    const compositeKey = idx + '::' + sizeText;
+    if (origins[compositeKey] !== undefined) return origins[compositeKey];
+  }
   if (origins[sizeText] !== undefined) return origins[sizeText];
   const suffix = '::' + sizeText;
   const key = Object.keys(origins).find(k => k.endsWith(suffix));
   return key ? origins[key] : undefined;
+}
+
+// Resuelve la talla exacta (objeto de p.sizes) de un item de pedido, priorizando
+// el índice guardado al vender (it.sizeIndex) — que evita ambigüedad cuando hay
+// tallas repetidas con el mismo texto pero de proveedores distintos — y solo
+// recurre a buscar por texto si el item es antiguo y no tiene índice guardado.
+function _getSizeObjForItem(prod, it) {
+  if (!prod || !prod.sizes) return null;
+  if (it && it.sizeIndex != null && prod.sizes[it.sizeIndex] && prod.sizes[it.sizeIndex].size === it.size) {
+    return prod.sizes[it.sizeIndex];
+  }
+  return prod.sizes.find(s => s.size === (it && it.size));
+}
+
+// Igual que _getOriginForSize pero usando el índice guardado en el item vendido
+// cuando está disponible, para atribuir la venta al proveedor correcto incluso
+// con tallas de texto duplicado.
+function _getOriginForSoldItem(prod, it) {
+  if (it && it.sizeIndex != null) return _getOriginForSize(prod, it.size, it.sizeIndex);
+  return _getOriginForSize(prod, it && it.size);
 }
 
 function computeOrigenStats() {
@@ -8045,7 +8088,7 @@ function computeOrigenStats() {
     (o.items||[]).forEach(it => {
       const prod = _findSoldProduct(it);
       const qty = it.qty || 1;
-      const sizeObj = prod?.sizes?.find(sz => sz.size === it.size);
+      const sizeObj = _getSizeObjForItem(prod, it);
       const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
       const price = it.price || sizeObj?.price || 0;
 
@@ -8058,7 +8101,7 @@ function computeOrigenStats() {
         return;
       }
 
-      const raw = _getOriginForSize(prod, it.size);
+      const raw = _getOriginForSoldItem(prod, it);
       const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
       if (!proveedor) {
         sinProveedorSoldUnits += qty;
@@ -8167,7 +8210,7 @@ function renderOrigenAnalytics() {
       const key = _escJs(s.name).replace(/[^a-zA-Z0-9]/g,'_');
       const topImg = s.topProduct ? ((s.topProduct.images?.[0])||s.topProduct.image||'') : '';
       const prodsOfProveedor = s.isUnassigned
-        ? (products||[]).filter(p => (p.sizes||[]).some(sz => { const raw = _getOriginForSize(p, sz.size); return !(raw && typeof raw==='object' && raw.proveedor); }))
+        ? (products||[]).filter(p => (p.sizes||[]).some((sz, idx) => { const raw = _getOriginForSize(p, sz.size, idx); return !(raw && typeof raw==='object' && raw.proveedor); }))
         : (products||[]).filter(p => Object.values(p.size_origins||{}).some(v => v && typeof v==='object' && v.proveedor === s.name));
 
       return `<div class="origen-card${isTop3?' rank'+(i+1):''}${s.isUnassigned?' unassigned':''}">
