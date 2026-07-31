@@ -2884,6 +2884,11 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <input type="text" id="new-sourcing-name" placeholder="Nombre del proveedor (ej: AliExpress)" style="flex:1;">
               <button class="btn btn-primary btn-sm" onclick="addSourcingProveedor()"><i class="fas fa-plus"></i> Agregar</button>
             </div>
+            <div style="margin-top:18px;padding:14px 16px;background:var(--orange-light);border-radius:14px;border:1.5px dashed var(--orange);">
+              <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:4px;"><i class="fas fa-triangle-exclamation"></i> Zona de reinicio</div>
+              <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Deja el campo "Proveedor" vacío en TODAS las tallas de TODOS tus productos ya subidos (no borra ID, link, nota ni historial de costos — solo el proveedor). Útil si quieres volver a asignarlos manualmente desde cero.</div>
+              <button class="btn btn-danger-solid btn-sm" onclick="withLoading(this, resetAllProductProveedores)"><i class="fas fa-rotate-left"></i> Quitar proveedor de todos los productos</button>
+            </div>
           </div>
           <div style="margin-top:24px;"><button class="btn btn-primary" onclick="withLoading(this, saveSettings)"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
         </div>
@@ -4281,6 +4286,44 @@ async function deleteSourcingProveedor(name) {
   showAlert(`Proveedor "${name}" eliminado`);
 }
 
+// Deja el "Proveedor" vacío en todas las tallas de todos los productos ya subidos.
+// No toca ID/link/nota/historial: solo limpia el campo que antes quedaba "Temu" por defecto.
+async function resetAllProductProveedores() {
+  const withOrigins = (products||[]).filter(p => p.size_origins && typeof p.size_origins === 'object' && Object.keys(p.size_origins).length);
+  if (!withOrigins.length) { showAlert('No hay productos con proveedor asignado', 'error'); return; }
+
+  const ok = await customConfirm(
+    `Se quitará el proveedor de las tallas de ${withOrigins.length} producto(s). El ID, link, nota e historial de cada talla NO se modifican.\n\n¿Continuar?`,
+    { title: 'Quitar proveedor de todos los productos' }
+  );
+  if (!ok) return;
+
+  let updated = 0, failed = 0;
+  for (const p of withOrigins) {
+    const newOrigins = {};
+    let changed = false;
+    Object.entries(p.size_origins).forEach(([size, val]) => {
+      if (val && typeof val === 'object') {
+        newOrigins[size] = { ...val, proveedor: '' };
+        if (val.proveedor) changed = true;
+      } else {
+        // dato antiguo en texto libre: se deja tal cual, no es el campo "Proveedor" del select
+        newOrigins[size] = val;
+      }
+    });
+    if (!changed) continue;
+    p.size_origins = newOrigins;
+    if (supabaseClient) {
+      const { error } = await supabaseClient.from('products').update({ size_origins: newOrigins }).eq('id', p.id);
+      if (error) { failed++; continue; }
+    }
+    updated++;
+  }
+
+  if (typeof renderInventoryPage === 'function') renderInventoryPage();
+  showAlert(failed ? `✅ ${updated} producto(s) actualizados — ${failed} con error` : `✅ Proveedor quitado en ${updated} producto(s). Ya puedes asignarlos de nuevo manualmente.`);
+}
+
 let selectedEmoji = '👶', selectedCatColor = '#c2617a';
 
 // ============================================
@@ -5360,7 +5403,7 @@ function editProduct(id) {
   editingProductId   = id;
   productSizes       = (p.sizes || []).map(s => {
     const raw = (p.size_origins || {})[s.size];
-    let detail = { proveedor: SOURCING_PROVEEDORES[0], productId: '', url: '', fecha: '', nota: '', historial: [], reabCantidad: 5 };
+    let detail = { proveedor: '', productId: '', url: '', fecha: '', nota: '', historial: [], reabCantidad: 5 };
     if (raw && typeof raw === 'object') {
       detail = { ...detail, ...raw };
     } else if (typeof raw === 'string' && raw.trim()) {
@@ -5485,11 +5528,11 @@ async function saveProduct() {
     if (prevCost !== null && prevCost && prevCost !== Number(s.cost)) {
       historial.push({ precio: prevCost, fecha: prev.fecha || now.slice(0,10) });
     }
-    const proveedor = s.proveedor || SOURCING_PROVEEDORES[0];
+    const proveedor = s.proveedor || '';
     const productIdSrc = (s.productId || '').trim();
     const url = (s.url || '').trim();
     const nota = (s.nota || '').trim();
-    const hasData = productIdSrc || url || nota || historial.length || (proveedor !== SOURCING_PROVEEDORES[0]);
+    const hasData = productIdSrc || url || nota || historial.length || proveedor;
     if (!hasData) return;
     sizeOrigins[key] = {
       proveedor,
@@ -6459,7 +6502,7 @@ function renderSizesList() {
       <input type="number" class="size-price" data-i="${i}" value="${s.price||0}" placeholder="Precio" step="0.01">
       <input type="number" class="size-cost" data-i="${i}" value="${s.cost||0}" placeholder="Costo" step="0.01">
       <input type="number" class="size-stock" data-i="${i}" value="${s.stock||0}" placeholder="Stock" min="0">
-      <select class="size-proveedor" data-i="${i}">${SOURCING_PROVEEDORES.map(opt=>`<option value="${opt}" ${opt===(s.proveedor||SOURCING_PROVEEDORES[0])?'selected':''}>${SOURCING_EMOJI[opt]} ${opt}</option>`).join('')}</select>
+      <select class="size-proveedor" data-i="${i}"><option value="" ${!s.proveedor?'selected':''}>— Proveedor —</option>${SOURCING_PROVEEDORES.map(opt=>`<option value="${opt}" ${opt===s.proveedor?'selected':''}>${SOURCING_EMOJI[opt]} ${opt}</option>`).join('')}</select>
       <button type="button" class="remove-size" title="Ficha de abastecimiento / Reabastecer" style="${hasDetails?'background:#fef3c7;color:#d97706;':''}" onclick="toggleSizeDetails(${i})"><i class="fas fa-basket-shopping"></i></button>
       <button type="button" class="remove-size" onclick="removeSizeRow(${i})"><i class="fas fa-trash"></i></button>
     </div>
@@ -6505,7 +6548,7 @@ function updateSizeReabCosto(i) {
   if (el) el.textContent = 'S/ ' + (cant*cost).toFixed(2);
 }
 
-function addSizeRow() { productSizes.push({size:sizeOptions[0],price:0,cost:0,stock:0,proveedor:SOURCING_PROVEEDORES[0],productId:'',url:'',fecha:'',nota:'',historial:[],reabCantidad:5}); renderSizesList(); }
+function addSizeRow() { productSizes.push({size:sizeOptions[0],price:0,cost:0,stock:0,proveedor:'',productId:'',url:'',fecha:'',nota:'',historial:[],reabCantidad:5}); renderSizesList(); }
 function removeSizeRow(i) { productSizes.splice(i,1); expandedSizeDetails.clear(); renderSizesList(); }
 
 // ============================================
