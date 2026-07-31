@@ -5187,7 +5187,17 @@ function renderSoldProducts() {
     const margin = s.totalRevenue > 0 ? (s.totalProfit / s.totalRevenue * 100) : 0;
     const isTop3 = i < 3;
     const barPct = Math.max(4, Math.round((s.totalQty / maxQty) * 100));
-    const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;">${sz}: ${q}</span>`).join('');
+    const overridesMap = loadSoldOriginOverrides();
+    const soldPid = prod?.id != null ? prod.id : '';
+    const sizesHtml = Object.entries(s.sizes).map(([sz,q]) => {
+      const ovKey = _soldOverrideKey(soldPid, sz);
+      const ov = overridesMap[ovKey];
+      const pidJs = _escJs(String(soldPid)); const szJs = _escJs(sz); const ovJs = _escJs(ov||'');
+      return `<span style="background:var(--rose-light);color:var(--rose-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px;">
+        ${sz}: ${q}${ov ? ` · ${ov}` : ''}
+        <i class="fas fa-pen" title="Corregir proveedor de esta talla" style="cursor:pointer;font-size:9px;opacity:.7;" onclick="promptSoldOriginOverride('${pidJs}','${szJs}','${ovJs}')"></i>
+      </span>`;
+    }).join('');
 
     // Sugerencias inteligentes por similitud de nombre (solo entre productos con
     // alguna talla agotada, ya que ese es el candidato lógico a haberse vendido)
@@ -8047,7 +8057,46 @@ function _getOriginForSoldItem(prod, it) {
   return _getOriginForSize(prod, it && it.size);
 }
 
+// ============================================
+// CORRECCIÓN MANUAL DE PROVEEDOR EN VENTAS YA REGISTRADAS
+// Para ventas antiguas (hechas antes de guardar el índice exacto de talla) donde
+// el proveedor no se puede deducir con certeza, el usuario puede fijar manualmente
+// a qué proveedor pertenece un producto+talla vendido. Aplica a todas las ventas
+// pasadas y futuras de esa combinación exacta, hasta que se cambie.
+const SOLD_ORIGIN_OVERRIDE_KEY = 'dzoe_sold_origin_overrides';
+function loadSoldOriginOverrides() {
+  try { return JSON.parse(localStorage.getItem(SOLD_ORIGIN_OVERRIDE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveSoldOriginOverrides(map) {
+  localStorage.setItem(SOLD_ORIGIN_OVERRIDE_KEY, JSON.stringify(map));
+}
+function _soldOverrideKey(productId, size) { return (productId!=null?productId:'') + '::' + (size||''); }
+function setSoldOriginOverride(productId, size, proveedorName) {
+  const map = loadSoldOriginOverrides();
+  const key = _soldOverrideKey(productId, size);
+  if (!proveedorName) delete map[key]; else map[key] = proveedorName;
+  saveSoldOriginOverrides(map);
+  renderOrigenAnalytics();
+  renderSoldProducts();
+  showAlert(proveedorName ? `✅ Ventas de esta talla asignadas a "${proveedorName}"` : '✅ Corrección de proveedor eliminada');
+}
+async function promptSoldOriginOverride(productId, size, currentName) {
+  const list = loadSourcingProveedores();
+  if (!list.length) { showAlert('Primero agrega proveedores en la pestaña "Proveedores"', 'error'); return; }
+  const names = list.map(c => c.name);
+  const choice = window.prompt(
+    `¿A qué proveedor pertenece esta venta (talla: ${size||'—'})?\n\nEscribe exactamente uno de estos nombres (o déjalo vacío para quitar la corrección):\n\n${names.join('\n')}`,
+    currentName || ''
+  );
+  if (choice === null) return; // cancelado
+  const trimmed = choice.trim();
+  if (trimmed && !names.includes(trimmed)) { showAlert('Ese nombre no coincide con ningún proveedor registrado', 'error'); return; }
+  setSoldOriginOverride(productId, size, trimmed);
+}
+
 function computeOrigenStats() {
+  const soldOriginOverrides = loadSoldOriginOverrides();
   const configList = loadSourcingProveedores(); // [{name, emoji}]
   const map = {}; // key: nombre proveedor -> stats
   const ensure = (name) => {
@@ -8101,8 +8150,9 @@ function computeOrigenStats() {
         return;
       }
 
+      const overrideName = soldOriginOverrides[_soldOverrideKey(it.productId != null ? it.productId : prod.id, it.size)];
       const raw = _getOriginForSoldItem(prod, it);
-      const proveedor = (raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '';
+      const proveedor = overrideName || ((raw && typeof raw === 'object') ? (raw.proveedor||'').trim() : '');
       if (!proveedor) {
         sinProveedorSoldUnits += qty;
         sinProveedorSoldRevenue += price*qty;
@@ -8238,8 +8288,12 @@ function renderOrigenAnalytics() {
         <div class="origen-products-list" id="origen-products-${key}">
           ${prodsOfProveedor.map(p => {
             const img = (p.images?.[0])||p.image||'';
-            const stock = (p.sizes||[]).reduce((a,sz)=>a+(Number(sz.stock)||0),0);
-            return `<div class="origen-product-row">${img?`<img src="${img}" onerror="this.remove()">`:'<div class="opr-noimg">👗</div>'}<div class="opr-name">${p.name}</div><div class="opr-stock">${stock} en stock</div></div>`;
+            // Solo se suma el stock de las tallas que pertenecen a ESTE proveedor,
+            // no el stock total del producto (que puede incluir tallas de otros proveedores).
+            const stock = s.isUnassigned
+              ? (p.sizes||[]).reduce((a,sz,idx) => { const raw = _getOriginForSize(p, sz.size, idx); const has = raw && typeof raw==='object' && raw.proveedor; return has ? a : a + (Number(sz.stock)||0); }, 0)
+              : (p.sizes||[]).reduce((a,sz,idx) => { const raw = _getOriginForSize(p, sz.size, idx); const match = raw && typeof raw==='object' && raw.proveedor === s.name; return match ? a + (Number(sz.stock)||0) : a; }, 0);
+            return `<div class="origen-product-row">${img?`<img src="${img}" onerror="this.remove()">`:'<div class="opr-noimg">👗</div>'}<div class="opr-name">${p.name}</div><div class="opr-stock">${stock} en stock (de este proveedor)</div></div>`;
           }).join('')}
         </div>` : ''}
       </div>`;
