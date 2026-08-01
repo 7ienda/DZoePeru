@@ -3066,6 +3066,20 @@
     "url": "/productos/vestido-destello-de-mariposa.html"
   },
   {
+    "id": 1780261057484,
+    "slug": "conjunto-mini-diva-4-piezas",
+    "name": "Conjunto Mini Diva 4 piezas",
+    "price": 52,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7SvvpX9-1xfvgpgkPH-Pla574JVO1mLu_JNhWLLssgaPtC9v45bqhgRI9nl69MU_zu6ieicadojufeucILFXqQIRSed5nBKRHBmXFbw0r0oX4B6zysEbQ-RcVScB6bzvQ8NgDXOYXlRKUijYmpQPnWJgubg4KLofaIETcLx28KzBA-tKLNSwmGfuXdq1P/s1600/conjunto-mini-diva-4-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niña",
+      "Conjunto 4 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-mini-diva-4-piezas.html"
+  },
+  {
     "id": 1783711925489,
     "slug": "pack-3-pantalones-franela",
     "name": "Pack 3 Pantalones franela",
@@ -3077,20 +3091,6 @@
     ],
     "inStock": false,
     "url": "/productos/pack-3-pantalones-franela.html"
-  },
-  {
-    "id": 1780261057484,
-    "slug": "conjunto-mini-diva-4-piezas",
-    "name": "Conjunto Mini Diva 4 piezas",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7SvvpX9-1xfvgpgkPH-Pla574JVO1mLu_JNhWLLssgaPtC9v45bqhgRI9nl69MU_zu6ieicadojufeucILFXqQIRSed5nBKRHBmXFbw0r0oX4B6zysEbQ-RcVScB6bzvQ8NgDXOYXlRKUijYmpQPnWJgubg4KLofaIETcLx28KzBA-tKLNSwmGfuXdq1P/s1600/conjunto-mini-diva-4-piezas-modelo.webp",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niña",
-      "Conjunto 4 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-mini-diva-4-piezas.html"
   },
   {
     "id": 1782315951506,
