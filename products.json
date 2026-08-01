@@ -2201,20 +2201,6 @@
     "url": "/productos/conjunto-lazo-morado-2-piezas.html"
   },
   {
-    "id": 1781883365190,
-    "slug": "conjunto-orejitas-bunny-morado-2-piezas",
-    "name": "Conjunto orejitas Bunny morado 2 piezas",
-    "price": 50,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUjBi9DUE5IGgGHEkAzyDherAPxrzI5O3eRfzsUiswXbZvdJMYoMCRANU9-FOad3SFFTPO2T3hLOL2LcJImNRPRM15nit9mbXlwvzyGZtU34XdacBG_v2lV_JsYINJ4gjsyXmAXmu67fYvCShYO9Ks_3J5RlSV7Wzt9LXh_DdtkcLjxqfxOHTRr3vsi7mJ/s1600/conjunto-orejitas-bunny-morado-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niña",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-orejitas-bunny-morado-2-piezas.html"
-  },
-  {
     "id": 1785512931166,
     "slug": "pantalon-jean-graffity-corazon-kitty",
     "name": "Pantalon Jean graffity corazon Kitty",
@@ -3081,8 +3067,8 @@
   },
   {
     "id": 1783711925489,
-    "slug": "pack-3-pantalones-franela",
-    "name": "Pack 3 Pantalones franela",
+    "slug": "pack-3-pantalones-franela-modelo-1",
+    "name": "Pack 3 Pantalones franela modelo 1",
     "price": 44,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgl3-hjZjzzwZTY3qXhkhV1PIc5YP87cTjPzgxQHhCWalUQFLBrjdaBVTvMJGchaUAZ_euDTrUEGoQxmI4_ZURQbglQmvuMGbKgJ60yRcyYklPMaHGjRb3wCEgEfKZ8D14WigTCWmv9Z6xmvkMGtjYbKBudcizXa1Gzta9XiHetucecRF0DXRw5m4VCN3jq/s1600/pack-3-pantalones-franela.webp",
     "categories": [
@@ -3090,7 +3076,7 @@
       "Pantalones"
     ],
     "inStock": false,
-    "url": "/productos/pack-3-pantalones-franela.html"
+    "url": "/productos/pack-3-pantalones-franela-modelo-1.html"
   },
   {
     "id": 1782315951506,
@@ -4926,5 +4912,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-conejita-rose-3-piezas.html"
+  },
+  {
+    "id": 1781883365190,
+    "slug": "conjunto-orejitas-bunny-morado-2-piezas",
+    "name": "Conjunto orejitas Bunny morado 2 piezas",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUjBi9DUE5IGgGHEkAzyDherAPxrzI5O3eRfzsUiswXbZvdJMYoMCRANU9-FOad3SFFTPO2T3hLOL2LcJImNRPRM15nit9mbXlwvzyGZtU34XdacBG_v2lV_JsYINJ4gjsyXmAXmu67fYvCShYO9Ks_3J5RlSV7Wzt9LXh_DdtkcLjxqfxOHTRr3vsi7mJ/s1600/conjunto-orejitas-bunny-morado-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niña",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-orejitas-bunny-morado-2-piezas.html"
   }
 ]

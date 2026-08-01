@@ -1207,12 +1207,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-orejitas-bunny-morado-2-piezas.html</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/pantalon-jean-graffity-corazon-kitty.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -1585,7 +1579,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/pack-3-pantalones-franela.html</loc>
+    <loc>https://dzoeperu.com/productos/pack-3-pantalones-franela-modelo-1.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2360,6 +2354,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-conejita-rose-3-piezas.html</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/conjunto-orejitas-bunny-morado-2-piezas.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
