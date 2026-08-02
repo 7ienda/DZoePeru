@@ -1177,20 +1177,6 @@
     "url": "/productos/conjunto-los-angeles-gris-2-piezas.html"
   },
   {
-    "id": 1785468568746,
-    "slug": "conjunto-punto-floral-3d-piezas",
-    "name": "Conjunto punto floral 3D piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzeZB1InL2bipYsHBz_HMbFpzWH_DSM_56PXaLas39OMcwaKS2yPV-KsM5bTqUB9XsXXR3gAQfpdSvXOB6eYLk92-lcYz5ah4cQLRu2dFlO6agTVKrOkV-7Wdp27dVPN5YNQxrMflKo8c4oGFGTX2DZFIogo5QIKlw2wQyL2wwpcH7Wnc6Zqx3ZuTRXo4K/s1600/conjunto-punto-floral-3d-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Hilo",
-      "Bebita"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-punto-floral-3d-piezas.html"
-  },
-  {
     "id": 1782835392404,
     "slug": "enterizo-osito-bb-blue",
     "name": "Enterizo osito BB blue",
@@ -4109,7 +4095,7 @@
     "id": 1783785437028,
     "slug": "conjunto-conejo-v-conejo-2-piezas",
     "name": "Conjunto conejo v conejo 2 piezas",
-    "price": 52,
+    "price": 50,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUHhpB5FjMsvaz0-yxTaXaOmRvHn6H1Jk-wS3-8yP6pXLO9k7TcTew369UO0suWkhGzoeBNzu7jy9EBsx3xVQWtiu1obVQ2JHwMKIFYyYeVv2W_ERhc7qlts6Y5FBn5qrlBPxef96kEAnIGRW-D724iHRs9YTerPqOfaflaPwa20vFqvk02Hqt3MOs5FdU/s1600/conjunto-conejo-v-conejo-2-piezas-modelo.webp",
     "categories": [
       "Conjunto 2 piezas",
@@ -4574,21 +4560,6 @@
     "url": "/productos/conjunto-corazon-de-hilo-2-piezas.html"
   },
   {
-    "id": 1785528899325,
-    "slug": "conjunto-corazon-de-osito-2-piezas",
-    "name": "Conjunto corazon de osito 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEDV0dBjSRYlLy9WARV5CqqYGr5XSriKC_BYdCztATi-FrgytIIo3opVGBSGk8dfgqgOX55P1PifMwIku2EhnAaXF3qG_EyCPPYAOrgtN5odMXXlB9XifUWBKg9CT3cDv6D3Gx639K41ueC8119wiZcsMK1lYupGDZWvZ-oIXdiQqd-Nr5quL7hN_-0s0A/s1600/conjunto-corazon-de-osito-2-piezas-modelo.webp",
-    "categories": [
-      "Bebita",
-      "Conjunto 2 piezas",
-      "Conjunto Hilo",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-corazon-de-osito-2-piezas.html"
-  },
-  {
     "id": 1780108962648,
     "slug": "conjunto-paris-verde-2-piezas",
     "name": "Conjunto Paris verde 2 piezas",
@@ -4941,5 +4912,34 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-americano-ny-2-piezas.html"
+  },
+  {
+    "id": 1785528899325,
+    "slug": "conjunto-corazon-de-osito-2-piezas",
+    "name": "Conjunto corazon de osito 2 piezas",
+    "price": 53,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEDV0dBjSRYlLy9WARV5CqqYGr5XSriKC_BYdCztATi-FrgytIIo3opVGBSGk8dfgqgOX55P1PifMwIku2EhnAaXF3qG_EyCPPYAOrgtN5odMXXlB9XifUWBKg9CT3cDv6D3Gx639K41ueC8119wiZcsMK1lYupGDZWvZ-oIXdiQqd-Nr5quL7hN_-0s0A/s1600/conjunto-corazon-de-osito-2-piezas-modelo.webp",
+    "categories": [
+      "Bebita",
+      "Conjunto 2 piezas",
+      "Conjunto Hilo",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-corazon-de-osito-2-piezas.html"
+  },
+  {
+    "id": 1785468568746,
+    "slug": "conjunto-punto-floral-3d-piezas",
+    "name": "Conjunto punto floral 3D piezas",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzeZB1InL2bipYsHBz_HMbFpzWH_DSM_56PXaLas39OMcwaKS2yPV-KsM5bTqUB9XsXXR3gAQfpdSvXOB6eYLk92-lcYz5ah4cQLRu2dFlO6agTVKrOkV-7Wdp27dVPN5YNQxrMflKo8c4oGFGTX2DZFIogo5QIKlw2wQyL2wwpcH7Wnc6Zqx3ZuTRXo4K/s1600/conjunto-punto-floral-3d-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Hilo",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-punto-floral-3d-piezas.html"
   }
 ]
