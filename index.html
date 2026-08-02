@@ -11116,9 +11116,47 @@ function buildYearRangeSizes(lo, hi) {
   return [...sizes];
 }
 
+// Mapa de números en palabras → dígitos. El reconocimiento de voz en español
+// suele transcribir números pequeños como PALABRA ("uno", "dos") en vez de
+// dígito (a diferencia de números más grandes, que sí suele convertir),
+// sobre todo "uno"/"un"/"una" por confundirse con el artículo indefinido.
+// Sin esta conversión, "niño de uno a dos años" no coincide con ninguna de
+// las expresiones de edad (todas esperan dígitos), así que la búsqueda
+// terminaba mostrando niños de cualquier edad en vez de filtrar 1-2 años.
+const NUM_WORD_TO_DIGIT = {
+  'cero':'0','un':'1','uno':'1','una':'1','dos':'2','tres':'3','cuatro':'4',
+  'cinco':'5','seis':'6','siete':'7','ocho':'8','nueve':'9','diez':'10',
+  'once':'11','doce':'12','trece':'13','catorce':'14','quince':'15'
+};
+const NUM_WORD_ALT = Object.keys(NUM_WORD_TO_DIGIT).join('|');
+
+// Convierte números en palabras a dígitos, PERO SOLO cuando aparecen justo
+// junto a "año(s)"/"mes(es)" (o en un rango que termina en año/mes), para no
+// tocar "un"/"una" cuando se usan como simples artículos en el resto de la
+// frase (ej. "quiero un vestido" no se toca).
+function wordsToDigitsForAge(str) {
+  let out = str;
+  // Rango: "uno a dos años", "dos a tres meses", "un a dos años"...
+  out = out.replace(
+    new RegExp(`\\b(${NUM_WORD_ALT}|\\d{1,2})\\s*(a|-|al|hasta)\\s*(${NUM_WORD_ALT}|\\d{1,2})\\s*(a[ñn]os?|meses?)\\b`, 'gi'),
+    (full, n1, sep, n2, unit) => {
+      const d1 = NUM_WORD_TO_DIGIT[n1.toLowerCase()] || n1;
+      const d2 = NUM_WORD_TO_DIGIT[n2.toLowerCase()] || n2;
+      return `${d1} ${sep} ${d2} ${unit}`;
+    }
+  );
+  // Edad simple: "uno año", "dos años", "tres meses"...
+  out = out.replace(
+    new RegExp(`\\b(${NUM_WORD_ALT})\\s*(a[ñn]os?|meses?)\\b`, 'gi'),
+    (full, n, unit) => `${NUM_WORD_TO_DIGIT[n.toLowerCase()]} ${unit}`
+  );
+  return out;
+}
+
 // Parsea la query y extrae intenciones: edades, meses, términos, categorías, género
 function parseSmartQuery(raw) {
-  const q = raw.toLowerCase().trim();
+  let q = raw.toLowerCase().trim();
+  q = wordsToDigitsForAge(q);
   const result = {
     ageSizes: null,   // array de tallas si detectó edad
     terms: [],        // palabras clave normalizadas
