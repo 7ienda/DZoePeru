@@ -7828,8 +7828,9 @@ function runInstantSearch(val) {
     try {
       const parsed = parseSmartQuery(val);
       if (parsed.gender) {
-        const gLabel = parsed.gender === 'nino' ? '👦 Niño' : '👧 Niña';
-        detectedChips += `<span style="display:inline-block;background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">${gLabel}</span>`;
+        const GENDER_LABELS = { nino: '👦 Niño', nina: '👧 Niña', bebito: '👦🏻 Bebito', bebita: '👧🏻 Bebita' };
+        const gLabel = GENDER_LABELS[parsed.gender] || '';
+        if (gLabel) detectedChips += `<span style="display:inline-block;background:var(--rose-soft);color:var(--rose-dark);border:1px solid var(--rose-light);border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-right:4px;">${gLabel}</span>`;
       }
       if (parsed.ageSizes && parsed.ageSizes.length) {
         const ageLabel = parsed.ageSizes[0];
@@ -10762,6 +10763,8 @@ function renderBreadcrumb() {
         const parsed = parseSmartQuery(currentSearch);
         if (parsed.gender === 'nino') genderTag = ' 👦 Niño';
         else if (parsed.gender === 'nina') genderTag = ' 👧 Niña';
+        else if (parsed.gender === 'bebito') genderTag = ' 👦🏻 Bebito';
+        else if (parsed.gender === 'bebita') genderTag = ' 👧🏻 Bebita';
         if (parsed.ageSizes && parsed.ageSizes.length) genderTag += ' · ' + parsed.ageSizes[0];
       } catch(e) {}
     }
@@ -11095,66 +11098,117 @@ function parseSmartQuery(raw) {
     ageSizes: null,   // array de tallas si detectó edad
     terms: [],        // palabras clave normalizadas
     original: q,
-    gender: null,     // 'nino' | 'nina' | null
+    gender: null,     // 'nino' | 'nina' | 'bebito' | 'bebita' | null
   };
 
   // 0. Detectar género ANTES de tokenizar para excluirlo de los términos
+  // Palabras que implican bebito (bebé varón) — se evalúan ANTES que niño/niña
+  // para que "bebito" no quede sin reconocer y termine dependiendo solo del
+  // score de texto libre.
+  const GENDER_BEBITO = /\b(bebito|bebitos|bebe\s*varon|beb[eé]\s*var[oó]n)\b/i;
+  // Palabras que implican bebita (bebé mujer)
+  const GENDER_BEBITA = /\b(bebita|bebitas|bebe\s*mujer|beb[eé]\s*nena)\b/i;
   // Palabras que implican niño (varón)
   const GENDER_NINO = /\b(ni[ñn]o|nino|varon|var[oó]n|chico|chicos|ni[ñn]os|ninos|var[oó]ncito|varonsito)\b/i;
   // Palabras que implican niña (mujer)
   const GENDER_NINA = /\b(ni[ñn]a|nina|nena|chica|chicas|ni[ñn]as|ninas|nena|nenita|chinita)\b/i;
 
-  // Evaluar género según la query original
+  // Evaluar género según la query original — "bebito"/"bebita" tienen
+  // prioridad porque son categorías propias (distintas de Niño/Niña) y si no
+  // se detectan aquí, el buscador no sabe que existen como filtro de género.
+  const hasBebito = GENDER_BEBITO.test(q);
+  const hasBebita = GENDER_BEBITA.test(q);
   const hasNino = GENDER_NINO.test(q);
   const hasNina = GENDER_NINA.test(q);
 
-  if (hasNino && !hasNina) {
+  if (hasBebito && !hasBebita) {
+    result.gender = 'bebito';
+  } else if (hasBebita && !hasBebito) {
+    result.gender = 'bebita';
+  } else if (hasNino && !hasNina) {
     result.gender = 'nino';
   } else if (hasNina && !hasNino) {
     result.gender = 'nina';
   }
-  // Si ambos → sin filtro de género (ej: "niño y niña")
+  // Si hay términos contradictorios (p.ej. "niño y niña") → sin filtro de género
 
-  // 1. Detectar edad en años: "6 años", "6a", "de 6", "6-8 años", "6 y 7 años"
-  // Rango: "6 a 8 años", "6-8 años"
+  // 1. Detectar edad. IMPORTANTE: si la consulta menciona "mes"/"meses" la
+  //    edad SIEMPRE se interpreta en meses, nunca en años. Antes, el patrón
+  //    genérico "de 9" (paso de años) se evaluaba ANTES de comprobar si había
+  //    meses, así que "bebito de 9 a 12 meses" se leía como "9 años" y como
+  //    ningún producto de bebé tiene la talla "9 años", la búsqueda devolvía
+  //    0 resultados.
   let ageMatched = false;
-  const rangeMatch = q.match(/(\d{1,2})\s*(?:a|-|al|hasta)\s*(\d{1,2})\s*a[ñn]/i);
-  if (rangeMatch) {
-    const from = parseInt(rangeMatch[1]), to = parseInt(rangeMatch[2]);
-    const sizes = new Set();
-    for (let age = Math.min(from,to); age <= Math.max(from,to); age++) {
-      (EDAD_EXACT_SEARCH[age]||[]).forEach(s => sizes.add(s));
+  const mentionsMonths = /\bmeses?\b/i.test(q);
+
+  if (mentionsMonths) {
+    // 1a. Rango explícito en meses: "9 a 12 meses", "9-12 meses", "de 9 a 12 meses"
+    const monthRangeMatch = q.match(/(\d{1,2})\s*(?:a|-|al|hasta)\s*(\d{1,2})\s*meses?/i);
+    if (monthRangeMatch) {
+      const from = parseInt(monthRangeMatch[1]), to = parseInt(monthRangeMatch[2]);
+      // Preferir la talla EXACTA tal cual existe en el sistema (ej. "9-12 meses")
+      const exactAsc = `${Math.min(from,to)}-${Math.max(from,to)} meses`;
+      if (ALL_SIZES.includes(exactAsc)) {
+        result.ageSizes = [exactAsc];
+      } else {
+        // Si no hay talla exacta, combinar el rango más cercano a cada extremo
+        const keys = Object.keys(MESES_EXPANSION).map(Number).sort((a,b)=>a-b);
+        const sizes = new Set();
+        [from, to].forEach(m => {
+          let best = null, bestDiff = 999;
+          for (const k of keys) { const diff = Math.abs(k-m); if (diff < bestDiff) { bestDiff = diff; best = k; } }
+          if (best !== null) (MESES_EXPANSION[best]||[]).forEach(s => sizes.add(s));
+        });
+        result.ageSizes = [...sizes];
+      }
+      ageMatched = true;
     }
-    result.ageSizes = [...sizes];
-    ageMatched = true;
+
+    // 1b. Mes único: "6 meses", "9 meses"
+    if (!ageMatched) {
+      const mesesMatch = q.match(/(\d{1,2})\s*meses?/i);
+      if (mesesMatch) {
+        const m = parseInt(mesesMatch[1]);
+        // Buscar el rango de meses más cercano
+        const keys = Object.keys(MESES_EXPANSION).map(Number).sort((a,b)=>a-b);
+        let best = null, bestDiff = 999;
+        for (const k of keys) {
+          const diff = Math.abs(k - m);
+          if (diff < bestDiff) { bestDiff = diff; best = k; }
+        }
+        if (best !== null && bestDiff <= 6) {
+          result.ageSizes = MESES_EXPANSION[best];
+          ageMatched = true;
+        }
+      }
+    }
   }
 
-  // Edad simple: "6 años", "de 6 años", "6a"
+  // 2. Detectar edad en años: "6 años", "6a", "de 6", "6-8 años", "6 y 7 años"
+  //    (solo si la consulta NO mencionó meses — así nunca se pisan entre sí)
+  // Rango: "6 a 8 años", "6-8 años"
   if (!ageMatched) {
-    const singleAge = q.match(/\b(\d{1,2})\s*a(?:ños?|$|\b)/i) || q.match(/\bde\s+(\d{1,2})\b/i);
+    const rangeMatch = q.match(/(\d{1,2})\s*(?:a|-|al|hasta)\s*(\d{1,2})\s*a[ñn]/i);
+    if (rangeMatch) {
+      const from = parseInt(rangeMatch[1]), to = parseInt(rangeMatch[2]);
+      const sizes = new Set();
+      for (let age = Math.min(from,to); age <= Math.max(from,to); age++) {
+        (EDAD_EXACT_SEARCH[age]||[]).forEach(s => sizes.add(s));
+      }
+      result.ageSizes = [...sizes];
+      ageMatched = true;
+    }
+  }
+
+  // Edad simple: "6 años", "de 6 años", "6a". El patrón genérico "de 6" solo
+  // se prueba cuando la consulta no menciona meses, para no confundir
+  // "bebito de 9 meses" con "9 años".
+  if (!ageMatched) {
+    const singleAge = q.match(/\b(\d{1,2})\s*a(?:ños?|$|\b)/i) || (!mentionsMonths && q.match(/\bde\s+(\d{1,2})\b/i));
     if (singleAge) {
       const age = parseInt(singleAge[1]);
       if (EDAD_EXACT_SEARCH[age]) {
         result.ageSizes = EDAD_EXACT_SEARCH[age];
-        ageMatched = true;
-      }
-    }
-  }
-
-  // 2. Detectar meses: "6 meses", "9 meses"
-  if (!ageMatched) {
-    const mesesMatch = q.match(/(\d{1,2})\s*meses?/i);
-    if (mesesMatch) {
-      const m = parseInt(mesesMatch[1]);
-      // Buscar el rango de meses más cercano
-      const keys = Object.keys(MESES_EXPANSION).map(Number).sort((a,b)=>a-b);
-      let best = null, bestDiff = 999;
-      for (const k of keys) {
-        const diff = Math.abs(k - m);
-        if (diff < bestDiff) { bestDiff = diff; best = k; }
-      }
-      if (best !== null && bestDiff <= 6) {
-        result.ageSizes = MESES_EXPANSION[best];
         ageMatched = true;
       }
     }
@@ -11166,18 +11220,23 @@ function parseSmartQuery(raw) {
     ageMatched = true;
   }
 
-  // 4. Limpiar números de edad de la query para los términos restantes
+  // 4. Limpiar números de edad de la query para los términos restantes.
+  //    El rango/número de meses se limpia PRIMERO y el patrón genérico
+  //    "de 9" (años) se omite si la consulta menciona meses — si no, "de 9"
+  //    se borraba antes que "9 meses", dejando la palabra "meses" suelta
+  //    como término de búsqueda residual.
   let cleanQ = q
-    .replace(/\b\d{1,2}\s*a(?:ños?)\b/gi, '')
-    .replace(/\bde\s+\d{1,2}\b/gi, '')
+    .replace(/\b\d{1,2}\s*(?:a|-|al|hasta)\s*\d{1,2}\s*meses?\b/gi, '')
     .replace(/\b\d{1,2}\s*meses?\b/gi, '')
+    .replace(/\b\d{1,2}\s*a(?:ños?)\b/gi, '')
+    .replace(mentionsMonths ? /(?!)/ : /\bde\s+\d{1,2}\b/gi, '')
     .replace(/recien\s*nacido|newborn/gi, '')
     .replace(/\s+/g, ' ').trim();
 
   // 5. Limpiar palabras de género de cleanQ (ya capturadas en result.gender)
-  const GENDER_WORDS_NORM = ['nino','nina','varon','chico','chicos','chica','chicas','nena','ninas','ninos'];
+  const GENDER_WORDS_NORM = ['nino','nina','varon','chico','chicos','chica','chicas','nena','ninas','ninos','bebito','bebita','bebitos','bebitas'];
   cleanQ = cleanQ
-    .replace(/\b(ni[ñn][oa]s?|nino|nina|varon|var[oó]n|chic[oa]s?|nena|nenas)\b/gi, '')
+    .replace(/\b(ni[ñn][oa]s?|nino|nina|varon|var[oó]n|chic[oa]s?|nena|nenas|bebit[oa]s?)\b/gi, '')
     .replace(/\s+/g, ' ').trim();
 
   // 6. Tokenizar y aplicar sinónimos (normalizados sin tildes)
@@ -11292,12 +11351,21 @@ function scoreProduct(product, parsed) {
   if (totalStock > 0) score += 5;
 
   // D. Bonus si el género del producto coincide con el género de la query
+  //    (misma lógica tolerante a plural/categoría que el filtro duro de arriba,
+  //    para que el orden de resultados sea consistente con la inclusión/exclusión)
   if (parsed.gender) {
+    const GENDER_TARGET_CAT = { nino: 'Niño', nina: 'Niña', bebito: 'Bebito', bebita: 'Bebita' };
+    const GENDER_KEYWORDS = {
+      nino:   ['nino', 'ninos', 'varon', 'varones', 'boy', 'boys', 'chico', 'chicos'],
+      nina:   ['nina', 'ninas', 'girl', 'girls', 'chica', 'chicas', 'nena', 'nenas'],
+      bebito: ['bebito', 'bebitos'],
+      bebita: ['bebita', 'bebitas'],
+    };
+    const targetCat = GENDER_TARGET_CAT[parsed.gender];
+    const hasTargetCat = (product.categories||[]).some(c => typeof catNamesMatch === 'function' && catNamesMatch(c, targetCat));
     const allText = [normTxt(product.name), normTxt(product.description||''), ...(product.categories||[]).map(c=>normTxt(c))].join(' ');
-    const gKws = parsed.gender === 'nino'
-      ? ['nino', 'nino', 'varon', 'boy', 'chico']
-      : ['nina', 'nina', 'girl', 'chica', 'nena'];
-    if (gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText))) score += 20;
+    const gKws = GENDER_KEYWORDS[parsed.gender] || [];
+    if (hasTargetCat || gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText))) score += 20;
   }
 
   return score;
@@ -11353,21 +11421,50 @@ function filterProducts(skipPriceFilter) {
       )).filter(p => (p.sizes||[]).some(s => parsed.ageSizes.includes(s.size)));
     }
 
-    // 3. Filtro duro por GÉNERO detectado en la query
-    // Un producto es de un género si su categoría o nombre contiene la palabra clave
+    // 3. Filtro duro por GÉNERO/TIPO detectado en la query.
+    // Un producto es de un género si su categoría o nombre contiene la palabra clave.
+    // Soporta las 4 categorías reales de la tienda: Niño, Niña, Bebito, Bebita
+    // (antes solo reconocía Niño/Niña; "bebito"/"bebita" no tenían filtro
+    // duro propio y dependían solo del score de texto libre).
     if (parsed.gender) {
-      const genderKeywords = parsed.gender === 'nino'
-        ? ['nino', 'niño', 'varon', 'varón', 'boy', 'chico']
-        : ['nina', 'niña', 'girl', 'chica', 'nena'];
+      const GENDER_CAT_MAP = {
+        nino:   { target: 'Niño',   opposite: 'Niña',   keywords: ['nino', 'ninos', 'varon', 'varones', 'boy', 'boys', 'chico', 'chicos'],  oppositeKeywords: ['nina', 'ninas', 'girl', 'girls', 'chica', 'chicas', 'nena', 'nenas'] },
+        nina:   { target: 'Niña',   opposite: 'Niño',   keywords: ['nina', 'ninas', 'girl', 'girls', 'chica', 'chicas', 'nena', 'nenas'],   oppositeKeywords: ['nino', 'ninos', 'varon', 'varones', 'boy', 'boys', 'chico', 'chicos'] },
+        bebito: { target: 'Bebito', opposite: 'Bebita', keywords: ['bebito', 'bebitos'],                                                    oppositeKeywords: ['bebita', 'bebitas'] },
+        bebita: { target: 'Bebita', opposite: 'Bebito', keywords: ['bebita', 'bebitas'],                                                    oppositeKeywords: ['bebito', 'bebitos'] },
+      };
+      const cfg = GENDER_CAT_MAP[parsed.gender];
+      const targetCat   = cfg.target;
+      const oppositeCat = cfg.opposite;
+
+      // Incluye formas en PLURAL ('ninos','ninas') además de las singulares:
+      // antes solo había singular, y como el texto ya pasa por normTxt() (sin
+      // tildes), un producto con categoría guardada como "Niñas" (plural,
+      // muy común) nunca hacía match con el \bnina\b singular → el filtro lo
+      // trataba como "unisex" y se colaba en resultados del género contrario.
+      const genderKeywords = cfg.keywords;
       // Palabras del género OPUESTO a excluir (excluyentes duros)
-      const oppositeKeywords = parsed.gender === 'nino'
-        ? ['nina', 'niña', 'girl', 'chica', 'nena']
-        : ['nino', 'niño', 'varon', 'varón', 'boy', 'chico'];
+      const oppositeKeywords = cfg.oppositeKeywords;
 
       filtered = filtered.filter(p => {
+        const cats = p.categories || [];
+
+        // A. Fuente MÁS confiable: la categoría exacta asignada en Supabase
+        //    (tolerante a singular/plural y tildes vía catNamesMatch, la misma
+        //    comparación que ya usa el select "Tipo"). Si el producto tiene
+        //    una categoría de género explícita, esta manda sobre cualquier
+        //    heurística de texto — evita el falso "unisex" descrito arriba.
+        const hasTargetCat   = cats.some(c => catNamesMatch(c, targetCat));
+        const hasOppositeCat = cats.some(c => catNamesMatch(c, oppositeCat));
+        if (hasTargetCat) return true;
+        if (hasOppositeCat) return false;
+
+        // B. Sin categoría de género explícita → heurística por texto
+        //    (nombre + descripción + categorías), como respaldo para
+        //    productos sin esa categoría asignada.
         const nameLow  = normTxt(p.name);
         const descLow  = normTxt(p.description || '');
-        const catsLow  = (p.categories || []).map(c => normTxt(c));
+        const catsLow  = cats.map(c => normTxt(c));
         const allText  = [nameLow, descLow, ...catsLow].join(' ');
 
         // Si el producto menciona explícitamente el género OPUESTO → excluir
