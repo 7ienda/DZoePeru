@@ -4958,6 +4958,54 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
 .prem-search-btn:active { transform: scale(0.98); }
 .prem-search-btn i { font-size: 13px; }
 
+/* ── Botón de búsqueda por voz ── */
+.prem-search-voice {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s, background 0.18s;
+  flex-shrink: 0;
+}
+.prem-search-voice:hover { color: var(--rose); background: var(--rose-soft); }
+.prem-search-voice.unsupported { display: none; }
+.prem-search-voice.listening {
+  color: #fff;
+  background: var(--rose, #b3629c);
+  animation: voicePulse 1.1s ease-in-out infinite;
+}
+@keyframes voicePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(179,98,156,0.45); }
+  50% { box-shadow: 0 0 0 8px rgba(179,98,156,0); }
+}
+
+/* ── Chips de "Tendencias de hoy" (reales, agregadas entre usuarios) ── */
+.pss-trend-chip {
+  display: inline-block;
+  background: var(--rose-soft);
+  color: var(--rose-dark);
+  border: 1px solid var(--rose-light);
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.pss-trend-chip:hover { background: var(--rose); color: #fff; }
+
+/* ── Ítem de sugerencia resaltado por teclado (↑ ↓) ── */
+.pss-item--active { background: var(--rose-soft); }
+
+/* ── Sugerencia de producto real (imagen + precio + stock) ── */
+.pss-item--product .pss-item-img { border: 1px solid var(--border); }
+
 /* Botón limpiar */
 .prem-search-clear {
   background: none;
@@ -7573,46 +7621,208 @@ const QUICK_SUGGESTIONS = [
   { text: 'Abrigo niño 10 años', sub: 'Abrigo premium para niño', icon: '🧥' },
 ];
 
-function smartSearchHandle(val) {
+// ═══════════════════════════════════════════════════════
+//  HISTORIAL DE BÚSQUEDAS (localStorage, por dispositivo)
+// ═══════════════════════════════════════════════════════
+function getSearchHistory() {
+  if (searchHistoryCache) return searchHistoryCache;
+  try {
+    searchHistoryCache = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || '[]');
+  } catch(e) { searchHistoryCache = []; }
+  return searchHistoryCache;
+}
+
+function addSearchHistory(term) {
+  const clean = (term || '').trim();
+  if (clean.length < 2) return;
+  let hist = getSearchHistory().filter(h => h.toLowerCase() !== clean.toLowerCase());
+  hist.unshift(clean);
+  hist = hist.slice(0, SEARCH_HISTORY_MAX);
+  searchHistoryCache = hist;
+  try { localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(hist)); } catch(e) {}
+  logSearchAnalytics(clean); // registro anónimo y agregado para "tendencias del día" reales
+}
+
+function removeSearchHistoryItem(term, evt) {
+  if (evt) evt.stopPropagation();
+  searchHistoryCache = getSearchHistory().filter(h => h !== term);
+  try { localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(searchHistoryCache)); } catch(e) {}
+  renderEmptySearchPanel();
+}
+
+function clearSearchHistory() {
+  searchHistoryCache = [];
+  try { localStorage.removeItem(SEARCH_HISTORY_KEY); } catch(e) {}
+  renderEmptySearchPanel();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PANEL "BUSCADOR VACÍO" — historial + populares/ofertas/nuevos
+//  (se muestra al enfocar el buscador sin haber escrito nada)
+// ═══════════════════════════════════════════════════════
+function renderEmptySearchPanel() {
   const sug = document.getElementById('smartSearchSuggestions');
+  if (!sug) return;
+  const list = (typeof products !== 'undefined' ? products : []);
+  if (!list.length) { sug.innerHTML = ''; sug.classList.remove('has-results'); return; }
+
+  const hist = getSearchHistory();
+  let historyHtml = '';
+  if (hist.length) {
+    historyHtml = `
+      <div class="pss-header">
+        <i class="fas fa-clock"></i> Búsquedas recientes
+        <span style="margin-left:auto;font-weight:700;cursor:pointer;color:var(--rose-dark);" onclick="clearSearchHistory()">Borrar</span>
+      </div>` +
+      hist.map(h => `
+        <div class="pss-item" role="option" onclick="selectSuggestion('${h.replace(/'/g,"\\'")}')">
+          <div class="pss-item-icon"><i class="fas fa-history"></i></div>
+          <div class="pss-item-text"><strong>${h}</strong></div>
+          <i class="fas fa-times pss-item-arrow" style="opacity:.6;" title="Quitar" onclick="removeSearchHistoryItem('${h.replace(/'/g,"\\'")}', event)"></i>
+        </div>`).join('');
+  }
+
+  // Tendencias REALES de búsqueda entre todos los usuarios (últimas 24h),
+  // ya cacheadas en window._trendingSearchesCache tras _loadTrendingSearches()
+  // en el arranque. Si la tabla/RPC no existe aún o falló, esto es [] y
+  // simplemente no se muestra la sección (no rompe nada).
+  const trendingTerms = window._trendingSearchesCache || [];
+  let trendingChipsHtml = '';
+  if (trendingTerms.length) {
+    trendingChipsHtml = `
+      <div class="pss-header"><i class="fas fa-chart-line"></i> Tendencias de hoy</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px 16px 12px;">
+        ${trendingTerms.map(t => `
+          <span class="pss-trend-chip" onclick="selectSuggestion('${String(t.term).replace(/'/g,"\\'")}')">
+            ${t.term}
+          </span>`).join('')}
+      </div>`;
+  }
+
+  // Más vendidos (sold_count), Ofertas (offer_price) y Nuevos (created_at) —
+  // usa los mismos campos reales que ya alimentan los ribbons/badges del
+  // catálogo, así que no depende de datos inventados.
+  const bestSellers = [...list].filter(p => (p.sold_count||0) > 0).sort((a,b) => (b.sold_count||0)-(a.sold_count||0)).slice(0,3);
+  const onOffer = list.filter(p => p.offer_price && Number(p.offer_price) > 0).slice(0,3);
+  const newest = [...list].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0)).slice(0,3);
+
+  const trendGroups = [
+    { label: '🔥 Más buscados / vendidos', items: bestSellers },
+    { label: '💸 En oferta', items: onOffer },
+    { label: '✨ Nuevos ingresos', items: newest },
+  ].filter(g => g.items.length);
+
+  let trendHtml = '';
+  if (trendGroups.length) {
+    trendHtml = trendGroups.map(g => `
+      <div class="pss-header"><i class="fas fa-fire"></i> ${g.label}</div>
+      ${g.items.map(p => renderProductSuggestionItem(p)).join('')}
+    `).join('');
+  }
+
+  if (!historyHtml && !trendingChipsHtml && !trendHtml) { sug.innerHTML = ''; sug.classList.remove('has-results'); return; }
+
+  suggActiveIndex = -1;
+  sug.setAttribute('role', 'listbox');
+  sug.innerHTML = historyHtml + trendingChipsHtml + trendHtml;
+  sug.classList.add('has-results');
+}
+
+// Tarjeta de sugerencia de producto REAL: imagen, nombre, precio (con oferta), stock.
+// Reutilizada tanto en autocompletado como en el panel de tendencias.
+function renderProductSuggestionItem(p) {
+  const img = (p.images && p.images[0]) || p.image || 'https://placehold.co/64x64';
+  const minP = typeof getProductMinPrice === 'function' ? getProductMinPrice(p) : (p.price||0);
+  const offerPrice = p.offer_price ? parseFloat(p.offer_price) : null;
+  const hasOffer = offerPrice && offerPrice > 0 && offerPrice < minP;
+  const totalStock = (p.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0);
+  const priceHtml = hasOffer
+    ? `<strong style="color:var(--rose-dark,#b33a6b);">S/ ${offerPrice.toFixed(2)}</strong> <span style="text-decoration:line-through;opacity:.6;">S/ ${minP.toFixed(2)}</span>`
+    : (minP > 0 ? `S/ ${minP.toFixed(2)}` : 'Consultar');
+  const stockHtml = totalStock <= 0
+    ? `<span style="color:#c0392b;font-weight:700;">Agotado</span>`
+    : (totalStock < 5 ? `<span style="color:#d68910;font-weight:700;">¡Pocas unidades!</span>` : '');
+
+  return `
+    <div class="pss-item pss-item--product" role="option" onclick="selectProductSuggestion('${p.id}')">
+      <img class="pss-item-img" src="${img}" alt="" loading="lazy" width="36" height="36" style="width:36px;height:36px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+      <div class="pss-item-text">
+        <strong>${p.name}</strong>
+        <span>${priceHtml}${stockHtml ? ' · '+stockHtml : ''}</span>
+      </div>
+      <i class="fas fa-arrow-right pss-item-arrow"></i>
+    </div>`;
+}
+
+function selectProductSuggestion(productId) {
+  const p = (typeof products !== 'undefined' ? products : []).find(pr => String(pr.id) === String(productId));
+  if (p) selectSuggestion(p.name);
+}
+
+// ═══════════════════════════════════════════════════════
+//  BÚSQUEDA INSTANTÁNEA — con debounce + cache de resultados
+// ═══════════════════════════════════════════════════════
+// Punto de entrada llamado por el input (oninput). Aplica debounce para no
+// recalcular en cada tecla si el usuario escribe rápido (rendimiento), pero
+// actualiza el botón "limpiar" al instante para que la UI se sienta ágil.
+function smartSearchHandle(val) {
   const clearBtn = document.getElementById('premClearBtn');
   if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
 
   if (!val || val.length < 2) {
-    sug.innerHTML = ''; sug.classList.remove('has-results');
+    clearTimeout(searchDebounceTimer);
+    renderEmptySearchPanel();
     if (typeof searchProducts === 'function') searchProducts();
     return;
   }
 
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => runInstantSearch(val), SEARCH_DEBOUNCE_MS);
+}
+
+function runInstantSearch(val) {
+  const sug = document.getElementById('smartSearchSuggestions');
+  if (!sug) return;
   const q = val.toLowerCase();
 
-  // 1. Sugerencias de productos reales (nombre + categorías)
-  const productMatches = (typeof products !== 'undefined' ? products : [])
-    .filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
-      (p.tags||[]).some(t => String(t).toLowerCase().includes(q))
-    )
-    .slice(0, 4)
-    .map(p => {
-      const cat = (p.categories||[])[0] || '';
-      return { text: p.name, sub: cat || 'D\'Zoe Perú', icon: '🌸', isProduct: true };
-    });
+  // Cache: si ya calculamos sugerencias para esta query exacta en esta sesión, reusarlas
+  if (searchResultsCache.has(q)) {
+    const cached = searchResultsCache.get(q);
+    sug.innerHTML = cached;
+    sug.classList.toggle('has-results', !!cached);
+    suggActiveIndex = -1;
+    if (typeof searchProducts === 'function') searchProducts();
+    return;
+  }
+
+  // 1. Sugerencias de productos reales (nombre + categorías), con tolerancia a
+  //    errores de tipeo (fuzzy) para que "vestdo" también encuentre "vestido".
+  const allProducts = (typeof products !== 'undefined' ? products : []);
+  let productMatches = allProducts.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    (p.categories||[]).some(c => c.toLowerCase().includes(q)) ||
+    (p.tags||[]).some(t => String(t).toLowerCase().includes(q))
+  );
+  if (productMatches.length === 0 && typeof fuzzyIncludes === 'function' && typeof normTxt === 'function') {
+    const nq = normTxt(q);
+    productMatches = allProducts.filter(p => fuzzyIncludes(normTxt(p.name), nq));
+  }
+  productMatches = productMatches.slice(0, 4);
 
   // 2. Sugerencias rápidas estáticas como fallback/complemento
   const staticMatches = QUICK_SUGGESTIONS
     .filter(s => s.text.toLowerCase().includes(q))
     .slice(0, 3 - Math.min(productMatches.length, 3));
 
-  const matches = [...productMatches, ...staticMatches].slice(0, 5);
-
-  if (matches.length === 0) {
+  if (productMatches.length === 0 && staticMatches.length === 0) {
     sug.innerHTML = ''; sug.classList.remove('has-results');
+    searchResultsCache.set(q, '');
     if (typeof searchProducts === 'function') searchProducts();
     return;
   }
 
-  // Mostrar chips de filtros detectados (género + edad)
+  // Mostrar chips de filtros detectados (género + edad) — deja ver que la IA
+  // ya entendió la intención antes de que el usuario presione buscar.
   let detectedChips = '';
   if (typeof parseSmartQuery === 'function') {
     try {
@@ -7628,10 +7838,11 @@ function smartSearchHandle(val) {
     } catch(e) {}
   }
 
-  sug.innerHTML =
+  const html =
     `<div class="pss-header"><i class="fas fa-magic"></i> Sugerencias${detectedChips ? '<span style="margin-left:6px;">'+detectedChips+'</span>' : ''}</div>` +
-    matches.map(m =>
-      `<div class="pss-item" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
+    productMatches.map(p => renderProductSuggestionItem(p)).join('') +
+    staticMatches.map(m =>
+      `<div class="pss-item" role="option" onclick="selectSuggestion('${m.text.replace(/'/g,"\\'")}')">
         <div class="pss-item-icon">${m.icon}</div>
         <div class="pss-item-text">
           <strong>${m.text}</strong>
@@ -7640,8 +7851,38 @@ function smartSearchHandle(val) {
         <i class="fas fa-arrow-right pss-item-arrow"></i>
       </div>`
     ).join('');
+
+  sug.setAttribute('role', 'listbox');
+  sug.innerHTML = html;
   sug.classList.add('has-results');
+  suggActiveIndex = -1;
+  searchResultsCache.set(q, html);
+  // Limitar tamaño de la cache para no crecer indefinidamente en sesiones largas
+  if (searchResultsCache.size > 100) searchResultsCache.delete(searchResultsCache.keys().next().value);
+
   if (typeof searchProducts === 'function') searchProducts();
+}
+
+// ── Navegación con teclado dentro del dropdown (↑ ↓ Enter) ──
+function smartSearchKeyNav(e) {
+  const sug = document.getElementById('smartSearchSuggestions');
+  if (!sug || !sug.classList.contains('has-results')) return;
+  const items = Array.from(sug.querySelectorAll('.pss-item'));
+  if (!items.length) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    suggActiveIndex = Math.min(suggActiveIndex + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    suggActiveIndex = Math.max(suggActiveIndex - 1, -1);
+  } else {
+    return;
+  }
+  items.forEach((it, i) => it.classList.toggle('pss-item--active', i === suggActiveIndex));
+  if (suggActiveIndex >= 0) {
+    items[suggActiveIndex].scrollIntoView({ block: 'nearest' });
+  }
 }
 
 function selectSuggestion(val) {
@@ -7650,6 +7891,7 @@ function selectSuggestion(val) {
   if (clearBtn) clearBtn.classList.add('visible');
   const sug = document.getElementById('smartSearchSuggestions');
   sug.innerHTML = ''; sug.classList.remove('has-results');
+  addSearchHistory(val);
   if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
   document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -7658,12 +7900,14 @@ function smartSearchGo() {
   const val = document.getElementById('searchInput').value;
   const sug = document.getElementById('smartSearchSuggestions');
   sug.innerHTML = ''; sug.classList.remove('has-results');
+  addSearchHistory(val);
   if (typeof searchProducts === 'function') { currentSearch = val; searchProducts(); }
   document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function smartSearchClear() {
   document.getElementById('searchInput').value = '';
+  clearTimeout(searchDebounceTimer);
   const clearBtn = document.getElementById('premClearBtn');
   if (clearBtn) clearBtn.classList.remove('visible');
   const sug = document.getElementById('smartSearchSuggestions');
@@ -7676,6 +7920,93 @@ function smartSearchClear() {
   syncTipoSelectUI(null);
   if (typeof searchProducts === 'function') { currentSearch = ''; searchProducts(); }
   document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
+}
+
+// ═══════════════════════════════════════════════════════
+//  BÚSQUEDA POR VOZ — Web Speech API (español de Perú)
+// ═══════════════════════════════════════════════════════
+// Oculta el botón de voz de entrada si el navegador no soporta la API
+// (Safari desktop viejo, Firefox sin flag, etc.) para no ofrecer algo roto.
+(function initVoiceSearchSupport() {
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognitionAPI) {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('voiceSearchBtn')?.classList.add('unsupported');
+    });
+  }
+})();
+
+function toggleVoiceSearch() {
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const btn = document.getElementById('voiceSearchBtn');
+  if (!SpeechRecognitionAPI) {
+    btn?.classList.add('unsupported');
+    return;
+  }
+
+  // Si ya está escuchando, un segundo click detiene la escucha.
+  if (voiceListening && voiceRecognition) {
+    voiceRecognition.stop();
+    return;
+  }
+
+  // Se crea una instancia nueva en cada uso: es más confiable entre navegadores
+  // que reutilizar la misma instancia tras un stop/error previo.
+  voiceRecognition = new SpeechRecognitionAPI();
+  voiceRecognition.lang = 'es-PE';           // español de Perú, pedido explícitamente
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;    // muestra texto parcial mientras habla (sensación premium)
+  voiceRecognition.maxAlternatives = 1;
+
+  const input = document.getElementById('searchInput');
+  const originalPlaceholder = input?.placeholder;
+
+  voiceRecognition.onstart = () => {
+    voiceListening = true;
+    btn?.classList.add('listening');
+    if (input) input.placeholder = '🎙️ Escuchando...';
+  };
+
+  voiceRecognition.onresult = (event) => {
+    const transcript = Array.from(event.results).map(r => r[0].transcript).join('');
+    if (input) input.value = transcript;
+    smartSearchHandle(transcript);
+    // Cuando el resultado es final, ejecuta la búsqueda automáticamente
+    if (event.results[event.results.length - 1].isFinal) {
+      clearTimeout(searchDebounceTimer);
+      addSearchHistory(transcript);
+      currentSearch = transcript;
+      if (typeof searchProducts === 'function') searchProducts();
+      runInstantSearch(transcript);
+    }
+  };
+
+  voiceRecognition.onerror = (event) => {
+    voiceListening = false;
+    btn?.classList.remove('listening');
+    if (input) input.placeholder = originalPlaceholder || 'Buscador';
+    // Manejo de errores comunes: sin permiso de micrófono, sin voz detectada, red, etc.
+    if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+      alert('Necesitamos permiso de micrófono para la búsqueda por voz. Actívalo desde la configuración del navegador.');
+    } else if (event.error === 'no-speech') {
+      // No se detectó voz: silencioso, el usuario puede reintentar
+    } else if (event.error === 'network') {
+      alert('La búsqueda por voz necesita conexión a internet.');
+    }
+  };
+
+  voiceRecognition.onend = () => {
+    voiceListening = false;
+    btn?.classList.remove('listening');
+    if (input) input.placeholder = originalPlaceholder || 'Buscador';
+  };
+
+  try {
+    voiceRecognition.start();
+  } catch (e) {
+    voiceListening = false;
+    btn?.classList.remove('listening');
+  }
 }
 
 function premCatSelectChange() {
@@ -7900,6 +8231,19 @@ function applyPriceFilter() {
 }
 
 // Cerrar sugerencias al hacer click fuera
+// Sincroniza aria-expanded del input con la visibilidad real del dropdown de
+// sugerencias, sin tener que tocar cada punto donde se muestra/oculta.
+(function observeSuggestionsAria() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const sug = document.getElementById('smartSearchSuggestions');
+    const input = document.getElementById('searchInput');
+    if (!sug || !input || typeof MutationObserver === 'undefined') return;
+    const sync = () => input.setAttribute('aria-expanded', sug.classList.contains('has-results') ? 'true' : 'false');
+    new MutationObserver(sync).observe(sug, { attributes: true, attributeFilter: ['class'] });
+    sync();
+  });
+})();
+
 document.addEventListener('click', function(e) {
   if (!document.getElementById('smartSearchBox')?.contains(e.target)) {
     const sug = document.getElementById('smartSearchSuggestions');
@@ -7957,9 +8301,26 @@ document.addEventListener('click', function(e) {
           placeholder="Buscador"
           aria-label="Buscar productos en D'Zoe Perú"
           autocomplete="off"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="smartSearchSuggestions"
+          aria-autocomplete="list"
           oninput="smartSearchHandle(this.value)"
-          onkeydown="if(event.key==='Enter'){smartSearchGo();} if(event.key==='Escape'){smartSearchClear();}"
+          onfocus="if(!this.value){renderEmptySearchPanel();}"
+          onkeydown="
+            if(event.key==='Enter'){
+              const sug=document.getElementById('smartSearchSuggestions');
+              const active=sug?.querySelector('.pss-item--active');
+              if(active){ active.click(); } else { smartSearchGo(); }
+            } else if(event.key==='Escape'){ smartSearchClear(); this.blur(); }
+            else { smartSearchKeyNav(event); }
+          "
         >
+
+        <!-- Búsqueda por voz (Web Speech API) -->
+        <button type="button" class="prem-search-voice" id="voiceSearchBtn" onclick="toggleVoiceSearch()" aria-label="Buscar por voz" title="Buscar por voz">
+          <i class="fas fa-microphone"></i>
+        </button>
 
         <!-- Limpiar -->
         <button class="prem-search-clear" id="premClearBtn" onclick="smartSearchClear()" aria-label="Limpiar búsqueda" title="Limpiar">
@@ -8657,6 +9018,17 @@ let currentPage = 1;
 const PRODUCTS_PER_PAGE = 8;
 let selectedSizes = {};
 
+// ── Estado del buscador premium (historial, cache, navegación por teclado) ──
+let searchHistoryCache = null;         // cache en memoria del historial (evita releer localStorage en cada tecla)
+const SEARCH_HISTORY_KEY = 'dzoe_search_history';
+const SEARCH_HISTORY_MAX = 8;
+let searchDebounceTimer = null;        // timer del debounce de instant-search
+const SEARCH_DEBOUNCE_MS = 140;        // suficientemente bajo para sentirse "instantáneo"
+let searchResultsCache = new Map();    // cache query→resultados para no recomputar si el usuario borra y re-escribe lo mismo
+let suggActiveIndex = -1;              // índice resaltado en el dropdown (navegación con flechas)
+let voiceRecognition = null;           // instancia de SpeechRecognition (se crea de forma perezosa)
+let voiceListening = false;
+
 // ── Comparación robusta de nombres de categoría ──
 // Ignora tildes/mayúsculas y tolera singular/plural ("Niño" vs "Niños",
 // "Bebita" vs "Bebitas") para que los filtros nunca se rompan si el nombre
@@ -8848,12 +9220,112 @@ function paintHighlights(tab) {
   }).join('');
 }
 
+// ═══════════════════════════════════════════════════════
+//  DICCIONARIO DE BÚSQUEDA DINÁMICO (Supabase) — sinónimos y
+//  stopwords editables SIN TOCAR CÓDIGO, desde una tabla.
+//
+//  Tabla esperada: search_dictionary(term text, canonical text, active bool)
+//  - canonical vacío/NULL  → "term" se trata como STOPWORD (se ignora)
+//  - canonical con texto   → "term" es SINÓNIMO de "canonical"
+//  Así el mismo patrón ya usado en SEARCH_SYNONYMS (ej. 'regalo':'') se
+//  respeta también en la tabla, sin duplicar conceptos.
+//
+//  Es 100% opcional y con fallback: si Supabase falla, no hay tabla, o el
+//  usuario está offline, el buscador sigue funcionando con SEARCH_SYNONYMS
+//  y SEARCH_STOPWORDS ya definidos en el código (nunca se rompe nada).
+// ═══════════════════════════════════════════════════════
+window._searchDictDynamic = null; // { synonyms:{term:canonical}, stopwords:Set }
+
+async function _initSearchDictionary() {
+  if (window._searchDictDynamic !== null) return;
+  if (!supabaseClient) { window._searchDictDynamic = { synonyms: {}, stopwords: new Set() }; return; }
+  try {
+    const { data, error } = await supabaseClient
+      .from('search_dictionary')
+      .select('term,canonical')
+      .eq('active', true);
+    if (error) throw error;
+    const synonyms = {};
+    const stopwords = new Set();
+    (data || []).forEach(row => {
+      const t = normTxt(row.term || '');
+      if (!t) return;
+      if (row.canonical && String(row.canonical).trim()) synonyms[t] = normTxt(row.canonical);
+      else stopwords.add(t);
+    });
+    window._searchDictDynamic = { synonyms, stopwords };
+  } catch (e) {
+    // Tabla ausente, sin conexión, RLS mal configurado, etc. → seguir con los defaults del código
+    window._searchDictDynamic = { synonyms: {}, stopwords: new Set() };
+  }
+}
+
+// Resuelve un sinónimo consultando PRIMERO la tabla dinámica (Supabase) y
+// cayendo al mapa hardcodeado SEARCH_SYNONYMS si no hay entrada dinámica.
+function resolveSynonym(term) {
+  const n = normTxt(term);
+  const dyn = window._searchDictDynamic;
+  if (dyn && Object.prototype.hasOwnProperty.call(dyn.synonyms, n)) return dyn.synonyms[n];
+  if (Object.prototype.hasOwnProperty.call(SEARCH_SYNONYMS, term)) return SEARCH_SYNONYMS[term];
+  if (Object.prototype.hasOwnProperty.call(SEARCH_SYNONYMS, n)) return SEARCH_SYNONYMS[n];
+  return undefined;
+}
+
+// ¿Es stopword? Consulta la tabla dinámica Y el set hardcodeado (unión, no reemplazo)
+function isSearchStopword(term) {
+  const n = normTxt(term);
+  if (window._searchDictDynamic?.stopwords?.has(n)) return true;
+  return SEARCH_STOPWORDS.has(n);
+}
+
+// ═══════════════════════════════════════════════════════
+//  ANALÍTICA DE BÚSQUEDAS (Supabase) — "tendencias del día" REALES,
+//  agregadas entre TODOS los usuarios (no solo el historial local).
+//
+//  Tabla: search_analytics(term text, normalized_term text, created_at timestamptz)
+//  Lectura agregada vía RPC get_trending_searches (no se expone SELECT
+//  directo de filas individuales por privacidad — ver SQL de setup).
+// ═══════════════════════════════════════════════════════
+window._trendingSearchesCache = null;
+const _loggedSearchesThisSession = new Set(); // evita registrar el mismo término repetido en la misma sesión
+
+// Registra una búsqueda de forma silenciosa (fire-and-forget). Nunca bloquea
+// ni rompe la búsqueda si Supabase falla: es puramente informativo.
+function logSearchAnalytics(term) {
+  const clean = (term || '').trim();
+  if (clean.length < 2 || !supabaseClient) return;
+  const n = normTxt(clean);
+  if (_loggedSearchesThisSession.has(n)) return; // no duplicar en la misma sesión
+  _loggedSearchesThisSession.add(n);
+  supabaseClient.from('search_analytics').insert({ term: clean, normalized_term: n }).then(
+    () => {}, () => {} // silencioso: si falla, no afecta la experiencia de búsqueda
+  );
+}
+
+// Trae las tendencias reales de las últimas 24h (agregadas entre todos los
+// usuarios) vía la función RPC. Se cachea en memoria para no repetir la
+// consulta en cada foco del buscador.
+async function _loadTrendingSearches() {
+  if (window._trendingSearchesCache !== null) return window._trendingSearchesCache;
+  if (!supabaseClient) { window._trendingSearchesCache = []; return []; }
+  try {
+    const { data, error } = await supabaseClient.rpc('get_trending_searches', { hours_back: 24, limit_count: 6 });
+    if (error) throw error;
+    window._trendingSearchesCache = data || [];
+  } catch (e) {
+    window._trendingSearchesCache = [];
+  }
+  return window._trendingSearchesCache;
+}
+
 async function loadAllData() {
   // Cargar productos, categorías Y listones en paralelo
   const [productsData, categoriesData] = await Promise.all([
     loadProductsFromSupabase(),
     loadCategoriesFromSupabase(),
-    _initRibbonsPro()   // listones listos antes del primer renderizado
+    _initRibbonsPro(),   // listones listos antes del primer renderizado
+    _initSearchDictionary(),  // sinónimos/stopwords dinámicos desde Supabase
+    _loadTrendingSearches()   // tendencias reales de búsqueda (últimas 24h)
   ]);
   products = productsData;
   window.products = products;
@@ -10542,7 +11014,26 @@ const SEARCH_SYNONYMS = {
   'medias':'accesorios','calcetines':'accesorios','babero':'accesorios','manta':'accesorios',
   'chalina':'accesorios','bufanda':'accesorios','sandalias':'accesorios','zapatos':'accesorios',
   'zapatitos':'accesorios','cinturon':'accesorios','correa':'accesorios',
+  // Frases/Intención — refuerzan la búsqueda semántica (frases completas)
+  'elegante':'vestido','elegantes':'vestido','especial':'vestido',
+  'salir':'casual','pasear':'casual',
+  'bautismo':'bautizo',
 };
+
+// Palabras vacías (stopwords): no aportan intención de producto y se descartan
+// de los términos de búsqueda para que frases completas como "quiero algo
+// bonito para mi bebé" no diluyan el score con ruido. Esto es lo que permite
+// la "búsqueda semántica" pedida: se interpreta la intención, no solo texto exacto.
+const SEARCH_STOPWORDS = new Set([
+  'quiero','quisiera','necesito','busco','buscando','deseo',
+  'algo','alguna','algun','cualquier',
+  'bonito','bonita','bonitos','bonitas','lindo','linda','lindos','lindas',
+  'para','por','con','sin','de','del','la','el','los','las','un','una','unos','unas',
+  'mi','mis','tu','tus','su','sus','me','nos',
+  'y','o','u','a','en','que','es','son','como','tiene','tienen',
+  'ropa','prenda','prendas','cosa','cosas','producto','productos','articulo','articulos',
+  'regalo','regalos','presente',
+]);
 
 // Mapa edad en palabras → talla canónica del sistema
 const EDAD_EXPANSION_SEARCH = {
@@ -10690,19 +11181,28 @@ function parseSmartQuery(raw) {
     .replace(/\s+/g, ' ').trim();
 
   // 6. Tokenizar y aplicar sinónimos (normalizados sin tildes)
-  const tokens = cleanQ.split(/\s+/).filter(t => t.length > 1);
+  //    Se descartan stopwords ("quiero", "para", "algo bonito"...) ANTES de
+  //    expandir sinónimos, para que frases completas ("necesito ropa para
+  //    bautizo") se interpreten por intención y no se diluyan con ruido.
+  //    isSearchStopword()/resolveSynonym() consultan primero la tabla
+  //    dinámica de Supabase (search_dictionary) y caen a los mapas
+  //    hardcodeados si no hay entrada — así se puede editar el diccionario
+  //    desde Supabase sin tocar código, con fallback seguro si falla.
+  const tokens = cleanQ.split(/\s+/).filter(t => t.length > 1 && !isSearchStopword(t));
   const expanded = new Set();
   for (const t of tokens) {
     const n = normTxt(t);
     if (GENDER_WORDS_NORM.includes(n)) continue;
+    const syn = resolveSynonym(t);
+    if (syn === '') continue; // sinónimo vacío = palabra a ignorar (ej. "regalo")
     expanded.add(n);
-    if (SEARCH_SYNONYMS[n]) expanded.add(SEARCH_SYNONYMS[n]);
-    if (SEARCH_SYNONYMS[t]) expanded.add(SEARCH_SYNONYMS[t]);
+    if (syn) expanded.add(syn);
   }
   // También intentar pares de palabras (bigramas)
   for (let i = 0; i < tokens.length - 1; i++) {
     const bigram = normTxt(tokens[i]) + ' ' + normTxt(tokens[i+1]);
-    if (SEARCH_SYNONYMS[bigram]) expanded.add(SEARCH_SYNONYMS[bigram]);
+    const bigramSyn = resolveSynonym(bigram);
+    if (bigramSyn) expanded.add(bigramSyn);
   }
 
   result.terms = [...expanded].filter(t => t.length > 1 && !GENDER_WORDS_NORM.includes(t));
