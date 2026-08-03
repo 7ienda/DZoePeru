@@ -2634,6 +2634,20 @@
     "url": "/productos/conjunto-britney-2-piezas.html"
   },
   {
+    "id": 1785682737638,
+    "slug": "enterizo-ribete-de-lazo-amarillo-2-piezas",
+    "name": "Enterizo ribete de lazo amarillo 2 piezas",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3ixaPfhzpMm3hx-B3v1vL3dcgyrUKjAvvm7a7ZbtjpNIvGONbDArfIQYq9gj8bmp0nWosffe9t4gBJPurEN1Hfd-LH8RebSfLIEc9CPC0hUl8xP_mLnQOTk8frJbADmznndbsloFTBPYR7BLDrU0M9ENcsrHpzkwbSaO6KBl_tFkG4EIROyfYPoq3vQEg/s1600/enterizo-ribete-de-lazo-amarillo-2-piezas-modelo.webp",
+    "categories": [
+      "Enterizos",
+      "Bebita",
+      "Conjunto Hilo"
+    ],
+    "inStock": true,
+    "url": "/productos/enterizo-ribete-de-lazo-amarillo-2-piezas.html"
+  },
+  {
     "id": 1783711955193,
     "slug": "conjunto-fresa-de-otono-2-piezas",
     "name": "Conjunto fresa de otoño 2 piezas",
@@ -3195,20 +3209,6 @@
     "url": "/productos/conjunto-black-dino-2-piezas.html"
   },
   {
-    "id": 1785682737638,
-    "slug": "enterizo-ribete-de-lazo-amarillo-2-piezas",
-    "name": "Enterizo ribete de lazo amarillo 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3ixaPfhzpMm3hx-B3v1vL3dcgyrUKjAvvm7a7ZbtjpNIvGONbDArfIQYq9gj8bmp0nWosffe9t4gBJPurEN1Hfd-LH8RebSfLIEc9CPC0hUl8xP_mLnQOTk8frJbADmznndbsloFTBPYR7BLDrU0M9ENcsrHpzkwbSaO6KBl_tFkG4EIROyfYPoq3vQEg/s1600/enterizo-ribete-de-lazo-amarillo-2-piezas-modelo.webp",
-    "categories": [
-      "Enterizos",
-      "Bebita",
-      "Conjunto Hilo"
-    ],
-    "inStock": true,
-    "url": "/productos/enterizo-ribete-de-lazo-amarillo-2-piezas.html"
-  },
-  {
     "id": 1780349320863,
     "slug": "casaca-marron-alto-relieve",
     "name": "Casaca marron alto relieve",
@@ -3575,20 +3575,6 @@
     ],
     "inStock": true,
     "url": "/productos/cardigan-plomo-elegante.html"
-  },
-  {
-    "id": 1780409906826,
-    "slug": "conjunto-osito-viajero-white-2-piezas",
-    "name": "Conjunto osito viajero white 2 piezas",
-    "price": 45,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhAe2veVzRhKAR23sLrzAxvQAD2F-ooi_-mK4fPJwnq8wntfMA2ECXXvdKmRXnN3WDKHWAj2kxBZv027Z69ZWv3QqGscKJGRzjxUkMdkdyrqsveoysDhdxDEPvGpzgrIPwIqv3rviTVbf379Dv_WZUoweGc3RYb8bkB-T0w4wyFgK4EF3jgQ_mc1n49XDCu/s1600/conjunto-osito-viajero-blanco-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto Pantalon",
-      "Niño",
-      "Conjunto 2 piezas"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-osito-viajero-white-2-piezas.html"
   },
   {
     "id": 1784733288112,
@@ -5041,5 +5027,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-overol-panalero-2-piezas.html"
+  },
+  {
+    "id": 1780409906826,
+    "slug": "conjunto-osito-viajero-white-2-piezas",
+    "name": "Conjunto osito viajero white 2 piezas",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhAe2veVzRhKAR23sLrzAxvQAD2F-ooi_-mK4fPJwnq8wntfMA2ECXXvdKmRXnN3WDKHWAj2kxBZv027Z69ZWv3QqGscKJGRzjxUkMdkdyrqsveoysDhdxDEPvGpzgrIPwIqv3rviTVbf379Dv_WZUoweGc3RYb8bkB-T0w4wyFgK4EF3jgQ_mc1n49XDCu/s1600/conjunto-osito-viajero-blanco-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto Pantalon",
+      "Niño",
+      "Conjunto 2 piezas"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-osito-viajero-white-2-piezas.html"
   }
 ]
