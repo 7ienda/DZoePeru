@@ -2389,12 +2389,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-corazon-de-osito-2-piezas.html</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-punto-floral-3d-piezas.html</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -2408,6 +2402,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-osito-viajero-white-2-piezas.html</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/conjunto-corazon-de-osito-2-piezas.html</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

@@ -4984,21 +4984,6 @@
     "url": "/productos/conjunto-conejita-rose-3-piezas.html"
   },
   {
-    "id": 1785528899325,
-    "slug": "conjunto-corazon-de-osito-2-piezas",
-    "name": "Conjunto corazon de osito 2 piezas",
-    "price": 53,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEDV0dBjSRYlLy9WARV5CqqYGr5XSriKC_BYdCztATi-FrgytIIo3opVGBSGk8dfgqgOX55P1PifMwIku2EhnAaXF3qG_EyCPPYAOrgtN5odMXXlB9XifUWBKg9CT3cDv6D3Gx639K41ueC8119wiZcsMK1lYupGDZWvZ-oIXdiQqd-Nr5quL7hN_-0s0A/s1600/conjunto-corazon-de-osito-2-piezas-modelo.webp",
-    "categories": [
-      "Bebita",
-      "Conjunto 2 piezas",
-      "Conjunto Hilo",
-      "Conjunto Pantalon"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-corazon-de-osito-2-piezas.html"
-  },
-  {
     "id": 1785468568746,
     "slug": "conjunto-punto-floral-3d-piezas",
     "name": "Conjunto punto floral 3D piezas",
@@ -5041,5 +5026,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-osito-viajero-white-2-piezas.html"
+  },
+  {
+    "id": 1785528899325,
+    "slug": "conjunto-corazon-de-osito-2-piezas",
+    "name": "Conjunto corazon de osito 2 piezas",
+    "price": 53,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEDV0dBjSRYlLy9WARV5CqqYGr5XSriKC_BYdCztATi-FrgytIIo3opVGBSGk8dfgqgOX55P1PifMwIku2EhnAaXF3qG_EyCPPYAOrgtN5odMXXlB9XifUWBKg9CT3cDv6D3Gx639K41ueC8119wiZcsMK1lYupGDZWvZ-oIXdiQqd-Nr5quL7hN_-0s0A/s1600/conjunto-corazon-de-osito-2-piezas-modelo.webp",
+    "categories": [
+      "Bebita",
+      "Conjunto 2 piezas",
+      "Conjunto Hilo",
+      "Conjunto Pantalon"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-corazon-de-osito-2-piezas.html"
   }
 ]
