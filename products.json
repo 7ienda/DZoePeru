@@ -2816,20 +2816,6 @@
     "url": "/productos/conjunto-looney-tunes-2-piezas.html"
   },
   {
-    "id": 1783629772719,
-    "slug": "conjunto-tazmania-2-piezas",
-    "name": "Conjunto TAZmania 2 piezas",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggAD9eyy0Dqo2EJ8vQGPmDAmh0SAjSDj80A-uRmqfj3kAuAHBxlSOO2WDId3L8vej1vnBnqwBwgBqKV-FLiMmrRRM7pFPHIC7jNOgWNutK4_lV2dME62fPyMchIOrvSccDOdTENSssAhbnetxvbT4owyDr5VgtKvnZvcPktxcfbsKRcaJ5UFmUerYa6HQT/s1600/conjunto-tazmania-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niño"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-tazmania-2-piezas.html"
-  },
-  {
     "id": 1784155787021,
     "slug": "rompercito-abejita-rosada-2-piezas",
     "name": "Rompercito Abejita rosada 2 piezas",
@@ -3279,6 +3265,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-perla-rosa-2-piezas.html"
+  },
+  {
+    "id": 1783629772719,
+    "slug": "conjunto-tazmania-2-piezas",
+    "name": "Conjunto TAZmania 2 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggAD9eyy0Dqo2EJ8vQGPmDAmh0SAjSDj80A-uRmqfj3kAuAHBxlSOO2WDId3L8vej1vnBnqwBwgBqKV-FLiMmrRRM7pFPHIC7jNOgWNutK4_lV2dME62fPyMchIOrvSccDOdTENSssAhbnetxvbT4owyDr5VgtKvnZvcPktxcfbsKRcaJ5UFmUerYa6HQT/s1600/conjunto-tazmania-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niño"
+    ],
+    "inStock": false,
+    "url": "/productos/conjunto-tazmania-2-piezas.html"
   },
   {
     "id": 1780368375888,
