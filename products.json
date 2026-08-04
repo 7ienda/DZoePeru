@@ -1095,17 +1095,18 @@
   },
   {
     "id": 1781841935560,
-    "slug": "conjunto-lady-cristal-2-piezas",
-    "name": "Conjunto Lady Cristal 2 piezas",
+    "slug": "conjunto-lady-cristal-celeste-2-piezas",
+    "name": "Conjunto Lady Cristal Celeste 2 piezas",
     "price": 55,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEZRCbpdFfSUDFYeWdJzW2_McIlHH9WrLAZolMK2dSYANUMRhKjNGdcC9iFruYxkM4J7h5H-FGvLH3C5YhN7x3Zh3OdbwcrI6yyDR5FPOnfIXrnSwZEJPCKt1dd3m9jSfUl9HqrCMd2FW4gnypxgyTRKYticWOoYueaxLYUAD3jUoKzd8q_rgiU378vMFk/s1600/conjunto-lady-cristal-2-piezas-modelo.webp",
     "categories": [
       "Conjunto Falda",
       "Niña",
-      "Conjunto Hilo"
+      "Conjunto Hilo",
+      "Conjunto 2 piezas"
     ],
     "inStock": true,
-    "url": "/productos/conjunto-lady-cristal-2-piezas.html"
+    "url": "/productos/conjunto-lady-cristal-celeste-2-piezas.html"
   },
   {
     "id": 1782430177101,
@@ -2438,6 +2439,21 @@
     "url": "/productos/pantalon-jean-estampado-de-corazones.html"
   },
   {
+    "id": 1785857160582,
+    "slug": "conjunto-lady-cristal-rosado-2-piezas",
+    "name": "Conjunto Lady Cristal rosado 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBAMtkBSDrJVgWgjIIJP1NJNDq577daJgwnTNUoDA503bZ3y7VEBc-2M3O5ML9QNf4RCn27MB94tGuWyVUo0Zvx7NhP4G5U8VY-ni_5S58x-imkepLF0rUk4Y6rSXhmDiLihvCmieT1Hg0_1rjWpU-eSFKLusSR_oTnWLqWbNHRz-Hd0tABQRu5Y5k6yUw/s1600/conjunto-lady-cristal-rosado-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Hilo",
+      "Conjunto Falda",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-lady-cristal-rosado-2-piezas.html"
+  },
+  {
     "id": 1783629732156,
     "slug": "conjunto-dinooon-2-piezas",
     "name": "Conjunto Dinooon 2 piezas",
@@ -3419,6 +3435,20 @@
     "url": "/productos/cardigan-beige-elegante.html"
   },
   {
+    "id": 1785858777391,
+    "slug": "dino-3d-azul-real-2-piezas",
+    "name": "Dino 3D Azul Real 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSJ0TEvWh9N80qsxF9sQ5RnofWmf5YO6YRQSPdDP4O1Ra4lIbVkVj58ZseDt6sX59DbVv_smqCQyI5OmhWSnEo4NX9t28KaSYtlAOkd0-SoALasK7fOB6gF5uAJ3czBPCb0KnNdu30VdoVOzQUmKqmT3yF2z_5-a5gDN7Cxc1Br5DleEJOK8BgyF7-Dji6/s1600/dino-3d-azul-real-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niño"
+    ],
+    "inStock": true,
+    "url": "/productos/dino-3d-azul-real-2-piezas.html"
+  },
+  {
     "id": 1780411939135,
     "slug": "conjunto-sleep-rose-bunny-3-piezas",
     "name": "Conjunto Sleep Rose Bunny 3 piezas",
@@ -4317,6 +4347,21 @@
     "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
   },
   {
+    "id": 1785859107599,
+    "slug": "pantalon-jean-flores-crochet-bordado",
+    "name": "Pantalon Jean flores crochet bordado",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpCDwUwBMEON6BdUmRlRKCD05FoQBrZrSxWw6Qge-6snkNdVn5BUwmTghWmTk8MKBNuE13ovINiUXwafAWw_qcMh1nJRyH-Z5AEdr3SwVIMSaFkNrZNwKawVpgoEd8wueUTNcTF-iKRbukevNkhSO47uBxRfyeWrscHwkOQW2NYNOMNmLWOpc41cRSwdL7/s1600/pantalon-jean-flores-crochet-bordado.webp",
+    "categories": [
+      "Jeans",
+      "Pantalones Jeans",
+      "Pantalones",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-flores-crochet-bordado.html"
+  },
+  {
     "id": 1782835357855,
     "slug": "vestido-bunny-bb-3-piezas",
     "name": "Vestido Bunny BB 3 piezas",
@@ -4982,6 +5027,20 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-conejita-rose-3-piezas.html"
+  },
+  {
+    "id": 1785856033903,
+    "slug": "conjunto-cardigan-lazo-de-corazones-2-piezas",
+    "name": "Conjunto cardigan lazo de corazones 2 piezas",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEifJAsv_9r5VHHCgpN6tCxQZqyDwpm7pHhNTeNyMqiiAVg6ymmg6o2UGt21_Dfc_ESkpKsY0nNZsmG9orQgqftIWCowwnJsAn-YJFxvKkMg95I0n2bhaQ6TjA4-vb0R0uMtY54mh149wCPNvGL7gzCu7PS9YcH2zXbqfgTFG6TP78loOmZTHyEhw1q4-fue/s1600/conjunto-cardigan-lazo-de-corazones-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Falda",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-cardigan-lazo-de-corazones-2-piezas.html"
   },
   {
     "id": 1785468568746,
