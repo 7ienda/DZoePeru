@@ -2155,138 +2155,170 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
         <div>
           <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;color:var(--text);">🐷 Finanzas</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra cada venta: inversión, ganancia y en qué la repartes</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Tu cuadro de ventas — escribe y todo se calcula y reparte solo</div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
           <select id="finanzas-periodo" onchange="renderFinanzas()" style="padding:8px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);">
             <option value="hoy">Hoy</option>
             <option value="semana">Esta semana</option>
-            <option value="mes" selected>Este mes</option>
+            <option value="mes">Este mes</option>
             <option value="trimestre">Trimestre</option>
-            <option value="todo">Todo el tiempo</option>
+            <option value="todo" selected>Todo el tiempo</option>
           </select>
           <button class="btn btn-sm" style="background:var(--lav-light);color:var(--lavender);font-weight:700;" onclick="exportFinanzas()"><i class="fas fa-download"></i> Exportar</button>
-          <button class="btn btn-primary btn-sm" onclick="openFinanzaModal()"><i class="fas fa-plus"></i> Nuevo registro</button>
+          <button class="btn btn-primary btn-sm" onclick="addFinanzaRow()"><i class="fas fa-plus"></i> Agregar fila</button>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="caja-kpi-grid">
-        <div class="caja-kpi">
-          <div class="caja-kpi-glow" style="background:var(--blue);"></div>
-          <div class="caja-kpi-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-boxes-packing"></i></div>
-          <div class="caja-kpi-val" style="color:var(--blue);" id="fin-kpi-inversion">S/ 0</div>
-          <div class="caja-kpi-label">Inversión total</div>
-          <div class="caja-kpi-sub" style="color:var(--muted);" id="fin-kpi-count">0 ventas</div>
+      <!-- ESTADO DEL NEGOCIO -->
+      <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));border:none;">
+        <div class="section-header" style="border-bottom:1.5px solid rgba(140,100,190,.18);">
+          <div class="section-title"><i class="fas fa-building-columns" style="color:var(--rose-dark)"></i> Estado de tu negocio</div>
+          <span style="font-size:11px;color:var(--text2);font-weight:700;">Histórico — todo el tiempo</span>
         </div>
-        <div class="caja-kpi">
-          <div class="caja-kpi-glow" style="background:var(--lavender);"></div>
-          <div class="caja-kpi-icon" style="background:var(--lav-light);color:var(--lavender);"><i class="fas fa-receipt"></i></div>
-          <div class="caja-kpi-val" style="color:var(--lavender);" id="fin-kpi-venta">S/ 0</div>
-          <div class="caja-kpi-label">Venta total</div>
-          <div class="caja-kpi-sub" style="color:var(--muted);" id="fin-kpi-ticket">Ticket prom. S/ 0</div>
-        </div>
-        <div class="caja-kpi">
-          <div class="caja-kpi-glow" style="background:var(--green);"></div>
-          <div class="caja-kpi-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-chart-line"></i></div>
-          <div class="caja-kpi-val" style="color:var(--green);" id="fin-kpi-ganancia">S/ 0</div>
-          <div class="caja-kpi-label">Ganancia total</div>
-          <div class="caja-kpi-sub" style="color:var(--muted);" id="fin-kpi-margen">Margen 0%</div>
-        </div>
-        <div class="caja-kpi">
-          <div class="caja-kpi-glow" style="background:var(--peach);"></div>
-          <div class="caja-kpi-icon" style="background:var(--peach-light);color:var(--peach);"><i class="fas fa-piggy-bank"></i></div>
-          <div class="caja-kpi-val" style="color:var(--peach);" id="fin-kpi-personal">S/ 0</div>
-          <div class="caja-kpi-label">Ganancia personal</div>
-          <div class="caja-kpi-sub" style="color:var(--muted);" id="fin-kpi-ahorro">Ahorro S/ 0</div>
+        <div class="section-body" style="padding:20px 24px 24px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
+            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Capital (Reinversión)</div>
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--blue);" id="neg-capital">S/ 0</div>
+            </div>
+            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Mercadería valorizada</div>
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--purple);" id="neg-mercaderia">S/ 0</div>
+            </div>
+            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Dinero en caja</div>
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--sky);" id="neg-caja">S/ 0</div>
+            </div>
+            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Ganancia acumulada</div>
+              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="neg-ganancia-acum">S/ 0</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border-radius:18px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:var(--shadow-md);border:2px solid var(--rose);">
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">Patrimonio del negocio</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Capital + Mercadería valorizada + Dinero en caja</div>
+            </div>
+            <div style="font-family:'Baloo 2',cursive;font-size:34px;font-weight:800;color:var(--rose-dark);" id="neg-patrimonio">S/ 0</div>
+          </div>
         </div>
       </div>
 
-      <!-- Distribución + Tabla -->
-      <div style="display:grid;grid-template-columns:0.85fr 1.4fr;gap:20px;margin-bottom:20px;align-items:start;">
-        <div class="section">
-          <div class="section-header">
-            <div class="section-title"><i class="fas fa-chart-pie" style="color:var(--rose)"></i> Reparto de ganancias</div>
-          </div>
-          <div class="section-body" style="padding:0 20px 20px;">
-            <div style="height:170px;"><canvas id="finanzasPieChart"></canvas></div>
-            <div id="finanzas-pie-legend" style="margin-top:14px;display:flex;flex-direction:column;gap:8px;"></div>
-          </div>
+      <!-- CUADRO ESTILO HOJA DE CÁLCULO -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-table-cells" style="color:var(--green)"></i> Cuadro de ventas</div>
+          <span style="font-size:11px;color:var(--muted);" id="fin-list-count">0 registros</span>
         </div>
+        <div class="section-body" style="padding:16px 24px 22px;">
+          <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
 
-        <div class="section">
-          <div class="section-header">
-            <div class="section-title"><i class="fas fa-table-list" style="color:var(--green)"></i> Registros</div>
-            <span style="font-size:12px;color:var(--muted);" id="fin-list-count">0 registros</span>
-          </div>
-          <div class="section-body" style="padding:0;">
-            <div class="table-wrap">
-              <table class="orders-table" id="finanzas-table">
+            <!-- Tabla editable -->
+            <div class="table-wrap" style="flex:1;min-width:640px;">
+              <table class="orders-table fin-sheet" id="finanzas-table">
                 <thead>
                   <tr>
-                    <th>Producto / Nota</th>
-                    <th>Fecha</th>
+                    <th>Proveedor</th>
+                    <th>Producto</th>
                     <th>Inversión</th>
                     <th>Venta</th>
                     <th>Ganancia</th>
-                    <th>Reinvertir</th>
-                    <th>Imprevistos</th>
-                    <th>Invertir</th>
-                    <th>Ahorro</th>
-                    <th>Personal</th>
+                    <th class="fin-sep-th">
+                      🔁 Reinvertir
+                      <input type="number" class="fin-pct-input" id="pct-reinvertir" value="15" min="0" max="100" step="1" oninput="onPctChange()">%
+                    </th>
+                    <th>
+                      ⚠️ Imprevistos
+                      <input type="number" class="fin-pct-input" id="pct-imprevistos" value="5" min="0" max="100" step="1" oninput="onPctChange()">%
+                    </th>
+                    <th>
+                      🏦 Ahorro
+                      <input type="number" class="fin-pct-input" id="pct-ahorro" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                    </th>
+                    <th>
+                      📈 Invertir
+                      <input type="number" class="fin-pct-input" id="pct-invertir" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                    </th>
+                    <th>
+                      💗 G. Personal
+                      <input type="number" class="fin-pct-input" id="pct-personal" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                    </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody id="finanzas-tbody"></tbody>
               </table>
+              <div id="fin-pct-warning" style="margin-top:10px;font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;display:none;"></div>
+              <datalist id="fin-proveedores-list"></datalist>
             </div>
+
+            <!-- Total -->
+            <div style="width:220px;flex-shrink:0;">
+              <table class="orders-table" style="width:100%;">
+                <thead><tr><th colspan="2" style="text-align:center;">Total</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:700;">Reinvertir</td><td id="tot-reinvertir" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
+                  <tr><td style="font-weight:700;">Imprevistos</td><td id="tot-imprevistos" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
+                  <tr><td style="font-weight:700;">Ahorro</td><td id="tot-ahorro" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
+                  <tr><td style="font-weight:700;">Invertir</td><td id="tot-invertir" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
+                  <tr><td style="font-weight:700;">G. Personal</td><td id="tot-personal" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
+                  <tr style="border-top:2px solid var(--border);"><td style="font-weight:800;">Ganancia</td><td id="tot-ganancia" style="text-align:right;font-weight:800;color:var(--green);">S/ 0.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+
           </div>
+        </div>
+      </div>
+
+      <!-- FONDOS -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-vault" style="color:var(--green)"></i> Tus fondos</div>
+          <span style="font-size:11px;color:var(--muted);">Saldo acumulado de todo el historial</span>
+        </div>
+        <div class="section-body" style="padding:0 24px 22px;">
+          <div id="fondos-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;"></div>
         </div>
       </div>
 
     </div>
 
-    <!-- Modal: Nuevo registro de Finanzas -->
-    <div class="modal-overlay" id="finanza-modal">
-      <div class="modal" style="max-width:520px;">
+    <!-- Modal: Movimiento manual de fondo -->
+    <div class="modal-overlay" id="fondo-mov-modal">
+      <div class="modal" style="max-width:420px;">
         <div class="modal-head">
-          <div class="modal-title">🐷 Registro financiero de venta</div>
-          <button class="modal-close" onclick="closeFinanzaModal()"><i class="fas fa-times"></i></button>
+          <div class="modal-title" id="fondo-mov-title">Movimiento de fondo</div>
+          <button class="modal-close" onclick="closeFondoMovModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="fin-edit-id" value="">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div class="form-group" style="grid-column:1/-1;"><label>Producto / Nota</label><input type="text" id="fin-nota" placeholder="Ej: 2 conjuntos talla 6..."></div>
-            <div class="form-group"><label>Inversión (S/) *</label><input type="number" id="fin-inversion" placeholder="100.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group"><label>Venta (S/) *</label><input type="number" id="fin-venta" placeholder="150.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group"><label>Fecha</label><input type="date" id="fin-fecha"></div>
-            <div class="form-group">
-              <label>Ganancia</label>
-              <div id="fin-ganancia-display" style="padding:10px 14px;border-radius:10px;background:var(--green-light);color:var(--green);font-weight:800;font-family:'Baloo 2',cursive;font-size:16px;">S/ 0.00</div>
-            </div>
+          <input type="hidden" id="fondo-mov-key" value="">
+          <div style="display:flex;gap:10px;margin-bottom:14px;">
+            <button class="btn btn-sm fondo-mov-tipo-btn active" data-tipo="agregar" onclick="setFondoMovTipo('agregar',this)" style="flex:1;background:var(--green-light);color:var(--green);font-weight:700;">+ Agregar</button>
+            <button class="btn btn-sm fondo-mov-tipo-btn" data-tipo="retirar" onclick="setFondoMovTipo('retirar',this)" style="flex:1;background:var(--red-light);color:var(--red);font-weight:700;">− Retirar</button>
           </div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin:20px 0 10px;">
-            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">¿En qué repartes la ganancia?</div>
-            <button class="btn btn-ghost btn-sm" onclick="autoDistribuirFinanza()" style="font-size:11px;"><i class="fas fa-wand-magic-sparkles"></i> Auto-repartir</button>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div class="form-group"><label>🔁 Reinvertir (S/)</label><input type="number" id="fin-reinvertir" placeholder="0.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group"><label>⚠️ Imprevistos (S/)</label><input type="number" id="fin-imprevistos" placeholder="0.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group"><label>📈 Invertir (S/)</label><input type="number" id="fin-invertir" placeholder="0.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group"><label>🏦 Ahorro (S/)</label><input type="number" id="fin-ahorro" placeholder="0.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-            <div class="form-group" style="grid-column:1/-1;"><label>💗 Ganancia personal (S/)</label><input type="number" id="fin-personal" placeholder="0.00" step="0.01" min="0" oninput="recalcFinanzaModal()"></div>
-          </div>
-
-          <div id="fin-restante-box" style="margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:13px;display:flex;justify-content:space-between;align-items:center;"></div>
-
+          <div class="form-group"><label>Monto (S/) *</label><input type="number" id="fondo-mov-monto" placeholder="0.00" step="0.01" min="0"></div>
+          <div class="form-group"><label>Nota</label><input type="text" id="fondo-mov-nota" placeholder="Motivo del movimiento..."></div>
           <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveFinanza)"><i class="fas fa-floppy-disk"></i> Guardar registro</button>
-            <button class="btn btn-ghost" onclick="closeFinanzaModal()">Cancelar</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveFondoMov)"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-ghost" onclick="closeFondoMovModal()">Cancelar</button>
           </div>
         </div>
       </div>
     </div>
+
+    <style>
+      .fin-sheet th { vertical-align: middle; }
+      .fin-pct-input { width: 42px; padding: 2px 4px; margin-left: 4px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); font-size: 11px; font-weight: 700; text-align: center; }
+      .fin-sep-th { border-left: 4px solid var(--text); }
+      .fin-sheet td.fin-sep-td { border-left: 4px solid var(--text); }
+      .fin-cell-input { width: 100%; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--text); padding: 4px 2px; border-radius: 6px; }
+      .fin-cell-input:focus { background: var(--rose-soft); outline: none; }
+      .fin-cell-num { width: 82px; }
+      .fin-row-del { opacity: 0; transition: opacity .15s; }
+      .fin-sheet tbody tr:hover .fin-row-del { opacity: 1; }
+    </style>
 
     <!-- ====== ALERTAS DE REINGRESO ====== -->
     <div id="reingreso-section" class="page-section" style="display:none;">
@@ -12455,125 +12487,92 @@ async function deleteWaReingresoAlert(id, pid) {
 }
 
 // ============================================
-// FINANZAS — Inversión / Venta / Ganancia / Reparto
+// FINANZAS — Cuadro de ventas estilo hoja de cálculo
 // ============================================
-let finanzas = JSON.parse(localStorage.getItem('dzoe_finanzas') || '[]');
-let finanzasPieChartInst = null;
-const FIN_DIST_KEYS = ['reinvertir','imprevistos','invertir','ahorro','personal'];
+const FIN_DIST_KEYS = ['reinvertir','imprevistos','ahorro','invertir','personal'];
 const finDistMeta = {
-  reinvertir:  { label:'Reinvertir',         color:'#1d5fd4', pct:.20 },
-  imprevistos: { label:'Imprevistos',        color:'#c97010', pct:.10 },
-  invertir:    { label:'Invertir',           color:'#6b2fd4', pct:.20 },
-  ahorro:      { label:'Ahorro',             color:'#7DC4A8', pct:.20 },
-  personal:    { label:'Ganancia personal',  color:'#a73759', pct:.30 },
+  reinvertir:  { label:'Reinvertir',    color:'#1d5fd4' },
+  imprevistos: { label:'Imprevistos',   color:'#c97010' },
+  ahorro:      { label:'Ahorro',        color:'#7DC4A8' },
+  invertir:    { label:'Invertir',      color:'#6b2fd4' },
+  personal:    { label:'G. Personal',   color:'#a73759' },
 };
 
+// Migración de registros del formato anterior (capital/publicidad -> reinvertir/invertir)
+let finanzas = JSON.parse(localStorage.getItem('dzoe_finanzas') || '[]').map(f => {
+  if (f.proveedor === undefined) f.proveedor = f.proveedor || '';
+  if (f.producto === undefined) f.producto = f.nota || f.producto || '';
+  return { id: f.id, proveedor: f.proveedor||'', producto: f.producto||'', inversion: f.inversion||0, venta: f.venta||0, fecha: f.fecha || new Date().toISOString().slice(0,10) };
+});
+let finPercentages = Object.assign(
+  { reinvertir:15, imprevistos:5, ahorro:10, invertir:10, personal:10 },
+  JSON.parse(localStorage.getItem('dzoe_fin_pct') || '{}')
+);
+// fondosManual: ajustes manuales (+/-) aplicados encima de lo calculado por el cuadro
+let fondosManual = Object.assign({ reinvertir:0, imprevistos:0, ahorro:0, invertir:0, personal:0 }, JSON.parse(localStorage.getItem('dzoe_fondos_manual') || '{}'));
+let currentFondoMovTipo = 'agregar';
+
 function saveFinanzasData() { localStorage.setItem('dzoe_finanzas', JSON.stringify(finanzas)); }
+function saveFinPercentages() { localStorage.setItem('dzoe_fin_pct', JSON.stringify(finPercentages)); }
+function saveFondosManual() { localStorage.setItem('dzoe_fondos_manual', JSON.stringify(fondosManual)); }
 
-function openFinanzaModal(id) {
-  document.getElementById('fin-edit-id').value = id || '';
+function finGanancia(f) { return (f.venta||0) - (f.inversion||0); }
+function finDistribucion(f) {
+  const g = finGanancia(f);
+  const out = {};
+  FIN_DIST_KEYS.forEach(k => out[k] = g * (finPercentages[k]||0) / 100);
+  return out;
+}
+
+// ---------- Filas del cuadro ----------
+function addFinanzaRow() {
   const today = new Date().toISOString().slice(0,10);
-  if (id) {
-    const f = finanzas.find(x => String(x.id) === String(id));
-    if (f) {
-      document.getElementById('fin-nota').value = f.nota || '';
-      document.getElementById('fin-inversion').value = f.inversion;
-      document.getElementById('fin-venta').value = f.venta;
-      document.getElementById('fin-fecha').value = f.fecha || today;
-      document.getElementById('fin-reinvertir').value = f.reinvertir || '';
-      document.getElementById('fin-imprevistos').value = f.imprevistos || '';
-      document.getElementById('fin-invertir').value = f.invertir || '';
-      document.getElementById('fin-ahorro').value = f.ahorro || '';
-      document.getElementById('fin-personal').value = f.personal || '';
-    }
-  } else {
-    document.getElementById('fin-nota').value = '';
-    document.getElementById('fin-inversion').value = '';
-    document.getElementById('fin-venta').value = '';
-    document.getElementById('fin-fecha').value = today;
-    FIN_DIST_KEYS.forEach(k => document.getElementById('fin-'+k).value = '');
-  }
-  recalcFinanzaModal();
-  document.getElementById('finanza-modal').classList.add('open');
-}
-function closeFinanzaModal() { document.getElementById('finanza-modal').classList.remove('open'); }
-
-function recalcFinanzaModal() {
-  const inversion = parseFloat(document.getElementById('fin-inversion').value) || 0;
-  const venta = parseFloat(document.getElementById('fin-venta').value) || 0;
-  const ganancia = venta - inversion;
-  document.getElementById('fin-ganancia-display').textContent = 'S/ ' + ganancia.toFixed(2);
-  document.getElementById('fin-ganancia-display').style.color = ganancia >= 0 ? 'var(--green)' : 'var(--red)';
-  document.getElementById('fin-ganancia-display').style.background = ganancia >= 0 ? 'var(--green-light)' : 'var(--red-light)';
-
-  const asignado = FIN_DIST_KEYS.reduce((a,k) => a + (parseFloat(document.getElementById('fin-'+k).value) || 0), 0);
-  const restante = ganancia - asignado;
-  const box = document.getElementById('fin-restante-box');
-  if (Math.abs(restante) < 0.01) {
-    box.style.background = 'var(--green-light)'; box.style.color = 'var(--green)';
-    box.innerHTML = '<span><i class="fas fa-circle-check"></i> Ganancia repartida al 100%</span><span>S/ ' + asignado.toFixed(2) + ' / ' + ganancia.toFixed(2) + '</span>';
-  } else if (restante > 0) {
-    box.style.background = 'var(--orange-light)'; box.style.color = 'var(--orange)';
-    box.innerHTML = '<span><i class="fas fa-triangle-exclamation"></i> Aún falta repartir</span><span>S/ ' + restante.toFixed(2) + ' sin asignar</span>';
-  } else {
-    box.style.background = 'var(--red-light)'; box.style.color = 'var(--red)';
-    box.innerHTML = '<span><i class="fas fa-circle-exclamation"></i> Repartiste de más</span><span>S/ ' + Math.abs(restante).toFixed(2) + ' de exceso</span>';
-  }
+  const row = { id: Date.now(), proveedor:'', producto:'', inversion:0, venta:0, fecha: today };
+  finanzas.push(row);
+  saveFinanzasData();
+  renderFinanzas();
+  setTimeout(() => {
+    const el = document.querySelector(`tr[data-row-id="${row.id}"] .fin-cell-proveedor`);
+    if (el) el.focus();
+  }, 50);
 }
 
-function autoDistribuirFinanza() {
-  const inversion = parseFloat(document.getElementById('fin-inversion').value) || 0;
-  const venta = parseFloat(document.getElementById('fin-venta').value) || 0;
-  const ganancia = venta - inversion;
-  if (ganancia <= 0) { showAlert('Ingresa inversión y venta primero','error'); return; }
-  FIN_DIST_KEYS.forEach(k => {
-    document.getElementById('fin-'+k).value = (ganancia * finDistMeta[k].pct).toFixed(2);
-  });
-  recalcFinanzaModal();
-}
-
-function saveFinanza() {
-  const inversion = parseFloat(document.getElementById('fin-inversion').value) || 0;
-  const venta = parseFloat(document.getElementById('fin-venta').value) || 0;
-  if (!venta) { showAlert('Ingresa el monto de la venta','error'); return; }
-  const editId = document.getElementById('fin-edit-id').value;
-  const record = {
-    id: editId ? Number(editId) : Date.now(),
-    nota: document.getElementById('fin-nota').value.trim(),
-    inversion, venta,
-    ganancia: venta - inversion,
-    fecha: document.getElementById('fin-fecha').value || new Date().toISOString().slice(0,10),
-    reinvertir:  parseFloat(document.getElementById('fin-reinvertir').value) || 0,
-    imprevistos: parseFloat(document.getElementById('fin-imprevistos').value) || 0,
-    invertir:    parseFloat(document.getElementById('fin-invertir').value) || 0,
-    ahorro:      parseFloat(document.getElementById('fin-ahorro').value) || 0,
-    personal:    parseFloat(document.getElementById('fin-personal').value) || 0,
-  };
-  if (editId) {
-    finanzas = finanzas.map(f => String(f.id) === String(editId) ? record : f);
+function updateFinanzaField(id, field, value) {
+  const f = finanzas.find(x => String(x.id) === String(id));
+  if (!f) return;
+  if (field === 'inversion' || field === 'venta') {
+    f[field] = parseFloat(value) || 0;
   } else {
-    finanzas.unshift(record);
+    f[field] = value;
   }
   saveFinanzasData();
-  closeFinanzaModal();
-  renderFinanzas();
-  showAlert('✅ Registro guardado — Ganancia S/ ' + record.ganancia.toFixed(2));
+  renderFinanzas({ keepFocus: true });
 }
 
-async function deleteFinanza(id) {
-  if (!(await customConfirm('¿Eliminar este registro financiero?', { title: 'Eliminar registro' }))) return;
+async function deleteFinanzaRow(id) {
+  if (!(await customConfirm('¿Eliminar esta fila?', { title: 'Eliminar registro' }))) return;
   finanzas = finanzas.filter(f => String(f.id) !== String(id));
   saveFinanzasData();
   renderFinanzas();
 }
 
+function onPctChange() {
+  FIN_DIST_KEYS.forEach(k => {
+    const el = document.getElementById('pct-'+k);
+    if (el) finPercentages[k] = parseFloat(el.value) || 0;
+  });
+  saveFinPercentages();
+  renderFinanzas({ keepFocus: true });
+}
+
 function exportFinanzas() {
-  const periodo = document.getElementById('finanzas-periodo')?.value || 'mes';
+  const periodo = document.getElementById('finanzas-periodo')?.value || 'todo';
   const { from, to } = getPeriodoDates(periodo);
   const finF = finanzas.filter(f => { const d=new Date(f.fecha); return d>=from&&d<=to; });
-  let csv = 'Fecha,Producto/Nota,Inversion,Venta,Ganancia,Reinvertir,Imprevistos,Invertir,Ahorro,GananciaPersonal\n';
+  let csv = 'Fecha,Proveedor,Producto,Inversion,Venta,Ganancia,Reinvertir,Imprevistos,Ahorro,Invertir,GananciaPersonal\n';
   finF.forEach(f => {
-    csv += [f.fecha, '"'+(f.nota||'')+'"', f.inversion, f.venta, f.ganancia, f.reinvertir, f.imprevistos, f.invertir, f.ahorro, f.personal].join(',') + '\n';
+    const dist = finDistribucion(f);
+    csv += [f.fecha, '"'+(f.proveedor||'')+'"', '"'+(f.producto||'')+'"', f.inversion, f.venta, finGanancia(f), dist.reinvertir.toFixed(2), dist.imprevistos.toFixed(2), dist.ahorro.toFixed(2), dist.invertir.toFixed(2), dist.personal.toFixed(2)].join(',') + '\n';
   });
   const blob = new Blob([csv], { type: 'text/csv' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
@@ -12581,85 +12580,152 @@ function exportFinanzas() {
   a.click();
 }
 
+// ---------- Fondos (movimientos manuales) ----------
+function setFondoMovTipo(tipo, btn) {
+  currentFondoMovTipo = tipo;
+  document.querySelectorAll('.fondo-mov-tipo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function openFondoMovModal(key) {
+  document.getElementById('fondo-mov-key').value = key;
+  document.getElementById('fondo-mov-title').textContent = 'Movimiento — ' + finDistMeta[key].label;
+  document.getElementById('fondo-mov-monto').value = '';
+  document.getElementById('fondo-mov-nota').value = '';
+  currentFondoMovTipo = 'agregar';
+  document.querySelectorAll('.fondo-mov-tipo-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.fondo-mov-tipo-btn[data-tipo="agregar"]').classList.add('active');
+  document.getElementById('fondo-mov-modal').classList.add('open');
+}
+function closeFondoMovModal() { document.getElementById('fondo-mov-modal').classList.remove('open'); }
+
+function saveFondoMov() {
+  const key = document.getElementById('fondo-mov-key').value;
+  const monto = parseFloat(document.getElementById('fondo-mov-monto').value) || 0;
+  if (!monto) { showAlert('Ingresa un monto','error'); return; }
+  fondosManual[key] += (currentFondoMovTipo === 'agregar' ? monto : -monto);
+  saveFondosManual();
+  closeFondoMovModal();
+  renderFinanzas();
+  showAlert('✅ Movimiento aplicado a ' + finDistMeta[key].label);
+}
+
+// ---------- Render ----------
 function loadFinanzas() {
   const badge = document.getElementById('badge-finanzas');
   if (badge) badge.textContent = finanzas.length;
   renderFinanzas();
 }
 
-function renderFinanzas() {
-  const periodo = document.getElementById('finanzas-periodo')?.value || 'mes';
+function renderFondosGrid() {
+  const grid = document.getElementById('fondos-grid');
+  if (!grid) return;
+  // Fondo = suma de todo el historial (todo el tiempo) + ajustes manuales
+  const totales = {};
+  FIN_DIST_KEYS.forEach(k => totales[k] = fondosManual[k] || 0);
+  finanzas.forEach(f => { const d = finDistribucion(f); FIN_DIST_KEYS.forEach(k => totales[k] += d[k]); });
+
+  grid.innerHTML = FIN_DIST_KEYS.map(k => `
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:16px;text-align:center;">
+      <div style="width:34px;height:34px;border-radius:10px;background:${finDistMeta[k].color}22;color:${finDistMeta[k].color};display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:14px;">
+        <i class="fas fa-circle-dot"></i>
+      </div>
+      <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">${finDistMeta[k].label}</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;color:${finDistMeta[k].color};margin-bottom:10px;">S/ ${(totales[k]||0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;font-size:11px;" onclick="openFondoMovModal('${k}')"><i class="fas fa-pen"></i> Ajustar</button>
+    </div>`).join('');
+
+  return totales;
+}
+
+function renderEstadoNegocio(totales) {
+  const capital = totales.reinvertir || 0;
+
+  let mercaderia = 0;
+  (window._allProducts || products || []).forEach(p => { (p.sizes||[]).forEach(s => { mercaderia += (s.cost||0)*(s.stock||0); }); });
+
+  const totalVentasHist = (orders||[]).filter(o=>o.status==='confirmed').reduce((a,o)=>a+(parseFloat(o.total)||0),0);
+  const totalGastosHist = (typeof gastos !== 'undefined' ? gastos : []).reduce((a,g)=>a+(g.monto||0),0);
+  const caja = totalVentasHist - totalGastosHist;
+
+  const gananciaAcum = finanzas.reduce((a,f)=>a+finGanancia(f),0);
+  const patrimonio = capital + mercaderia + caja;
+
+  document.getElementById('neg-capital').textContent = 'S/ ' + capital.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('neg-mercaderia').textContent = 'S/ ' + mercaderia.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('neg-caja').textContent = 'S/ ' + caja.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('neg-ganancia-acum').textContent = 'S/ ' + gananciaAcum.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('neg-patrimonio').textContent = 'S/ ' + patrimonio.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function renderFinanzas(opts) {
+  opts = opts || {};
+  const periodo = document.getElementById('finanzas-periodo')?.value || 'todo';
   const { from, to } = getPeriodoDates(periodo);
   const finF = finanzas.filter(f => { const d = new Date(f.fecha || 0); return d >= from && d <= to; });
 
-  const totalInv = finF.reduce((a,f)=>a+f.inversion,0);
-  const totalVenta = finF.reduce((a,f)=>a+f.venta,0);
-  const totalGan = finF.reduce((a,f)=>a+f.ganancia,0);
-  const totalPersonal = finF.reduce((a,f)=>a+f.personal,0);
-  const totalAhorro = finF.reduce((a,f)=>a+f.ahorro,0);
-  const margen = totalVenta ? (totalGan/totalVenta*100) : 0;
-  const ticket = finF.length ? totalVenta/finF.length : 0;
+  // Datalist de proveedores (reutiliza tu lista de Proveedores)
+  const dl = document.getElementById('fin-proveedores-list');
+  if (dl) dl.innerHTML = (suppliers||[]).map(s=>`<option value="${(s.name||'').replace(/"/g,'&quot;')}">`).join('');
 
-  document.getElementById('fin-kpi-inversion').textContent = 'S/ ' + totalInv.toFixed(2);
-  document.getElementById('fin-kpi-count').textContent = finF.length + ' venta' + (finF.length===1?'':'s');
-  document.getElementById('fin-kpi-venta').textContent = 'S/ ' + totalVenta.toFixed(2);
-  document.getElementById('fin-kpi-ticket').textContent = 'Ticket prom. S/ ' + ticket.toFixed(2);
-  document.getElementById('fin-kpi-ganancia').textContent = 'S/ ' + totalGan.toFixed(2);
-  document.getElementById('fin-kpi-margen').textContent = 'Margen ' + margen.toFixed(1) + '%';
-  document.getElementById('fin-kpi-personal').textContent = 'S/ ' + totalPersonal.toFixed(2);
-  document.getElementById('fin-kpi-ahorro').textContent = 'Ahorro S/ ' + totalAhorro.toFixed(2);
+  // % header inputs (por si se re-renderiza tras cargar datos)
+  FIN_DIST_KEYS.forEach(k => { const el = document.getElementById('pct-'+k); if (el && document.activeElement !== el) el.value = finPercentages[k]; });
+  const pctSum = FIN_DIST_KEYS.reduce((a,k)=>a+(finPercentages[k]||0),0);
+  const warn = document.getElementById('fin-pct-warning');
+  if (warn) {
+    if (Math.abs(pctSum - 100) < 0.01) {
+      warn.style.display = 'none';
+    } else {
+      warn.style.display = 'block';
+      warn.style.background = pctSum < 100 ? 'var(--orange-light)' : 'var(--red-light)';
+      warn.style.color = pctSum < 100 ? 'var(--orange)' : 'var(--red)';
+      warn.innerHTML = `<i class="fas fa-circle-info"></i> Los porcentajes suman ${pctSum}% (no 100%). ${pctSum<100 ? 'Queda '+(100-pctSum)+'% de la ganancia sin repartir.' : 'Estás repartiendo '+(pctSum-100)+'% de más.'}`;
+    }
+  }
 
-  // Tabla
+  // Filas
   const tbody = document.getElementById('finanzas-tbody');
+  const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#finanzas-tbody')
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c=>c.startsWith('fin-cell-')), start: document.activeElement.selectionStart }
+    : null;
+
   if (tbody) {
-    tbody.innerHTML = finF.length ? finF.map(f => `
-      <tr>
-        <td><strong>${f.nota || '—'}</strong></td>
-        <td>${f.fecha}</td>
-        <td>S/ ${f.inversion.toFixed(2)}</td>
-        <td>S/ ${f.venta.toFixed(2)}</td>
-        <td style="color:${f.ganancia>=0?'var(--green)':'var(--red)'};font-weight:800;">S/ ${f.ganancia.toFixed(2)}</td>
-        <td>S/ ${f.reinvertir.toFixed(2)}</td>
-        <td>S/ ${f.imprevistos.toFixed(2)}</td>
-        <td>S/ ${f.invertir.toFixed(2)}</td>
-        <td>S/ ${f.ahorro.toFixed(2)}</td>
-        <td>S/ ${f.personal.toFixed(2)}</td>
-        <td style="white-space:nowrap;">
-          <button class="icon-btn" onclick="openFinanzaModal(${f.id})"><i class="fas fa-pen"></i></button>
-          <button class="icon-btn delete-btn" onclick="deleteFinanza(${f.id})"><i class="fas fa-trash"></i></button>
-        </td>
-      </tr>`).join('') : `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:30px;">Sin registros en este período. Crea tu primer registro con "Nuevo registro".</td></tr>`;
+    tbody.innerHTML = finF.length ? finF.map(f => {
+      const g = finGanancia(f);
+      const dist = finDistribucion(f);
+      return `<tr data-row-id="${f.id}">
+        <td><input type="text" class="fin-cell-input fin-cell-proveedor" list="fin-proveedores-list" value="${(f.proveedor||'').replace(/"/g,'&quot;')}" placeholder="Proveedor" onchange="updateFinanzaField(${f.id},'proveedor',this.value)"></td>
+        <td><input type="text" class="fin-cell-input" value="${(f.producto||'').replace(/"/g,'&quot;')}" placeholder="Producto" onchange="updateFinanzaField(${f.id},'producto',this.value)"></td>
+        <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.inversion||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'inversion',this.value)"></td>
+        <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.venta||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'venta',this.value)"></td>
+        <td style="font-weight:800;color:${g>=0?'var(--green)':'var(--red)'};">S/ ${g.toFixed(2)}</td>
+        <td class="fin-sep-td">S/ ${dist.reinvertir.toFixed(2)}</td>
+        <td>S/ ${dist.imprevistos.toFixed(2)}</td>
+        <td>S/ ${dist.ahorro.toFixed(2)}</td>
+        <td>S/ ${dist.invertir.toFixed(2)}</td>
+        <td>S/ ${dist.personal.toFixed(2)}</td>
+        <td><button class="icon-btn delete-btn fin-row-del" onclick="deleteFinanzaRow(${f.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px;">Sin filas en este período. Usa "Agregar fila" para empezar tu cuadro.</td></tr>`;
+
+    if (focusInfo && focusInfo.id) {
+      const el = document.querySelector(`tr[data-row-id="${focusInfo.id}"] .${focusInfo.cls}`);
+      if (el) { el.focus(); if (focusInfo.start!=null && el.setSelectionRange) { try { el.setSelectionRange(focusInfo.start, focusInfo.start); } catch(e){} } }
+    }
   }
   const countEl = document.getElementById('fin-list-count');
   if (countEl) countEl.textContent = finF.length + ' registro' + (finF.length===1?'':'s');
 
-  // Pie chart de distribución
-  const dist = FIN_DIST_KEYS.map(k => finF.reduce((a,f)=>a+(f[k]||0),0));
-  const totalDist = dist.reduce((a,b)=>a+b,0);
-  const legend = document.getElementById('finanzas-pie-legend');
-  if (legend) {
-    legend.innerHTML = FIN_DIST_KEYS.map((k,i) => {
-      const pct = totalDist ? (dist[i]/totalDist*100) : 0;
-      return `<div style="display:flex;align-items:center;gap:8px;font-size:12px;">
-        <span style="width:10px;height:10px;border-radius:3px;background:${finDistMeta[k].color};flex-shrink:0;"></span>
-        <span style="flex:1;color:var(--text2);font-weight:600;">${finDistMeta[k].label}</span>
-        <span style="font-weight:800;">S/ ${dist[i].toFixed(2)}</span>
-        <span style="color:var(--muted);width:40px;text-align:right;">${pct.toFixed(0)}%</span>
-      </div>`;
-    }).join('');
-  }
-  const pieCanvas = document.getElementById('finanzasPieChart');
-  if (pieCanvas && window.Chart) {
-    if (finanzasPieChartInst) finanzasPieChartInst.destroy();
-    finanzasPieChartInst = new Chart(pieCanvas, {
-      type: 'doughnut',
-      data: {
-        labels: FIN_DIST_KEYS.map(k=>finDistMeta[k].label),
-        datasets: [{ data: dist, backgroundColor: FIN_DIST_KEYS.map(k=>finDistMeta[k].color), borderWidth: 0 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{ display:false } } }
-    });
-  }
+  // Total (del período visible)
+  const totalesPeriodo = { reinvertir:0, imprevistos:0, ahorro:0, invertir:0, personal:0 };
+  let totalGananciaPeriodo = 0;
+  finF.forEach(f => { const d = finDistribucion(f); FIN_DIST_KEYS.forEach(k => totalesPeriodo[k]+=d[k]); totalGananciaPeriodo += finGanancia(f); });
+  FIN_DIST_KEYS.forEach(k => { const el = document.getElementById('tot-'+k); if (el) el.textContent = 'S/ ' + totalesPeriodo[k].toFixed(2); });
+  const totGanEl = document.getElementById('tot-ganancia'); if (totGanEl) totGanEl.textContent = 'S/ ' + totalGananciaPeriodo.toFixed(2);
+
+  // Fondos (histórico completo) + Estado del negocio
+  const totalesHistoricos = renderFondosGrid();
+  renderEstadoNegocio(totalesHistoricos);
 }
 
 // ── stubs para compatibilidad con código viejo ──
