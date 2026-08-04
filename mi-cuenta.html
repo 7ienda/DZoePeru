@@ -2292,7 +2292,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         <div class="modal-body">
           <div id="vp-step-producto">
             <div class="search-input-wrap" style="margin-bottom:14px;">
-              <input type="text" id="vp-search" placeholder="Buscar producto..." oninput="renderVentaPasadaGrid()" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;">
+              <input type="text" id="vp-search" placeholder="Buscar producto vendido..." oninput="renderVentaPasadaGrid()" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;">
             </div>
             <div id="vp-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-height:360px;overflow-y:auto;"></div>
           </div>
@@ -12673,29 +12673,37 @@ function closeVentaPasadaModal() {
 function renderVentaPasadaGrid() {
   const grid = document.getElementById('vp-grid');
   if (!grid) return;
+  if (typeof renderSoldProducts === 'function') { try { renderSoldProducts(); } catch(e){} }
   const q = (document.getElementById('vp-search')?.value || '').trim().toLowerCase();
-  const list = (window._allProducts || products || []).filter(p => !q || (p.name||'').toLowerCase().includes(q));
-  if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Sin productos encontrados</div>'; return; }
-  grid.innerHTML = list.map(p => {
-    const img = (p.images && p.images[0]) || p.image || '';
-    return `<div class="vp-prod-card" onclick="selectVpProduct('${p.id}')">
+  const list = Object.values(_soldGroups || {}).filter(s => !q || (s.name||'').toLowerCase().includes(q));
+  if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Sin productos vendidos encontrados</div>'; return; }
+  grid.innerHTML = list.map(s => {
+    const img = s._prod?.images?.[0] || s._prod?.image || '';
+    return `<div class="vp-prod-card" onclick="selectVpProduct('${_escJs(s._key)}')">
       ${img ? `<img src="${img}" alt="">` : `<div style="width:100%;aspect-ratio:1/1;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;">👗</div>`}
-      <div class="vp-prod-name">${p.name}</div>
+      <div class="vp-prod-name">${s.name}</div>
     </div>`;
   }).join('');
 }
-function selectVpProduct(productId) {
-  const p = (window._allProducts || products || []).find(x => String(x.id) === String(productId));
-  if (!p) return;
-  vpSelectedProduct = p;
-  const img = (p.images && p.images[0]) || p.image || '';
+function selectVpProduct(key) {
+  const s = (_soldGroups || {})[key];
+  if (!s) return;
+  vpSelectedProduct = s;
+  const img = s._prod?.images?.[0] || s._prod?.image || '';
   document.getElementById('vp-producto-info').innerHTML = `
     ${img ? `<img src="${img}" style="width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:52px;height:52px;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👗</div>'}
-    <div><div style="font-weight:700;font-size:14px;">${p.name}</div>
-    <div style="font-size:11px;color:var(--muted);margin-top:2px;">${(p.categories||[]).join(', ')||'Sin categoría'}</div></div>`;
+    <div><div style="font-weight:700;font-size:14px;">${s.name}</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px;">${(s._prod?.categories||[]).join(', ')||'Sin categoría'}</div></div>`;
   const sizeSel = document.getElementById('vp-size');
+  const avgPrice = s.totalQty ? (s.totalRevenue / s.totalQty) : 0;
+  const avgCost = s.totalQty ? ((s.totalRevenue - s.totalProfit) / s.totalQty) : 0;
   sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
-    (p.sizes||[]).map(s => `<option value="${s.size}" data-price="${s.price||0}" data-cost="${s.cost||0}">${s.size} — S/ ${(s.price||0).toFixed(2)}</option>`).join('');
+    Object.entries(s.sizes||{}).map(([sz, qty]) => {
+      const sizeObj = s._prod?.sizes?.find(x => _normName(x.size) === _normName(sz));
+      const price = sizeObj ? (sizeObj.price||0) : avgPrice;
+      const cost = sizeObj ? (sizeObj.cost||0) : avgCost;
+      return `<option value="${sz}" data-price="${price}" data-cost="${cost}">${sz} — vendida ${qty}x</option>`;
+    }).join('');
 
   const editingRow = vpTargetRowId ? finanzas.find(x => String(x.id) === String(vpTargetRowId)) : null;
   document.getElementById('vp-proveedor').value = editingRow ? (editingRow.proveedor||'') : '';
@@ -12727,7 +12735,7 @@ function saveVentaPasada() {
   const venta = parseFloat(document.getElementById('vp-venta').value) || 0;
   const proveedor = document.getElementById('vp-proveedor').value.trim();
   const fecha = document.getElementById('vp-fecha').value || new Date().toISOString().slice(0,10);
-  const img = (vpSelectedProduct.images && vpSelectedProduct.images[0]) || vpSelectedProduct.image || '';
+  const img = (vpSelectedProduct._prod?.images && vpSelectedProduct._prod.images[0]) || vpSelectedProduct._prod?.image || '';
 
   if (vpTargetRowId) {
     const f = finanzas.find(x => String(x.id) === String(vpTargetRowId));
