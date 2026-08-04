@@ -2166,6 +2166,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <option value="todo" selected>Todo el tiempo</option>
           </select>
           <button class="btn btn-sm" style="background:var(--lav-light);color:var(--lavender);font-weight:700;" onclick="exportFinanzas()"><i class="fas fa-download"></i> Exportar</button>
+          <button class="btn btn-sm" style="background:var(--mint-soft);color:var(--mint);font-weight:700;" onclick="openVentaPasadaModal()"><i class="fas fa-clock-rotate-left"></i> Registrar venta pasada</button>
           <button class="btn btn-primary btn-sm" onclick="addFinanzaRow()"><i class="fas fa-plus"></i> Agregar fila</button>
         </div>
       </div>
@@ -2209,66 +2210,62 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div class="section" style="margin-bottom:20px;">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-table-cells" style="color:var(--green)"></i> Cuadro de ventas</div>
-          <span style="font-size:11px;color:var(--muted);" id="fin-list-count">0 registros</span>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <button class="dark-toggle" id="fin-pct-lock-btn" onclick="toggleFinPctLock()" title="Bloquear/Desbloquear porcentajes" style="width:32px;height:32px;font-size:13px;"><i class="fas fa-lock"></i></button>
+            <span style="font-size:11px;color:var(--muted);" id="fin-list-count">0 registros</span>
+          </div>
         </div>
         <div class="section-body" style="padding:16px 24px 22px;">
-          <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
 
-            <!-- Tabla editable -->
-            <div class="table-wrap" style="flex:1;min-width:640px;">
-              <table class="orders-table fin-sheet" id="finanzas-table">
-                <thead>
-                  <tr>
-                    <th>Proveedor</th>
-                    <th>Producto</th>
-                    <th>Inversión</th>
-                    <th>Venta</th>
-                    <th>Ganancia</th>
-                    <th class="fin-sep-th">
-                      🔁 Reinvertir
-                      <input type="number" class="fin-pct-input" id="pct-reinvertir" value="15" min="0" max="100" step="1" oninput="onPctChange()">%
-                    </th>
-                    <th>
-                      ⚠️ Imprevistos
-                      <input type="number" class="fin-pct-input" id="pct-imprevistos" value="5" min="0" max="100" step="1" oninput="onPctChange()">%
-                    </th>
-                    <th>
-                      🏦 Ahorro
-                      <input type="number" class="fin-pct-input" id="pct-ahorro" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
-                    </th>
-                    <th>
-                      📈 Invertir
-                      <input type="number" class="fin-pct-input" id="pct-invertir" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
-                    </th>
-                    <th>
-                      💗 G. Personal
-                      <input type="number" class="fin-pct-input" id="pct-personal" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
-                    </th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody id="finanzas-tbody"></tbody>
-              </table>
-              <div id="fin-pct-warning" style="margin-top:10px;font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;display:none;"></div>
-              <datalist id="fin-proveedores-list"></datalist>
-            </div>
-
-            <!-- Total -->
-            <div style="width:220px;flex-shrink:0;">
-              <table class="orders-table" style="width:100%;">
-                <thead><tr><th colspan="2" style="text-align:center;">Total</th></tr></thead>
-                <tbody>
-                  <tr><td style="font-weight:700;">Reinvertir</td><td id="tot-reinvertir" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
-                  <tr><td style="font-weight:700;">Imprevistos</td><td id="tot-imprevistos" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
-                  <tr><td style="font-weight:700;">Ahorro</td><td id="tot-ahorro" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
-                  <tr><td style="font-weight:700;">Invertir</td><td id="tot-invertir" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
-                  <tr><td style="font-weight:700;">G. Personal</td><td id="tot-personal" style="text-align:right;font-weight:800;">S/ 0.00</td></tr>
-                  <tr style="border-top:2px solid var(--border);"><td style="font-weight:800;">Ganancia</td><td id="tot-ganancia" style="text-align:right;font-weight:800;color:var(--green);">S/ 0.00</td></tr>
-                </tbody>
-              </table>
-            </div>
-
+          <!-- Tabla editable (ancho completo) -->
+          <div class="table-wrap" id="fin-table-wrap">
+            <table class="orders-table fin-sheet" id="finanzas-table">
+              <thead>
+                <tr>
+                  <th>Proveedor</th>
+                  <th>Producto</th>
+                  <th>Inversión</th>
+                  <th>Venta</th>
+                  <th>Ganancia</th>
+                  <th class="fin-sep-th">
+                    🔁 Reinvertir
+                    <input type="number" class="fin-pct-input" id="pct-reinvertir" value="15" min="0" max="100" step="1" oninput="onPctChange()">%
+                  </th>
+                  <th>
+                    ⚠️ Imprevistos
+                    <input type="number" class="fin-pct-input" id="pct-imprevistos" value="5" min="0" max="100" step="1" oninput="onPctChange()">%
+                  </th>
+                  <th>
+                    🏦 Ahorro
+                    <input type="number" class="fin-pct-input" id="pct-ahorro" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                  </th>
+                  <th>
+                    📈 Invertir
+                    <input type="number" class="fin-pct-input" id="pct-invertir" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                  </th>
+                  <th>
+                    💗 G. Personal
+                    <input type="number" class="fin-pct-input" id="pct-personal" value="10" min="0" max="100" step="1" oninput="onPctChange()">%
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="finanzas-tbody"></tbody>
+            </table>
+            <div id="fin-pct-warning" style="margin-top:10px;font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;display:none;"></div>
+            <datalist id="fin-proveedores-list"></datalist>
           </div>
+
+          <!-- Total (fila resumen debajo, ancho completo) -->
+          <div style="margin-top:18px;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
+            <div style="background:var(--bg);border-radius:14px;padding:12px 14px;text-align:center;border:1.5px solid var(--line2);"><div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Reinvertir</div><div id="tot-reinvertir" style="font-weight:800;">S/ 0.00</div></div>
+            <div style="background:var(--bg);border-radius:14px;padding:12px 14px;text-align:center;border:1.5px solid var(--line2);"><div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Imprevistos</div><div id="tot-imprevistos" style="font-weight:800;">S/ 0.00</div></div>
+            <div style="background:var(--bg);border-radius:14px;padding:12px 14px;text-align:center;border:1.5px solid var(--line2);"><div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Ahorro</div><div id="tot-ahorro" style="font-weight:800;">S/ 0.00</div></div>
+            <div style="background:var(--bg);border-radius:14px;padding:12px 14px;text-align:center;border:1.5px solid var(--line2);"><div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Invertir</div><div id="tot-invertir" style="font-weight:800;">S/ 0.00</div></div>
+            <div style="background:var(--bg);border-radius:14px;padding:12px 14px;text-align:center;border:1.5px solid var(--line2);"><div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">G. Personal</div><div id="tot-personal" style="font-weight:800;">S/ 0.00</div></div>
+            <div style="background:var(--rose-soft);border-radius:14px;padding:12px 14px;text-align:center;border:2px solid var(--rose);"><div style="font-size:10px;font-weight:800;color:var(--rose-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Ganancia</div><div id="tot-ganancia" style="font-weight:800;color:var(--green);">S/ 0.00</div></div>
+          </div>
+
         </div>
       </div>
 
@@ -2283,6 +2280,40 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         </div>
       </div>
 
+    </div>
+
+    <!-- Modal: Registrar venta pasada (selecciona producto para el cuadro de Finanzas) -->
+    <div class="modal-overlay" id="venta-pasada-modal">
+      <div class="modal" style="max-width:560px;">
+        <div class="modal-head">
+          <div class="modal-title">🕘 Registrar venta pasada</div>
+          <button class="modal-close" onclick="closeVentaPasadaModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div id="vp-step-producto">
+            <div class="search-input-wrap" style="margin-bottom:14px;">
+              <input type="text" id="vp-search" placeholder="Buscar producto..." oninput="renderVentaPasadaGrid()" style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;">
+            </div>
+            <div id="vp-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-height:360px;overflow-y:auto;"></div>
+          </div>
+          <div id="vp-step-detalle" style="display:none;">
+            <div id="vp-producto-info" style="display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:14px;padding:12px 16px;margin-bottom:16px;border:1.5px solid var(--line2);"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group"><label>Talla *</label>
+                <select id="vp-size" onchange="onVpSizeChange()"><option value="">— Selecciona talla —</option></select>
+              </div>
+              <div class="form-group"><label>Proveedor</label><input type="text" id="vp-proveedor" list="fin-proveedores-list" placeholder="Proveedor"></div>
+              <div class="form-group"><label>Inversión (S/) *</label><input type="number" id="vp-inversion" step="0.01" min="0" placeholder="0.00"></div>
+              <div class="form-group"><label>Venta (S/) *</label><input type="number" id="vp-venta" step="0.01" min="0" placeholder="0.00"></div>
+              <div class="form-group" style="grid-column:1/-1;"><label>Fecha</label><input type="date" id="vp-fecha"></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <button class="btn btn-primary" style="flex:1;" onclick="saveVentaPasada()"><i class="fas fa-floppy-disk"></i> Agregar a la tabla</button>
+              <button class="btn btn-ghost" onclick="backToVpProductos()">Atrás</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal: Movimiento manual de fondo -->
@@ -2309,15 +2340,28 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     </div>
 
     <style>
-      .fin-sheet th { vertical-align: middle; }
-      .fin-pct-input { width: 42px; padding: 2px 4px; margin-left: 4px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); font-size: 11px; font-weight: 700; text-align: center; }
+      .fin-sheet th { vertical-align: middle; white-space: normal; line-height: 1.3; }
+      .fin-sheet th, .fin-sheet td { padding: 10px 8px; }
+      .fin-pct-input { width: 40px; padding: 2px 4px; margin-left: 3px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); font-size: 11px; font-weight: 700; text-align: center; }
+      .fin-pct-input:disabled { background: var(--bg2); color: var(--muted); cursor: not-allowed; opacity: .75; }
       .fin-sep-th { border-left: 4px solid var(--text); }
       .fin-sheet td.fin-sep-td { border-left: 4px solid var(--text); }
       .fin-cell-input { width: 100%; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--text); padding: 4px 2px; border-radius: 6px; }
       .fin-cell-input:focus { background: var(--rose-soft); outline: none; }
-      .fin-cell-num { width: 82px; }
+      .fin-cell-num { width: 78px; }
       .fin-row-del { opacity: 0; transition: opacity .15s; }
       .fin-sheet tbody tr:hover .fin-row-del { opacity: 1; }
+      #fin-pct-lock-btn.locked { color: var(--red); border-color: var(--red-light); }
+      #fin-pct-lock-btn.unlocked { color: var(--green); border-color: var(--green-light); }
+      .fin-producto-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; text-align: center; padding: 4px 2px; border-radius: 10px; transition: background .15s; }
+      .fin-producto-cell:hover { background: var(--rose-soft); }
+      .fin-producto-cell img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 1.5px solid var(--line2); }
+      .fin-producto-cell .fin-producto-talla { font-size: 10.5px; font-weight: 800; color: var(--rose-dark); background: var(--rose-xlight); padding: 1px 8px; border-radius: 8px; }
+      .fin-producto-cell .fin-producto-nombre { font-size: 9.5px; color: var(--muted); max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .vp-prod-card { border: 1.5px solid var(--line2); border-radius: 14px; padding: 10px; cursor: pointer; text-align: center; transition: all .15s; background: var(--card); }
+      .vp-prod-card:hover { border-color: var(--rose); box-shadow: var(--shadow); transform: translateY(-2px); }
+      .vp-prod-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 6px; }
+      .vp-prod-card .vp-prod-name { font-size: 11.5px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 
     <!-- ====== ALERTAS DE REINGRESO ====== -->
@@ -12502,12 +12546,13 @@ const finDistMeta = {
 let finanzas = JSON.parse(localStorage.getItem('dzoe_finanzas') || '[]').map(f => {
   if (f.proveedor === undefined) f.proveedor = f.proveedor || '';
   if (f.producto === undefined) f.producto = f.nota || f.producto || '';
-  return { id: f.id, proveedor: f.proveedor||'', producto: f.producto||'', inversion: f.inversion||0, venta: f.venta||0, fecha: f.fecha || new Date().toISOString().slice(0,10) };
+  return { id: f.id, proveedor: f.proveedor||'', producto: f.producto||'', img: f.img||'', talla: f.talla||'', inversion: f.inversion||0, venta: f.venta||0, fecha: f.fecha || new Date().toISOString().slice(0,10) };
 });
 let finPercentages = Object.assign(
   { reinvertir:15, imprevistos:5, ahorro:10, invertir:10, personal:10 },
   JSON.parse(localStorage.getItem('dzoe_fin_pct') || '{}')
 );
+let finPctLocked = JSON.parse(localStorage.getItem('dzoe_fin_pct_locked') || 'true');
 // fondosManual: ajustes manuales (+/-) aplicados encima de lo calculado por el cuadro
 let fondosManual = Object.assign({ reinvertir:0, imprevistos:0, ahorro:0, invertir:0, personal:0 }, JSON.parse(localStorage.getItem('dzoe_fondos_manual') || '{}'));
 let currentFondoMovTipo = 'agregar';
@@ -12557,12 +12602,149 @@ async function deleteFinanzaRow(id) {
 }
 
 function onPctChange() {
+  if (finPctLocked) return;
   FIN_DIST_KEYS.forEach(k => {
     const el = document.getElementById('pct-'+k);
     if (el) finPercentages[k] = parseFloat(el.value) || 0;
   });
   saveFinPercentages();
   renderFinanzas({ keepFocus: true });
+}
+
+// ---------- Candado de porcentajes ----------
+function applyFinPctLockUI() {
+  const btn = document.getElementById('fin-pct-lock-btn');
+  FIN_DIST_KEYS.forEach(k => {
+    const el = document.getElementById('pct-'+k);
+    if (el) el.disabled = finPctLocked;
+  });
+  if (btn) {
+    btn.classList.toggle('locked', finPctLocked);
+    btn.classList.toggle('unlocked', !finPctLocked);
+    btn.innerHTML = finPctLocked ? '<i class="fas fa-lock"></i>' : '<i class="fas fa-lock-open"></i>';
+    btn.title = finPctLocked ? 'Porcentajes bloqueados — clic para desbloquear' : 'Porcentajes desbloqueados — clic para bloquear';
+  }
+}
+async function toggleFinPctLock() {
+  if (finPctLocked) {
+    finPctLocked = false;
+  } else {
+    if (!(await customConfirm('¿Bloquear los porcentajes para evitar cambios accidentales?', { title: 'Bloquear porcentajes' }))) return;
+    finPctLocked = true;
+  }
+  localStorage.setItem('dzoe_fin_pct_locked', JSON.stringify(finPctLocked));
+  applyFinPctLockUI();
+}
+
+// ---------- Registrar venta pasada (selección visual de producto) ----------
+let vpSelectedProduct = null;
+let vpTargetRowId = null; // si está seteado, edita esa fila en vez de crear una nueva
+
+function finProductoCellHtml(f) {
+  if (f.img || f.talla) {
+    return `<div class="fin-producto-cell" onclick="editFinProductoCell(${f.id})" title="Clic para cambiar producto">
+      ${f.img ? `<img src="${f.img}" alt="">` : `<div style="width:40px;height:40px;border-radius:8px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:16px;">👗</div>`}
+      ${f.talla ? `<span class="fin-producto-talla">${f.talla}</span>` : ''}
+      ${f.producto ? `<span class="fin-producto-nombre">${f.producto}</span>` : ''}
+    </div>`;
+  }
+  return `<input type="text" class="fin-cell-input" value="${(f.producto||'').replace(/"/g,'&quot;')}" placeholder="Producto" onchange="updateFinanzaField(${f.id},'producto',this.value)">`;
+}
+
+function editFinProductoCell(rowId) {
+  vpTargetRowId = rowId;
+  openVentaPasadaModal(true);
+}
+
+function openVentaPasadaModal(keepTarget) {
+  if (!keepTarget) vpTargetRowId = null;
+  vpSelectedProduct = null;
+  document.getElementById('vp-search').value = '';
+  document.getElementById('vp-step-producto').style.display = 'block';
+  document.getElementById('vp-step-detalle').style.display = 'none';
+  renderVentaPasadaGrid();
+  document.getElementById('venta-pasada-modal').classList.add('open');
+}
+function closeVentaPasadaModal() {
+  document.getElementById('venta-pasada-modal').classList.remove('open');
+  vpSelectedProduct = null;
+  vpTargetRowId = null;
+}
+function renderVentaPasadaGrid() {
+  const grid = document.getElementById('vp-grid');
+  if (!grid) return;
+  const q = (document.getElementById('vp-search')?.value || '').trim().toLowerCase();
+  const list = (window._allProducts || products || []).filter(p => !q || (p.name||'').toLowerCase().includes(q));
+  if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Sin productos encontrados</div>'; return; }
+  grid.innerHTML = list.map(p => {
+    const img = (p.images && p.images[0]) || p.image || '';
+    return `<div class="vp-prod-card" onclick="selectVpProduct('${p.id}')">
+      ${img ? `<img src="${img}" alt="">` : `<div style="width:100%;aspect-ratio:1/1;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;">👗</div>`}
+      <div class="vp-prod-name">${p.name}</div>
+    </div>`;
+  }).join('');
+}
+function selectVpProduct(productId) {
+  const p = (window._allProducts || products || []).find(x => String(x.id) === String(productId));
+  if (!p) return;
+  vpSelectedProduct = p;
+  const img = (p.images && p.images[0]) || p.image || '';
+  document.getElementById('vp-producto-info').innerHTML = `
+    ${img ? `<img src="${img}" style="width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:52px;height:52px;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👗</div>'}
+    <div><div style="font-weight:700;font-size:14px;">${p.name}</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px;">${(p.categories||[]).join(', ')||'Sin categoría'}</div></div>`;
+  const sizeSel = document.getElementById('vp-size');
+  sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
+    (p.sizes||[]).map(s => `<option value="${s.size}" data-price="${s.price||0}" data-cost="${s.cost||0}">${s.size} — S/ ${(s.price||0).toFixed(2)}</option>`).join('');
+
+  const editingRow = vpTargetRowId ? finanzas.find(x => String(x.id) === String(vpTargetRowId)) : null;
+  document.getElementById('vp-proveedor').value = editingRow ? (editingRow.proveedor||'') : '';
+  document.getElementById('vp-inversion').value = editingRow ? (editingRow.inversion||'') : '';
+  document.getElementById('vp-venta').value = editingRow ? (editingRow.venta||'') : '';
+  document.getElementById('vp-fecha').value = editingRow ? (editingRow.fecha||new Date().toISOString().slice(0,10)) : new Date().toISOString().slice(0,10);
+  if (editingRow && editingRow.talla) sizeSel.value = editingRow.talla;
+
+  document.getElementById('vp-step-producto').style.display = 'none';
+  document.getElementById('vp-step-detalle').style.display = 'block';
+}
+function onVpSizeChange() {
+  const sel = document.getElementById('vp-size');
+  const opt = sel.options[sel.selectedIndex];
+  if (opt && opt.value) {
+    document.getElementById('vp-inversion').value = parseFloat(opt.dataset.cost || 0).toFixed(2);
+    document.getElementById('vp-venta').value = parseFloat(opt.dataset.price || 0).toFixed(2);
+  }
+}
+function backToVpProductos() {
+  document.getElementById('vp-step-producto').style.display = 'block';
+  document.getElementById('vp-step-detalle').style.display = 'none';
+}
+function saveVentaPasada() {
+  if (!vpSelectedProduct) return;
+  const size = document.getElementById('vp-size').value;
+  if (!size) { showAlert('Selecciona una talla', 'error'); return; }
+  const inversion = parseFloat(document.getElementById('vp-inversion').value) || 0;
+  const venta = parseFloat(document.getElementById('vp-venta').value) || 0;
+  const proveedor = document.getElementById('vp-proveedor').value.trim();
+  const fecha = document.getElementById('vp-fecha').value || new Date().toISOString().slice(0,10);
+  const img = (vpSelectedProduct.images && vpSelectedProduct.images[0]) || vpSelectedProduct.image || '';
+
+  if (vpTargetRowId) {
+    const f = finanzas.find(x => String(x.id) === String(vpTargetRowId));
+    if (f) {
+      Object.assign(f, { proveedor, producto: vpSelectedProduct.name, img, talla: size, inversion, venta, fecha });
+      saveFinanzasData();
+      renderFinanzas();
+      showAlert('✅ Producto de la fila actualizado');
+    }
+  } else {
+    const row = { id: Date.now(), proveedor, producto: vpSelectedProduct.name, img, talla: size, inversion, venta, fecha };
+    finanzas.push(row);
+    saveFinanzasData();
+    renderFinanzas();
+    showAlert('✅ Venta agregada al cuadro de Finanzas');
+  }
+  closeVentaPasadaModal();
 }
 
 function exportFinanzas() {
@@ -12670,6 +12852,7 @@ function renderFinanzas(opts) {
 
   // % header inputs (por si se re-renderiza tras cargar datos)
   FIN_DIST_KEYS.forEach(k => { const el = document.getElementById('pct-'+k); if (el && document.activeElement !== el) el.value = finPercentages[k]; });
+  applyFinPctLockUI();
   const pctSum = FIN_DIST_KEYS.reduce((a,k)=>a+(finPercentages[k]||0),0);
   const warn = document.getElementById('fin-pct-warning');
   if (warn) {
@@ -12695,7 +12878,7 @@ function renderFinanzas(opts) {
       const dist = finDistribucion(f);
       return `<tr data-row-id="${f.id}">
         <td><input type="text" class="fin-cell-input fin-cell-proveedor" list="fin-proveedores-list" value="${(f.proveedor||'').replace(/"/g,'&quot;')}" placeholder="Proveedor" onchange="updateFinanzaField(${f.id},'proveedor',this.value)"></td>
-        <td><input type="text" class="fin-cell-input" value="${(f.producto||'').replace(/"/g,'&quot;')}" placeholder="Producto" onchange="updateFinanzaField(${f.id},'producto',this.value)"></td>
+        <td>${finProductoCellHtml(f)}</td>
         <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.inversion||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'inversion',this.value)"></td>
         <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.venta||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'venta',this.value)"></td>
         <td style="font-weight:800;color:${g>=0?'var(--green)':'var(--red)'};">S/ ${g.toFixed(2)}</td>
