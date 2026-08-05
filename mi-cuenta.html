@@ -1002,181 +1002,15 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
     <!-- Stats row (solo visible en Dashboard) -->
     <div class="stats-grid" id="global-stats" style="display:none;">
-      <div class="stat-card"><div class="stat-card-icon"><i class="fas fa-box"></i></div><h3>Productos</h3><div class="stat-value" id="total-products">0</div><div class="stat-change"><i class="fas fa-boxes-stacked"></i> En inventario</div></div>
       <div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-warehouse"></i></div><h3>Stock Total</h3><div class="stat-value" id="total-stock">0</div><div class="stat-change"><i class="fas fa-arrow-up"></i> Unidades</div></div>
       <div class="stat-card orange"><div class="stat-card-icon"><i class="fas fa-wallet"></i></div><h3>Valor Inventario</h3><div class="stat-value" id="inventory-value">S/0</div></div>
-      <div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-sack-dollar"></i></div><h3>Ventas Totales</h3><div class="stat-value" id="stat-total-sales">S/0</div></div>
     </div>
 
     <!-- ====== DASHBOARD ====== -->
     <div id="dashboard-section" class="page-section">
 
-      <div class="charts-row">
-        <div class="chart-card">
-          <div class="chart-title">Ventas por mes</div>
-          <div class="chart-sub">Ingresos acumulados en los últimos 6 meses</div>
-          <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
-        </div>
-        <div class="mini-stats-col">
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--rose-light);color:var(--rose)"><i class="fas fa-receipt"></i></div>
-            <div><div class="mini-stat-label">Pedidos totales</div><div class="mini-stat-val" id="dash-total-orders">0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--green-light);color:var(--green)"><i class="fas fa-check-double"></i></div>
-            <div><div class="mini-stat-label">Confirmados</div><div class="mini-stat-val" id="dash-confirmed">0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--orange-light);color:var(--orange)"><i class="fas fa-clock"></i></div>
-            <div><div class="mini-stat-label">Pendientes</div><div class="mini-stat-val" id="dash-pending">0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--blue-light);color:var(--blue)"><i class="fas fa-chart-line"></i></div>
-            <div><div class="mini-stat-label">Ticket promedio</div><div class="mini-stat-val" id="dash-avg-ticket">S/0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--lav-light);color:var(--lavender)"><i class="fas fa-percent"></i></div>
-            <div><div class="mini-stat-label">Cancelados</div><div class="mini-stat-val" id="dash-cancelled">0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--mint-soft);color:var(--mint)"><i class="fas fa-coins"></i></div>
-            <div><div class="mini-stat-label">Ingreso hoy</div><div class="mini-stat-val" id="dash-today">S/0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--green-light);color:var(--green)"><i class="fas fa-sack-dollar"></i></div>
-            <div><div class="mini-stat-label">Ganancia productos vendidos</div><div class="mini-stat-val" id="dash-profit-sold" style="color:var(--green);">S/0</div></div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-icon" style="background:var(--peach-light);color:var(--peach)"><i class="fas fa-triangle-exclamation"></i></div>
-            <div><div class="mini-stat-label">Stock crítico</div><div class="mini-stat-val" id="dash-low-stock">0</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions Row -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;" id="dash-quick-actions">
-        <button class="dash-quick-btn" onclick="goToSection('add-product-section')"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
-        <button class="dash-quick-btn" style="--qbg:var(--lav-light);--qclr:var(--lavender);" onclick="goToSection('sales-section')"><i class="fas fa-receipt"></i><span>Ver Ventas</span></button>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="chart-card">
-          <div class="chart-title">Métodos de pago</div>
-          <div class="chart-sub">Distribución por método</div>
-          <div class="chart-wrap"><canvas id="methodChart"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Top Productos vendidos</div>
-          <div class="chart-sub">Por número de pedidos</div>
-          <div id="top-products-list" style="margin-top:8px;"></div>
-        </div>
-      </div>
-
-      <!-- Ultimas ventas rápidas -->
-      <div class="section" style="margin-top:24px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-clock-rotate-left" style="color:var(--rose)"></i> Últimas ventas</div>
-          <button class="btn btn-ghost btn-sm" onclick="goToSection('sales-section')"><i class="fas fa-arrow-right"></i> Ver todas</button>
-        </div>
-        <div class="section-body" style="padding:0;">
-          <div class="table-wrap">
-            <table class="orders-table" id="recent-sales-table">
-              <thead><tr><th>Pedido</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Método</th><th>Estado</th><th>Fecha</th></tr></thead>
-              <tbody id="recent-sales-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== BLOQUE HOY ====== -->
-      <div style="margin-top:24px;">
-        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-calendar-day" style="color:var(--rose);"></i> HOY</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-          <div class="stat-card green" style="padding:18px 20px;">
-            <div class="stat-card-icon"><i class="fas fa-coins"></i></div>
-            <h3>Ventas hoy</h3>
-            <div class="stat-value" id="hoy-ventas" style="font-size:28px;">S/0</div>
-            <div class="stat-change"><i class="fas fa-arrow-up"></i> <span id="hoy-ventas-pct">vs ayer</span></div>
-          </div>
-          <div class="stat-card blue" style="padding:18px 20px;">
-            <div class="stat-card-icon"><i class="fas fa-receipt"></i></div>
-            <h3>Pedidos hoy</h3>
-            <div class="stat-value" id="hoy-pedidos" style="font-size:28px;">0</div>
-            <div class="stat-change" id="hoy-pedidos-sub">pedidos nuevos</div>
-          </div>
-          <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--mint);">
-            <div class="stat-card-icon" style="background:var(--mint-soft);color:var(--mint);"><i class="fas fa-sack-dollar"></i></div>
-            <h3>Ganancia hoy</h3>
-            <div class="stat-value" id="hoy-ganancia" style="font-size:28px;color:var(--mint);">S/0</div>
-            <div class="stat-change" style="color:var(--mint);">Estimada</div>
-          </div>
-          <div class="stat-card orange" style="padding:18px 20px;">
-            <div class="stat-card-icon"><i class="fas fa-user-plus"></i></div>
-            <h3>Nuevos clientes</h3>
-            <div class="stat-value" id="hoy-clientes" style="font-size:28px;">0</div>
-            <div class="stat-change">registrados hoy</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== BLOQUE ALERTAS ====== -->
-      <div style="margin-top:24px;">
-        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-triangle-exclamation" style="color:var(--orange);"></i> ALERTAS</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-          <div class="stat-card" onclick="goToSection('inventory-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--red);">
-            <div class="stat-card-icon" style="background:var(--red-light);color:var(--red);"><i class="fas fa-boxes-stacked"></i></div>
-            <h3>Stock crítico</h3>
-            <div class="stat-value" id="alerta-stock" style="font-size:28px;color:var(--red);">0</div>
-            <div class="stat-change" style="color:var(--red);">productos &lt;= 3 uds</div>
-          </div>
-          <div class="stat-card" onclick="goToSection('carritos-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--orange);">
-            <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-cart-arrow-down"></i></div>
-            <h3>Carritos abandonados</h3>
-            <div class="stat-value" id="alerta-carritos" style="font-size:28px;color:var(--orange);">0</div>
-            <div class="stat-change" style="color:var(--orange);">sin recuperar</div>
-          </div>
-          <div class="stat-card" onclick="goToSection('sales-section')" style="padding:18px 20px;cursor:pointer;border-left:4px solid var(--blue);">
-            <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-clock"></i></div>
-            <h3>Pedidos pendientes</h3>
-            <div class="stat-value" id="alerta-pendientes" style="font-size:28px;color:var(--blue);">0</div>
-            <div class="stat-change" style="color:var(--blue);">por confirmar</div>
-          </div>
-          <div class="stat-card" style="padding:18px 20px;border-left:4px solid var(--muted);">
-            <div class="stat-card-icon" style="background:var(--bg2);color:var(--muted);"><i class="fas fa-ban"></i></div>
-            <h3>Sin movimiento</h3>
-            <div class="stat-value" id="alerta-sin-movimiento" style="font-size:28px;color:var(--muted);">0</div>
-            <div class="stat-change" style="color:var(--muted);">más de 30 días</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== BLOQUE TOP ====== -->
-      <div style="margin-top:24px;">
-        <div style="font-family:Baloo2,cursive;font-size:17px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><i class="fas fa-trophy" style="color:var(--orange);"></i> TOP</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-          <div class="section" style="min-height:160px;">
-            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--orange);">🔥 Más vendidos</div></div>
-            <div id="top-mas-vendidos" style="padding:0 14px 14px;font-size:12px;"></div>
-          </div>
-          <div class="section" style="min-height:160px;">
-            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--blue);">👁️ Más vistos</div></div>
-            <div id="top-mas-vistos" style="padding:0 14px 14px;font-size:12px;color:var(--muted);">Conecta analytics para ver datos</div>
-          </div>
-          <div class="section" style="min-height:160px;">
-            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--green);">💰 Más rentables</div></div>
-            <div id="top-mas-rentables" style="padding:0 14px 14px;font-size:12px;"></div>
-          </div>
-          <div class="section" style="min-height:160px;">
-            <div class="section-header" style="padding:14px 16px;"><div style="font-size:12px;font-weight:800;color:var(--muted);">📉 Menos vendidos</div></div>
-            <div id="top-menos-vendidos" style="padding:0 14px 14px;font-size:12px;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== ACCESOS RÁPIDOS HEADER ====== -->
-
-      <!-- Deudores rápidos -->
-      <div class="section" style="margin-top:24px;border-left:4px solid var(--orange);">
+      <!-- Deudores activos -->
+      <div class="section" style="border-left:4px solid var(--orange);">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Deudores activos <span id="dash-deudores-count" style="background:var(--orange-light);color:var(--orange);font-size:11px;padding:2px 10px;border-radius:99px;margin-left:6px;font-weight:700;"></span></div>
           <button class="btn btn-ghost btn-sm" onclick="goToSection('sales-section')" style="color:var(--orange);"><i class="fas fa-arrow-right"></i> Ver todos</button>
@@ -1187,59 +1021,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
               <thead><tr><th>Cliente</th><th>Producto</th><th>Total</th><th>Adelantó</th><th style="color:var(--orange);">Debe</th><th>Fecha</th><th>Acción</th></tr></thead>
               <tbody id="dash-deudores-body"></tbody>
             </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== ANALYTICS DE VISITAS ====== -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;">
-        <!-- Países visitantes -->
-        <div class="section">
-          <div class="section-header">
-            <div class="section-title"><i class="fas fa-earth-americas" style="color:var(--sky)"></i> Países visitantes</div>
-            <div style="font-size:11px;color:var(--muted);">Últimos 30 días · Google Analytics</div>
-          </div>
-          <div class="section-body">
-            <div id="countries-list" style="display:flex;flex-direction:column;gap:10px;">
-              <div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">
-                <i class="fas fa-plug" style="font-size:28px;margin-bottom:10px;display:block;opacity:.4;"></i>
-                Conecta Google Analytics o pega los datos manualmente abajo
-              </div>
-            </div>
-            <div style="margin-top:16px;border-top:1px solid var(--line2);padding-top:14px;">
-              <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;">Ingresar datos manualmente</div>
-              <div id="countries-manual-inputs" style="display:flex;flex-direction:column;gap:8px;"></div>
-              <button class="btn btn-ghost btn-sm" style="margin-top:8px;font-size:11px;" onclick="addCountryRow()"><i class="fas fa-plus"></i> Agregar país</button>
-              <button class="btn btn-primary btn-sm" style="margin-top:8px;font-size:11px;margin-left:6px;" onclick="withLoading(this, saveCountriesData)"><i class="fas fa-floppy-disk"></i> Guardar</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Visitas por período -->
-        <div class="section">
-          <div class="section-header">
-            <div class="section-title"><i class="fas fa-chart-line" style="color:var(--lavender)"></i> Visitas a la tienda</div>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-ghost btn-sm visits-period-btn active" data-period="day" onclick="switchVisitsPeriod('day',this)" style="font-size:11px;">Días</button>
-              <button class="btn btn-ghost btn-sm visits-period-btn" data-period="month" onclick="switchVisitsPeriod('month',this)" style="font-size:11px;">Meses</button>
-            </div>
-          </div>
-          <div class="section-body" style="padding:12px 20px 20px;">
-            <div style="height:200px;"><canvas id="visitsChart"></canvas></div>
-            <div style="margin-top:14px;border-top:1px solid var(--line2);padding-top:12px;">
-              <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;">Actualizar visitas</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end;">
-                <div class="form-group" style="margin:0;">
-                  <label style="font-size:11px;">Fecha</label>
-                  <input type="date" id="visit-date-input" style="padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;font-family:'Nunito',sans-serif;background:var(--card);color:var(--text);width:100%;">
-                </div>
-                <div class="form-group" style="margin:0;">
-                  <label style="font-size:11px;">Nº visitas</label>
-                  <input type="number" id="visit-count-input" min="0" placeholder="Ej: 120" style="padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;font-family:'Nunito',sans-serif;background:var(--card);color:var(--text);width:100%;">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="withLoading(this, saveVisitEntry)" style="font-size:11px;padding:8px 12px;"><i class="fas fa-plus"></i></button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -3520,14 +3301,17 @@ async function loadAllData() {
   showToast('Cargando datos...');
   // returns promise so callers can chain .then()
   if (!supabaseClient) { showAlert('No se encontró config.js', 'error'); return; }
-  const [productsRes, categoriesRes, ordersRes, clientOverridesRes, clientMergesRes] = await Promise.all([
+  const [productsRes, categoriesRes, ordersRes, clientOverridesRes, clientMergesRes, almacenRes] = await Promise.all([
     supabaseClient.from('products').select('*').order('created_at', { ascending: false }),
     supabaseClient.from('categories').select('*').order('name'),
     supabaseClient.from('orders').select('*').order('created_at', { ascending: false }),
     supabaseClient.from('client_overrides').select('*'),
-    supabaseClient.from('client_merges').select('*')
+    supabaseClient.from('client_merges').select('*'),
+    supabaseClient.from('upcoming_products').select('*')
   ]);
   products = productsRes.data || [];
+  almacenItems = almacenRes.error ? [] : (almacenRes.data || []);
+  const _badgeAlmacen = document.getElementById('badge-almacen'); if (_badgeAlmacen) _badgeAlmacen.textContent = almacenItems.length;
   categories = (categoriesRes.data || []).map(c => ({ name: c.name, emoji: c.emoji, color: c.color }));
   applyCatAssignments();
   orders = (ordersRes.data || []).map(o => {
@@ -3577,16 +3361,17 @@ async function loadAllData() {
 // STATS
 // ============================================
 function updateStats() {
-  document.getElementById('total-products').textContent = products.length;
   document.getElementById('badge-products').textContent = products.length;
   document.getElementById('badge-categories').textContent = categories.length;
   document.getElementById('badge-orders').textContent = orders.length;
+  // Stock Total y Valor Inventario = suma de Inventario + Almacén (todas las tallas de cada producto)
   let stock = 0, invVal = 0;
   products.forEach(p => { (p.sizes||[]).forEach(s => { stock += s.stock||0; invVal += (s.cost||0)*(s.stock||0); }); });
-  document.getElementById('total-stock').textContent = stock;
-  document.getElementById('inventory-value').textContent = 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
-  const totalSales = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  document.getElementById('stat-total-sales').textContent = 'S/'+totalSales.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
+  (almacenItems||[]).forEach(p => { (p.sizes||[]).forEach(s => { stock += s.stock||0; invVal += (s.cost||0)*(s.stock||0); }); });
+  const elStock = document.getElementById('total-stock');
+  if (elStock) elStock.textContent = stock;
+  const elInvVal = document.getElementById('inventory-value');
+  if (elInvVal) elInvVal.textContent = 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
 }
 
 // ============================================
@@ -3595,94 +3380,6 @@ function updateStats() {
 let salesChartInst = null, methodChartInst = null;
 
 function updateDashboard() {
-  const confirmed = orders.filter(o => o.status === 'confirmed').length;
-  const pending = orders.filter(o => o.status === 'pending' || !o.status).length;
-  const totalAmt = orders.reduce((a,o) => a + (parseFloat(o.total)||0), 0);
-  document.getElementById('dash-total-orders').textContent = orders.length;
-  document.getElementById('dash-confirmed').textContent = confirmed;
-  document.getElementById('dash-pending').textContent = pending;
-  document.getElementById('dash-avg-ticket').textContent = orders.length ? 'S/'+Math.round(totalAmt/orders.length) : 'S/0';
-  // Extra stats (cancelled, today revenue, low stock)
-  const _cancelled = orders.filter(o => o.status === 'cancelled').length;
-  const _todayStr = new Date().toISOString().slice(0,10);
-  const _todayAmt = orders.filter(o => o.status === 'confirmed' && (o.created_at||'').slice(0,10) === _todayStr).reduce((a,o)=>a+(parseFloat(o.total)||0), 0);
-  const _lowStock = products.filter(p => { const t=(p.sizes||[]).reduce((a,s)=>a+(s.stock||0),0); return t>0&&t<=5; }).length;
-  const _elC = document.getElementById('dash-cancelled'); if (_elC) _elC.textContent = _cancelled;
-  const _elT = document.getElementById('dash-today'); if (_elT) _elT.textContent = 'S/'+_todayAmt.toFixed(0);
-  const _elL = document.getElementById('dash-low-stock'); if (_elL) _elL.textContent = _lowStock;
-
-  // Ganancia de productos vendidos (precio venta - costo * qty, solo órdenes confirmadas)
-  let _profitSold = 0;
-  orders.filter(o => o.status === 'confirmed').forEach(o => {
-    (o.items||[]).forEach(it => {
-      const prod = _findSoldProduct(it);
-      const sizeObj = _getSizeObjForItem(prod, it);
-      const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
-      const price = it.price || sizeObj?.price || 0;
-      _profitSold += (price - cost) * (it.qty || 1);
-    });
-  });
-  const _elProfit = document.getElementById('dash-profit-sold');
-  if (_elProfit) _elProfit.textContent = 'S/'+_profitSold.toFixed(0);
-
-  // Sales chart by month
-  const months = {};
-  const now = new Date();
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
-    const key = d.toLocaleDateString('es-PE',{month:'short',year:'2-digit'});
-    months[key] = 0;
-  }
-  orders.forEach(o => {
-    if (!o.created_at) return;
-    const d = new Date(o.created_at);
-    const key = d.toLocaleDateString('es-PE',{month:'short',year:'2-digit'});
-    if (months[key] !== undefined) months[key] += parseFloat(o.total)||0;
-  });
-  const ctx1 = document.getElementById('salesChart').getContext('2d');
-  if (salesChartInst) salesChartInst.destroy();
-  salesChartInst = new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(months),
-      datasets: [{ label: 'Ventas (S/)', data: Object.values(months), backgroundColor: 'rgba(194,97,122,.75)', borderRadius: 8, borderSkipped: false }]
-    },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{family:'Nunito',size:11}}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
-  });
-
-  // Method chart
-  const methodCounts = { yape:0, plin:0, sip:0, bank:0 };
-  orders.forEach(o => { if (o.payment_method && methodCounts[o.payment_method] !== undefined) methodCounts[o.payment_method]++; });
-  const ctx2 = document.getElementById('methodChart').getContext('2d');
-  if (methodChartInst) methodChartInst.destroy();
-  methodChartInst = new Chart(ctx2, {
-    type: 'doughnut',
-    data: {
-      labels: ['Yape','Plin','Sip','Interbank'],
-      datasets: [{ data: Object.values(methodCounts), backgroundColor: ['#7c3aed','#2563eb','#059669','#d97706'], borderWidth: 2, borderColor: '#fff' }]
-    },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{family:'Nunito',size:11}, boxWidth:12 } } }, cutout:'65%' }
-  });
-
-  // Top products
-  const productCount = {};
-  orders.forEach(o => { (o.items||[]).forEach(it => { const n = it.name||'Sin nombre'; productCount[n] = (productCount[n]||0)+(it.qty||1); }); });
-  const sorted = Object.entries(productCount).sort((a,b) => b[1]-a[1]).slice(0,5);
-  const maxV = sorted[0]?.[1] || 1;
-  const topEl = document.getElementById('top-products-list');
-  topEl.innerHTML = sorted.length ? sorted.map(([name, count]) => `
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-      <div style="flex:1;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${name}</div>
-      <div style="flex:1.5;background:var(--bg2);border-radius:4px;height:8px;overflow:hidden;">
-        <div style="width:${Math.round(count/maxV*100)}%;height:100%;background:var(--rose);border-radius:4px;"></div>
-      </div>
-      <div style="font-size:12px;color:var(--muted);width:28px;text-align:right;">${count}</div>
-    </div>`) .join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-chart-bar"></i><br>Sin datos aún</div>';
-
-  // Recent sales
-  const recent = [...orders].slice(0,8);
-  document.getElementById('recent-sales-body').innerHTML = recent.map(o => salesRowHtml(o)).join('') || `<tr><td colspan="7" class="empty-state" style="text-align:center;padding:30px;color:var(--muted)">Sin ventas registradas</td></tr>`;
-
   // Sales stats
   const today = new Date().toDateString();
   const salesTotal = orders.reduce((a,o) => a+(parseFloat(o.total)||0), 0);
