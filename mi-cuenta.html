@@ -1447,8 +1447,8 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <option value="todo" selected>Todo el tiempo</option>
           </select>
           <button class="btn btn-sm" style="background:var(--lav-light);color:var(--lavender);font-weight:700;" onclick="exportFinanzas()"><i class="fas fa-download"></i> Exportar</button>
-          <button class="btn btn-sm" style="background:var(--mint-soft);color:var(--mint);font-weight:700;" onclick="openVentaPasadaModal()"><i class="fas fa-clock-rotate-left"></i> Registrar venta pasada</button>
-          <button class="btn btn-primary btn-sm" onclick="addFinanzaRow()"><i class="fas fa-plus"></i> Agregar fila</button>
+          <button class="btn btn-sm" id="fin-btn-venta-pasada" style="background:var(--mint-soft);color:var(--mint);font-weight:700;" onclick="openVentaPasadaModal()"><i class="fas fa-clock-rotate-left"></i> Registrar venta pasada</button>
+          <button class="btn btn-primary btn-sm" id="fin-btn-agregar-fila" onclick="addFinanzaRow()"><i class="fas fa-plus"></i> Agregar fila</button>
         </div>
       </div>
 
@@ -1492,7 +1492,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         <div class="section-header">
           <div class="section-title"><i class="fas fa-table-cells" style="color:var(--green)"></i> Cuadro de ventas</div>
           <div style="display:flex;align-items:center;gap:14px;">
-            <button class="dark-toggle" id="fin-pct-lock-btn" onclick="toggleFinPctLock()" title="Bloquear/Desbloquear porcentajes" style="width:32px;height:32px;font-size:13px;"><i class="fas fa-lock"></i></button>
+            <button class="dark-toggle" id="fin-pct-lock-btn" onclick="toggleFinPctLock()" title="Bloquear/Desbloquear todo el cuadro" style="width:32px;height:32px;font-size:13px;"><i class="fas fa-lock"></i></button>
             <span style="font-size:11px;color:var(--muted);" id="fin-list-count">0 registros</span>
           </div>
         </div>
@@ -1629,13 +1629,17 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       .fin-sheet td.fin-sep-td { border-left: 4px solid var(--text); }
       .fin-cell-input { width: 100%; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--text); padding: 4px 2px; border-radius: 6px; }
       .fin-cell-input:focus { background: var(--rose-soft); outline: none; }
+      .fin-cell-input:disabled { background: var(--bg2); color: var(--muted); cursor: not-allowed; opacity: .7; }
       .fin-cell-num { width: 78px; }
       .fin-row-del { opacity: 0; transition: opacity .15s; }
       .fin-sheet tbody tr:hover .fin-row-del { opacity: 1; }
+      .fin-row-del:disabled { opacity: .35 !important; cursor: not-allowed; }
       #fin-pct-lock-btn.locked { color: var(--red); border-color: var(--red-light); }
       #fin-pct-lock-btn.unlocked { color: var(--green); border-color: var(--green-light); }
       .fin-producto-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; text-align: center; padding: 4px 2px; border-radius: 10px; transition: background .15s; }
       .fin-producto-cell:hover { background: var(--rose-soft); }
+      .fin-producto-cell.fin-locked { cursor: not-allowed; opacity: .7; }
+      .fin-producto-cell.fin-locked:hover { background: transparent; }
       .fin-producto-cell img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 1.5px solid var(--line2); }
       .fin-producto-cell .fin-producto-talla { font-size: 10.5px; font-weight: 800; color: var(--rose-dark); background: var(--rose-xlight); padding: 1px 8px; border-radius: 8px; }
       .fin-producto-cell .fin-producto-nombre { font-size: 9.5px; color: var(--muted); max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -9783,6 +9787,7 @@ function getPeriodoDates(periodo) {
 
 // ---------- Filas del cuadro ----------
 function addFinanzaRow() {
+  if (finPctLocked) { showAlert('El cuadro está bloqueado 🔒 — abre el candado para agregar filas', 'error'); return; }
   const today = new Date().toISOString().slice(0,10);
   const row = { id: Date.now(), proveedor:'', producto:'', inversion:0, venta:0, fecha: today };
   finanzas.push(row);
@@ -9795,6 +9800,7 @@ function addFinanzaRow() {
 }
 
 function updateFinanzaField(id, field, value) {
+  if (finPctLocked) { renderFinanzas({ keepFocus: true }); return; }
   const f = finanzas.find(x => String(x.id) === String(id));
   if (!f) return;
   if (field === 'inversion' || field === 'venta') {
@@ -9807,6 +9813,7 @@ function updateFinanzaField(id, field, value) {
 }
 
 async function deleteFinanzaRow(id) {
+  if (finPctLocked) { showAlert('El cuadro está bloqueado 🔒 — abre el candado para eliminar filas', 'error'); return; }
   if (!(await customConfirm('¿Eliminar esta fila?', { title: 'Eliminar registro' }))) return;
   finanzas = finanzas.filter(f => String(f.id) !== String(id));
   saveFinanzasData();
@@ -9823,29 +9830,41 @@ function onPctChange() {
   renderFinanzas({ keepFocus: true });
 }
 
-// ---------- Candado de porcentajes ----------
+// ---------- Candado del cuadro de ventas (bloquea TODO: proveedor, producto, inversión, venta, %, agregar/eliminar filas) ----------
 function applyFinPctLockUI() {
   const btn = document.getElementById('fin-pct-lock-btn');
   FIN_DIST_KEYS.forEach(k => {
     const el = document.getElementById('pct-'+k);
     if (el) el.disabled = finPctLocked;
   });
+  document.querySelectorAll('#finanzas-tbody input, #finanzas-tbody .fin-row-del').forEach(el => {
+    el.disabled = finPctLocked;
+  });
+  const addBtn = document.getElementById('fin-btn-agregar-fila');
+  const vpBtn = document.getElementById('fin-btn-venta-pasada');
+  [addBtn, vpBtn].forEach(b => {
+    if (!b) return;
+    b.disabled = finPctLocked;
+    b.style.opacity = finPctLocked ? '.55' : '';
+    b.style.cursor = finPctLocked ? 'not-allowed' : '';
+  });
   if (btn) {
     btn.classList.toggle('locked', finPctLocked);
     btn.classList.toggle('unlocked', !finPctLocked);
     btn.innerHTML = finPctLocked ? '<i class="fas fa-lock"></i>' : '<i class="fas fa-lock-open"></i>';
-    btn.title = finPctLocked ? 'Porcentajes bloqueados — clic para desbloquear' : 'Porcentajes desbloqueados — clic para bloquear';
+    btn.title = finPctLocked ? 'Cuadro bloqueado — clic para desbloquear' : 'Cuadro desbloqueado — clic para bloquear';
   }
 }
 async function toggleFinPctLock() {
   if (finPctLocked) {
     finPctLocked = false;
   } else {
-    if (!(await customConfirm('¿Bloquear los porcentajes para evitar cambios accidentales?', { title: 'Bloquear porcentajes' }))) return;
+    if (!(await customConfirm('¿Bloquear todo el cuadro de ventas (proveedor, producto, inversión, venta, porcentajes y agregar/eliminar filas) para evitar cambios accidentales?', { title: 'Bloquear cuadro de ventas' }))) return;
     finPctLocked = true;
   }
   localStorage.setItem('dzoe_fin_pct_locked', JSON.stringify(finPctLocked));
   applyFinPctLockUI();
+  renderFinanzas({ keepFocus: true });
 }
 
 // ---------- Registrar venta pasada (selección visual de producto) ----------
@@ -9854,21 +9873,23 @@ let vpTargetRowId = null; // si está seteado, edita esa fila en vez de crear un
 
 function finProductoCellHtml(f) {
   if (f.img || f.talla) {
-    return `<div class="fin-producto-cell" onclick="editFinProductoCell(${f.id})" title="Clic para cambiar producto">
+    return `<div class="fin-producto-cell${finPctLocked ? ' fin-locked' : ''}" ${finPctLocked ? '' : `onclick="editFinProductoCell(${f.id})"`} title="${finPctLocked ? 'Bloqueado — abre el candado para cambiar' : 'Clic para cambiar producto'}">
       ${f.img ? `<img src="${f.img}" alt="">` : `<div style="width:40px;height:40px;border-radius:8px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:16px;">👗</div>`}
       ${f.talla ? `<span class="fin-producto-talla">${f.talla}</span>` : ''}
       ${f.producto ? `<span class="fin-producto-nombre">${f.producto}</span>` : ''}
     </div>`;
   }
-  return `<input type="text" class="fin-cell-input" value="${(f.producto||'').replace(/"/g,'&quot;')}" placeholder="Producto" onchange="updateFinanzaField(${f.id},'producto',this.value)">`;
+  return `<input type="text" class="fin-cell-input" value="${(f.producto||'').replace(/"/g,'&quot;')}" placeholder="Producto" onchange="updateFinanzaField(${f.id},'producto',this.value)" ${finPctLocked ? 'disabled' : ''}>`;
 }
 
 function editFinProductoCell(rowId) {
+  if (finPctLocked) return;
   vpTargetRowId = rowId;
   openVentaPasadaModal(true);
 }
 
 function openVentaPasadaModal(keepTarget) {
+  if (finPctLocked) { showAlert('El cuadro está bloqueado 🔒 — abre el candado para registrar ventas', 'error'); return; }
   if (!keepTarget) vpTargetRowId = null;
   vpSelectedProduct = null;
   document.getElementById('vp-search').value = '';
@@ -10167,18 +10188,19 @@ function renderFinanzas(opts) {
     tbody.innerHTML = finF.length ? finF.map(f => {
       const g = finGanancia(f);
       const dist = finDistribucion(f);
+      const lockAttr = finPctLocked ? 'disabled' : '';
       return `<tr data-row-id="${f.id}">
-        <td><input type="text" class="fin-cell-input fin-cell-proveedor" list="fin-proveedores-list" value="${(f.proveedor||'').replace(/"/g,'&quot;')}" placeholder="Proveedor" onchange="updateFinanzaField(${f.id},'proveedor',this.value)"></td>
+        <td><input type="text" class="fin-cell-input fin-cell-proveedor" list="fin-proveedores-list" value="${(f.proveedor||'').replace(/"/g,'&quot;')}" placeholder="Proveedor" onchange="updateFinanzaField(${f.id},'proveedor',this.value)" ${lockAttr}></td>
         <td>${finProductoCellHtml(f)}</td>
-        <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.inversion||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'inversion',this.value)"></td>
-        <td><input type="number" class="fin-cell-input fin-cell-num" step="0.01" min="0" value="${f.venta||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'venta',this.value)"></td>
+        <td><input type="number" class="fin-cell-input fin-cell-num fin-cell-inversion" step="0.01" min="0" value="${f.inversion||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'inversion',this.value)" ${lockAttr}></td>
+        <td><input type="number" class="fin-cell-input fin-cell-num fin-cell-venta" step="0.01" min="0" value="${f.venta||''}" placeholder="0.00" onchange="updateFinanzaField(${f.id},'venta',this.value)" ${lockAttr}></td>
         <td style="font-weight:800;color:${g>=0?'var(--green)':'var(--red)'};">S/ ${g.toFixed(2)}</td>
         <td class="fin-sep-td">S/ ${dist.reinvertir.toFixed(2)}</td>
         <td>S/ ${dist.imprevistos.toFixed(2)}</td>
         <td>S/ ${dist.ahorro.toFixed(2)}</td>
         <td>S/ ${dist.invertir.toFixed(2)}</td>
         <td>S/ ${dist.personal.toFixed(2)}</td>
-        <td><button class="icon-btn delete-btn fin-row-del" onclick="deleteFinanzaRow(${f.id})"><i class="fas fa-trash"></i></button></td>
+        <td><button class="icon-btn delete-btn fin-row-del" onclick="deleteFinanzaRow(${f.id})" ${lockAttr}><i class="fas fa-trash"></i></button></td>
       </tr>`;
     }).join('') : `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px;">Sin filas en este período. Usa "Agregar fila" para empezar tu cuadro.</td></tr>`;
 
