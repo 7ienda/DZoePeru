@@ -4347,21 +4347,6 @@
     "url": "/productos/conjunto-mallita-fresa-3-piezas.html"
   },
   {
-    "id": 1785859107599,
-    "slug": "pantalon-jean-flores-crochet-bordado",
-    "name": "Pantalon Jean flores crochet bordado",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpCDwUwBMEON6BdUmRlRKCD05FoQBrZrSxWw6Qge-6snkNdVn5BUwmTghWmTk8MKBNuE13ovINiUXwafAWw_qcMh1nJRyH-Z5AEdr3SwVIMSaFkNrZNwKawVpgoEd8wueUTNcTF-iKRbukevNkhSO47uBxRfyeWrscHwkOQW2NYNOMNmLWOpc41cRSwdL7/s1600/pantalon-jean-flores-crochet-bordado.webp",
-    "categories": [
-      "Jeans",
-      "Pantalones Jeans",
-      "Pantalones",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/pantalon-jean-flores-crochet-bordado.html"
-  },
-  {
     "id": 1782835357855,
     "slug": "vestido-bunny-bb-3-piezas",
     "name": "Vestido Bunny BB 3 piezas",
@@ -5041,6 +5026,21 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-cardigan-lazo-de-corazones-2-piezas.html"
+  },
+  {
+    "id": 1785859107599,
+    "slug": "pantalon-jean-flores-crochet-bordado",
+    "name": "Pantalon Jean flores crochet bordado",
+    "price": 45,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpCDwUwBMEON6BdUmRlRKCD05FoQBrZrSxWw6Qge-6snkNdVn5BUwmTghWmTk8MKBNuE13ovINiUXwafAWw_qcMh1nJRyH-Z5AEdr3SwVIMSaFkNrZNwKawVpgoEd8wueUTNcTF-iKRbukevNkhSO47uBxRfyeWrscHwkOQW2NYNOMNmLWOpc41cRSwdL7/s1600/pantalon-jean-flores-crochet-bordado.webp",
+    "categories": [
+      "Jeans",
+      "Pantalones Jeans",
+      "Pantalones",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-flores-crochet-bordado.html"
   },
   {
     "id": 1785468568746,
