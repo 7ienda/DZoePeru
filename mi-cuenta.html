@@ -935,7 +935,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <button class="menu-btn" data-section="clients-section"><i class="fas fa-users"></i><span>Clientes</span><span class="badge" id="badge-clients">0</span></button>
     <button class="menu-btn" data-section="suppliers-section"><i class="fas fa-truck"></i><span>Proveedores</span><span class="badge" id="badge-suppliers">0</span></button>
     <span class="menu-label">Compras</span>
-    <button class="menu-btn" data-section="bolsas-section" onclick="goToSection('bolsas-section');renderBolsasSection();"><i class="fas fa-basket-shopping" style="color:#e07856;"></i><span style="color:#e07856;">Compras (Carritos)</span><span class="badge" id="badge-bolsas" style="background:rgba(224,120,86,.25);">0</span></button>
     <span class="menu-label">Finanzas</span>
     <button class="menu-btn" data-section="finanzas-section" onclick="goToSection('finanzas-section');loadFinanzas();"><i class="fas fa-sack-dollar" style="color:var(--green);"></i><span style="color:var(--green);">Finanzas</span><span class="badge" id="badge-finanzas" style="background:rgba(31,158,110,.22);">0</span></button>
     <span class="menu-label">Contenido</span>
@@ -2149,76 +2148,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
     <!-- ====== PROVEEDORES ====== -->
     <div id="suppliers-section" class="page-section" style="display:none;">
-      <div class="sup-tabs">
-        <button class="sup-tab-btn active" data-tab="directorio" onclick="switchSupplierTab('directorio')"><i class="fas fa-address-book"></i> Directorio</button>
-        <button class="sup-tab-btn" data-tab="origen" onclick="switchSupplierTab('origen')"><i class="fas fa-chart-pie"></i> Análisis por Origen <span class="sup-tab-badge">Temu, Shein...</span></button>
-      </div>
-
-      <div id="sup-tab-directorio" class="sup-tab-pane">
-      <!-- Dashboard -->
-      <div class="stats-grid" style="margin-bottom:24px;">
-        <div class="stat-card">
-          <div class="stat-card-icon"><i class="fas fa-truck"></i></div>
-          <h3>Proveedores</h3>
-          <div class="stat-value" id="sup-total">0</div>
-          <div class="stat-change">Registrados</div>
-        </div>
-        <div class="stat-card orange">
-          <div class="stat-card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-          <h3>Órdenes Activas</h3>
-          <div class="stat-value" id="sup-orders">0</div>
-          <div class="stat-change">En proceso</div>
-        </div>
-        <div class="stat-card blue">
-          <div class="stat-card-icon"><i class="fas fa-wallet"></i></div>
-          <h3>Total Invertido</h3>
-          <div class="stat-value" id="sup-invested">S/ 0</div>
-          <div class="stat-change">En órdenes de compra</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-card-icon"><i class="fas fa-star"></i></div>
-          <h3>Mejor Proveedor</h3>
-          <div class="stat-value" style="font-size:18px;" id="sup-best">—</div>
-          <div class="stat-change" id="sup-best-rating"></div>
-        </div>
-      </div>
-
-      <!-- Add supplier -->
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="sup-form-title">Nuevo Proveedor</span></div>
-          <button class="btn btn-ghost btn-sm" onclick="clearSupplierForm()"><i class="fas fa-broom"></i> Limpiar</button>
-        </div>
-        <div class="section-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;align-items:flex-end;">
-            <div class="form-group"><label>Empresa *</label><input type="text" id="sup-empresa" placeholder="Ej: Textiles Inca SAC"></div>
-            <div class="form-group"><label>Tipo de ropa</label><input type="text" id="sup-tipo" placeholder="Ej: Bebés, Niños, Pijamas"></div>
-            <div class="form-group"><label>Nombre de contacto</label><input type="text" id="sup-contacto" placeholder="Ej: María García"></div>
-            <div class="form-group"><label>Teléfono / WhatsApp</label><input type="text" id="sup-phone" placeholder="9XXXXXXXX"></div>
-            <div class="form-group">
-              <label>Rating (1–5 ⭐)</label>
-              <div id="sup-rating-stars" style="display:flex;gap:6px;margin-top:6px;">
-                <span class="star-btn" data-v="1" onclick="setSupRating(1)" style="font-size:22px;cursor:pointer;opacity:.3;">⭐</span>
-                <span class="star-btn" data-v="2" onclick="setSupRating(2)" style="font-size:22px;cursor:pointer;opacity:.3;">⭐</span>
-                <span class="star-btn" data-v="3" onclick="setSupRating(3)" style="font-size:22px;cursor:pointer;opacity:.3;">⭐</span>
-                <span class="star-btn" data-v="4" onclick="setSupRating(4)" style="font-size:22px;cursor:pointer;opacity:.3;">⭐</span>
-                <span class="star-btn" data-v="5" onclick="setSupRating(5)" style="font-size:22px;cursor:pointer;opacity:.3;">⭐</span>
-              </div>
-            </div>
-            <div class="form-group"><label>Notas</label><input type="text" id="sup-notes" placeholder="Observaciones..."></div>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="withLoading(this, saveSupplier)"><i class="fas fa-floppy-disk"></i> <span id="sup-save-btn-text">Guardar proveedor</span></button>
-            <button class="btn btn-ghost" onclick="clearSupplierForm()">Cancelar</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Suppliers list -->
-      <div id="suppliers-list-container"></div>
-      </div><!-- /sup-tab-directorio -->
-
-      <div id="sup-tab-origen" class="sup-tab-pane" style="display:none;">
+      <div id="sup-tab-origen" class="sup-tab-pane">
         <div id="origen-analytics-container"></div>
       </div><!-- /sup-tab-origen -->
     </div>
@@ -2261,178 +2191,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ====== BOLSAS DE COMPRA (Importaciones: Temu, Shein, etc.) ====== -->
-    <div id="bolsas-section" class="page-section" style="display:none;">
-      <div class="stats-grid" style="margin-bottom:24px;">
-        <div class="stat-card">
-          <div class="stat-card-icon"><i class="fas fa-basket-shopping"></i></div>
-          <h3>Compras este mes</h3>
-          <div class="stat-value" id="bolsa-mes-gastado">S/ 0.00</div>
-          <div class="stat-change" id="bolsa-mes-count">0 carritos</div>
-        </div>
-        <div class="stat-card blue">
-          <div class="stat-card-icon"><i class="fas fa-cart-shopping"></i></div>
-          <h3>Carritos Activos</h3>
-          <div class="stat-value" id="bolsa-activos-count">0</div>
-          <div class="stat-change">Sin recibir aún</div>
-        </div>
-        <div class="stat-card orange">
-          <div class="stat-card-icon"><i class="fas fa-truck-fast"></i></div>
-          <h3>En Tránsito</h3>
-          <div class="stat-value" id="bolsa-transito-count">0</div>
-          <div class="stat-change">Viniendo en camino</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-card-icon"><i class="fas fa-box-open"></i></div>
-          <h3>Por Recibir</h3>
-          <div class="stat-value" id="bolsa-porrecibir-count">0</div>
-          <div class="stat-change">Productos pendientes</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon"><i class="fas fa-tag"></i></div>
-          <h3>Costo Promedio</h3>
-          <div class="stat-value" id="bolsa-costo-promedio">S/ 0.00</div>
-          <div class="stat-change">Por prenda</div>
-        </div>
-      </div>
-
-      <!-- Nuevo carrito -->
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-plus-circle" style="color:var(--rose)"></i> <span id="bolsa-form-title">Nuevo Carrito de Compra</span></div>
-          <button class="btn btn-ghost btn-sm" onclick="clearBolsaForm()"><i class="fas fa-broom"></i> Limpiar</button>
-        </div>
-        <div class="section-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;align-items:flex-end;">
-            <div class="form-group">
-              <label>Importador / Tienda *</label>
-              <select id="bolsa-proveedor" onchange="toggleBolsaProveedorOtro()">
-                <option value="Temu">🛍️ Temu</option>
-                <option value="Shein">👗 Shein</option>
-                <option value="Maybe">🧸 Maybe</option>
-                <option value="Andrew">📦 Andrew</option>
-                <option value="Otro">✏️ Otro (especificar)</option>
-              </select>
-            </div>
-            <div class="form-group" id="bolsa-proveedor-otro-wrap" style="display:none;">
-              <label>Nombre del importador</label>
-              <input type="text" id="bolsa-proveedor-otro" placeholder="Ej: AliExpress">
-            </div>
-            <div class="form-group">
-              <label>Fecha de compra</label>
-              <input type="date" id="bolsa-fecha">
-            </div>
-            <div class="form-group">
-              <label>Estado</label>
-              <select id="bolsa-estado">
-                <option value="preparando">🟡 Preparando pedido</option>
-                <option value="comprado">🔵 Comprado</option>
-                <option value="transito">🟣 En tránsito</option>
-                <option value="recibido">🟢 Recibido</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Llegada estimada (opcional)</label>
-              <input type="date" id="bolsa-fecha-llegada">
-            </div>
-            <div class="form-group">
-              <label>Nota (opcional)</label>
-              <input type="text" id="bolsa-nota" placeholder="Ej: Pedido ropa bebé invierno">
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" onclick="withLoading(this, saveBolsa)"><i class="fas fa-floppy-disk"></i> <span id="bolsa-save-btn-text">Crear carrito</span></button>
-            <button class="btn btn-ghost" onclick="clearBolsaForm()">Cancelar</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filtros -->
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-        <select class="filter-select" id="bolsa-filter-proveedor" onchange="renderBolsasSection()">
-          <option value="">Todos los importadores</option>
-          <option value="Temu">Temu</option>
-          <option value="Shein">Shein</option>
-          <option value="Maybe">Maybe</option>
-          <option value="Andrew">Andrew</option>
-          <option value="Otro">Otros</option>
-        </select>
-        <select class="filter-select" id="bolsa-filter-estado" onchange="renderBolsasSection()">
-          <option value="">Todos los estados</option>
-          <option value="preparando">🟡 Preparando</option>
-          <option value="comprado">🔵 Comprado</option>
-          <option value="transito">🟣 En tránsito</option>
-          <option value="recibido">🟢 Recibido</option>
-        </select>
-      </div>
-
-      <!-- Lista de carritos -->
-      <div id="bolsas-list-container"></div>
-
-      <!-- Comparación de proveedores -->
-      <div class="section" style="margin-top:24px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-scale-balanced" style="color:var(--rose)"></i> Comparación de Importadores</div>
-        </div>
-        <div class="section-body">
-          <div class="table-wrap">
-            <table class="orders-table" style="width:100%;">
-              <thead><tr><th>Importador</th><th>Carritos</th><th>Productos</th><th>Total invertido</th><th>Costo promedio/prenda</th></tr></thead>
-              <tbody id="bolsa-comparativa-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Historial de precios por producto -->
-      <div class="section" style="margin-top:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-clock-rotate-left" style="color:var(--rose)"></i> Historial de Precios por Producto</div>
-        </div>
-        <div class="section-body">
-          <div class="search-input-wrap" style="margin-bottom:14px;max-width:340px;">
-            <i class="fas fa-search"></i>
-            <input type="text" class="search-input" id="bolsa-historial-search" placeholder="Buscar por ID o descripción..." oninput="renderBolsaHistorial()">
-          </div>
-          <div id="bolsa-historial-container" style="color:var(--muted);font-size:12px;">Escribe un ID o descripción para ver su historial de precios entre importadores.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal: agregar producto a un carrito de compra -->
-    <div class="modal-overlay" id="bolsa-item-modal">
-      <div class="modal" style="max-width:520px;">
-        <div class="modal-head">
-          <div>
-            <div class="modal-title">🏷️ Agregar Producto</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="bolsa-item-modal-sub"></div>
-          </div>
-          <button class="modal-close" onclick="closeBolsaItemModal()"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group"><label>ID del producto *</label><input type="text" id="bi-productid" placeholder="Ej: 601099632xxxx"></div>
-          <div class="form-group" style="margin-top:12px;"><label>Descripción (opcional)</label><input type="text" id="bi-desc" placeholder="Ej: Body manga larga bebé"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
-            <div class="form-group"><label>Imagen (URL, opcional)</label><input type="text" id="bi-imagen" placeholder="https://..."></div>
-            <div class="form-group"><label>Link del producto (opcional)</label><input type="text" id="bi-link" placeholder="https://..."></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
-            <div class="form-group"><label>Costo unitario (S/) *</label><input type="number" id="bi-costo" step="0.01" placeholder="0.00" oninput="updateBolsaItemPreview()"></div>
-            <div class="form-group"><label>Cantidad</label><input type="number" id="bi-cantidad" value="1" min="1" oninput="updateBolsaItemPreview()"></div>
-          </div>
-          <div style="background:var(--rose-xlight);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;">Subtotal</span>
-            <span style="font-family:Baloo2,cursive;font-size:20px;font-weight:700;color:var(--rose);" id="bi-subtotal-preview">S/ 0.00</span>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:20px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveBolsaItem)"><i class="fas fa-floppy-disk"></i> Agregar producto</button>
-            <button class="btn btn-ghost" onclick="closeBolsaItemModal()">Cancelar</button>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- ====== BLOG ADMIN ====== -->
@@ -7671,318 +7429,6 @@ function updateOrderStatus(supplierId, orderId, newStatus) {
 
 // close order modal on outside click
 
-// ============================================
-// COMPRAS / CARRITOS (Temu, Shein, Maybe, Andrew, otros importadores)
-// ============================================
-let bolsas = [];
-let currentBolsaId = null;
-
-const BOLSA_PROVEEDOR_EMOJI = { Temu:'🛍️', Shein:'👗', Maybe:'🧸', Andrew:'📦', Otro:'✏️' };
-const BOLSA_ESTADO_INFO = {
-  preparando: { label:'Preparando pedido', dot:'🟡', color:'var(--orange)', bg:'var(--orange-light)' },
-  comprado:   { label:'Comprado',          dot:'🔵', color:'var(--blue)',   bg:'var(--blue-light)' },
-  transito:   { label:'En tránsito',       dot:'🟣', color:'var(--purple)', bg:'var(--purple-light)' },
-  recibido:   { label:'Recibido',          dot:'🟢', color:'var(--green)',  bg:'var(--green-light)' }
-};
-
-function loadBolsas() { bolsas = JSON.parse(localStorage.getItem('dzoe_bolsas_compra')||'[]'); }
-function saveBolsasStorage() { localStorage.setItem('dzoe_bolsas_compra', JSON.stringify(bolsas)); }
-
-function toggleBolsaProveedorOtro() {
-  const sel = document.getElementById('bolsa-proveedor');
-  const wrap = document.getElementById('bolsa-proveedor-otro-wrap');
-  if (wrap) wrap.style.display = sel.value === 'Otro' ? 'block' : 'none';
-}
-
-function clearBolsaForm() {
-  document.getElementById('bolsa-proveedor').value = 'Temu';
-  toggleBolsaProveedorOtro();
-  const otro = document.getElementById('bolsa-proveedor-otro'); if (otro) otro.value = '';
-  const fecha = document.getElementById('bolsa-fecha'); if (fecha) fecha.value = new Date().toISOString().slice(0,10);
-  const estado = document.getElementById('bolsa-estado'); if (estado) estado.value = 'preparando';
-  const llegada = document.getElementById('bolsa-fecha-llegada'); if (llegada) llegada.value = '';
-  const nota = document.getElementById('bolsa-nota'); if (nota) nota.value = '';
-}
-
-function saveBolsa() {
-  const proveedor = document.getElementById('bolsa-proveedor')?.value || 'Temu';
-  const proveedorOtro = document.getElementById('bolsa-proveedor-otro')?.value.trim();
-  if (proveedor === 'Otro' && !proveedorOtro) { showAlert('Escribe el nombre del importador', 'error'); return; }
-  const bolsa = {
-    id: Date.now(),
-    proveedor,
-    proveedorOtro: proveedor === 'Otro' ? proveedorOtro : '',
-    fecha: document.getElementById('bolsa-fecha')?.value || new Date().toISOString().slice(0,10),
-    estado: document.getElementById('bolsa-estado')?.value || 'preparando',
-    fechaLlegada: document.getElementById('bolsa-fecha-llegada')?.value || '',
-    nota: document.getElementById('bolsa-nota')?.value.trim() || '',
-    items: [],
-    createdAt: new Date().toISOString()
-  };
-  bolsas.unshift(bolsa);
-  saveBolsasStorage();
-  clearBolsaForm();
-  renderBolsasSection();
-  showAlert('✅ Carrito de compra creado');
-}
-
-async function deleteBolsa(id) {
-  if (!(await customConfirm('¿Eliminar este carrito de compra y todos sus productos?', { title: 'Eliminar carrito' }))) return;
-  bolsas = bolsas.filter(b => b.id !== id);
-  saveBolsasStorage();
-  renderBolsasSection();
-  showAlert('Carrito eliminado');
-}
-
-function bolsaProveedorLabel(b) {
-  const emoji = BOLSA_PROVEEDOR_EMOJI[b.proveedor] || '🛒';
-  const nombre = b.proveedor === 'Otro' ? (b.proveedorOtro || 'Otro') : b.proveedor;
-  return `${emoji} ${nombre}`;
-}
-
-function bolsaTotal(b) {
-  return (b.items || []).reduce((sum, it) => sum + (parseFloat(it.costo) || 0) * (parseInt(it.cantidad) || 1), 0);
-}
-
-function bolsaItemCount(b) {
-  return (b.items || []).reduce((sum, it) => sum + (parseInt(it.cantidad) || 1), 0);
-}
-
-function setBolsaEstado(bolsaId, estado) {
-  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
-  b.estado = estado;
-  saveBolsasStorage();
-  renderBolsasSection();
-}
-
-async function recibirBolsa(bolsaId) {
-  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
-  const todosOk = await customConfirm('¿Recibiste TODOS los productos de este carrito?', { title: 'Recibir carrito', confirmText: 'Sí, llegó todo', cancelText: 'No, faltaron productos', danger: false });
-  if (!todosOk) {
-    const faltantes = prompt('Escribe los ID de los productos que NO llegaron, separados por coma:');
-    if (faltantes === null) return;
-    const idsFaltantes = faltantes.split(',').map(s=>s.trim()).filter(Boolean);
-    b.items = (b.items||[]).map(it => idsFaltantes.includes(String(it.productId)) ? {...it, faltante:true} : {...it, faltante:false});
-    showAlert('Carrito marcado como recibido con productos faltantes anotados');
-  } else {
-    b.items = (b.items||[]).map(it => ({...it, faltante:false}));
-    showAlert('✅ Carrito recibido completo. Recuerda agregar el stock en Inventario/Almacén.');
-  }
-  b.estado = 'recibido';
-  saveBolsasStorage();
-  renderBolsasSection();
-}
-
-function openBolsaItemModal(bolsaId) {
-  currentBolsaId = bolsaId;
-  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
-  document.getElementById('bolsa-item-modal-sub').textContent = `${bolsaProveedorLabel(b)} · ${b.fecha}`;
-  document.getElementById('bi-productid').value = '';
-  document.getElementById('bi-desc').value = '';
-  document.getElementById('bi-imagen').value = '';
-  document.getElementById('bi-link').value = '';
-  document.getElementById('bi-costo').value = '';
-  document.getElementById('bi-cantidad').value = '1';
-  updateBolsaItemPreview();
-  document.getElementById('bolsa-item-modal').classList.add('open');
-}
-
-function closeBolsaItemModal() {
-  document.getElementById('bolsa-item-modal').classList.remove('open');
-  currentBolsaId = null;
-}
-
-function updateBolsaItemPreview() {
-  const costo = parseFloat(document.getElementById('bi-costo')?.value) || 0;
-  const cantidad = parseInt(document.getElementById('bi-cantidad')?.value) || 1;
-  document.getElementById('bi-subtotal-preview').textContent = 'S/ ' + (costo * cantidad).toFixed(2);
-}
-
-function saveBolsaItem() {
-  const b = bolsas.find(x => x.id === currentBolsaId); if (!b) return;
-  const productId = document.getElementById('bi-productid')?.value.trim();
-  const costo = parseFloat(document.getElementById('bi-costo')?.value) || 0;
-  const cantidad = parseInt(document.getElementById('bi-cantidad')?.value) || 1;
-  if (!productId) { showAlert('Ingresa el ID del producto', 'error'); return; }
-  if (!costo) { showAlert('Ingresa el costo unitario', 'error'); return; }
-  const item = {
-    id: Date.now(),
-    productId,
-    desc: document.getElementById('bi-desc')?.value.trim() || '',
-    imagen: document.getElementById('bi-imagen')?.value.trim() || '',
-    link: document.getElementById('bi-link')?.value.trim() || '',
-    costo, cantidad
-  };
-  b.items = b.items || [];
-  b.items.push(item);
-  saveBolsasStorage();
-  closeBolsaItemModal();
-  renderBolsasSection();
-  showAlert(`✅ Producto agregado — total del carrito: S/ ${bolsaTotal(b).toFixed(2)}`);
-}
-
-function deleteBolsaItem(bolsaId, itemId) {
-  const b = bolsas.find(x => x.id === bolsaId); if (!b) return;
-  b.items = (b.items || []).filter(it => it.id !== itemId);
-  saveBolsasStorage();
-  renderBolsasSection();
-  showAlert('Producto eliminado del carrito');
-}
-
-function toggleBolsaItems(bolsaId) {
-  const el = document.getElementById(`bolsa-items-${bolsaId}`);
-  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function renderBolsasSection() {
-  const container = document.getElementById('bolsas-list-container');
-  if (!container) return;
-  const filtroProv = document.getElementById('bolsa-filter-proveedor')?.value || '';
-  const filtroEstado = document.getElementById('bolsa-filter-estado')?.value || '';
-  const filtered = bolsas.filter(b => (!filtroProv || b.proveedor === filtroProv) && (!filtroEstado || b.estado === filtroEstado));
-
-  // ── Stats globales ──
-  const now = new Date();
-  const mesActual = bolsas.filter(b => { const d = new Date(b.fecha); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear(); });
-  const mesGastado = mesActual.reduce((sum,b)=>sum+bolsaTotal(b),0);
-  document.getElementById('bolsa-mes-gastado').textContent = 'S/ ' + mesGastado.toFixed(2);
-  document.getElementById('bolsa-mes-count').textContent = `${mesActual.length} carrito(s)`;
-
-  const activos = bolsas.filter(b => b.estado !== 'recibido');
-  document.getElementById('bolsa-activos-count').textContent = activos.length;
-
-  const transito = bolsas.filter(b => b.estado === 'transito');
-  document.getElementById('bolsa-transito-count').textContent = transito.length;
-
-  const porRecibir = activos.reduce((sum,b)=>sum+bolsaItemCount(b),0);
-  document.getElementById('bolsa-porrecibir-count').textContent = porRecibir;
-
-  const totalItemsGlobal = bolsas.reduce((sum,b)=>sum+bolsaItemCount(b),0);
-  const totalGastadoGlobal = bolsas.reduce((sum,b)=>sum+bolsaTotal(b),0);
-  document.getElementById('bolsa-costo-promedio').textContent = 'S/ ' + (totalItemsGlobal ? (totalGastadoGlobal/totalItemsGlobal) : 0).toFixed(2);
-
-  const badge = document.getElementById('badge-bolsas');
-  if (badge) badge.textContent = bolsas.length || 0;
-
-  // ── Lista de carritos ──
-  if (!filtered.length) {
-    container.innerHTML = `<div class="section"><div class="section-body" style="text-align:center;padding:40px 20px;color:var(--muted);">
-      <i class="fas fa-basket-shopping" style="font-size:36px;opacity:.3;margin-bottom:10px;display:block;"></i>
-      No hay carritos de compra que coincidan.<br>Crea uno arriba 👆
-    </div></div>`;
-  } else {
-    container.innerHTML = filtered.map(b => {
-      const total = bolsaTotal(b);
-      const est = BOLSA_ESTADO_INFO[b.estado] || BOLSA_ESTADO_INFO.preparando;
-      const itemsHtml = (b.items||[]).length ? `
-        <div class="table-wrap" style="margin-top:14px;">
-          <table class="orders-table" style="width:100%;">
-            <thead><tr>
-              <th>Imagen</th><th>ID Producto</th><th>Descripción</th><th>Costo unit.</th><th>Cant.</th><th>Subtotal</th><th></th>
-            </tr></thead>
-            <tbody>
-              ${b.items.map(it => `<tr style="${it.faltante?'opacity:.55;':''}">
-                <td>${it.imagen?`<img src="${it.imagen}" style="width:34px;height:34px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">`:'—'}</td>
-                <td style="font-weight:700;">${it.link?`<a href="${it.link}" target="_blank" rel="noopener" style="color:var(--rose);text-decoration:none;">${it.productId} <i class="fas fa-arrow-up-right-from-square" style="font-size:9px;"></i></a>`:it.productId}</td>
-                <td style="color:var(--muted);">${it.desc||'—'}${it.faltante?' <span style="color:var(--red);font-weight:700;">(faltante)</span>':''}</td>
-                <td>S/ ${parseFloat(it.costo).toFixed(2)}</td>
-                <td>${it.cantidad}</td>
-                <td style="font-weight:700;color:var(--rose);">S/ ${(it.costo*it.cantidad).toFixed(2)}</td>
-                <td><button class="icon-btn delete-btn" style="width:26px;height:26px;" title="Eliminar producto" onclick="deleteBolsaItem(${b.id},${it.id})"><i class="fas fa-trash" style="font-size:10px;"></i></button></td>
-              </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>` : `<div style="font-size:12px;color:var(--muted);margin-top:10px;font-style:italic;">Sin productos aún. Haz clic en "+ Producto" para agregar el primero.</div>`;
-
-      return `<div class="section" style="margin-bottom:16px;">
-        <div class="section-body" style="padding:20px 24px;">
-          <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
-            <div style="flex:1;min-width:180px;">
-              <div style="font-family:Baloo2,cursive;font-size:18px;font-weight:700;">${bolsaProveedorLabel(b)}</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 ${b.fecha} · 📦 ${bolsaItemCount(b)} producto(s)${b.fechaLlegada?` · ⏳ llega ${b.fechaLlegada}`:''}</div>
-              ${b.nota?`<div style="font-size:12px;margin-top:4px;font-style:italic;color:var(--text2);">${b.nota}</div>`:''}
-              <select onchange="setBolsaEstado(${b.id},this.value)" style="margin-top:8px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;border:none;background:${est.bg};color:${est.color};">
-                ${Object.entries(BOLSA_ESTADO_INFO).map(([k,v])=>`<option value="${k}" ${k===b.estado?'selected':''}>${v.dot} ${v.label}</option>`).join('')}
-              </select>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Total carrito</div>
-              <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:700;color:var(--rose);">S/ ${total.toFixed(2)}</div>
-            </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
-              <button class="btn btn-ghost btn-sm" onclick="toggleBolsaItems(${b.id})"><i class="fas fa-eye"></i> Ver productos</button>
-              <button class="btn btn-primary btn-sm" onclick="openBolsaItemModal(${b.id})"><i class="fas fa-plus"></i> Producto</button>
-              ${b.estado!=='recibido'?`<button class="btn btn-sm" style="background:var(--green-light);color:var(--green);" onclick="recibirBolsa(${b.id})"><i class="fas fa-box-open"></i> Recibir pedido</button>`:''}
-              <button class="btn btn-danger btn-sm" onclick="deleteBolsa(${b.id})"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>
-          <div id="bolsa-items-${b.id}" style="display:none;">${itemsHtml}</div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  // ── Comparación de importadores ──
-  const grupos = {};
-  bolsas.forEach(b => {
-    const key = bolsaProveedorLabel(b);
-    if (!grupos[key]) grupos[key] = { carritos:0, productos:0, total:0 };
-    grupos[key].carritos += 1;
-    grupos[key].productos += bolsaItemCount(b);
-    grupos[key].total += bolsaTotal(b);
-  });
-  const compBody = document.getElementById('bolsa-comparativa-body');
-  if (compBody) {
-    const rows = Object.entries(grupos).sort((a,b)=>b[1].total-a[1].total);
-    compBody.innerHTML = rows.length ? rows.map(([nombre,g]) => `<tr>
-      <td style="font-weight:700;">${nombre}</td>
-      <td>${g.carritos}</td>
-      <td>${g.productos}</td>
-      <td style="color:var(--rose);font-weight:700;">S/ ${g.total.toFixed(2)}</td>
-      <td>S/ ${(g.productos ? g.total/g.productos : 0).toFixed(2)}</td>
-    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:16px;">Aún no hay datos suficientes</td></tr>`;
-  }
-
-  renderBolsaHistorial();
-}
-
-function renderBolsaHistorial() {
-  const el = document.getElementById('bolsa-historial-container');
-  if (!el) return;
-  const q = (document.getElementById('bolsa-historial-search')?.value || '').trim().toLowerCase();
-  if (!q) { el.innerHTML = 'Escribe un ID o descripción para ver su historial de precios entre importadores.'; return; }
-
-  const matches = [];
-  bolsas.forEach(b => {
-    (b.items||[]).forEach(it => {
-      if (String(it.productId).toLowerCase().includes(q) || (it.desc||'').toLowerCase().includes(q)) {
-        matches.push({ ...it, proveedor: bolsaProveedorLabel(b), fecha: b.fecha });
-      }
-    });
-  });
-  if (!matches.length) { el.innerHTML = `<div style="color:var(--muted);">Sin coincidencias para "${q}"</div>`; return; }
-
-  matches.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-  const costos = matches.map(m => parseFloat(m.costo)||0);
-  const min = Math.min(...costos), max = Math.max(...costos), avg = costos.reduce((a,c)=>a+c,0)/costos.length;
-  const mejor = matches.find(m => parseFloat(m.costo) === min);
-
-  el.innerHTML = `
-    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Más barato</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--green);">S/ ${min.toFixed(2)} · ${mejor?.proveedor||''}</div></div>
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Más caro</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;color:var(--red);">S/ ${max.toFixed(2)}</div></div>
-      <div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">Promedio</div><div style="font-family:Baloo2,cursive;font-size:16px;font-weight:700;">S/ ${avg.toFixed(2)}</div></div>
-    </div>
-    <div class="table-wrap">
-      <table class="orders-table" style="width:100%;">
-        <thead><tr><th>Fecha</th><th>Importador</th><th>ID</th><th>Descripción</th><th>Costo</th></tr></thead>
-        <tbody>
-          ${matches.map(m => `<tr><td>${m.fecha}</td><td>${m.proveedor}</td><td style="font-weight:700;">${m.productId}</td><td>${m.desc||'—'}</td><td>S/ ${parseFloat(m.costo).toFixed(2)}</td></tr>`).join('')}
-        </tbody>
-      </table>
-    </div>`;
-}
-// ============================================
 // NAVIGATION
 // ============================================
 function goToSection(sectionId) {
@@ -7992,8 +7438,8 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'bolsas-section':'fa-basket-shopping', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'bolsas-section':'Compras (Carritos)', 'settings-section':'Configuración' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -8003,9 +7449,8 @@ function goToSection(sectionId) {
   if (sectionId === 'ribbons-pro-section') renderRibbonsPro();
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
-  if (sectionId === 'suppliers-section') { renderSuppliersSection(); if (document.getElementById('sup-tab-origen')?.style.display !== 'none') renderOrigenAnalytics(); }
+  if (sectionId === 'suppliers-section') { renderOrigenAnalytics(); }
   if (sectionId === 'settings-section') renderSourcingProveedoresConfig();
-  if (sectionId === 'bolsas-section') renderBolsasSection();
   if (sectionId === 'add-product-section') {
     // Asegurar que el tab activo esté visible
     const prodForm = document.getElementById('tab-product-form');
@@ -8090,11 +7535,6 @@ document.getElementById('ribbon-name-input')?.addEventListener('input', updateRi
 // Init suppliers
 loadSuppliers();
 document.getElementById('badge-suppliers').textContent = suppliers.length || 0;
-
-// Init compras / carritos
-loadBolsas();
-document.getElementById('badge-bolsas').textContent = bolsas.length || 0;
-clearBolsaForm();
 
 checkSession();
 
@@ -10390,6 +9830,37 @@ function finDistribucion(f) {
   const out = {};
   FIN_DIST_KEYS.forEach(k => out[k] = g * (finPercentages[k]||0) / 100);
   return out;
+}
+
+// Rango de fechas [from, to] según el período elegido en el filtro de Finanzas
+function getPeriodoDates(periodo) {
+  const now = new Date();
+  const to = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+  let from;
+  switch (periodo) {
+    case 'hoy':
+      from = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+      break;
+    case 'semana': {
+      const day = now.getDay(); // 0 = domingo ... 6 = sábado
+      const diffToMonday = (day === 0 ? 6 : day - 1);
+      from = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diffToMonday, 0, 0, 0, 0);
+      break;
+    }
+    case 'mes':
+      from = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+      break;
+    case 'trimestre': {
+      const qStartMonth = Math.floor(now.getMonth() / 3) * 3;
+      from = new Date(now.getFullYear(), qStartMonth, 1, 0, 0, 0, 0);
+      break;
+    }
+    case 'todo':
+    default:
+      from = new Date(2000, 0, 1, 0, 0, 0, 0);
+      break;
+  }
+  return { from, to };
 }
 
 // ---------- Filas del cuadro ----------
