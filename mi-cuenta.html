@@ -12677,14 +12677,65 @@ function renderVentaPasadaGrid() {
   const q = (document.getElementById('vp-search')?.value || '').trim().toLowerCase();
   const list = Object.values(_soldGroups || {}).filter(s => !q || (s.name||'').toLowerCase().includes(q));
   if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Sin productos vendidos encontrados</div>'; return; }
+  const registered = getFinRegisteredKeys(vpTargetRowId);
   grid.innerHTML = list.map(s => {
     const img = s._prod?.images?.[0] || s._prod?.image || '';
-    return `<div class="vp-prod-card" onclick="selectVpProduct('${_escJs(s._key)}')">
+    const batches = computeVpBatches(s);
+    const allDone = batches.length > 0 && batches.every(b => registered.has(_finBatchKey(s.name, b.size, b.cost)));
+    return `<div class="vp-prod-card" style="position:relative;${allDone?'opacity:.55;':''}" onclick="selectVpProduct('${_escJs(s._key)}')">
+      ${allDone ? '<span style="position:absolute;top:6px;right:6px;background:var(--green);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;">✅ Todo registrado</span>' : ''}
       ${img ? `<img src="${img}" alt="">` : `<div style="width:100%;aspect-ratio:1/1;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;">👗</div>`}
       <div class="vp-prod-name">${s.name}</div>
     </div>`;
   }).join('');
 }
+function _finResolveProveedor(s, sz) {
+  if (!s) return '';
+  const soldPid = s._prod?.id != null ? s._prod.id : '';
+  const overridesMap = (typeof loadSoldOriginOverrides === 'function') ? loadSoldOriginOverrides() : {};
+  const ovKey = (typeof _soldOverrideKey === 'function') ? _soldOverrideKey(soldPid, sz) : (soldPid + '::' + sz);
+  if (overridesMap[ovKey]) return overridesMap[ovKey];
+  if (s._prod && typeof _getOriginForSize === 'function') {
+    const raw = _getOriginForSize(s._prod, sz);
+    if (raw) return (typeof raw === 'string') ? raw : (raw.proveedor || '');
+  }
+  return '';
+}
+
+// ---- Lotes por talla+costo (una misma talla puede tener varios costos: distintas compras/proveedores) ----
+function computeVpBatches(s) {
+  if (!s) return [];
+  const batches = {};
+  (s._refs || []).forEach(ref => {
+    const o = orders.find(x => x.id === ref.orderId);
+    if (!o) return;
+    const it = (o.items || [])[ref.itemIndex];
+    if (!it) return;
+    const sizeObj = s._prod ? _getSizeObjForItem(s._prod, it) : null;
+    const cost = (it.cost != null ? it.cost : sizeObj?.cost) || 0;
+    const price = it.price || sizeObj?.price || 0;
+    const qty = it.qty || 1;
+    const sizeTxt = it.size || '—';
+    const key = sizeTxt + '|' + cost.toFixed(2);
+    if (!batches[key]) batches[key] = { size: sizeTxt, cost, price, qty: 0 };
+    batches[key].qty += qty;
+  });
+  return Object.values(batches);
+}
+// Clave para detectar si un lote (producto+talla+costo) ya fue registrado en el cuadro de Finanzas
+function _finBatchKey(producto, talla, cost) {
+  return _normName(producto) + '|' + _normName(talla) + '|' + Math.round((cost || 0) * 100);
+}
+function getFinRegisteredKeys(excludeId) {
+  const set = new Set();
+  finanzas.forEach(f => {
+    if (excludeId != null && String(f.id) === String(excludeId)) return;
+    if (f.talla) set.add(_finBatchKey(f.producto, f.talla, f.inversion));
+  });
+  return set;
+}
+
+let vpCurrentBatches = [];
 function selectVpProduct(key) {
   const s = (_soldGroups || {})[key];
   if (!s) return;
@@ -12694,23 +12745,32 @@ function selectVpProduct(key) {
     ${img ? `<img src="${img}" style="width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:52px;height:52px;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👗</div>'}
     <div><div style="font-weight:700;font-size:14px;">${s.name}</div>
     <div style="font-size:11px;color:var(--muted);margin-top:2px;">${(s._prod?.categories||[]).join(', ')||'Sin categoría'}</div></div>`;
+
   const sizeSel = document.getElementById('vp-size');
-  const avgPrice = s.totalQty ? (s.totalRevenue / s.totalQty) : 0;
-  const avgCost = s.totalQty ? ((s.totalRevenue - s.totalProfit) / s.totalQty) : 0;
+  const registered = getFinRegisteredKeys(vpTargetRowId);
+  vpCurrentBatches = computeVpBatches(s);
+  const editingRow = vpTargetRowId ? finanzas.find(x => String(x.id) === String(vpTargetRowId)) : null;
+
   sizeSel.innerHTML = '<option value="">— Selecciona talla —</option>' +
-    Object.entries(s.sizes||{}).map(([sz, qty]) => {
-      const sizeObj = s._prod?.sizes?.find(x => _normName(x.size) === _normName(sz));
-      const price = sizeObj ? (sizeObj.price||0) : avgPrice;
-      const cost = sizeObj ? (sizeObj.cost||0) : avgCost;
-      return `<option value="${sz}" data-price="${price}" data-cost="${cost}">${sz} — vendida ${qty}x</option>`;
+    vpCurrentBatches.map((b, idx) => {
+      const isDone = registered.has(_finBatchKey(s.name, b.size, b.cost));
+      const proveedor = _finResolveProveedor(s, b.size);
+      return `<option value="${idx}" data-size="${b.size.replace(/"/g,'&quot;')}" data-price="${b.price}" data-cost="${b.cost}" data-proveedor="${(proveedor||'').replace(/"/g,'&quot;')}" ${isDone?'disabled':''}>${b.size} — costo S/${b.cost.toFixed(2)} (vendida ${b.qty}x)${isDone?' ✅ Ya registrada':''}</option>`;
     }).join('');
 
-  const editingRow = vpTargetRowId ? finanzas.find(x => String(x.id) === String(vpTargetRowId)) : null;
   document.getElementById('vp-proveedor').value = editingRow ? (editingRow.proveedor||'') : '';
   document.getElementById('vp-inversion').value = editingRow ? (editingRow.inversion||'') : '';
   document.getElementById('vp-venta').value = editingRow ? (editingRow.venta||'') : '';
   document.getElementById('vp-fecha').value = editingRow ? (editingRow.fecha||new Date().toISOString().slice(0,10)) : new Date().toISOString().slice(0,10);
-  if (editingRow && editingRow.talla) sizeSel.value = editingRow.talla;
+
+  if (editingRow && editingRow.talla) {
+    const matchIdx = vpCurrentBatches.findIndex(b => _normName(b.size) === _normName(editingRow.talla) && Math.round(b.cost*100) === Math.round((editingRow.inversion||0)*100));
+    if (matchIdx !== -1) sizeSel.value = String(matchIdx);
+  } else {
+    // Si solo queda un lote disponible (no registrado aún), se selecciona solo y autocompleta
+    const pendientes = [...sizeSel.options].filter(o => o.value !== '' && !o.disabled);
+    if (pendientes.length === 1) { sizeSel.value = pendientes[0].value; onVpSizeChange(); }
+  }
 
   document.getElementById('vp-step-producto').style.display = 'none';
   document.getElementById('vp-step-detalle').style.display = 'block';
@@ -12718,9 +12778,10 @@ function selectVpProduct(key) {
 function onVpSizeChange() {
   const sel = document.getElementById('vp-size');
   const opt = sel.options[sel.selectedIndex];
-  if (opt && opt.value) {
+  if (opt && opt.value !== '') {
     document.getElementById('vp-inversion').value = parseFloat(opt.dataset.cost || 0).toFixed(2);
     document.getElementById('vp-venta').value = parseFloat(opt.dataset.price || 0).toFixed(2);
+    if (opt.dataset.proveedor) document.getElementById('vp-proveedor').value = opt.dataset.proveedor;
   }
 }
 function backToVpProductos() {
@@ -12729,13 +12790,23 @@ function backToVpProductos() {
 }
 function saveVentaPasada() {
   if (!vpSelectedProduct) return;
-  const size = document.getElementById('vp-size').value;
-  if (!size) { showAlert('Selecciona una talla', 'error'); return; }
+  const sel = document.getElementById('vp-size');
+  const opt = sel.options[sel.selectedIndex];
+  if (!opt || opt.value === '') { showAlert('Selecciona una talla', 'error'); return; }
+  const size = opt.dataset.size || '';
   const inversion = parseFloat(document.getElementById('vp-inversion').value) || 0;
   const venta = parseFloat(document.getElementById('vp-venta').value) || 0;
   const proveedor = document.getElementById('vp-proveedor').value.trim();
   const fecha = document.getElementById('vp-fecha').value || new Date().toISOString().slice(0,10);
   const img = (vpSelectedProduct._prod?.images && vpSelectedProduct._prod.images[0]) || vpSelectedProduct._prod?.image || '';
+
+  // Bloqueo de duplicados: mismo producto+talla+costo ya está en la tabla
+  const dupKey = _finBatchKey(vpSelectedProduct.name, size, inversion);
+  const registered = getFinRegisteredKeys(vpTargetRowId);
+  if (registered.has(dupKey)) {
+    showAlert('⚠️ Esta talla (con este costo) ya está registrada en tu cuadro de Finanzas', 'error');
+    return;
+  }
 
   if (vpTargetRowId) {
     const f = finanzas.find(x => String(x.id) === String(vpTargetRowId));
