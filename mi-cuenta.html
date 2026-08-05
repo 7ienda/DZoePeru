@@ -1610,6 +1610,48 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div id="inv-panel-trii" class="inv-panel"></div>
       <div id="inv-panel-hapi" class="inv-panel" style="display:none;"></div>
 
+      <!-- ====== REINVERTIR ====== -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:32px 0 20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;color:var(--text);">🔁 Reinvertir</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra las compras de mercadería hechas con el fondo Reinvertir</div>
+        </div>
+      </div>
+
+      <!-- MONTO PARA REINVERTIR (viene del fondo "Reinvertir" de Finanzas) -->
+      <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,var(--sky-light),var(--rose-soft));border:none;">
+        <div class="section-body" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;">Monto para Reinvertir</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Se calcula solo desde el fondo 🔁 Reinvertir de Finanzas</div>
+          </div>
+          <div style="font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;color:#1d5fd4;" id="reinv-monto-finanzas">S/ 0.00</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-table-cells" style="color:var(--rose-dark)"></i> Tabla de Reinvertir</div>
+          <button class="btn btn-primary btn-sm" onclick="addReinvertirRow()"><i class="fas fa-plus"></i> Agregar fila</button>
+        </div>
+        <div class="section-body" style="padding:16px 24px 22px;">
+          <div class="table-wrap">
+            <table class="orders-table fin-sheet" id="reinv-table">
+              <thead>
+                <tr>
+                  <th>Proveedor</th>
+                  <th>Monto</th>
+                  <th>Fecha de Compra</th>
+                  <th>Cantidad de Productos</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="reinv-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Modal: Movimiento manual de monto invertido (Inversiones) -->
@@ -1697,6 +1739,9 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       .fin-cell-input { width: 100%; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--text); padding: 4px 2px; border-radius: 6px; }
       .fin-cell-input:focus { background: var(--rose-soft); outline: none; }
       .fin-cell-input:disabled { background: var(--bg2); color: var(--muted); cursor: not-allowed; opacity: .7; }
+      .reinv-proveedor-box { width: 100%; border: 1.5px solid var(--border); background: var(--card); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: border-color .2s, box-shadow .2s; }
+      .reinv-proveedor-box:focus { outline: none; border-color: #1d5fd4; box-shadow: 0 0 0 3px rgba(29,95,212,.14); }
+      .reinv-proveedor-box:hover { border-color: #1d5fd4; }
       .fin-cell-num { width: 78px; }
       .fin-row-del { opacity: 0; transition: opacity .15s; }
       .fin-sheet tbody tr:hover .fin-row-del { opacity: 1; }
@@ -10465,6 +10510,78 @@ function loadInversiones() {
   renderInversionesPanel('trii');
   renderInversionesPanel('hapi');
   updateBadgeInversiones();
+  loadReinvertir();
+}
+
+// ============================================
+// REINVERTIR — Compras de mercadería con el fondo Reinvertir
+// ============================================
+let reinvertirRows = JSON.parse(localStorage.getItem('dzoe_reinvertir') || '[]');
+
+function saveReinvertirRows() { localStorage.setItem('dzoe_reinvertir', JSON.stringify(reinvertirRows)); }
+
+// Monto para Reinvertir = fondo "Reinvertir" calculado igual que en Finanzas (fondosManual + % de ganancias)
+function getMontoReinvertirFinanzas() {
+  let total = fondosManual.reinvertir || 0;
+  finanzas.forEach(f => { total += finDistribucion(f).reinvertir; });
+  return total;
+}
+
+function addReinvertirRow() {
+  const row = { id: Date.now(), proveedor: '', monto: 0, fecha: new Date().toISOString().slice(0, 10), cantidad: 0 };
+  reinvertirRows.push(row);
+  saveReinvertirRows();
+  renderReinvertirPanel();
+}
+
+function updateReinvertirField(id, field, value) {
+  const r = reinvertirRows.find(x => String(x.id) === String(id));
+  if (!r) return;
+  if (field === 'proveedor' || field === 'fecha') r[field] = value;
+  else r[field] = parseFloat(value) || 0;
+  saveReinvertirRows();
+  renderReinvertirPanel({ keepFocus: true });
+}
+
+async function deleteReinvertirRow(id) {
+  if (!(await customConfirm('¿Eliminar esta fila?', { title: 'Eliminar registro' }))) return;
+  reinvertirRows = reinvertirRows.filter(x => String(x.id) !== String(id));
+  saveReinvertirRows();
+  renderReinvertirPanel();
+}
+
+function renderReinvertirPanel(opts) {
+  opts = opts || {};
+  const tbody = document.getElementById('reinv-tbody');
+  if (!tbody) return;
+
+  const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#reinv-tbody')
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('reinv-cell-')), start: document.activeElement.selectionStart }
+    : null;
+
+  tbody.innerHTML = reinvertirRows.length ? reinvertirRows.map(r => `
+    <tr data-row-id="${r.id}">
+      <td>
+        <select class="reinv-proveedor-box reinv-cell-proveedor" onchange="updateReinvertirField('${r.id}','proveedor',this.value)">
+          ${`<option value="" ${!r.proveedor ? 'selected' : ''}>— Proveedor —</option>` + SOURCING_PROVEEDORES.map(opt => `<option value="${opt}" ${opt === r.proveedor ? 'selected' : ''}>${SOURCING_EMOJI[opt] || '⚪'} ${opt}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="number" class="fin-cell-input fin-cell-num reinv-cell-monto" step="0.01" min="0" value="${r.monto || ''}" placeholder="0.00" onchange="updateReinvertirField('${r.id}','monto',this.value)"></td>
+      <td><input type="date" class="fin-cell-input reinv-cell-fecha" value="${r.fecha || ''}" onchange="updateReinvertirField('${r.id}','fecha',this.value)"></td>
+      <td><input type="number" class="fin-cell-input fin-cell-num reinv-cell-cantidad" step="1" min="0" value="${r.cantidad || ''}" placeholder="0" onchange="updateReinvertirField('${r.id}','cantidad',this.value)"></td>
+      <td><button class="icon-btn delete-btn" onclick="deleteReinvertirRow('${r.id}')"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px;">Sin registros. Usa "Agregar fila" para empezar.</td></tr>`;
+
+  if (focusInfo && focusInfo.id) {
+    const el = document.querySelector(`#reinv-tbody tr[data-row-id="${focusInfo.id}"] .${focusInfo.cls}`);
+    if (el) { el.focus(); if (focusInfo.start != null && el.setSelectionRange) { try { el.setSelectionRange(focusInfo.start, focusInfo.start); } catch (e) {} } }
+  }
+}
+
+function loadReinvertir() {
+  const el = document.getElementById('reinv-monto-finanzas');
+  if (el) el.textContent = 'S/ ' + getMontoReinvertirFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  renderReinvertirPanel();
 }
 
 // ── stubs para compatibilidad con código viejo ──
