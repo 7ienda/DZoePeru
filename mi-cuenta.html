@@ -953,6 +953,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <span class="menu-label">Compras</span>
     <span class="menu-label">Finanzas</span>
     <button class="menu-btn" data-section="finanzas-section" onclick="goToSection('finanzas-section');loadFinanzas();"><i class="fas fa-sack-dollar" style="color:var(--green);"></i><span style="color:var(--green);">Finanzas</span><span class="badge" id="badge-finanzas" style="background:rgba(31,158,110,.22);">0</span></button>
+    <button class="menu-btn" data-section="inversiones-section" onclick="goToSection('inversiones-section');loadInversiones();"><i class="fas fa-chart-line" style="color:#6b2fd4;"></i><span style="color:#6b2fd4;">Inversiones</span><span class="badge" id="badge-inversiones" style="background:rgba(107,47,212,.22);">S/ 0</span></button>
     <span class="menu-label">Contenido</span>
     <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
@@ -1578,6 +1579,55 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         </div>
       </div>
 
+    </div>
+
+    <div id="inversiones-section" class="page-section" style="display:none;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;color:var(--text);">📈 Inversiones</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra tus compras de acciones en Trii y Hapi</div>
+        </div>
+      </div>
+
+      <!-- MONTO PARA INVERTIR (viene del fondo "Invertir" de Finanzas) -->
+      <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));border:none;">
+        <div class="section-body" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;">Monto para Invertir</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Se calcula solo desde el fondo 📈 Invertir de Finanzas</div>
+          </div>
+          <div style="font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;color:#6b2fd4;" id="inv-monto-finanzas">S/ 0.00</div>
+        </div>
+      </div>
+
+      <!-- PESTAÑAS Trii / Hapi -->
+      <div class="add-tabs">
+        <button class="add-tab active" id="inv-tab-trii-btn" onclick="switchInversionTab('trii')"><i class="fas fa-chart-simple"></i> Trii</button>
+        <button class="add-tab" id="inv-tab-hapi-btn" onclick="switchInversionTab('hapi')"><i class="fas fa-chart-simple"></i> Hapi</button>
+      </div>
+
+      <div id="inv-panel-trii" class="inv-panel"></div>
+      <div id="inv-panel-hapi" class="inv-panel" style="display:none;"></div>
+
+    </div>
+
+    <!-- Modal: Movimiento manual de monto invertido (Inversiones) -->
+    <div class="modal-overlay" id="inv-mov-modal">
+      <div class="modal" style="max-width:420px;">
+        <div class="modal-head">
+          <div class="modal-title" id="inv-mov-title">Movimiento de monto invertido</div>
+          <button class="modal-close" onclick="closeInvMovModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="inv-mov-plat" value="">
+          <div class="form-group"><label>Monto (S/) *</label><input type="number" id="inv-mov-monto" placeholder="0.00" step="0.01" min="0"></div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="withLoading(this, saveInvMov)"><i class="fas fa-floppy-disk"></i> Guardar</button>
+            <button class="btn btn-ghost" onclick="closeInvMovModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal: Registrar venta pasada (selecciona producto para el cuadro de Finanzas) -->
@@ -7277,8 +7327,8 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'finanzas-section':'fa-sack-dollar', 'inversiones-section':'fa-chart-line' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'finanzas-section':'Finanzas', 'inversiones-section':'Inversiones' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -10239,6 +10289,182 @@ function renderFinanzas(opts) {
   // Fondos (histórico completo) + Estado del negocio
   const totalesHistoricos = renderFondosGrid();
   renderEstadoNegocio(totalesHistoricos);
+}
+
+// ============================================
+// INVERSIONES — Trii / Hapi
+// ============================================
+const INV_PLATFORMS = ['trii', 'hapi'];
+const invPlatMeta = { trii: { label: 'Trii' }, hapi: { label: 'Hapi' } };
+
+let inversiones = Object.assign({ trii: [], hapi: [] }, JSON.parse(localStorage.getItem('dzoe_inversiones') || '{}'));
+let inversionesManual = Object.assign({ trii: 0, hapi: 0 }, JSON.parse(localStorage.getItem('dzoe_inversiones_manual') || '{}'));
+let currentInvTab = 'trii';
+let currentInvMovTipo = 'agregar';
+
+function saveInversiones() { localStorage.setItem('dzoe_inversiones', JSON.stringify(inversiones)); }
+function saveInversionesManual() { localStorage.setItem('dzoe_inversiones_manual', JSON.stringify(inversionesManual)); }
+
+// N° de acciones = SI(ESERROR(Inversion/Precio),"-",Inversion/Precio)
+function invNumAcciones(inversion, precio) {
+  const n = (inversion || 0) / (precio || 0);
+  return (!isFinite(n) || isNaN(n)) ? null : n;
+}
+// Total Inversión = Inversion + Comisión x Compra
+function invTotal(inversion, comision) { return (inversion || 0) + (comision || 0); }
+
+function addInversionRow(plat) {
+  const row = { id: Date.now(), compania: '', inversion: 0, precio: 0, comision: 0 };
+  inversiones[plat].push(row);
+  saveInversiones();
+  renderInversionesPanel(plat);
+  setTimeout(() => {
+    const el = document.querySelector(`#inv-tbody-${plat} tr[data-row-id="${row.id}"] .inv-cell-compania`);
+    if (el) el.focus();
+  }, 50);
+}
+
+function updateInversionField(plat, id, field, value) {
+  const r = inversiones[plat].find(x => String(x.id) === String(id));
+  if (!r) return;
+  if (field === 'compania') r[field] = value;
+  else r[field] = parseFloat(value) || 0;
+  saveInversiones();
+  renderInversionesPanel(plat, { keepFocus: true });
+}
+
+async function deleteInversionRow(plat, id) {
+  if (!(await customConfirm('¿Eliminar esta fila?', { title: 'Eliminar registro' }))) return;
+  inversiones[plat] = inversiones[plat].filter(x => String(x.id) !== String(id));
+  saveInversiones();
+  renderInversionesPanel(plat);
+}
+
+function switchInversionTab(plat) {
+  currentInvTab = plat;
+  document.getElementById('inv-tab-trii-btn').classList.toggle('active', plat === 'trii');
+  document.getElementById('inv-tab-hapi-btn').classList.toggle('active', plat === 'hapi');
+  document.getElementById('inv-panel-trii').style.display = plat === 'trii' ? 'block' : 'none';
+  document.getElementById('inv-panel-hapi').style.display = plat === 'hapi' ? 'block' : 'none';
+}
+
+function openInvMovModal(plat, tipo) {
+  document.getElementById('inv-mov-plat').value = plat;
+  currentInvMovTipo = tipo;
+  document.getElementById('inv-mov-title').textContent = (tipo === 'agregar' ? '+ Agregar Monto — ' : '− Retirar Monto — ') + invPlatMeta[plat].label;
+  document.getElementById('inv-mov-monto').value = '';
+  document.getElementById('inv-mov-modal').classList.add('open');
+}
+function closeInvMovModal() { document.getElementById('inv-mov-modal').classList.remove('open'); }
+
+function saveInvMov() {
+  const plat = document.getElementById('inv-mov-plat').value;
+  const monto = parseFloat(document.getElementById('inv-mov-monto').value) || 0;
+  if (monto <= 0) { showAlert('Ingresa un monto válido', 'error'); return; }
+  inversionesManual[plat] = (inversionesManual[plat] || 0) + (currentInvMovTipo === 'agregar' ? monto : -monto);
+  saveInversionesManual();
+  closeInvMovModal();
+  renderInversionesPanel(plat);
+  updateBadgeInversiones();
+  showAlert('✅ Movimiento aplicado a ' + invPlatMeta[plat].label);
+}
+
+// Monto para Invertir = fondo "Invertir" calculado igual que en Finanzas (fondosManual + % de ganancias)
+function getMontoInvertirFinanzas() {
+  let total = fondosManual.invertir || 0;
+  finanzas.forEach(f => { total += finDistribucion(f).invertir; });
+  return total;
+}
+
+function updateBadgeInversiones() {
+  const badge = document.getElementById('badge-inversiones');
+  if (badge) {
+    const total = (inversionesManual.trii || 0) + (inversionesManual.hapi || 0);
+    badge.textContent = 'S/ ' + total.toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+}
+
+function renderInversionesPanel(plat, opts) {
+  opts = opts || {};
+  const rows = inversiones[plat] || [];
+  const montoInvertido = inversionesManual[plat] || 0;
+  const label = invPlatMeta[plat].label;
+  const panel = document.getElementById('inv-panel-' + plat);
+  if (!panel) return;
+
+  const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#inv-tbody-' + plat)
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('inv-cell-')), start: document.activeElement.selectionStart }
+    : null;
+
+  panel.innerHTML = `
+    <div class="section" style="margin-bottom:18px;">
+      <div class="section-body" style="padding:0;">
+        <table class="orders-table" style="width:100%;table-layout:fixed;">
+          <tr>
+            <td rowspan="2" style="width:110px;text-align:center;font-family:'Baloo 2',cursive;font-weight:800;font-size:17px;color:var(--rose-dark);border-right:1.5px solid var(--border);">${label}</td>
+            <td style="font-weight:800;color:var(--text2);font-size:12px;text-transform:uppercase;letter-spacing:.04em;">Monto Invertido</td>
+            <td><button class="btn btn-sm" style="background:var(--blue-light);color:var(--blue);font-weight:700;" onclick="openInvMovModal('${plat}','agregar')"><i class="fas fa-plus"></i> Agregar Monto</button></td>
+          </tr>
+          <tr>
+            <td style="font-family:'Baloo 2',cursive;font-weight:800;font-size:19px;color:var(--green);">S/ ${montoInvertido.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td><button class="btn btn-sm" style="background:var(--red-light);color:var(--red);font-weight:700;" onclick="openInvMovModal('${plat}','retirar')"><i class="fas fa-minus"></i> Retirar Monto</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title"><i class="fas fa-table-cells" style="color:var(--rose-dark)"></i> Tabla de ${label}</div>
+        <button class="btn btn-primary btn-sm" onclick="addInversionRow('${plat}')"><i class="fas fa-plus"></i> Agregar fila</button>
+      </div>
+      <div class="section-body" style="padding:16px 24px 22px;">
+        <div class="table-wrap">
+          <table class="orders-table fin-sheet" id="inv-table-${plat}">
+            <thead>
+              <tr>
+                <th>Compañía</th>
+                <th>Inversión</th>
+                <th>Precio Compra X acción</th>
+                <th>Comisión x Compra</th>
+                <th>N° de acciones</th>
+                <th>Total Inversión</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody-${plat}">
+              ${rows.length ? rows.map(r => {
+                const n = invNumAcciones(r.inversion, r.precio);
+                const total = invTotal(r.inversion, r.comision);
+                return `<tr data-row-id="${r.id}">
+                  <td><input type="text" class="fin-cell-input inv-cell-compania" value="${(r.compania || '').replace(/"/g, '&quot;')}" placeholder="Compañía" onchange="updateInversionField('${plat}',${r.id},'compania',this.value)"></td>
+                  <td><input type="number" class="fin-cell-input fin-cell-num inv-cell-inversion" step="0.01" min="0" value="${r.inversion || ''}" placeholder="0.00" onchange="updateInversionField('${plat}',${r.id},'inversion',this.value)"></td>
+                  <td><input type="number" class="fin-cell-input fin-cell-num inv-cell-precio" step="0.01" min="0" value="${r.precio || ''}" placeholder="0.00" onchange="updateInversionField('${plat}',${r.id},'precio',this.value)"></td>
+                  <td><input type="number" class="fin-cell-input fin-cell-num inv-cell-comision" step="0.01" min="0" value="${r.comision || ''}" placeholder="0.00" onchange="updateInversionField('${plat}',${r.id},'comision',this.value)"></td>
+                  <td style="text-align:center;font-weight:700;">${n === null ? '-' : n.toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</td>
+                  <td style="font-weight:800;color:var(--green);">S/ ${total.toFixed(2)}</td>
+                  <td><button class="icon-btn delete-btn" onclick="deleteInversionRow('${plat}',${r.id})"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+              }).join('') : `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px;">Sin registros. Usa "Agregar fila" para empezar.</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (focusInfo && focusInfo.id) {
+    const el = document.querySelector(`#inv-tbody-${plat} tr[data-row-id="${focusInfo.id}"] .${focusInfo.cls}`);
+    if (el) { el.focus(); if (focusInfo.start != null && el.setSelectionRange) { try { el.setSelectionRange(focusInfo.start, focusInfo.start); } catch (e) {} } }
+  }
+}
+
+function loadInversiones() {
+  const el = document.getElementById('inv-monto-finanzas');
+  if (el) el.textContent = 'S/ ' + getMontoInvertirFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  renderInversionesPanel('trii');
+  renderInversionesPanel('hapi');
+  updateBadgeInversiones();
 }
 
 // ── stubs para compatibilidad con código viejo ──
