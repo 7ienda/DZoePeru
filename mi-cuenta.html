@@ -1830,6 +1830,35 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       </div>
     </div>
 
+    <!-- ====== MODAL: REGISTRAR ABONO (Adelanto+) ====== -->
+    <div class="modal-overlay" id="adelanto-plus-modal">
+      <div class="modal" style="max-width:420px;">
+        <div class="modal-head">
+          <div class="modal-title"><i class="fas fa-hand-holding-dollar" style="color:var(--sky);"></i> Registrar abono</div>
+          <button class="modal-close" onclick="closeAdelantoPlus()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="background:var(--bg);border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:16px;">
+            <div style="font-weight:800;font-size:14px;margin-bottom:8px;" id="ap-name">—</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;text-align:center;">
+              <div><div style="color:var(--muted);">Total</div><strong id="ap-total">S/0</strong></div>
+              <div><div style="color:var(--muted);">Adelantó</div><strong style="color:var(--mint);" id="ap-adelanto">S/0</strong></div>
+              <div><div style="color:var(--muted);">Debe</div><strong style="color:var(--orange);" id="ap-deuda">S/0</strong></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Monto del abono (S/) *</label>
+            <input type="number" id="ap-monto" step="0.01" min="0" placeholder="0.00" oninput="updateApPreview()">
+          </div>
+          <div id="ap-preview" style="font-size:12px;font-weight:700;min-height:18px;margin-top:-6px;margin-bottom:10px;"></div>
+          <div style="display:flex;gap:10px;margin-top:10px;">
+            <button class="btn btn-primary" style="flex:1;background:var(--sky);border-color:var(--sky);" onclick="withLoading(this, saveAdelantoPlus)"><i class="fas fa-floppy-disk"></i> Registrar</button>
+            <button class="btn btn-ghost" onclick="closeAdelantoPlus()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ====== MODAL: NUEVA CLIENTA (productos manuales) ====== -->
     <div class="modal-overlay" id="new-client-modal">
       <div class="modal" style="max-width:600px;">
@@ -7497,6 +7526,9 @@ function openAdelantoPlus(id) {
   document.getElementById('ap-monto').value = '';
   document.getElementById('ap-preview').textContent = '';
   document.getElementById('adelanto-plus-modal').classList.add('open');
+}
+function closeAdelantoPlus() {
+  document.getElementById('adelanto-plus-modal').classList.remove('open');
 }
 function updateApPreview() {
   const o = orders.find(x => x.id === adelantoPlusOrderId);
