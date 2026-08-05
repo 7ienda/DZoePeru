@@ -1024,6 +1024,25 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
         </div>
       </div>
+
+      <!-- Top ciudades -->
+      <div class="section" style="margin-top:24px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-map-location-dot" style="color:var(--mint)"></i> Top ciudades</div>
+          <div style="font-size:12px;color:var(--muted);">Basado en el Destino de cada pedido</div>
+        </div>
+        <div class="section-body">
+          <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center;">
+            <div class="table-wrap">
+              <table class="orders-table" id="dash-cities-table">
+                <thead><tr><th>Ciudad</th><th>Compras</th><th>Total vendido</th></tr></thead>
+                <tbody id="dash-cities-body"></tbody>
+              </table>
+            </div>
+            <div class="chart-wrap" style="height:260px;"><canvas id="dashCitiesChart"></canvas></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ====== INVENTARIO ====== -->
@@ -1734,6 +1753,19 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         <div style="font-size:12px;color:var(--muted);flex:1;">
           <strong style="color:var(--text2);">Mejor Cliente:</strong> <span id="cli-best">—</span>
           <span id="cli-best-amt" style="color:var(--rose);font-weight:800;margin-left:6px;"></span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="chart-card">
+          <div class="chart-title">Clientes por ciudad</div>
+          <div class="chart-sub">Cantidad de clientas por destino</div>
+          <div class="chart-wrap"><canvas id="clientsByCityChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Nuevos vs recurrentes</div>
+          <div class="chart-sub">1 compra vs más de 1</div>
+          <div class="chart-wrap"><canvas id="clientsNewVsRecurringChart"></canvas></div>
         </div>
       </div>
 
@@ -5825,6 +5857,56 @@ function renderClientsSection() {
   }).join('');
   updateMergeBar();
   checkClientDuplicates(false);
+  renderClientCharts(clients);
+}
+
+// ============================================
+// GRÁFICOS DE CLIENTES: por ciudad, nuevos vs recurrentes
+// ============================================
+let clientsByCityChartInst = null, clientsNewVsRecurringChartInst = null;
+function renderClientCharts(clients) {
+  clients = clients || (typeof buildClientsFromOrders === 'function' ? buildClientsFromOrders() : []);
+
+  // Clientes por ciudad
+  const cityEl = document.getElementById('clientsByCityChart');
+  if (cityEl) {
+    const cityMap = {};
+    clients.forEach(cl => {
+      const dest = (cl.destino || '').trim();
+      if (!dest) return;
+      const city = dest.split(/[,\-–]/)[0].trim();
+      if (!city) return;
+      cityMap[city] = (cityMap[city] || 0) + 1;
+    });
+    const sorted = Object.entries(cityMap).sort((a,b) => b[1]-a[1]).slice(0,10);
+    if (clientsByCityChartInst) clientsByCityChartInst.destroy();
+    if (sorted.length) {
+      clientsByCityChartInst = new Chart(cityEl.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: sorted.map(([city]) => city),
+          datasets: [{ label: 'Clientas', data: sorted.map(([,c]) => c), backgroundColor: 'rgba(124,58,237,.7)', borderRadius: 8, borderSkipped: false }]
+        },
+        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, ticks:{stepSize:1, font:{family:'Nunito',size:11}}, grid:{color:'rgba(0,0,0,.05)'}}, x:{grid:{display:false}, ticks:{font:{family:'Nunito',size:11}}} } }
+      });
+    }
+  }
+
+  // Clientes nuevos vs recurrentes
+  const recEl = document.getElementById('clientsNewVsRecurringChart');
+  if (recEl) {
+    const recurring = clients.filter(c => c.isRecurrente).length;
+    const nuevos = clients.length - recurring;
+    if (clientsNewVsRecurringChartInst) clientsNewVsRecurringChartInst.destroy();
+    clientsNewVsRecurringChartInst = new Chart(recEl.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Nuevos (1 compra)', 'Recurrentes (2+)'],
+        datasets: [{ data: [nuevos, recurring], backgroundColor: ['#2563eb','#059669'], borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{family:'Nunito',size:11}, boxWidth:12 } } }, cutout:'65%' }
+    });
+  }
 }
 
 function filterSalesByClient(key) {
@@ -7346,9 +7428,21 @@ function renderDeudores() {
   const rowFn = (o, compact) => {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short'}) : '—';
     const prod = (o.items||[]).map(i => `${i.name}${i.size?' T:'+i.size:''}`).join(', ') || '—';
+    const prodThumbs = (o.items||[]).map(i => {
+      const p = _findSoldProduct(i);
+      const img = p ? ((p.images && p.images[0]) || p.image || '') : '';
+      const sizeLabel = i.size || '';
+      const label = `${i.name||''}${sizeLabel ? ' - Talla '+sizeLabel : ''}`;
+      return `<div style="display:inline-flex;align-items:center;gap:5px;margin:2px 6px 2px 0;" title="${label.replace(/"/g,'&quot;')}">
+        ${img
+          ? `<img src="${img}" alt="${(i.name||'').replace(/"/g,'&quot;')}" style="width:34px;height:34px;border-radius:9px;object-fit:cover;border:1.5px solid var(--line2);flex-shrink:0;">`
+          : `<div style="width:34px;height:34px;border-radius:9px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">📦</div>`}
+        ${sizeLabel ? `<span style="font-size:10px;font-weight:800;background:var(--rose-light);color:var(--rose-dark);padding:2px 7px;border-radius:99px;white-space:nowrap;">${sizeLabel}</span>` : ''}
+      </div>`;
+    }).join('') || '—';
     if (compact) return `<tr>
       <td><strong>${o.name||''} ${o.lastname||''}</strong></td>
-      <td style="font-size:11px;">${prod}</td>
+      <td style="font-size:11px;"><div style="display:flex;flex-wrap:wrap;align-items:center;">${prodThumbs}</div></td>
       <td>S/ ${parseFloat(o.total||0).toFixed(2)}</td>
       <td style="color:var(--mint);">S/ ${parseFloat(o.adelanto||0).toFixed(2)}</td>
       <td style="color:var(--orange);font-weight:700;">S/ ${parseFloat(o.deuda||0).toFixed(2)}</td>
@@ -7481,6 +7575,59 @@ function renderCitiesSales() {
       </div>
       <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:700;color:${colors[i%colors.length]};flex-shrink:0;">${count}</div>
     </div>`).join('');
+}
+
+// ============================================
+// TOP CIUDADES (Dashboard) — tabla + gráfico de barras
+// ============================================
+let dashCitiesChartInst = null;
+function renderDashCities() {
+  const tbody = document.getElementById('dash-cities-body');
+  const canvas = document.getElementById('dashCitiesChart');
+  if (!tbody && !canvas) return;
+  const cityMap = {};
+  orders.forEach(o => {
+    const dest = (getClientData(o).destination || '').trim();
+    if (!dest || dest === '—') return;
+    // Tomar la primera parte como ciudad (antes de coma o guión)
+    const city = dest.split(/[,\-–]/)[0].trim();
+    if (!city) return;
+    if (!cityMap[city]) cityMap[city] = { count: 0, total: 0 };
+    cityMap[city].count += 1;
+    cityMap[city].total += parseFloat(o.total) || 0;
+  });
+  const sorted = Object.entries(cityMap).sort((a,b) => b[1].total - a[1].total).slice(0,10);
+
+  if (tbody) {
+    tbody.innerHTML = sorted.length ? sorted.map(([city, d]) => `
+      <tr>
+        <td><strong>${city}</strong></td>
+        <td>${d.count}</td>
+        <td><span style="font-weight:700;color:var(--mint);">S/ ${d.total.toFixed(2)}</span></td>
+      </tr>`).join('') : `<tr><td colspan="3" class="empty-state" style="text-align:center;padding:24px;color:var(--muted);">Sin datos de destino aún</td></tr>`;
+  }
+
+  if (canvas) {
+    if (dashCitiesChartInst) dashCitiesChartInst.destroy();
+    if (!sorted.length) return;
+    dashCitiesChartInst = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: sorted.map(([city]) => city),
+        datasets: [{ label: 'Total vendido (S/)', data: sorted.map(([,d]) => d.total), backgroundColor: 'rgba(89,178,155,.75)', borderRadius: 8, borderSkipped: false }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,.05)' }, ticks: { font: { family:'Nunito', size:11 } } },
+          y: { grid: { display: false }, ticks: { font: { family:'Nunito', size:11 } } }
+        }
+      }
+    });
+  }
 }
 
 // ============================================
@@ -8286,7 +8433,7 @@ function renderVisitsChart() {
 const _origUpdateDashboard = updateDashboard;
 updateDashboard = function() {
   _origUpdateDashboard.apply(this, arguments);
-  setTimeout(() => { renderVisitsChart(); renderCountriesList(); renderManualInputs(); renderDeudores(); }, 80);
+  setTimeout(() => { renderVisitsChart(); renderCountriesList(); renderManualInputs(); renderDeudores(); renderDashCities(); }, 80);
 };
 const _origFilterSales = filterSales;
 filterSales = function() {
