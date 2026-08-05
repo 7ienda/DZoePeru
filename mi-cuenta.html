@@ -954,6 +954,8 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <span class="menu-label">Finanzas</span>
     <button class="menu-btn" data-section="finanzas-section" onclick="goToSection('finanzas-section');loadFinanzas();"><i class="fas fa-sack-dollar" style="color:var(--green);"></i><span style="color:var(--green);">Finanzas</span><span class="badge" id="badge-finanzas" style="background:rgba(31,158,110,.22);">0</span></button>
     <button class="menu-btn" data-section="inversiones-section" onclick="goToSection('inversiones-section');loadInversiones();"><i class="fas fa-chart-line" style="color:#6b2fd4;"></i><span style="color:#6b2fd4;">Inversiones</span><span class="badge" id="badge-inversiones" style="background:rgba(107,47,212,.22);">S/ 0</span></button>
+    <button class="menu-btn" data-section="reinvertir-section" onclick="goToSection('reinvertir-section');loadReinvertir();"><i class="fas fa-arrows-rotate" style="color:#1d5fd4;"></i><span style="color:#1d5fd4;">Reinvertir</span><span class="badge" id="badge-reinvertir" style="background:rgba(29,95,212,.22);">S/ 0</span></button>
+    <button class="menu-btn" data-section="imprevistos-section" onclick="goToSection('imprevistos-section');loadImprevistos();"><i class="fas fa-triangle-exclamation" style="color:#c97010;"></i><span style="color:#c97010;">Imprevistos</span><span class="badge" id="badge-imprevistos" style="background:rgba(201,112,16,.22);">S/ 0</span></button>
     <span class="menu-label">Contenido</span>
     <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
@@ -1610,8 +1612,11 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div id="inv-panel-trii" class="inv-panel"></div>
       <div id="inv-panel-hapi" class="inv-panel" style="display:none;"></div>
 
-      <!-- ====== REINVERTIR ====== -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin:32px 0 20px;flex-wrap:wrap;gap:12px;">
+    </div>
+
+    <div id="reinvertir-section" class="page-section" style="display:none;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
         <div>
           <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;color:var(--text);">🔁 Reinvertir</div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra las compras de mercadería hechas con el fondo Reinvertir</div>
@@ -1647,6 +1652,51 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
                 </tr>
               </thead>
               <tbody id="reinv-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="imprevistos-section" class="page-section" style="display:none;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:Baloo2,cursive;font-size:22px;font-weight:800;color:var(--text);">⚠️ Imprevistos</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra los gastos hechos con el fondo Imprevistos</div>
+        </div>
+      </div>
+
+      <!-- MONTO PARA IMPREVISTOS (viene del fondo "Imprevistos" de Finanzas) -->
+      <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,var(--orange-light),var(--rose-soft));border:none;">
+        <div class="section-body" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;">Monto para Imprevistos</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Se calcula solo desde el fondo ⚠️ Imprevistos de Finanzas</div>
+          </div>
+          <div style="font-family:'Baloo 2',cursive;font-size:30px;font-weight:800;color:#c97010;" id="imprev-monto-finanzas">S/ 0.00</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-table-cells" style="color:var(--rose-dark)"></i> Tabla de Imprevistos</div>
+          <button class="btn btn-primary btn-sm" onclick="addImprevistoRow()"><i class="fas fa-plus"></i> Agregar fila</button>
+        </div>
+        <div class="section-body" style="padding:16px 24px 22px;">
+          <div class="table-wrap">
+            <table class="orders-table fin-sheet" id="imprev-table">
+              <thead>
+                <tr>
+                  <th>Motivo</th>
+                  <th>Monto</th>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="imprev-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -7372,8 +7422,8 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'finanzas-section':'fa-sack-dollar', 'inversiones-section':'fa-chart-line' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'finanzas-section':'Finanzas', 'inversiones-section':'Inversiones' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'finanzas-section':'fa-sack-dollar', 'inversiones-section':'fa-chart-line', 'reinvertir-section':'fa-arrows-rotate', 'imprevistos-section':'fa-triangle-exclamation' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'finanzas-section':'Finanzas', 'inversiones-section':'Inversiones', 'reinvertir-section':'Reinvertir', 'imprevistos-section':'Imprevistos' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -10510,7 +10560,6 @@ function loadInversiones() {
   renderInversionesPanel('trii');
   renderInversionesPanel('hapi');
   updateBadgeInversiones();
-  loadReinvertir();
 }
 
 // ============================================
@@ -10578,10 +10627,95 @@ function renderReinvertirPanel(opts) {
   }
 }
 
+function updateBadgeReinvertir() {
+  const badge = document.getElementById('badge-reinvertir');
+  if (badge) {
+    const total = getMontoReinvertirFinanzas();
+    badge.textContent = 'S/ ' + total.toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+}
+
 function loadReinvertir() {
   const el = document.getElementById('reinv-monto-finanzas');
   if (el) el.textContent = 'S/ ' + getMontoReinvertirFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   renderReinvertirPanel();
+  updateBadgeReinvertir();
+}
+
+// ============================================
+// IMPREVISTOS — Gastos hechos con el fondo Imprevistos
+// ============================================
+let imprevistosRows = JSON.parse(localStorage.getItem('dzoe_imprevistos') || '[]');
+
+function saveImprevistosRows() { localStorage.setItem('dzoe_imprevistos', JSON.stringify(imprevistosRows)); }
+
+// Monto para Imprevistos = fondo "Imprevistos" calculado igual que en Finanzas (fondosManual + % de ganancias)
+function getMontoImprevistosFinanzas() {
+  let total = fondosManual.imprevistos || 0;
+  finanzas.forEach(f => { total += finDistribucion(f).imprevistos; });
+  return total;
+}
+
+function addImprevistoRow() {
+  const row = { id: Date.now(), motivo: '', monto: 0, fecha: new Date().toISOString().slice(0, 10), descripcion: '' };
+  imprevistosRows.push(row);
+  saveImprevistosRows();
+  renderImprevistosPanel();
+}
+
+function updateImprevistoField(id, field, value) {
+  const r = imprevistosRows.find(x => String(x.id) === String(id));
+  if (!r) return;
+  if (field === 'motivo' || field === 'fecha' || field === 'descripcion') r[field] = value;
+  else r[field] = parseFloat(value) || 0;
+  saveImprevistosRows();
+  renderImprevistosPanel({ keepFocus: true });
+}
+
+async function deleteImprevistoRow(id) {
+  if (!(await customConfirm('¿Eliminar esta fila?', { title: 'Eliminar registro' }))) return;
+  imprevistosRows = imprevistosRows.filter(x => String(x.id) !== String(id));
+  saveImprevistosRows();
+  renderImprevistosPanel();
+}
+
+function renderImprevistosPanel(opts) {
+  opts = opts || {};
+  const tbody = document.getElementById('imprev-tbody');
+  if (!tbody) return;
+
+  const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#imprev-tbody')
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('imprev-cell-')), start: document.activeElement.selectionStart }
+    : null;
+
+  tbody.innerHTML = imprevistosRows.length ? imprevistosRows.map(r => `
+    <tr data-row-id="${r.id}">
+      <td><input type="text" class="fin-cell-input imprev-cell-motivo" value="${(r.motivo || '').replace(/"/g, '&quot;')}" placeholder="Motivo" onchange="updateImprevistoField('${r.id}','motivo',this.value)"></td>
+      <td><input type="number" class="fin-cell-input fin-cell-num imprev-cell-monto" step="0.01" min="0" value="${r.monto || ''}" placeholder="0.00" onchange="updateImprevistoField('${r.id}','monto',this.value)"></td>
+      <td><input type="date" class="fin-cell-input imprev-cell-fecha" value="${r.fecha || ''}" onchange="updateImprevistoField('${r.id}','fecha',this.value)"></td>
+      <td><input type="text" class="fin-cell-input imprev-cell-descripcion" value="${(r.descripcion || '').replace(/"/g, '&quot;')}" placeholder="Descripción" onchange="updateImprevistoField('${r.id}','descripcion',this.value)"></td>
+      <td><button class="icon-btn delete-btn" onclick="deleteImprevistoRow('${r.id}')"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px;">Sin registros. Usa "Agregar fila" para empezar.</td></tr>`;
+
+  if (focusInfo && focusInfo.id) {
+    const el = document.querySelector(`#imprev-tbody tr[data-row-id="${focusInfo.id}"] .${focusInfo.cls}`);
+    if (el) { el.focus(); if (focusInfo.start != null && el.setSelectionRange) { try { el.setSelectionRange(focusInfo.start, focusInfo.start); } catch (e) {} } }
+  }
+}
+
+function updateBadgeImprevistos() {
+  const badge = document.getElementById('badge-imprevistos');
+  if (badge) {
+    const total = getMontoImprevistosFinanzas();
+    badge.textContent = 'S/ ' + total.toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+}
+
+function loadImprevistos() {
+  const el = document.getElementById('imprev-monto-finanzas');
+  if (el) el.textContent = 'S/ ' + getMontoImprevistosFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  renderImprevistosPanel();
+  updateBadgeImprevistos();
 }
 
 // ── stubs para compatibilidad con código viejo ──
