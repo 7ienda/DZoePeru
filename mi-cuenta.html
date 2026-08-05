@@ -7430,6 +7430,26 @@ async function removeOffer() {
 // ============================================
 // DEUDORES
 // ============================================
+// Cuando se agrega un producto nuevo a una bolsita que ya estaba pagada,
+// el pedido acumula TODOS los productos (los viejos ya pagados + los nuevos),
+// pero el campo "deuda" solo corresponde a lo último agregado.
+// Esta función devuelve solo los productos que realmente componen la deuda actual,
+// tomando los últimos items agregados hasta cubrir el monto que debe.
+function getPendingItems(o) {
+  const items = o.items || [];
+  const deuda = parseFloat(o.deuda) || 0;
+  if (deuda <= 0 || !items.length) return items;
+  let acc = 0;
+  const result = [];
+  for (let i = items.length - 1; i >= 0; i--) {
+    const it = items[i];
+    const subtotal = (parseFloat(it.price)||0) * (parseInt(it.qty)||1);
+    result.unshift(it);
+    acc += subtotal;
+    if (acc >= deuda - 0.01) return result;
+  }
+  return result; // si no alcanza (datos incompletos), muestra lo que haya
+}
 function getDeudores() {
   return orders.filter(o => o.adelanto > 0 && o.deuda > 0);
 }
@@ -7456,8 +7476,9 @@ function renderDeudores() {
 
   const rowFn = (o, compact) => {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('es-PE',{day:'2-digit',month:'short'}) : '—';
-    const prod = (o.items||[]).map(i => `${i.name}${i.size?' T:'+i.size:''}`).join(', ') || '—';
-    const prodThumbs = (o.items||[]).map(i => {
+    const pendingItems = getPendingItems(o);
+    const prod = pendingItems.map(i => `${i.name}${i.size?' T:'+i.size:''}`).join(', ') || '—';
+    const prodThumbs = pendingItems.map(i => {
       const p = _findSoldProduct(i);
       const img = p ? ((p.images && p.images[0]) || p.image || '') : '';
       const sizeLabel = i.size || '';
