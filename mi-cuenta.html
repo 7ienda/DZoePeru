@@ -909,6 +909,23 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
 <!-- ============================================
+     MODAL GLOBAL DE CONFIRMACIÓN (customConfirm)
+     ============================================ -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <div class="modal-body">
+      <div class="confirm-modal-icon" id="confirm-modal-icon"><i class="fas fa-triangle-exclamation"></i></div>
+      <div id="confirm-modal-title">¿Estás segura?</div>
+      <div id="confirm-modal-msg"></div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="btn btn-ghost" id="confirm-modal-cancel" onclick="_resolveConfirmModal(false)">Cancelar</button>
+        <button type="button" class="btn btn-danger-solid" id="confirm-modal-ok" onclick="_resolveConfirmModal(true)">Sí, continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
      SIDEBAR
      ============================================ -->
 <nav class="sidebar" id="sidebar">
