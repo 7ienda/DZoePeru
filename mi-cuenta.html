@@ -928,7 +928,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <button class="menu-btn" data-section="inventory-section"><i class="fas fa-boxes-stacked"></i><span>Inventario</span><span class="badge" id="badge-products">0</span></button>
     <button class="menu-btn" data-section="almacen-section" onclick="goToSection('almacen-section');loadAlmacenList();"><i class="fas fa-warehouse" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Almacén</span><span class="badge" id="badge-almacen" style="background:rgba(124,58,237,.3);">0</span></button>
     <button class="menu-btn" data-section="sold-products-section"><i class="fas fa-bag-shopping"></i><span>Productos Vendidos</span><span class="badge" id="badge-sold-products">0</span></button>
-    <button class="menu-btn" data-section="categories-section"><i class="fas fa-tags"></i><span>Categorías</span><span class="badge" id="badge-categories">0</span></button>
     <button class="menu-btn" data-section="sales-section"><i class="fas fa-receipt"></i><span>Ventas</span><span class="badge" id="badge-orders">0</span></button>
     <span class="menu-label">Personas</span>
     <button class="menu-btn" data-section="reingreso-section" onclick="goToSection('reingreso-section');loadReingresoAlerts();"><i class="fas fa-bell" style="color:var(--rose);"></i><span>Alertas Reingreso</span></button>
@@ -944,7 +943,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <button class="menu-btn" data-section="drops-section"><i class="fas fa-bolt"></i><span>⚡ Drops</span></button>
     <button class="menu-btn" data-section="lookbooks-section"><i class="fas fa-book-open"></i><span>📖 Lookbooks</span></button>
     <span class="menu-label">Marketing</span>
-    <button class="menu-btn" data-section="ribbons-pro-section"><i class="fas fa-ribbon"></i><span>🎀 Listones PRO</span></button>
     <button class="menu-btn" data-section="promociones-section"><i class="fas fa-percent"></i><span>💸 Promociones</span></button>
     <button class="menu-btn" data-section="carritos-section"><i class="fas fa-cart-arrow-down"></i><span>🛒 Carritos Abandonados</span></button>
     <span class="menu-label">Sistema</span>
@@ -1253,50 +1251,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     </div>
 
     <!-- ====== CATEGORÍAS ====== -->
-    <div id="categories-section" class="page-section" style="display:none;">
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span>
-            <button class="btn btn-ghost btn-sm" onclick="cleanupOrphanCategories()" title="Busca productos con categorías que ya fueron eliminadas y las quita"><i class="fas fa-broom"></i> Limpiar huérfanas</button>
-            <button class="btn btn-ghost btn-sm" onclick="addCategoryGroup()"><i class="fas fa-folder-plus"></i> Nuevo grupo</button>
-          </div>
-        </div>
-        <div class="section-body">
-          <!-- Formulario nueva categoría -->
-          <div class="cat-add-form">
-            <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-              <i class="fas fa-plus-circle" style="color:var(--rose);"></i> Nueva Categoría
-            </div>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
-              <div class="form-group" style="flex:1;min-width:160px;"><label>Nombre</label><input type="text" id="new-category-name" placeholder="Ej: Bebés"></div>
-              <div class="form-group" style="min-width:140px;">
-                <label>Color</label>
-                <div class="cat-color-picker" id="cat-color-picker-form">
-                  <div class="color-dot selected" data-color="#c2617a" style="background:#c2617a" onclick="selectCatColor(this)"></div>
-                  <div class="color-dot" data-color="#2e9c6b" style="background:#2e9c6b" onclick="selectCatColor(this)"></div>
-                  <div class="color-dot" data-color="#2563eb" style="background:#2563eb" onclick="selectCatColor(this)"></div>
-                  <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed" onclick="selectCatColor(this)"></div>
-                  <div class="color-dot" data-color="#d97706" style="background:#d97706" onclick="selectCatColor(this)"></div>
-                  <div class="color-dot" data-color="#0891b2" style="background:#0891b2" onclick="selectCatColor(this)"></div>
-                </div>
-              </div>
-              <div class="form-group" style="min-width:140px;">
-                <label>Grupo</label>
-                <select id="new-category-group" style="padding:10px 14px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:13px;background:var(--bg);color:var(--text);">
-                  <option value="">Sin grupo</option>
-                </select>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="addCategory()" style="flex-shrink:0;white-space:nowrap;"><i class="fas fa-plus"></i> Agregar</button>
-            </div>
-          </div>
-          <!-- Grupos + Categorías -->
-          <div id="categories-list" class="cat-group-wrap"></div>
-        </div>
-      </div>
-    </div>
-
     <!-- ====== VENTAS ====== -->
     <div id="sales-section" class="page-section" style="display:none;">
       <!-- Summary cards mejoradas -->
@@ -2298,35 +2252,254 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <div id="settings-section" class="page-section" style="display:none;">
       <div class="section">
         <div class="section-header"><div class="section-title"><i class="fas fa-sliders" style="color:var(--rose)"></i> Configuración</div></div>
-        <div class="section-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-            <div class="form-group"><label>WhatsApp de contacto</label><input type="text" id="settings-whatsapp" placeholder="51956063145"></div>
-            <div class="form-group"><label>Email de contacto</label><input type="email" id="settings-email"></div>
+        <div class="section-body" style="padding-bottom:8px;">
+          <div class="sup-tabs" id="settings-tabs">
+            <button class="sup-tab-btn active" data-stab="personal" onclick="switchSettingsTab('personal')"><i class="fas fa-id-card"></i> Datos personales</button>
+            <button class="sup-tab-btn" data-stab="categories" onclick="switchSettingsTab('categories')"><i class="fas fa-tags"></i> Categorías <span class="sup-tab-badge" id="badge-categories">0</span></button>
+            <button class="sup-tab-btn" data-stab="ribbons" onclick="switchSettingsTab('ribbons')"><i class="fas fa-ribbon"></i> 🎀 Listones PRO</button>
           </div>
-          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line2);">
-            <div style="font-weight:700;margin-bottom:14px;">🔐 Credenciales de acceso</div>
+        </div>
+      </div>
+
+      <!-- ── TAB: Datos personales ── -->
+      <div id="settings-tab-personal" class="settings-tab-pane">
+        <div class="section">
+          <div class="section-body">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-              <div class="form-group"><label>Correo de acceso</label><input type="email" id="settings-user" disabled style="opacity:.65;"></div>
-              <div class="form-group"><label>Nueva contraseña</label><input type="password" id="settings-pass" placeholder="Dejar vacío = no cambiar" autocomplete="new-password"></div>
+              <div class="form-group"><label>WhatsApp de contacto</label><input type="text" id="settings-whatsapp" placeholder="51956063145"></div>
+              <div class="form-group"><label>Email de contacto</label><input type="email" id="settings-email"></div>
             </div>
-            <div style="margin-top:10px;"><button class="btn btn-secondary" onclick="changeAdminPassword()"><i class="fas fa-key"></i> Cambiar contraseña</button></div>
+            <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line2);">
+              <div style="font-weight:700;margin-bottom:14px;">🔐 Credenciales de acceso</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+                <div class="form-group"><label>Correo de acceso</label><input type="email" id="settings-user" disabled style="opacity:.65;"></div>
+                <div class="form-group"><label>Nueva contraseña</label><input type="password" id="settings-pass" placeholder="Dejar vacío = no cambiar" autocomplete="new-password"></div>
+              </div>
+              <div style="margin-top:10px;"><button class="btn btn-secondary" onclick="changeAdminPassword()"><i class="fas fa-key"></i> Cambiar contraseña</button></div>
+            </div>
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line2);">
+              <div style="font-weight:700;margin-bottom:4px;">📦 Proveedores de abastecimiento</div>
+              <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Son las opciones que aparecen en el campo "Proveedor" de cada talla, en Agregar Producto (ej: Temu, Shein). Agrega los tuyos, edita el nombre/emoji, o quita los que no uses.</div>
+              <div id="sourcing-proveedores-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input type="text" id="new-sourcing-emoji" placeholder="🏷️" maxlength="4" style="width:56px;text-align:center;">
+                <input type="text" id="new-sourcing-name" placeholder="Nombre del proveedor (ej: AliExpress)" style="flex:1;">
+                <button class="btn btn-primary btn-sm" onclick="addSourcingProveedor()"><i class="fas fa-plus"></i> Agregar</button>
+              </div>
+              <div style="margin-top:18px;padding:14px 16px;background:var(--orange-light);border-radius:14px;border:1.5px dashed var(--orange);">
+                <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:4px;"><i class="fas fa-triangle-exclamation"></i> Zona de reinicio</div>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Deja el campo "Proveedor" vacío en TODAS las tallas de TODOS tus productos ya subidos (no borra ID, link, nota ni historial de costos — solo el proveedor). Útil si quieres volver a asignarlos manualmente desde cero.</div>
+                <button class="btn btn-danger-solid btn-sm" onclick="withLoading(this, resetAllProductProveedores)"><i class="fas fa-rotate-left"></i> Quitar proveedor de todos los productos</button>
+              </div>
+            </div>
+            <div style="margin-top:24px;"><button class="btn btn-primary" onclick="withLoading(this, saveSettings)"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
           </div>
-          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line2);">
-            <div style="font-weight:700;margin-bottom:4px;">📦 Proveedores de abastecimiento</div>
-            <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Son las opciones que aparecen en el campo "Proveedor" de cada talla, en Agregar Producto (ej: Temu, Shein). Agrega los tuyos, edita el nombre/emoji, o quita los que no uses.</div>
-            <div id="sourcing-proveedores-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <input type="text" id="new-sourcing-emoji" placeholder="🏷️" maxlength="4" style="width:56px;text-align:center;">
-              <input type="text" id="new-sourcing-name" placeholder="Nombre del proveedor (ej: AliExpress)" style="flex:1;">
-              <button class="btn btn-primary btn-sm" onclick="addSourcingProveedor()"><i class="fas fa-plus"></i> Agregar</button>
-            </div>
-            <div style="margin-top:18px;padding:14px 16px;background:var(--orange-light);border-radius:14px;border:1.5px dashed var(--orange);">
-              <div style="font-weight:800;font-size:13px;color:var(--orange);margin-bottom:4px;"><i class="fas fa-triangle-exclamation"></i> Zona de reinicio</div>
-              <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Deja el campo "Proveedor" vacío en TODAS las tallas de TODOS tus productos ya subidos (no borra ID, link, nota ni historial de costos — solo el proveedor). Útil si quieres volver a asignarlos manualmente desde cero.</div>
-              <button class="btn btn-danger-solid btn-sm" onclick="withLoading(this, resetAllProductProveedores)"><i class="fas fa-rotate-left"></i> Quitar proveedor de todos los productos</button>
+        </div>
+      </div>
+
+      <!-- ── TAB: Categorías ── -->
+      <div id="settings-tab-categories" class="settings-tab-pane" style="display:none;">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-tags" style="color:var(--rose)"></i> Categorías</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span id="badge-categories-hdr" style="background:var(--rose-soft);color:var(--rose);font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;"></span>
+              <button class="btn btn-ghost btn-sm" onclick="cleanupOrphanCategories()" title="Busca productos con categorías que ya fueron eliminadas y las quita"><i class="fas fa-broom"></i> Limpiar huérfanas</button>
+              <button class="btn btn-ghost btn-sm" onclick="addCategoryGroup()"><i class="fas fa-folder-plus"></i> Nuevo grupo</button>
             </div>
           </div>
-          <div style="margin-top:24px;"><button class="btn btn-primary" onclick="withLoading(this, saveSettings)"><i class="fas fa-floppy-disk"></i> Guardar configuración</button></div>
+          <div class="section-body">
+            <!-- Formulario nueva categoría -->
+            <div class="cat-add-form">
+              <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+                <i class="fas fa-plus-circle" style="color:var(--rose);"></i> Nueva Categoría
+              </div>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
+                <div class="form-group" style="flex:1;min-width:160px;"><label>Nombre</label><input type="text" id="new-category-name" placeholder="Ej: Bebés"></div>
+                <div class="form-group" style="min-width:140px;">
+                  <label>Color</label>
+                  <div class="cat-color-picker" id="cat-color-picker-form">
+                    <div class="color-dot selected" data-color="#c2617a" style="background:#c2617a" onclick="selectCatColor(this)"></div>
+                    <div class="color-dot" data-color="#2e9c6b" style="background:#2e9c6b" onclick="selectCatColor(this)"></div>
+                    <div class="color-dot" data-color="#2563eb" style="background:#2563eb" onclick="selectCatColor(this)"></div>
+                    <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed" onclick="selectCatColor(this)"></div>
+                    <div class="color-dot" data-color="#d97706" style="background:#d97706" onclick="selectCatColor(this)"></div>
+                    <div class="color-dot" data-color="#0891b2" style="background:#0891b2" onclick="selectCatColor(this)"></div>
+                  </div>
+                </div>
+                <div class="form-group" style="min-width:140px;">
+                  <label>Grupo</label>
+                  <select id="new-category-group" style="padding:10px 14px;border-radius:11px;border:1.5px solid var(--border);font-family:Nunito,sans-serif;font-size:13px;background:var(--bg);color:var(--text);">
+                    <option value="">Sin grupo</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="addCategory()" style="flex-shrink:0;white-space:nowrap;"><i class="fas fa-plus"></i> Agregar</button>
+              </div>
+            </div>
+            <!-- Grupos + Categorías -->
+            <div id="categories-list" class="cat-group-wrap"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: Listones PRO ── -->
+      <div id="settings-tab-ribbons" class="settings-tab-pane" style="display:none;">
+        <!-- KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+          <div class="stat-card" style="border-left:4px solid var(--rose);padding:18px 20px;">
+            <div class="stat-card-icon" style="background:var(--rose-soft);color:var(--rose);"><i class="fas fa-ribbon"></i></div>
+            <h3>Listones creados</h3>
+            <div class="stat-value" id="rp-kpi-total" style="font-size:28px;color:var(--rose);">0</div>
+          </div>
+          <div class="stat-card" style="border-left:4px solid var(--green);padding:18px 20px;">
+            <div class="stat-card-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-robot"></i></div>
+            <h3>Auto-asignados</h3>
+            <div class="stat-value" id="rp-kpi-auto" style="font-size:28px;color:var(--green);">0</div>
+          </div>
+          <div class="stat-card" style="border-left:4px solid var(--blue);padding:18px 20px;">
+            <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-hand-pointer"></i></div>
+            <h3>Manual</h3>
+            <div class="stat-value" id="rp-kpi-manual" style="font-size:28px;color:var(--blue);">0</div>
+          </div>
+          <div class="stat-card" style="border-left:4px solid var(--orange);padding:18px 20px;">
+            <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-tags"></i></div>
+            <h3>Productos etiquetados</h3>
+            <div class="stat-value" id="rp-kpi-etiquetados" style="font-size:28px;color:var(--orange);">0</div>
+          </div>
+        </div>
+
+        <!-- Sección Listones PRO: Crear + Lista -->
+        <div class="section" style="margin-bottom:20px;">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-ribbon" style="color:var(--rose)"></i> Listones PRO</div>
+            <button class="btn btn-primary btn-sm" onclick="openRibbonProForm()"><i class="fas fa-plus"></i> Crear Listón</button>
+          </div>
+          <div class="section-body">
+            <!-- Quick ribbons -->
+            <div style="margin-bottom:20px;">
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">⚡ Listones rápidos predefinidos — clic para usar</div>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;" id="quick-ribbons-row">
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Más vendido" data-color="#e05050" data-icon="🔥" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffe2e2;color:#d42020;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fbb;transition:.2s;">🔥 Más vendido</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Nuevo" data-color="#6b2fd4" data-icon="✨" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ece9fe;color:#6b2fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #d4c8ff;transition:.2s;">✨ Nuevo</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Exclusivo" data-color="#c2617a" data-icon="🎀" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🎀 Exclusivo</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Oferta" data-color="#c97010" data-icon="💸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fef0c7;color:#c97010;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fdd783;transition:.2s;">💸 Oferta</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Últimas unidades" data-color="#d97706" data-icon="⚡" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffedd5;color:#d97706;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fed7aa;transition:.2s;">⚡ Últimas unidades</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Premium" data-color="#1d5fd4" data-icon="👑" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#daeafe;color:#1d5fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #bfdbfe;transition:.2s;">👑 Premium</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Favorito" data-color="#1f9e6e" data-icon="🧸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#d0f2e6;color:#1f9e6e;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #a7f3d0;transition:.2s;">🧸 Favorito</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Recién llegado" data-color="#c2617a" data-icon="🆕" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🆕 Recién llegado</div>
+                <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Agotado" data-color="#64748b" data-icon="🚫" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#f1f5f9;color:#64748b;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #cbd5e1;transition:.2s;">🚫 Agotado</div>
+              </div>
+            </div>
+
+            <!-- Form crear listón -->
+            <div id="ribbon-pro-form" style="display:none;background:var(--bg);border-radius:16px;padding:22px;margin-bottom:20px;border:1.5px dashed var(--rose-mid);">
+              <div style="font-weight:800;font-size:15px;margin-bottom:16px;">✨ Configurar Listón PRO</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="form-group"><label>Nombre *</label><input type="text" id="rp-name" placeholder="Ej: Hot Sale" oninput="updateRpPreview()"></div>
+                <div class="form-group"><label>Ícono / Emoji</label><input type="text" id="rp-icon" placeholder="🔥" style="font-size:20px;text-align:center;" oninput="updateRpPreview()"></div>
+                <div class="form-group"><label>Prioridad</label><select id="rp-priority"><option value="1">1 — Alta</option><option value="2" selected>2 — Media</option><option value="3">3 — Baja</option></select></div>
+                <div class="form-group">
+                  <label>Modo de asignación</label>
+                  <select id="rp-mode" onchange="toggleRpAutoConfig()">
+                    <option value="manual">✋ Manual</option>
+                    <option value="auto">🤖 Automático</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>Fecha inicio</label><input type="date" id="rp-start"></div>
+                <div class="form-group"><label>Fecha fin</label><input type="date" id="rp-end"></div>
+                <div class="form-group" style="grid-column:span 2;">
+                  <label>Color</label>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="rp-color-picker">
+                    <div class="rp-color-opt selected" data-color="#c2617a" style="background:#c2617a;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2.5px solid #c2617a;box-shadow:0 0 0 2px #fff;"></div>
+                    <div class="rp-color-opt" data-color="#d42020" style="background:#d42020;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#c97010" style="background:#c97010;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#1f9e6e" style="background:#1f9e6e;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#1d5fd4" style="background:#1d5fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#6b2fd4" style="background:#6b2fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#64748b" style="background:#64748b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                    <div class="rp-color-opt" data-color="#1e293b" style="background:#1e293b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Config automático -->
+              <div id="rp-auto-config" style="display:none;background:var(--green-light);border-radius:12px;padding:14px 18px;margin-bottom:14px;border:1.5px solid rgba(31,158,110,.2);">
+                <div style="font-size:12px;font-weight:800;color:var(--green);margin-bottom:10px;">🤖 Configuración Automática</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                  <div class="form-group">
+                    <label style="font-size:11px;">Regla automática</label>
+                    <select id="rp-auto-rule">
+                      <option value="new_arrivals">Últimos N productos ingresados</option>
+                      <option value="low_stock">Stock crítico (≤ N unidades)</option>
+                      <option value="out_of_stock">Sin stock (agotados)</option>
+                      <option value="top_sold">Más vendidos</option>
+                      <option value="category">Por categoría</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label style="font-size:11px;">Parámetro N / Valor</label>
+                    <input type="text" id="rp-auto-param" placeholder="Ej: 5 (últimos 5) o nombre categoría">
+                  </div>
+                  <div class="form-group">
+                    <label style="font-size:11px;">Actualización</label>
+                    <select id="rp-auto-freq">
+                      <option value="realtime">En tiempo real</option>
+                      <option value="daily">Diaria</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:var(--green);margin-top:8px;font-weight:600;">✅ El listón se aplicará automáticamente a todos los productos que cumplan la regla.</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="flex:1;background:var(--card);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);">Preview: <span id="rp-preview" style="display:inline-block;padding:3px 12px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:#c2617a;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;">LISTÓN</span></div>
+                <button class="btn btn-primary btn-sm" onclick="withLoading(this, saveRibbonPro)"><i class="fas fa-floppy-disk"></i> Guardar</button>
+                <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ribbon-pro-form').style.display='none'">Cancelar</button>
+              </div>
+            </div>
+
+            <!-- Lista listones PRO -->
+            <div id="ribbons-pro-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+          </div>
+        </div>
+
+        <!-- Sección: Asignación Manual a Productos -->
+        <div class="section" style="margin-bottom:20px;">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-hand-pointer" style="color:var(--blue)"></i> Asignación Manual por Producto</div>
+            <div style="font-size:12px;color:var(--muted);">Asigna cualquier listón directamente a un producto específico</div>
+          </div>
+          <div class="section-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:flex-end;margin-bottom:20px;">
+              <div class="form-group">
+                <label>Producto</label>
+                <select id="rp-product-select">
+                  <option value="">— Selecciona un producto —</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Listón a asignar</label>
+                <select id="rp-assign-select">
+                  <option value="">— Sin listón —</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="assignRibbonPro()" style="height:42px;"><i class="fas fa-tag"></i> Asignar</button>
+            </div>
+            <!-- Productos con listón -->
+            <div>
+              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Productos con listón asignado manualmente</div>
+              <div id="rp-products-assigned"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Listones Automáticos Activos -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fas fa-robot" style="color:var(--green)"></i> Listones Automáticos Activos</div>
+            <div style="font-size:12px;color:var(--muted);">Productos que reciben listón por regla automática</div>
+          </div>
+          <div class="section-body">
+            <div id="rp-auto-products-list"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -2500,169 +2673,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
 
     <!-- ====== NUEVO DASHBOARD PRO ====== -->
     <!-- The original dashboard-section remains. We ADD the new blocks inside it via JS -->
-
-    <!-- ====== LISTONES PRO ====== -->
-    <div id="ribbons-pro-section" class="page-section" style="display:none;">
-
-      <!-- KPIs -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
-        <div class="stat-card" style="border-left:4px solid var(--rose);padding:18px 20px;">
-          <div class="stat-card-icon" style="background:var(--rose-soft);color:var(--rose);"><i class="fas fa-ribbon"></i></div>
-          <h3>Listones creados</h3>
-          <div class="stat-value" id="rp-kpi-total" style="font-size:28px;color:var(--rose);">0</div>
-        </div>
-        <div class="stat-card" style="border-left:4px solid var(--green);padding:18px 20px;">
-          <div class="stat-card-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-robot"></i></div>
-          <h3>Auto-asignados</h3>
-          <div class="stat-value" id="rp-kpi-auto" style="font-size:28px;color:var(--green);">0</div>
-        </div>
-        <div class="stat-card" style="border-left:4px solid var(--blue);padding:18px 20px;">
-          <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-hand-pointer"></i></div>
-          <h3>Manual</h3>
-          <div class="stat-value" id="rp-kpi-manual" style="font-size:28px;color:var(--blue);">0</div>
-        </div>
-        <div class="stat-card" style="border-left:4px solid var(--orange);padding:18px 20px;">
-          <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-tags"></i></div>
-          <h3>Productos etiquetados</h3>
-          <div class="stat-value" id="rp-kpi-etiquetados" style="font-size:28px;color:var(--orange);">0</div>
-        </div>
-      </div>
-
-      <!-- Sección Listones PRO: Crear + Lista -->
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-ribbon" style="color:var(--rose)"></i> Listones PRO</div>
-          <button class="btn btn-primary btn-sm" onclick="openRibbonProForm()"><i class="fas fa-plus"></i> Crear Listón</button>
-        </div>
-        <div class="section-body">
-          <!-- Quick ribbons -->
-          <div style="margin-bottom:20px;">
-            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">⚡ Listones rápidos predefinidos — clic para usar</div>
-            <div style="display:flex;flex-wrap:wrap;gap:10px;" id="quick-ribbons-row">
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Más vendido" data-color="#e05050" data-icon="🔥" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffe2e2;color:#d42020;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fbb;transition:.2s;">🔥 Más vendido</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Nuevo" data-color="#6b2fd4" data-icon="✨" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ece9fe;color:#6b2fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #d4c8ff;transition:.2s;">✨ Nuevo</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Exclusivo" data-color="#c2617a" data-icon="🎀" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🎀 Exclusivo</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Oferta" data-color="#c97010" data-icon="💸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fef0c7;color:#c97010;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fdd783;transition:.2s;">💸 Oferta</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Últimas unidades" data-color="#d97706" data-icon="⚡" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#ffedd5;color:#d97706;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #fed7aa;transition:.2s;">⚡ Últimas unidades</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Premium" data-color="#1d5fd4" data-icon="👑" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#daeafe;color:#1d5fd4;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #bfdbfe;transition:.2s;">👑 Premium</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Favorito" data-color="#1f9e6e" data-icon="🧸" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#d0f2e6;color:#1f9e6e;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #a7f3d0;transition:.2s;">🧸 Favorito</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Recién llegado" data-color="#c2617a" data-icon="🆕" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#fde8f0;color:#c2617a;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #f5c6d8;transition:.2s;">🆕 Recién llegado</div>
-              <div class="ribbon-pro-chip" onclick="useQuickRibbon(this)" data-name="Agotado" data-color="#64748b" data-icon="🚫" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;background:#f1f5f9;color:#64748b;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid #cbd5e1;transition:.2s;">🚫 Agotado</div>
-            </div>
-          </div>
-
-          <!-- Form crear listón -->
-          <div id="ribbon-pro-form" style="display:none;background:var(--bg);border-radius:16px;padding:22px;margin-bottom:20px;border:1.5px dashed var(--rose-mid);">
-            <div style="font-weight:800;font-size:15px;margin-bottom:16px;">✨ Configurar Listón PRO</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
-              <div class="form-group"><label>Nombre *</label><input type="text" id="rp-name" placeholder="Ej: Hot Sale" oninput="updateRpPreview()"></div>
-              <div class="form-group"><label>Ícono / Emoji</label><input type="text" id="rp-icon" placeholder="🔥" style="font-size:20px;text-align:center;" oninput="updateRpPreview()"></div>
-              <div class="form-group"><label>Prioridad</label><select id="rp-priority"><option value="1">1 — Alta</option><option value="2" selected>2 — Media</option><option value="3">3 — Baja</option></select></div>
-              <div class="form-group">
-                <label>Modo de asignación</label>
-                <select id="rp-mode" onchange="toggleRpAutoConfig()">
-                  <option value="manual">✋ Manual</option>
-                  <option value="auto">🤖 Automático</option>
-                </select>
-              </div>
-              <div class="form-group"><label>Fecha inicio</label><input type="date" id="rp-start"></div>
-              <div class="form-group"><label>Fecha fin</label><input type="date" id="rp-end"></div>
-              <div class="form-group" style="grid-column:span 2;">
-                <label>Color</label>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="rp-color-picker">
-                  <div class="rp-color-opt selected" data-color="#c2617a" style="background:#c2617a;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2.5px solid #c2617a;box-shadow:0 0 0 2px #fff;"></div>
-                  <div class="rp-color-opt" data-color="#d42020" style="background:#d42020;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#c97010" style="background:#c97010;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#1f9e6e" style="background:#1f9e6e;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#1d5fd4" style="background:#1d5fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#6b2fd4" style="background:#6b2fd4;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#64748b" style="background:#64748b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                  <div class="rp-color-opt" data-color="#1e293b" style="background:#1e293b;width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;"></div>
-                </div>
-              </div>
-            </div>
-            <!-- Config automático -->
-            <div id="rp-auto-config" style="display:none;background:var(--green-light);border-radius:12px;padding:14px 18px;margin-bottom:14px;border:1.5px solid rgba(31,158,110,.2);">
-              <div style="font-size:12px;font-weight:800;color:var(--green);margin-bottom:10px;">🤖 Configuración Automática</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-                <div class="form-group">
-                  <label style="font-size:11px;">Regla automática</label>
-                  <select id="rp-auto-rule">
-                    <option value="new_arrivals">Últimos N productos ingresados</option>
-                    <option value="low_stock">Stock crítico (≤ N unidades)</option>
-                    <option value="out_of_stock">Sin stock (agotados)</option>
-                    <option value="top_sold">Más vendidos</option>
-                    <option value="category">Por categoría</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label style="font-size:11px;">Parámetro N / Valor</label>
-                  <input type="text" id="rp-auto-param" placeholder="Ej: 5 (últimos 5) o nombre categoría">
-                </div>
-                <div class="form-group">
-                  <label style="font-size:11px;">Actualización</label>
-                  <select id="rp-auto-freq">
-                    <option value="realtime">En tiempo real</option>
-                    <option value="daily">Diaria</option>
-                  </select>
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--green);margin-top:8px;font-weight:600;">✅ El listón se aplicará automáticamente a todos los productos que cumplan la regla.</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="flex:1;background:var(--card);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);">Preview: <span id="rp-preview" style="display:inline-block;padding:3px 12px;border-radius:0 99px 99px 0;font-size:11px;font-weight:800;color:#fff;background:#c2617a;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;">LISTÓN</span></div>
-              <button class="btn btn-primary btn-sm" onclick="withLoading(this, saveRibbonPro)"><i class="fas fa-floppy-disk"></i> Guardar</button>
-              <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ribbon-pro-form').style.display='none'">Cancelar</button>
-            </div>
-          </div>
-
-          <!-- Lista listones PRO -->
-          <div id="ribbons-pro-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
-        </div>
-      </div>
-
-      <!-- Sección: Asignación Manual a Productos -->
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-hand-pointer" style="color:var(--blue)"></i> Asignación Manual por Producto</div>
-          <div style="font-size:12px;color:var(--muted);">Asigna cualquier listón directamente a un producto específico</div>
-        </div>
-        <div class="section-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:flex-end;margin-bottom:20px;">
-            <div class="form-group">
-              <label>Producto</label>
-              <select id="rp-product-select">
-                <option value="">— Selecciona un producto —</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Listón a asignar</label>
-              <select id="rp-assign-select">
-                <option value="">— Sin listón —</option>
-              </select>
-            </div>
-            <button class="btn btn-primary" onclick="assignRibbonPro()" style="height:42px;"><i class="fas fa-tag"></i> Asignar</button>
-          </div>
-          <!-- Productos con listón -->
-          <div>
-            <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Productos con listón asignado manualmente</div>
-            <div id="rp-products-assigned"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sección: Listones Automáticos Activos -->
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-robot" style="color:var(--green)"></i> Listones Automáticos Activos</div>
-          <div style="font-size:12px;color:var(--muted);">Productos que reciben listón por regla automática</div>
-        </div>
-        <div class="section-body">
-          <div id="rp-auto-products-list"></div>
-        </div>
-      </div>
-
-    </div>
 
     <!-- ====== PROMOCIONES ====== -->
     <div id="promociones-section" class="page-section" style="display:none;">
@@ -7246,19 +7256,18 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'categories-section':'fa-tags', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'ribbons-pro-section':'fa-ribbon', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'categories-section':'Categorías', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'ribbons-pro-section':'🎀 Listones PRO', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
   document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
   const btn = document.querySelector(`.menu-btn[data-section="${sectionId}"]`);
   if (btn) btn.classList.add('active');
-  if (sectionId === 'ribbons-pro-section') renderRibbonsPro();
   if (sectionId === 'sold-products-section') setTimeout(renderSoldProducts, 50);
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') { renderOrigenAnalytics(); }
-  if (sectionId === 'settings-section') renderSourcingProveedoresConfig();
+  if (sectionId === 'settings-section') { renderSourcingProveedoresConfig(); renderRibbonsPro(); }
   if (sectionId === 'add-product-section') {
     // Asegurar que el tab activo esté visible
     const prodForm = document.getElementById('tab-product-form');
@@ -7277,6 +7286,19 @@ function goToSection(sectionId) {
 document.querySelectorAll('.menu-btn').forEach(btn => {
   btn.addEventListener('click', () => goToSection(btn.dataset.section));
 });
+
+// ============================================
+// CONFIGURACIÓN — TABS (Datos personales / Categorías / Listones PRO)
+// ============================================
+function switchSettingsTab(tab) {
+  document.querySelectorAll('#settings-tabs .sup-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.stab === tab));
+  const panes = { personal: 'settings-tab-personal', categories: 'settings-tab-categories', ribbons: 'settings-tab-ribbons' };
+  Object.entries(panes).forEach(([key, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = key === tab ? '' : 'none';
+  });
+  if (tab === 'ribbons') renderRibbonsPro();
+}
 
 // ============================================
 // UTILS
@@ -9079,7 +9101,6 @@ if (_origGoToSectionPro) {
   window.goToSection = function(sec) {
     _origGoToSectionPro(sec);
     if (sec === 'dashboard-section') setTimeout(updateDashboardPro, 300);
-    if (sec === 'ribbons-pro-section') setTimeout(renderRibbonsPro, 300);
     if (sec === 'drops-section') setTimeout(renderDrops, 300);
     if (sec === 'lookbooks-section') setTimeout(renderLookbooks, 300);
     if (sec === 'promociones-section') setTimeout(renderPromociones, 300);
