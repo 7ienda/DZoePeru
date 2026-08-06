@@ -275,31 +275,31 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 /* ============================================
    STATS GRID PREMIUM
    ============================================ */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 32px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
 .stat-card {
-  background: var(--card); border-radius: 22px; padding: 24px 26px;
+  background: var(--card); border-radius: 16px; padding: 14px 16px;
   border: 1.5px solid var(--line2); position: relative; overflow: hidden;
   transition: transform .22s, box-shadow .22s;
   box-shadow: var(--shadow);
 }
-.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .stat-card::after {
-  content: ''; position: absolute; top: -36px; right: -36px;
-  width: 110px; height: 110px; border-radius: 50%;
+  content: ''; position: absolute; top: -24px; right: -24px;
+  width: 72px; height: 72px; border-radius: 50%;
   background: var(--rose-xlight); opacity: .7;
 }
 .stat-card.green::after { background: var(--green-light); }
 .stat-card.orange::after { background: var(--orange-light); }
 .stat-card.blue::after { background: var(--blue-light); }
 .stat-card.purple::after { background: var(--purple-light); }
-.stat-card-icon { width: 44px; height: 44px; background: var(--rose-light); border-radius: 13px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--rose); font-size: 18px; position: relative; z-index: 1; }
+.stat-card-icon { width: 32px; height: 32px; background: var(--rose-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--rose); font-size: 13px; position: relative; z-index: 1; }
 .stat-card.green .stat-card-icon { background: var(--green-light); color: var(--green); }
 .stat-card.orange .stat-card-icon { background: var(--orange-light); color: var(--orange); }
 .stat-card.blue .stat-card-icon { background: var(--blue-light); color: var(--blue); }
 .stat-card.purple .stat-card-icon { background: var(--purple-light); color: var(--purple); }
-.stat-card h3 { font-size: 10px; font-weight: 800; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .10em; position: relative; z-index: 1; }
-.stat-value { font-family: 'Baloo 2', cursive; font-size: 34px; font-weight: 800; color: var(--text); position: relative; z-index: 1; letter-spacing: -.02em; line-height: 1.1; }
-.stat-change { font-size: 11px; color: var(--green); margin-top: 5px; position: relative; z-index: 1; font-weight: 700; }
+.stat-card h3 { font-size: 9px; font-weight: 800; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: .09em; position: relative; z-index: 1; }
+.stat-value { font-family: 'Baloo 2', cursive; font-size: 24px; font-weight: 800; color: var(--text); position: relative; z-index: 1; letter-spacing: -.02em; line-height: 1.1; }
+.stat-change { font-size: 10px; color: var(--green); margin-top: 3px; position: relative; z-index: 1; font-weight: 700; }
 .stat-change.down { color: var(--red); }
 
 /* ============================================
@@ -2512,25 +2512,25 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div id="settings-tab-ribbons" class="settings-tab-pane" style="display:none;">
         <!-- KPIs -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
-          <div class="stat-card" style="border-left:4px solid var(--rose);padding:18px 20px;">
+          <div class="stat-card" style="border-left:4px solid var(--rose);padding:12px 14px;">
             <div class="stat-card-icon" style="background:var(--rose-soft);color:var(--rose);"><i class="fas fa-ribbon"></i></div>
             <h3>Listones creados</h3>
-            <div class="stat-value" id="rp-kpi-total" style="font-size:28px;color:var(--rose);">0</div>
+            <div class="stat-value" id="rp-kpi-total" style="font-size:22px;color:var(--rose);">0</div>
           </div>
-          <div class="stat-card" style="border-left:4px solid var(--green);padding:18px 20px;">
+          <div class="stat-card" style="border-left:4px solid var(--green);padding:12px 14px;">
             <div class="stat-card-icon" style="background:var(--green-light);color:var(--green);"><i class="fas fa-robot"></i></div>
             <h3>Auto-asignados</h3>
-            <div class="stat-value" id="rp-kpi-auto" style="font-size:28px;color:var(--green);">0</div>
+            <div class="stat-value" id="rp-kpi-auto" style="font-size:22px;color:var(--green);">0</div>
           </div>
-          <div class="stat-card" style="border-left:4px solid var(--blue);padding:18px 20px;">
+          <div class="stat-card" style="border-left:4px solid var(--blue);padding:12px 14px;">
             <div class="stat-card-icon" style="background:var(--blue-light);color:var(--blue);"><i class="fas fa-hand-pointer"></i></div>
             <h3>Manual</h3>
-            <div class="stat-value" id="rp-kpi-manual" style="font-size:28px;color:var(--blue);">0</div>
+            <div class="stat-value" id="rp-kpi-manual" style="font-size:22px;color:var(--blue);">0</div>
           </div>
-          <div class="stat-card" style="border-left:4px solid var(--orange);padding:18px 20px;">
+          <div class="stat-card" style="border-left:4px solid var(--orange);padding:12px 14px;">
             <div class="stat-card-icon" style="background:var(--orange-light);color:var(--orange);"><i class="fas fa-tags"></i></div>
             <h3>Productos etiquetados</h3>
-            <div class="stat-value" id="rp-kpi-etiquetados" style="font-size:28px;color:var(--orange);">0</div>
+            <div class="stat-value" id="rp-kpi-etiquetados" style="font-size:22px;color:var(--orange);">0</div>
           </div>
         </div>
 
