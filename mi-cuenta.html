@@ -575,20 +575,20 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 /* ============================================
    VENTAS — DASHBOARD PREMIUM
    ============================================ */
-.ventas-hero-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.ventas-hero-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .ventas-hero-card {
-  position: relative; overflow: hidden; border-radius: var(--radius); padding: 22px 26px;
+  position: relative; overflow: hidden; border-radius: 16px; padding: 14px 16px;
   background: linear-gradient(135deg, var(--rose-dark), var(--rose));
-  color: #fff; box-shadow: 0 14px 32px rgba(138,111,170,.30); display: flex; flex-direction: column; gap: 6px;
+  color: #fff; box-shadow: 0 14px 32px rgba(138,111,170,.30); display: flex; flex-direction: column; gap: 3px;
 }
 .ventas-hero-card::after {
-  content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%;
+  content: ''; position: absolute; right: -24px; top: -24px; width: 90px; height: 90px; border-radius: 50%;
   background: rgba(255,255,255,.10);
 }
-.ventas-hero-card .vh-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.20); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 4px; }
-.ventas-hero-card .vh-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
-.ventas-hero-card .vh-value { font-family: 'Baloo 2', cursive; font-size: 30px; font-weight: 800; line-height: 1.1; }
-.ventas-hero-card .vh-sub { font-size: 12px; font-weight: 600; opacity: .9; }
+.ventas-hero-card .vh-icon { width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.20); display: flex; align-items: center; justify-content: center; font-size: 13px; margin-bottom: 2px; }
+.ventas-hero-card .vh-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
+.ventas-hero-card .vh-value { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; line-height: 1.1; }
+.ventas-hero-card .vh-sub { font-size: 10.5px; font-weight: 600; opacity: .9; }
 .ventas-hero-card.plain {
   background: var(--card); color: var(--text); border: 1.5px solid var(--line2); box-shadow: var(--shadow);
 }
@@ -599,16 +599,16 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .ventas-hero-card.plain .vh-sub { color: var(--muted); }
 .ventas-hero-card.mint .vh-icon { background: var(--mint-soft); color: var(--mint); }
 
-.ventas-chip-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 22px; }
+.ventas-chip-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 18px; }
 .ventas-chip {
-  background: var(--card); border: 1.5px solid var(--line2); border-radius: 16px; padding: 13px 16px;
-  display: flex; align-items: center; gap: 12px; transition: transform .2s, box-shadow .2s;
+  background: var(--card); border: 1.5px solid var(--line2); border-radius: 14px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px; transition: transform .2s, box-shadow .2s;
 }
 .ventas-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.ventas-chip .vc-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.ventas-chip .vc-label { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-.ventas-chip .vc-value { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.15; }
-.ventas-chip .vc-value.small { font-size: 12.5px; font-weight: 700; font-family: 'Nunito', sans-serif; }
+.ventas-chip .vc-icon { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.ventas-chip .vc-label { font-size: 8.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.ventas-chip .vc-value { font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.15; }
+.ventas-chip .vc-value.small { font-size: 11px; font-weight: 700; font-family: 'Nunito', sans-serif; }
 
 /* Filtros en formato pill premium */
 .ventas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
@@ -687,10 +687,10 @@ body.dark-mode .origen-card.rank1 { background: linear-gradient(180deg, #302710,
 .origen-card-emoji { width: 46px; height: 46px; border-radius: 14px; background: var(--rose-xlight); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
 .origen-card-name { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; color: var(--text); }
 .origen-card-rank-badge { margin-left: auto; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
-.origen-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.origen-metric { background: var(--bg); border-radius: 12px; padding: 10px 12px; }
-.origen-metric .om-label { font-size: 9.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
-.origen-metric .om-value { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: var(--text); }
+.origen-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.origen-metric { background: var(--bg); border-radius: 10px; padding: 7px 10px; }
+.origen-metric .om-label { font-size: 8.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.origen-metric .om-value { font-family: 'Baloo 2', cursive; font-size: 13px; font-weight: 800; color: var(--text); }
 .origen-progress-wrap { margin-bottom: 12px; }
 .origen-progress-label { display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
 .origen-progress-bar { height: 8px; background: var(--bg2); border-radius: 99px; overflow: hidden; }
