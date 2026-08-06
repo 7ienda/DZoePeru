@@ -1275,10 +1275,11 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <div id="sales-section" class="page-section" style="display:none;">
       <!-- Summary cards mejoradas -->
       <!-- Chips: métricas de apoyo, escaneables rápido -->
-      <div class="ventas-chip-row" id="sales-summary-row" style="grid-template-columns:minmax(160px,220px);">
-        <div class="ventas-chip">
-          <div class="vc-icon" style="background:var(--lav-light);color:var(--lavender);"><i class="fas fa-receipt"></i></div>
-          <div><div class="vc-label">Pedidos</div><div class="vc-value" id="sales-count">0</div></div>
+      <div class="stats-grid" id="sales-summary-row" style="grid-template-columns:minmax(180px,240px);margin-bottom:24px;">
+        <div class="stat-card">
+          <div class="stat-card-icon"><i class="fas fa-receipt"></i></div>
+          <h3>Pedidos</h3>
+          <div class="stat-value" id="sales-count">0</div>
         </div>
       </div>
 
@@ -3790,9 +3791,10 @@ function renderSalesPage() {
 
 // Devuelve los datos del cliente aplicando overrides si existen
 function getClientData(o) {
-  const key = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
+  const rawKey = o.dni && o.dni.trim() ? o.dni.trim() : `nodni_${o.phone||o.name}`;
+  const key = resolveMergeKey(rawKey, getClientMerges());
   const overrides = JSON.parse(localStorage.getItem('dzoe_client_overrides') || '{}');
-  const ov = overrides[key] || {};
+  const ov = overrides[key] || overrides[rawKey] || {};
   return {
     name:        ov.name        || o.name        || '',
     lastname:    ov.lastname    || o.lastname     || '',
