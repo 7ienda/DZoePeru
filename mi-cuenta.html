@@ -1632,14 +1632,16 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         </div>
       </div>
 
-      <!-- PESTAÑAS Trii / Hapi -->
+      <!-- PESTAÑAS Trii / Hapi / Enviar a Reinvertir -->
       <div class="add-tabs">
         <button class="add-tab active" id="inv-tab-trii-btn" onclick="switchInversionTab('trii')"><i class="fas fa-chart-simple"></i> Trii</button>
         <button class="add-tab" id="inv-tab-hapi-btn" onclick="switchInversionTab('hapi')"><i class="fas fa-chart-simple"></i> Hapi</button>
+        <button class="add-tab" id="inv-tab-send-btn" onclick="switchInversionTab('send')"><i class="fas fa-paper-plane"></i> Enviar a Reinvertir</button>
       </div>
 
       <div id="inv-panel-trii" class="inv-panel"></div>
       <div id="inv-panel-hapi" class="inv-panel" style="display:none;"></div>
+      <div id="inv-panel-send" class="inv-panel" style="display:none;"></div>
 
     </div>
 
@@ -11019,8 +11021,11 @@ function switchInversionTab(plat) {
   currentInvTab = plat;
   document.getElementById('inv-tab-trii-btn').classList.toggle('active', plat === 'trii');
   document.getElementById('inv-tab-hapi-btn').classList.toggle('active', plat === 'hapi');
+  document.getElementById('inv-tab-send-btn').classList.toggle('active', plat === 'send');
   document.getElementById('inv-panel-trii').style.display = plat === 'trii' ? 'block' : 'none';
   document.getElementById('inv-panel-hapi').style.display = plat === 'hapi' ? 'block' : 'none';
+  document.getElementById('inv-panel-send').style.display = plat === 'send' ? 'block' : 'none';
+  if (plat === 'send') renderInversionesSendPanel();
 }
 
 function openInvMovModal(plat, tipo) {
@@ -11049,6 +11054,78 @@ function getMontoInvertirFinanzas() {
   let total = fondosManual.invertir || 0;
   finanzas.forEach(f => { total += finDistribucion(f).invertir; });
   return total;
+}
+
+// ---------- Enviar dinero del fondo Invertir al fondo Reinvertir ----------
+let invReinvertirTransfers = JSON.parse(localStorage.getItem('dzoe_inv_a_reinvertir') || '[]');
+function saveInvReinvertirTransfers() { localStorage.setItem('dzoe_inv_a_reinvertir', JSON.stringify(invReinvertirTransfers)); }
+
+function renderInversionesSendPanel() {
+  const panel = document.getElementById('inv-panel-send');
+  if (!panel) return;
+  const disponible = getMontoInvertirFinanzas();
+
+  panel.innerHTML = `
+    <div class="section" style="margin-bottom:18px;background:linear-gradient(135deg,var(--lav-light),var(--sky-light));border:none;">
+      <div class="section-body" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;">Disponible en Invertir</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;">Este monto se descontará de Invertir y pasará a Reinvertir</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:#6b2fd4;" id="inv-send-disponible">S/ ${disponible.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:18px;">
+      <div class="section-header">
+        <div class="section-title"><i class="fas fa-paper-plane" style="color:#1d5fd4"></i> Enviar a Reinvertir</div>
+      </div>
+      <div class="section-body" style="padding:16px 24px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <input type="number" id="inv-send-monto" class="fin-cell-input fin-cell-num" step="0.01" min="0" placeholder="0.00" style="max-width:180px;">
+        <button class="btn btn-primary btn-sm" onclick="enviarInvertirAReinvertir()"><i class="fas fa-paper-plane"></i> Enviar a Reinvertir</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title"><i class="fas fa-clock-rotate-left" style="color:var(--rose-dark)"></i> Historial de envíos</div>
+      </div>
+      <div class="section-body" style="padding:16px 24px 22px;">
+        <div class="table-wrap">
+          <table class="orders-table fin-sheet">
+            <thead><tr><th>Fecha</th><th>Monto enviado</th></tr></thead>
+            <tbody>
+              ${invReinvertirTransfers.length ? invReinvertirTransfers.slice().reverse().map(t => `
+                <tr><td>${t.fecha}</td><td>S/ ${(t.monto || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td></tr>
+              `).join('') : `<tr><td colspan="2" style="text-align:center;color:var(--muted);padding:20px;">Sin envíos todavía.</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function enviarInvertirAReinvertir() {
+  const input = document.getElementById('inv-send-monto');
+  const monto = parseFloat(input?.value) || 0;
+  if (monto <= 0) { showAlert('Ingresa un monto válido', 'error'); return; }
+  const disponible = getMontoInvertirFinanzas();
+  if (monto > disponible) { showAlert('No hay suficiente monto disponible en Invertir', 'error'); return; }
+  if (!(await customConfirm(`¿Enviar S/ ${monto.toFixed(2)} de Invertir a Reinvertir?`, { title: 'Enviar a Reinvertir', confirmText: 'Sí, enviar' }))) return;
+
+  fondosManual.invertir = (fondosManual.invertir || 0) - monto;
+  fondosManual.reinvertir = (fondosManual.reinvertir || 0) + monto;
+  saveFondosManual();
+
+  invReinvertirTransfers.push({ id: Date.now(), monto, fecha: new Date().toISOString().slice(0, 10) });
+  saveInvReinvertirTransfers();
+
+  if (input) input.value = '';
+  renderInversionesSendPanel();
+  document.getElementById('inv-monto-finanzas').textContent = 'S/ ' + getMontoInvertirFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  updateBadgeReinvertir();
+  showAlert('✅ Monto enviado a Reinvertir');
 }
 
 function updateBadgeInversiones() {
@@ -11163,6 +11240,7 @@ function addReinvertirRow() {
   reinvertirRows.push(row);
   saveReinvertirRows();
   renderReinvertirPanel();
+  updateReinvertirMontoDisplay();
 }
 
 function updateReinvertirField(id, field, value) {
@@ -11172,6 +11250,7 @@ function updateReinvertirField(id, field, value) {
   else r[field] = parseFloat(value) || 0;
   saveReinvertirRows();
   renderReinvertirPanel({ keepFocus: true });
+  updateReinvertirMontoDisplay();
 }
 
 async function deleteReinvertirRow(id) {
@@ -11179,6 +11258,7 @@ async function deleteReinvertirRow(id) {
   reinvertirRows = reinvertirRows.filter(x => String(x.id) !== String(id));
   saveReinvertirRows();
   renderReinvertirPanel();
+  updateReinvertirMontoDisplay();
 }
 
 function renderReinvertirPanel(opts) {
@@ -11217,11 +11297,15 @@ function updateBadgeReinvertir() {
   }
 }
 
-function loadReinvertir() {
+function updateReinvertirMontoDisplay() {
   const el = document.getElementById('reinv-monto-finanzas');
   if (el) el.textContent = 'S/ ' + getMontoReinvertirFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  renderReinvertirPanel();
   updateBadgeReinvertir();
+}
+
+function loadReinvertir() {
+  renderReinvertirPanel();
+  updateReinvertirMontoDisplay();
 }
 
 // ============================================
@@ -11245,6 +11329,7 @@ function addImprevistoRow() {
   imprevistosRows.push(row);
   saveImprevistosRows();
   renderImprevistosPanel();
+  updateImprevistosMontoDisplay();
 }
 
 function updateImprevistoField(id, field, value) {
@@ -11254,6 +11339,7 @@ function updateImprevistoField(id, field, value) {
   else r[field] = parseFloat(value) || 0;
   saveImprevistosRows();
   renderImprevistosPanel({ keepFocus: true });
+  updateImprevistosMontoDisplay();
 }
 
 async function deleteImprevistoRow(id) {
@@ -11261,6 +11347,7 @@ async function deleteImprevistoRow(id) {
   imprevistosRows = imprevistosRows.filter(x => String(x.id) !== String(id));
   saveImprevistosRows();
   renderImprevistosPanel();
+  updateImprevistosMontoDisplay();
 }
 
 function renderImprevistosPanel(opts) {
@@ -11295,11 +11382,15 @@ function updateBadgeImprevistos() {
   }
 }
 
-function loadImprevistos() {
+function updateImprevistosMontoDisplay() {
   const el = document.getElementById('imprev-monto-finanzas');
   if (el) el.textContent = 'S/ ' + getMontoImprevistosFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  renderImprevistosPanel();
   updateBadgeImprevistos();
+}
+
+function loadImprevistos() {
+  renderImprevistosPanel();
+  updateImprevistosMontoDisplay();
 }
 
 // ============================================
@@ -11323,6 +11414,7 @@ function addAhorroRow() {
   ahorroRows.push(row);
   saveAhorroRows();
   renderAhorroPanel();
+  updateAhorroMontoDisplay();
 }
 
 function updateAhorroField(id, field, value) {
@@ -11332,6 +11424,7 @@ function updateAhorroField(id, field, value) {
   else r[field] = parseFloat(value) || 0;
   saveAhorroRows();
   renderAhorroPanel({ keepFocus: true });
+  updateAhorroMontoDisplay();
 }
 
 async function deleteAhorroRow(id) {
@@ -11339,6 +11432,7 @@ async function deleteAhorroRow(id) {
   ahorroRows = ahorroRows.filter(x => String(x.id) !== String(id));
   saveAhorroRows();
   renderAhorroPanel();
+  updateAhorroMontoDisplay();
 }
 
 function renderAhorroPanel(opts) {
@@ -11373,11 +11467,15 @@ function updateBadgeAhorro() {
   }
 }
 
-function loadAhorro() {
+function updateAhorroMontoDisplay() {
   const el = document.getElementById('ahorro-monto-finanzas');
   if (el) el.textContent = 'S/ ' + getMontoAhorroFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  renderAhorroPanel();
   updateBadgeAhorro();
+}
+
+function loadAhorro() {
+  renderAhorroPanel();
+  updateAhorroMontoDisplay();
 }
 
 // ============================================
@@ -11401,6 +11499,7 @@ function addPersonalRow() {
   personalRows.push(row);
   savePersonalRows();
   renderPersonalPanel();
+  updatePersonalMontoDisplay();
 }
 
 function updatePersonalField(id, field, value) {
@@ -11410,6 +11509,7 @@ function updatePersonalField(id, field, value) {
   else r[field] = parseFloat(value) || 0;
   savePersonalRows();
   renderPersonalPanel({ keepFocus: true });
+  updatePersonalMontoDisplay();
 }
 
 async function deletePersonalRow(id) {
@@ -11417,6 +11517,7 @@ async function deletePersonalRow(id) {
   personalRows = personalRows.filter(x => String(x.id) !== String(id));
   savePersonalRows();
   renderPersonalPanel();
+  updatePersonalMontoDisplay();
 }
 
 function renderPersonalPanel(opts) {
@@ -11451,11 +11552,15 @@ function updateBadgePersonal() {
   }
 }
 
-function loadPersonal() {
+function updatePersonalMontoDisplay() {
   const el = document.getElementById('personal-monto-finanzas');
   if (el) el.textContent = 'S/ ' + getMontoPersonalFinanzas().toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  renderPersonalPanel();
   updateBadgePersonal();
+}
+
+function loadPersonal() {
+  renderPersonalPanel();
+  updatePersonalMontoDisplay();
 }
 
 // ── stubs para compatibilidad con código viejo ──
