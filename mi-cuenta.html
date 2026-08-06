@@ -2026,8 +2026,8 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
       <div class="modal" style="max-width:600px;">
         <div class="modal-head">
           <div>
-            <div class="modal-title"><i class="fas fa-user-plus" style="color:var(--rose);"></i> Nueva clienta</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Registra sus datos y los productos que llevó, con el precio de cada uno</div>
+            <div class="modal-title" id="ncli-modal-title"><i class="fas fa-user-plus" style="color:var(--rose);"></i> Nueva clienta</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="ncli-modal-subtitle">Registra sus datos y los productos que llevó, con el precio de cada uno</div>
           </div>
           <button class="modal-close" onclick="closeNewClientModal()"><i class="fas fa-times"></i></button>
         </div>
@@ -2072,7 +2072,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
 
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="withLoading(this, saveNewClient)"><i class="fas fa-user-plus"></i> Guardar clienta</button>
+            <button class="btn btn-primary" style="flex:1;background:var(--rose-dark);" onclick="withLoading(this, saveNewClient)" id="ncli-modal-save-btn"><i class="fas fa-user-plus"></i> Guardar clienta</button>
             <button class="btn btn-ghost" onclick="closeNewClientModal()">Cancelar</button>
           </div>
         </div>
@@ -6208,7 +6208,7 @@ function openClientDetailModal(key) {
       </div>
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
         ${isOpen ? `<button class="btn btn-primary btn-sm" style="background:var(--sky);border-color:var(--sky);" onclick="closeClientDetailModal();openAdelantoPlus(${o.id})"><i class="fas fa-plus"></i> Registrar abono</button>` : ''}
-        ${o.status!=='cancelled' ? `<button class="btn btn-sm" style="background:var(--rose-xlight);color:var(--rose-dark);font-weight:700;" onclick="openAddItemToBolsita(${o.id})"><i class="fas fa-cart-plus"></i> Agregar producto</button>` : ''}
+        ${isOpen ? `<button class="btn btn-sm" style="background:var(--rose-xlight);color:var(--rose-dark);font-weight:700;" onclick="openAddItemToBolsita(${o.id})" title="Solo agrega productos a ESTA bolsita, mientras siga abierta"><i class="fas fa-cart-plus"></i> Agregar producto</button>` : ''}
       </div>
     </div>`;
   }).join('') || `<div class="empty-state" style="padding:20px;text-align:center;"><p>Sin pedidos registrados aún.</p></div>`;
@@ -6233,7 +6233,10 @@ function openClientDetailModal(key) {
       <div class="cli-mini-stat"><div class="lbl">Total invertido</div><div class="val" style="color:var(--rose);">S/ ${cl.total.toFixed(2)}</div></div>
       <div class="cli-mini-stat"><div class="lbl">Debe ahora</div><div class="val" style="color:${cl.deudaTotal>0?'var(--orange)':'var(--green)'};">S/ ${cl.deudaTotal.toFixed(2)}</div></div>
     </div>
-    <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;"><i class="fas fa-receipt"></i> Bolsitas y pedidos</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;"><i class="fas fa-receipt"></i> Bolsitas y pedidos</div>
+      <button class="btn btn-primary btn-sm" style="background:var(--sky);border-color:var(--sky);" onclick="openNewBolsitaModal('${cl._key}')" title="Crea un pedido nuevo e independiente, sin mezclarlo con sus compras anteriores"><i class="fas fa-cart-plus"></i> Nueva bolsita</button>
+    </div>
     ${ordersHtml}
     <div style="display:flex;gap:10px;margin-top:16px;">
       <button class="btn btn-ghost" style="flex:1;" onclick="closeClientDetailModal();openEditClientModal('${cl._key}')"><i class="fas fa-user-pen"></i> Editar cliente</button>
@@ -6460,7 +6463,7 @@ function updateNewClientTotal() {
   }
 }
 
-function openNewClientModal() {
+function openNewClientModal(prefill) {
   ['ncli-name','ncli-lastname','ncli-dni','ncli-phone','ncli-destination','ncli-note'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
@@ -6471,7 +6474,45 @@ function openNewClientModal() {
   if (deudaEl) deudaEl.style.display = 'none';
   document.getElementById('ncli-items-body').innerHTML = '';
   addNewClientProductRow();
+
+  const titleEl = document.getElementById('ncli-modal-title');
+  const subEl = document.getElementById('ncli-modal-subtitle');
+  const saveBtn = document.getElementById('ncli-modal-save-btn');
+  if (prefill) {
+    // Nueva bolsita para una clienta que ya existe: se precargan sus datos
+    // pero se crea un PEDIDO NUEVO E INDEPENDIENTE — nunca se mezcla con
+    // bolsitas/pedidos anteriores de esa clienta (aunque ya estén pagados).
+    document.getElementById('ncli-name').value = prefill.name || '';
+    document.getElementById('ncli-lastname').value = prefill.lastname || '';
+    document.getElementById('ncli-dni').value = prefill.dni || '';
+    document.getElementById('ncli-phone').value = prefill.phone || '';
+    document.getElementById('ncli-destination').value = prefill.destination || '';
+    if (titleEl) titleEl.innerHTML = `<i class="fas fa-cart-plus" style="color:var(--sky);"></i> Nueva bolsita — ${prefill.name || ''}`;
+    if (subEl) subEl.textContent = 'Se crea como un pedido nuevo e independiente. No se junta con sus bolsitas o compras anteriores.';
+    if (saveBtn) saveBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Guardar nueva bolsita';
+  } else {
+    if (titleEl) titleEl.innerHTML = '<i class="fas fa-user-plus" style="color:var(--rose);"></i> Nueva clienta';
+    if (subEl) subEl.textContent = 'Registra sus datos y los productos que llevó, con el precio de cada uno';
+    if (saveBtn) saveBtn.innerHTML = '<i class="fas fa-user-plus"></i> Guardar clienta';
+  }
   document.getElementById('new-client-modal').classList.add('open');
+}
+
+// Abre el formulario de "nueva clienta" pero precargado con los datos de una
+// clienta que ya existe, para registrar una compra/bolsita NUEVA sin tocar
+// sus pedidos anteriores (ni siquiera los que ya estén pagados).
+function openNewBolsitaModal(key) {
+  const clients = buildClientsFromOrders();
+  const cl = clients.find(c => c._key === key);
+  if (!cl) return;
+  closeClientDetailModal();
+  openNewClientModal({
+    name: cl.name || '',
+    lastname: cl.lastname || '',
+    dni: cl.dni || '',
+    phone: cl.phone || '',
+    destination: cl.destino || ''
+  });
 }
 
 function closeNewClientModal() {
