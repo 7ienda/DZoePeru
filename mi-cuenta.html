@@ -1027,8 +1027,8 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <span class="menu-label">Tienda</span>
     <button class="menu-btn" data-section="inventory-section"><i class="fas fa-boxes-stacked"></i><span>Inventario</span><span class="badge" id="badge-products">0</span></button>
     <button class="menu-btn" data-section="almacen-section" onclick="goToSection('almacen-section');loadAlmacenList();"><i class="fas fa-warehouse" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Almacén</span><span class="badge" id="badge-almacen" style="background:rgba(124,58,237,.3);">0</span></button>
-    <button class="menu-btn" data-section="sold-products-section"><i class="fas fa-bag-shopping"></i><span>Productos Vendidos</span><span class="badge" id="badge-sold-products">0</span></button>
     <button class="menu-btn" data-section="sales-section"><i class="fas fa-receipt"></i><span>Ventas</span><span class="badge" id="badge-orders">0</span></button>
+    <button class="menu-btn" data-section="sold-products-section"><i class="fas fa-bag-shopping"></i><span>Productos Vendidos</span><span class="badge" id="badge-sold-products">0</span></button>
     <span class="menu-label">Personas</span>
     <button class="menu-btn" data-section="reingreso-section" onclick="goToSection('reingreso-section');loadReingresoAlerts();"><i class="fas fa-bell" style="color:var(--rose);"></i><span>Alertas Reingreso</span></button>
     <button class="menu-btn" data-section="clients-section"><i class="fas fa-users"></i><span>Clientes</span><span class="badge" id="badge-clients">0</span></button>
@@ -1113,21 +1113,22 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <!-- ====== DASHBOARD ====== -->
     <div id="dashboard-section" class="page-section">
 
-      <!-- Deudores activos -->
-      <div class="section" style="border-left:4px solid var(--orange);">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-clock" style="color:var(--orange)"></i> Deudores activos <span id="dash-deudores-count" style="background:var(--orange-light);color:var(--orange);font-size:11px;padding:2px 10px;border-radius:99px;margin-left:6px;font-weight:700;"></span></div>
-          <button class="btn btn-ghost btn-sm" onclick="goToSection('sales-section')" style="color:var(--orange);"><i class="fas fa-arrow-right"></i> Ver todos</button>
-        </div>
-        <div class="section-body" style="padding:0;">
-          <div class="table-wrap">
-            <table class="orders-table" id="dash-deudores-table">
-              <thead><tr><th>Cliente</th><th>Producto</th><th>Total</th><th>Adelantó</th><th style="color:var(--orange);">Debe</th><th>Fecha</th><th>Acción</th></tr></thead>
-              <tbody id="dash-deudores-body"></tbody>
-            </table>
+      <!-- Deudores activos (resumen — la tabla completa vive en Ventas > Deudores) -->
+      <div class="section" style="border-left:4px solid var(--orange);cursor:pointer;" onclick="goToSection('sales-section')">
+        <div class="section-body" style="padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:42px;height:42px;border-radius:12px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-clock" style="color:var(--orange);font-size:17px;"></i>
+            </div>
+            <div>
+              <div style="font-weight:800;color:var(--text);font-size:14px;">Deudores activos <span id="dash-deudores-count" style="background:var(--orange-light);color:var(--orange);font-size:11px;padding:2px 10px;border-radius:99px;margin-left:4px;font-weight:700;"></span></div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;">Adelantos pendientes de cobro</div>
+            </div>
           </div>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();goToSection('sales-section')" style="color:var(--orange);"><i class="fas fa-arrow-right"></i> Ver en Ventas</button>
         </div>
       </div>
+      <table id="dash-deudores-table" style="display:none;"><tbody id="dash-deudores-body"></tbody></table>
 
       <!-- Top ciudades -->
       <div class="section" style="margin-top:24px;">
@@ -3978,6 +3979,7 @@ async function updateOrderStatus(id, newStatus) {
   } else if (wasCancelled && newStatus !== 'cancelled') {
     await _decrementStockForItems(o.items);
   }
+  if (newStatus === 'confirmed') registrarVentaEnFinanzas(o);
   updateDashboard();
   showAlert('Estado actualizado');
 }
@@ -4490,7 +4492,7 @@ async function doConfirmSale(id) {
     if (error) { showAlert('Error al confirmar', 'error'); return; }
   }
   const o = orders.find(o => o.id === id);
-  if (o) o.status = 'confirmed';
+  if (o) { o.status = 'confirmed'; registrarVentaEnFinanzas(o); }
   document.getElementById('confirm-sale-modal').classList.remove('open');
   updateDashboard();
   filterSales();
@@ -8139,6 +8141,7 @@ async function marcarDeudaPagada(id) {
   if (supabaseClient) {
     await supabaseClient.from('orders').update({ adelanto: o.total, deuda: 0, status: 'confirmed' }).eq('id', id);
   }
+  registrarVentaEnFinanzas(o);
   renderDeudores(); filterSales();
   if (document.getElementById('clients-section')?.style.display !== 'none') renderClientsSection();
   showAlert(`✅ Deuda de ${o.name} cancelada — pago completo`);
@@ -8190,6 +8193,7 @@ async function saveAdelantoPlus() {
   if (supabaseClient) {
     await supabaseClient.from('orders').update({ adelanto: nuevoAdelanto, deuda: nuevaDeuda, status: nuevoStatus }).eq('id', adelantoPlusOrderId);
   }
+  if (nuevaDeuda === 0) registrarVentaEnFinanzas(o);
   document.getElementById('adelanto-plus-modal').classList.remove('open');
   renderDeudores(); filterSales();
   if (document.getElementById('clients-section')?.style.display !== 'none') renderClientsSection();
@@ -10331,6 +10335,49 @@ let currentFondoMovTipo = 'agregar';
 function saveFinanzasData() { localStorage.setItem('dzoe_finanzas', JSON.stringify(finanzas)); }
 function saveFinPercentages() { localStorage.setItem('dzoe_fin_pct', JSON.stringify(finPercentages)); }
 function saveFondosManual() { localStorage.setItem('dzoe_fondos_manual', JSON.stringify(fondosManual)); }
+
+// ---------- Registro automático en el Cuadro de ventas (Finanzas) ----------
+// Se llama cada vez que un pedido/bolsita queda totalmente pagado (deuda = 0 y
+// status pasa a 'confirmed'). Crea una fila en Finanzas por cada producto del
+// pedido, usando el proveedor/costo real del inventario. Evita duplicados
+// marcando cada fila con el id del pedido + índice del producto (origenOrden),
+// así si el mismo pedido se vuelve a confirmar no se duplica la fila.
+function _finOrderItemKey(orderId, idx) { return 'ord:' + orderId + ':' + idx; }
+
+function registrarVentaEnFinanzas(o) {
+  if (!o || !o.items || !o.items.length) return;
+  const yaRegistrados = new Set(finanzas.filter(f => f.origenOrden).map(f => f.origenOrden));
+  let added = false;
+  o.items.forEach((it, idx) => {
+    const key = _finOrderItemKey(o.id, idx);
+    if (yaRegistrados.has(key)) return;
+    const prod = (typeof _findSoldProduct === 'function') ? _findSoldProduct(it) : null;
+    const img = (prod?.images?.[0]) || prod?.image || it.img || '';
+    const sizeIdx = it.sizeIndex != null ? it.sizeIndex : (prod?.sizes || []).findIndex(s => s.size === it.size);
+    const proveedor = (prod && typeof _getOriginForSize === 'function')
+      ? (() => { const raw = _getOriginForSize(prod, it.size, sizeIdx); return raw ? (typeof raw === 'string' ? raw : (raw.proveedor || '')) : ''; })()
+      : '';
+    const qty = it.qty || 1;
+    const costoUnit = it.cost != null ? it.cost : ((prod?.sizes || []).find(s => s.size === it.size)?.cost || 0);
+    const row = {
+      id: Date.now() + idx,
+      proveedor: proveedor || '',
+      producto: it.name || '',
+      img,
+      talla: it.size || '',
+      inversion: costoUnit * qty,
+      venta: (it.price || 0) * qty,
+      fecha: (o.created_at ? new Date(o.created_at) : new Date()).toISOString().slice(0, 10),
+      origenOrden: key
+    };
+    finanzas.push(row);
+    added = true;
+  });
+  if (added) {
+    saveFinanzasData();
+    if (typeof renderFinanzas === 'function' && document.getElementById('finanzas-section')?.style.display !== 'none') renderFinanzas();
+  }
+}
 
 function finGanancia(f) { return (f.venta||0) - (f.inversion||0); }
 function finDistribucion(f) {
