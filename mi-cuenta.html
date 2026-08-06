@@ -7476,23 +7476,24 @@ function renderSeoSection() {
     </div>
 
     <div class="seo-checks-grid">
-      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Productos optimizados</div><div class="scr-val">${stats.optimizedCount} / ${stats.total}</div></div>
-      <div class="seo-check-row ${stats.sinDescripcion?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinDescripcion?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin descripción</div><div class="scr-val">${stats.sinDescripcion}</div></div>
-      <div class="seo-check-row ${stats.sinAlt?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinAlt?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin ALT (falta color)</div><div class="scr-val">${stats.sinAlt}</div></div>
-      <div class="seo-check-row ${stats.imgPng?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.imgPng?'fa-triangle-exclamation':'fa-circle-check'}"></i> Imagen PNG</div><div class="scr-val">${stats.imgPng}</div></div>
-      <div class="seo-check-row ${stats.sinWebp?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinWebp?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin WebP</div><div class="scr-val">${stats.sinWebp}</div></div>
-      <div class="seo-check-row ${stats.sinSlug?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinSlug?'fa-triangle-exclamation':'fa-circle-check'}"></i> Slug poco descriptivo</div><div class="scr-val">${stats.sinSlug}</div></div>
-      <div class="seo-check-row ${stats.sinMetaTitle?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinMetaTitle?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Title</div><div class="scr-val">${stats.sinMetaTitle}</div></div>
-      <div class="seo-check-row ${stats.sinMetaDesc?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinMetaDesc?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Description</div><div class="scr-val">${stats.sinMetaDesc}</div></div>
+      <div class="seo-check-row ok" style="cursor:pointer;" onclick="openSeoIssueModal('optimizados','Productos optimizados')"><div class="scr-left"><i class="fas fa-circle-check"></i> Productos optimizados</div><div class="scr-val">${stats.optimizedCount} / ${stats.total}</div></div>
+      <div class="seo-check-row ${stats.sinDescripcion?'warn':'ok'}" style="${stats.sinDescripcion?'cursor:pointer;':''}" ${stats.sinDescripcion?`onclick="openSeoIssueModal('sinDescripcion','Productos sin descripción')"`:''}><div class="scr-left"><i class="fas ${stats.sinDescripcion?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin descripción</div><div class="scr-val">${stats.sinDescripcion}</div></div>
+      <div class="seo-check-row ${stats.sinAlt?'warn':'ok'}" style="${stats.sinAlt?'cursor:pointer;':''}" ${stats.sinAlt?`onclick="openSeoIssueModal('sinAlt','Productos sin ALT (falta color)')"`:''}><div class="scr-left"><i class="fas ${stats.sinAlt?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin ALT (falta color)</div><div class="scr-val">${stats.sinAlt}</div></div>
+      <div class="seo-check-row ${stats.imgPng?'warn':'ok'}" style="${stats.imgPng?'cursor:pointer;':''}" ${stats.imgPng?`onclick="openSeoIssueModal('imgPng','Productos con imagen PNG')"`:''}><div class="scr-left"><i class="fas ${stats.imgPng?'fa-triangle-exclamation':'fa-circle-check'}"></i> Imagen PNG</div><div class="scr-val">${stats.imgPng}</div></div>
+      <div class="seo-check-row ${stats.sinWebp?'warn':'ok'}" style="${stats.sinWebp?'cursor:pointer;':''}" ${stats.sinWebp?`onclick="openSeoIssueModal('sinWebp','Productos sin WebP')"`:''}><div class="scr-left"><i class="fas ${stats.sinWebp?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin WebP</div><div class="scr-val">${stats.sinWebp}</div></div>
+      <div class="seo-check-row ${stats.sinSlug?'warn':'ok'}" style="${stats.sinSlug?'cursor:pointer;':''}" ${stats.sinSlug?`onclick="openSeoIssueModal('sinSlug','Productos con slug poco descriptivo')"`:''}><div class="scr-left"><i class="fas ${stats.sinSlug?'fa-triangle-exclamation':'fa-circle-check'}"></i> Slug poco descriptivo</div><div class="scr-val">${stats.sinSlug}</div></div>
+      <div class="seo-check-row ${stats.sinMetaTitle?'warn':'ok'}" style="${stats.sinMetaTitle?'cursor:pointer;':''}" ${stats.sinMetaTitle?`onclick="openSeoIssueModal('sinMetaTitle','Productos sin Meta Title')"`:''}><div class="scr-left"><i class="fas ${stats.sinMetaTitle?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Title</div><div class="scr-val">${stats.sinMetaTitle}</div></div>
+      <div class="seo-check-row ${stats.sinMetaDesc?'warn':'ok'}" style="${stats.sinMetaDesc?'cursor:pointer;':''}" ${stats.sinMetaDesc?`onclick="openSeoIssueModal('sinMetaDesc','Productos sin Meta Description')"`:''}><div class="scr-left"><i class="fas ${stats.sinMetaDesc?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Description</div><div class="scr-val">${stats.sinMetaDesc}</div></div>
       <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Schema.org</div><div class="scr-val">${stats.total}</div></div>
       <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Sitemap</div><div class="scr-val">OK</div></div>
       <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Robots</div><div class="scr-val">OK</div></div>
       <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Canonical / Open Graph</div><div class="scr-val">Auto</div></div>
     </div>
+    <div style="font-size:11.5px;color:var(--muted);font-weight:600;margin:2px 2px 0;">👆 Toca una fila con ⚠️ para ver qué productos la necesitan.</div>
 
     <div class="seo-actions-box">
       <h3>🎯 Acciones recomendadas</h3>
-      ${_seoRecommendedActions(stats).map(a => `<div class="seo-action-item"><span class="seo-action-dot">${a.emoji}</span> ${a.text}</div>`).join('')}
+      ${_seoRecommendedActions(stats).map(a => `<div class="seo-action-item" ${a.key?`style="cursor:pointer;" onclick="openSeoIssueModal('${a.key}','${a.title}')"`:''}>${a.emoji?`<span class="seo-action-dot">${a.emoji}</span>`:''} ${a.text}</div>`).join('')}
     </div>
 
     <div class="section" style="margin-bottom:0;">
@@ -7515,14 +7516,68 @@ function renderSeoSection() {
 
 function _seoRecommendedActions(stats) {
   const actions = [];
-  if (stats.imgPng>0) actions.push({emoji:'🟠', text:`Convierte ${stats.imgPng} imagen(es) PNG a WebP.`});
-  if (stats.sinAlt>0) actions.push({emoji:'🟠', text:`Agrega color a ${stats.sinAlt} producto(s) para generar su ALT.`});
-  if (stats.sinDescripcion>0) actions.push({emoji:'🔴', text:`Completa la descripción de ${stats.sinDescripcion} producto(s).`});
-  if (stats.sinMetaTitle>0) actions.push({emoji:'🟠', text:`Mejora el nombre de ${stats.sinMetaTitle} producto(s) para un mejor título SEO.`});
-  if (stats.sinSlug>0) actions.push({emoji:'🟠', text:`Usa nombres más descriptivos en ${stats.sinSlug} producto(s) para mejorar su URL.`});
+  if (stats.imgPng>0) actions.push({emoji:'🟠', key:'imgPng', title:'Productos con imagen PNG', text:`Convierte ${stats.imgPng} imagen(es) PNG a WebP.`});
+  if (stats.sinAlt>0) actions.push({emoji:'🟠', key:'sinAlt', title:'Productos sin ALT (falta color)', text:`Agrega color a ${stats.sinAlt} producto(s) para generar su ALT.`});
+  if (stats.sinDescripcion>0) actions.push({emoji:'🔴', key:'sinDescripcion', title:'Productos sin descripción', text:`Completa la descripción de ${stats.sinDescripcion} producto(s).`});
+  if (stats.sinMetaTitle>0) actions.push({emoji:'🟠', key:'sinMetaTitle', title:'Productos sin Meta Title', text:`Mejora el nombre de ${stats.sinMetaTitle} producto(s) para un mejor título SEO.`});
+  if (stats.sinSlug>0) actions.push({emoji:'🟠', key:'sinSlug', title:'Productos con slug poco descriptivo', text:`Usa nombres más descriptivos en ${stats.sinSlug} producto(s) para mejorar su URL.`});
   if (!actions.length) actions.push({emoji:'🟢', text:`Excelente trabajo, tienes un ${stats.avgScore}% de optimización.`});
   else actions.push({emoji:'🟢', text:`Ya llevas un ${stats.avgScore}% de optimización general.`});
   return actions;
+}
+
+// Devuelve la lista de productos (con su resultado SEO) que fallan un check específico
+function _seoIssueFilter(key) {
+  const stats = window._seoStats;
+  if (!stats) return [];
+  const preds = {
+    optimizados: r => r.score >= 89,
+    sinDescripcion: r => !r.descOk,
+    sinAlt: r => !r.altOk,
+    imgPng: r => r.hasPng,
+    sinWebp: r => !r.hasWebp,
+    sinSlug: r => !r.slugOk,
+    sinMetaTitle: r => !r.metaTitleOk,
+    sinMetaDesc: r => !r.metaDescOk,
+  };
+  const pred = preds[key];
+  if (!pred) return [];
+  return stats.list.filter(pred);
+}
+
+function openSeoIssueModal(key, title) {
+  const rows = _seoIssueFilter(key);
+  let modal = document.getElementById('seo-issue-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'seo-issue-modal';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+  const itemsHtml = rows.length ? rows.map(r => {
+    const p = r.product;
+    const img = (p.images||[])[0] || '';
+    const sem = _seoSemaforo(r.score);
+    return `<div class="seo-product-mini-card" onclick="document.getElementById('seo-issue-modal').classList.remove('open'); openProductSeoModal('${p.id}')">
+      ${img ? `<img src="${img}" onerror="this.remove()">` : `<div class="seo-product-mini-noimg">👗</div>`}
+      <div class="seo-product-mini-info">
+        <div class="seo-product-mini-name">${p.name||'Sin nombre'}</div>
+        <div class="seo-product-mini-bar-track"><div class="seo-product-mini-bar-fill" style="width:${r.score}%;background:${sem.color};"></div></div>
+      </div>
+      <div class="seo-product-mini-pct" style="color:${sem.color};">${r.score}%</div>
+    </div>`;
+  }).join('') : `<div class="empty-state"><div class="empty-icon">🎉</div><h3>Ningún producto tiene este problema</h3></div>`;
+  modal.innerHTML = `
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-head">
+        <div class="modal-title"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose)"></i> ${title}</div>
+        <button class="modal-close" onclick="document.getElementById('seo-issue-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:8px;">
+        ${itemsHtml}
+      </div>
+    </div>`;
+  modal.classList.add('open');
 }
 
 function renderSeoProductsGrid() {
