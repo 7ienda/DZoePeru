@@ -662,6 +662,89 @@ input:focus, select:focus, textarea:focus { border-color: var(--rose); outline: 
 .origen-hero-card .oh-sub { font-size: 10.5px; font-weight: 600; color: var(--muted); }
 .origen-hero-card.gold .oh-sub { color: rgba(255,255,255,.9); }
 
+/* ============================================
+   SALUD SEO DE LA TIENDA
+   ============================================ */
+.seo-score-hero { background: linear-gradient(135deg, var(--rose-dark), #6b2fd4); border-radius: 20px; padding: 26px 30px; color: #fff; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; box-shadow: 0 16px 36px rgba(107,47,212,.28); margin-bottom: 20px; position: relative; overflow: hidden; }
+.seo-score-hero::after { content:''; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.08); }
+.seo-score-ring-wrap { position: relative; width: 108px; height: 108px; flex-shrink: 0; }
+.seo-score-ring-wrap svg { transform: rotate(-90deg); }
+.seo-score-ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 800; }
+.seo-score-info { flex: 1; min-width: 220px; position: relative; z-index: 1; }
+.seo-score-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; opacity: .8; margin-bottom: 4px; }
+.seo-score-label { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+.seo-score-bar-track { background: rgba(255,255,255,.22); border-radius: 99px; height: 10px; overflow: hidden; max-width: 420px; }
+.seo-score-bar-fill { height: 100%; border-radius: 99px; background: #fff; transition: width .5s ease; }
+.seo-semaforo { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.seo-semaforo-chip { font-size: 10.5px; font-weight: 800; padding: 4px 10px; border-radius: 99px; background: rgba(255,255,255,.14); opacity: .55; }
+.seo-semaforo-chip.active { opacity: 1; background: rgba(255,255,255,.28); }
+
+.seo-checks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.seo-check-row { display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1.5px solid var(--line2); border-radius: 12px; padding: 11px 15px; box-shadow: var(--shadow); }
+.seo-check-row .scr-left { display: flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 700; color: var(--text); }
+.seo-check-row .scr-left i { font-size: 13px; }
+.seo-check-row.ok .scr-left i { color: var(--green); }
+.seo-check-row.warn .scr-left i { color: var(--orange); }
+.seo-check-row .scr-val { font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 800; color: var(--text); }
+.seo-check-row.ok .scr-val { color: var(--green); }
+.seo-check-row.warn .scr-val { color: var(--orange); }
+
+.seo-actions-box { background: var(--card); border: 1.5px solid var(--line2); border-radius: 16px; padding: 20px 22px; box-shadow: var(--shadow); margin-bottom: 20px; }
+.seo-actions-box h3 { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; margin-bottom: 12px; color: var(--text); }
+.seo-action-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--line2); font-size: 13px; font-weight: 600; color: var(--text2); }
+.seo-action-item:last-child { border-bottom: none; }
+.seo-action-dot { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+.seo-products-search { margin-bottom: 14px; }
+.seo-product-mini-card { background: var(--card); border: 1.5px solid var(--line2); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+.seo-product-mini-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.seo-product-mini-card img { width: 42px; height: 42px; border-radius: 9px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--line2); }
+.seo-product-mini-noimg { width: 42px; height: 42px; border-radius: 9px; background: var(--rose-light); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.seo-product-mini-info { flex: 1; min-width: 0; }
+.seo-product-mini-name { font-size: 12.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seo-product-mini-bar-track { background: var(--line2); border-radius: 99px; height: 6px; margin-top: 5px; overflow: hidden; }
+.seo-product-mini-bar-fill { height: 100%; border-radius: 99px; }
+.seo-product-mini-pct { font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.seo-products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap: 10px; }
+
+.seo-detail-check { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line2); font-size: 13px; font-weight: 700; color: var(--text); }
+.seo-detail-check:last-child { border-bottom: none; }
+.seo-detail-check i.ok { color: var(--green); }
+.seo-detail-check i.warn { color: var(--orange); }
+.seo-detail-check .sdc-note { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--muted); }
+
+/* ============================================
+   CALENDARIO COMERCIAL
+   ============================================ */
+.cal-next-hero { background: linear-gradient(135deg, #f0b840, #c98a12); border-radius: 20px; padding: 24px 28px; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: 0 16px 36px rgba(201,138,18,.28); margin-bottom: 22px; position: relative; overflow: hidden; }
+.cal-next-hero::after { content:''; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.12); }
+.cal-next-hero-info { position: relative; z-index: 1; }
+.cal-next-hero-tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; opacity: .85; margin-bottom: 4px; }
+.cal-next-hero-title { font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+.cal-next-hero-sub { font-size: 13px; font-weight: 600; opacity: .9; }
+.cal-next-hero-count { text-align: center; position: relative; z-index: 1; }
+.cal-next-hero-count .n { font-family: 'Baloo 2', cursive; font-size: 40px; font-weight: 800; line-height: 1; }
+.cal-next-hero-count .l { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
+.cal-next-hero-btn { background: #fff; color: #93690a; border: none; padding: 12px 22px; border-radius: 99px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 8px 18px rgba(0,0,0,.15); transition: transform .18s; position: relative; z-index: 1; }
+.cal-next-hero-btn:hover { transform: translateY(-2px); }
+
+.cal-timeline { display: flex; flex-direction: column; }
+.cal-timeline-item { display: flex; gap: 16px; }
+.cal-timeline-marker { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 46px; }
+.cal-timeline-day { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--rose-dark); }
+.cal-timeline-line { flex: 1; width: 2.5px; background: var(--line2); margin-top: 4px; min-height: 24px; }
+.cal-timeline-item:last-child .cal-timeline-line { display: none; }
+.cal-timeline-card { flex: 1; background: var(--card); border: 1.5px solid var(--line2); border-radius: 14px; padding: 12px 16px; margin-bottom: 14px; box-shadow: var(--shadow); cursor: pointer; transition: transform .18s, box-shadow .18s; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.cal-timeline-card:hover { transform: translateX(3px); box-shadow: var(--shadow-md); }
+.cal-timeline-card.soon { border-color: var(--orange); background: var(--orange-light); }
+.cal-timeline-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.cal-timeline-emoji { font-size: 17px; margin-right: 6px; }
+.cal-timeline-days { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.cal-timeline-days.soon { color: var(--orange); }
+
+.cal-suggest-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 99px; background: var(--rose-xlight); color: var(--rose-dark); font-size: 12.5px; font-weight: 700; margin: 4px 6px 4px 0; }
+.cal-action-chip { display: inline-flex; align-items: center; gap: 6px; padding: 9px 15px; border-radius: 12px; background: var(--bg); border: 1.5px solid var(--line2); font-size: 12.5px; font-weight: 700; color: var(--text); margin: 4px 6px 4px 0; }
+
 .origen-alert { display: flex; align-items: center; gap: 14px; background: var(--orange-light); border: 1.5px dashed var(--orange); border-radius: 16px; padding: 14px 18px; margin-bottom: 20px; }
 .origen-alert .oa-icon { width: 38px; height: 38px; border-radius: 11px; background: rgba(255,255,255,.6); color: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
 .origen-alert .oa-text { font-size: 12.5px; color: var(--text2); flex: 1; }
@@ -965,6 +1048,9 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <span class="menu-label">Marketing</span>
     <button class="menu-btn" data-section="promociones-section"><i class="fas fa-percent"></i><span>💸 Promociones</span></button>
     <button class="menu-btn" data-section="carritos-section"><i class="fas fa-cart-arrow-down"></i><span>🛒 Carritos Abandonados</span></button>
+    <button class="menu-btn" data-section="calendario-section"><i class="fas fa-calendar-days" style="color:#1d9e6e;"></i><span style="color:#1d9e6e;">📅 Calendario Comercial</span></button>
+    <span class="menu-label">SEO</span>
+    <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart" style="color:#1d5fd4;"></i><span style="color:#1d5fd4;">Salud SEO</span><span class="badge" id="badge-seo" style="background:rgba(29,95,212,.22);">0%</span></button>
     <span class="menu-label">Sistema</span>
     <button class="menu-btn" data-section="add-product-section" onclick="goToSection('add-product-section');switchAddTab('product');renderSizesList();"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
     <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="display:none;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
@@ -1342,6 +1428,16 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- ====== SALUD SEO ====== -->
+    <div id="seo-section" class="page-section" style="display:none;">
+      <div id="seo-section-container"></div>
+    </div>
+
+    <!-- ====== CALENDARIO COMERCIAL ====== -->
+    <div id="calendario-section" class="page-section" style="display:none;">
+      <div id="calendario-section-container"></div>
     </div>
 
     <!-- ====== LISTONES ====== -->
@@ -3554,6 +3650,10 @@ function updateStats() {
   if (elStock) elStock.textContent = stock;
   const elInvVal = document.getElementById('inventory-value');
   if (elInvVal) elInvVal.textContent = 'S/'+invVal.toLocaleString('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0});
+  const badgeSeo = document.getElementById('badge-seo');
+  if (badgeSeo && typeof computeStoreSeoStats === 'function') {
+    try { badgeSeo.textContent = computeStoreSeoStats().avgScore+'%'; } catch(e) {}
+  }
 }
 
 // ============================================
@@ -7278,6 +7378,327 @@ function renderOrigenAnalytics() {
   container.innerHTML = html;
 }
 
+// ============================================
+// SALUD SEO DE LA TIENDA
+// ============================================
+function _slugify(str) {
+  return (str||'').toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+}
+
+function computeProductSeoChecks(p) {
+  const imgs = (p.images||[]).filter(Boolean);
+  const hasWebp = imgs.length>0 && imgs.every(u => /\.webp(\?.*)?$/i.test(u));
+  const hasPng = imgs.some(u => /\.png(\?.*)?$/i.test(u));
+  const titleOk = typeof isSeoFriendlyProductName === 'function' ? isSeoFriendlyProductName(p.name) : (p.name||'').trim().length >= 10;
+  const slug = _slugify(p.name);
+  const slugOk = slug.length >= 8 && slug.split('-').length >= 2;
+  const altOk = !!(p.color && p.color.trim());
+  const descOk = !!(p.description && p.description.trim().length >= 40);
+  const metaTitleOk = titleOk && (p.name||'').trim().length >= 15;
+  const metaDescOk = descOk;
+  const weightOk = !hasPng; // heurística: PNG suele pesar más que WebP/JPG optimizado
+  const checks = [
+    { key:'title', label:'Título', ok: titleOk },
+    { key:'slug', label:'Slug', ok: slugOk },
+    { key:'alt', label:'Alt', ok: altOk },
+    { key:'webp', label:'WebP', ok: hasWebp },
+    { key:'peso', label:'Peso', ok: weightOk },
+    { key:'meta', label:'Meta', ok: metaTitleOk && metaDescOk },
+    { key:'schema', label:'Schema', ok: true },
+    { key:'canonical', label:'Canonical', ok: true },
+    { key:'og', label:'Open Graph', ok: imgs.length>0 },
+  ];
+  const passed = checks.filter(c=>c.ok).length;
+  const score = Math.round((passed/checks.length)*100);
+  return { checks, score, hasPng, hasWebp, descOk, altOk, titleOk, slugOk, metaTitleOk, metaDescOk };
+}
+
+function computeStoreSeoStats() {
+  const list = products||[];
+  let sumScore = 0, optimizedCount = 0;
+  let sinDescripcion=0, sinAlt=0, imgPng=0, sinWebp=0, sinSlug=0, sinMetaTitle=0, sinMetaDesc=0;
+  const perProduct = list.map(p => {
+    const r = computeProductSeoChecks(p);
+    sumScore += r.score;
+    if (r.score >= 89) optimizedCount++;
+    if (!r.descOk) sinDescripcion++;
+    if (!r.altOk) sinAlt++;
+    if (r.hasPng) imgPng++;
+    if (!r.hasWebp) sinWebp++;
+    if (!r.slugOk) sinSlug++;
+    if (!r.metaTitleOk) sinMetaTitle++;
+    if (!r.metaDescOk) sinMetaDesc++;
+    return { product: p, ...r };
+  });
+  const avgScore = list.length ? Math.round(sumScore/list.length) : 0;
+  return { list: perProduct, avgScore, total: list.length, optimizedCount,
+    sinDescripcion, sinAlt, imgPng, sinWebp, sinSlug, sinMetaTitle, sinMetaDesc };
+}
+
+function _seoSemaforo(score) {
+  if (score>=90) return {label:'Excelente', color:'#1f9e6e', emoji:'🟢'};
+  if (score>=70) return {label:'Bueno', color:'#c98a12', emoji:'🟡'};
+  return {label:'Necesita mejoras', color:'#d42020', emoji:'🔴'};
+}
+
+function renderSeoSection() {
+  const container = document.getElementById('seo-section-container');
+  if (!container) return;
+  const stats = computeStoreSeoStats();
+  const sem = _seoSemaforo(stats.avgScore);
+  const badge = document.getElementById('badge-seo'); if (badge) badge.textContent = stats.avgScore+'%';
+
+  const circumference = 2*Math.PI*46;
+  const dashOffset = circumference - (stats.avgScore/100)*circumference;
+
+  let html = `
+    <div class="seo-score-hero">
+      <div class="seo-score-ring-wrap">
+        <svg width="108" height="108" viewBox="0 0 108 108">
+          <circle cx="54" cy="54" r="46" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="10"/>
+          <circle cx="54" cy="54" r="46" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"
+            stroke-dasharray="${circumference}" stroke-dashoffset="${dashOffset}"/>
+        </svg>
+        <div class="seo-score-ring-num">${stats.avgScore}%</div>
+      </div>
+      <div class="seo-score-info">
+        <div class="seo-score-title"><i class="fas fa-magnifying-glass-chart"></i> Salud SEO de la tienda</div>
+        <div class="seo-score-label">${sem.emoji} ${sem.label}</div>
+        <div class="seo-score-bar-track"><div class="seo-score-bar-fill" style="width:${stats.avgScore}%;"></div></div>
+        <div class="seo-semaforo">
+          <span class="seo-semaforo-chip ${stats.avgScore>=90?'active':''}">🟢 90-100% Excelente</span>
+          <span class="seo-semaforo-chip ${stats.avgScore>=70&&stats.avgScore<90?'active':''}">🟡 70-89% Bueno</span>
+          <span class="seo-semaforo-chip ${stats.avgScore<70?'active':''}">🔴 &lt;70% Necesita mejoras</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="seo-checks-grid">
+      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Productos optimizados</div><div class="scr-val">${stats.optimizedCount} / ${stats.total}</div></div>
+      <div class="seo-check-row ${stats.sinDescripcion?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinDescripcion?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin descripción</div><div class="scr-val">${stats.sinDescripcion}</div></div>
+      <div class="seo-check-row ${stats.sinAlt?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinAlt?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin ALT (falta color)</div><div class="scr-val">${stats.sinAlt}</div></div>
+      <div class="seo-check-row ${stats.imgPng?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.imgPng?'fa-triangle-exclamation':'fa-circle-check'}"></i> Imagen PNG</div><div class="scr-val">${stats.imgPng}</div></div>
+      <div class="seo-check-row ${stats.sinWebp?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinWebp?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin WebP</div><div class="scr-val">${stats.sinWebp}</div></div>
+      <div class="seo-check-row ${stats.sinSlug?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinSlug?'fa-triangle-exclamation':'fa-circle-check'}"></i> Slug poco descriptivo</div><div class="scr-val">${stats.sinSlug}</div></div>
+      <div class="seo-check-row ${stats.sinMetaTitle?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinMetaTitle?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Title</div><div class="scr-val">${stats.sinMetaTitle}</div></div>
+      <div class="seo-check-row ${stats.sinMetaDesc?'warn':'ok'}"><div class="scr-left"><i class="fas ${stats.sinMetaDesc?'fa-triangle-exclamation':'fa-circle-check'}"></i> Sin Meta Description</div><div class="scr-val">${stats.sinMetaDesc}</div></div>
+      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Schema.org</div><div class="scr-val">${stats.total}</div></div>
+      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Sitemap</div><div class="scr-val">OK</div></div>
+      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Robots</div><div class="scr-val">OK</div></div>
+      <div class="seo-check-row ok"><div class="scr-left"><i class="fas fa-circle-check"></i> Canonical / Open Graph</div><div class="scr-val">Auto</div></div>
+    </div>
+
+    <div class="seo-actions-box">
+      <h3>🎯 Acciones recomendadas</h3>
+      ${_seoRecommendedActions(stats).map(a => `<div class="seo-action-item"><span class="seo-action-dot">${a.emoji}</span> ${a.text}</div>`).join('')}
+    </div>
+
+    <div class="section" style="margin-bottom:0;">
+      <div class="section-header">
+        <div class="section-title"><i class="fas fa-list-check" style="color:var(--rose)"></i> SEO por producto</div>
+        <div class="search-input-wrap seo-products-search">
+          <i class="fas fa-search"></i>
+          <input type="text" class="search-input" id="seo-products-search" placeholder="Buscar producto..." oninput="renderSeoProductsGrid()">
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="seo-products-grid" class="seo-products-grid"></div>
+      </div>
+    </div>
+  `;
+  container.innerHTML = html;
+  window._seoStats = stats;
+  renderSeoProductsGrid();
+}
+
+function _seoRecommendedActions(stats) {
+  const actions = [];
+  if (stats.imgPng>0) actions.push({emoji:'🟠', text:`Convierte ${stats.imgPng} imagen(es) PNG a WebP.`});
+  if (stats.sinAlt>0) actions.push({emoji:'🟠', text:`Agrega color a ${stats.sinAlt} producto(s) para generar su ALT.`});
+  if (stats.sinDescripcion>0) actions.push({emoji:'🔴', text:`Completa la descripción de ${stats.sinDescripcion} producto(s).`});
+  if (stats.sinMetaTitle>0) actions.push({emoji:'🟠', text:`Mejora el nombre de ${stats.sinMetaTitle} producto(s) para un mejor título SEO.`});
+  if (stats.sinSlug>0) actions.push({emoji:'🟠', text:`Usa nombres más descriptivos en ${stats.sinSlug} producto(s) para mejorar su URL.`});
+  if (!actions.length) actions.push({emoji:'🟢', text:`Excelente trabajo, tienes un ${stats.avgScore}% de optimización.`});
+  else actions.push({emoji:'🟢', text:`Ya llevas un ${stats.avgScore}% de optimización general.`});
+  return actions;
+}
+
+function renderSeoProductsGrid() {
+  const grid = document.getElementById('seo-products-grid');
+  if (!grid || !window._seoStats) return;
+  const search = (document.getElementById('seo-products-search')?.value||'').toLowerCase();
+  const list = window._seoStats.list.filter(r => !search || (r.product.name||'').toLowerCase().includes(search));
+  grid.innerHTML = list.map(r => {
+    const p = r.product;
+    const img = (p.images||[])[0] || '';
+    const sem = _seoSemaforo(r.score);
+    return `<div class="seo-product-mini-card" onclick="openProductSeoModal('${p.id}')">
+      ${img ? `<img src="${img}" onerror="this.remove()">` : `<div class="seo-product-mini-noimg">👗</div>`}
+      <div class="seo-product-mini-info">
+        <div class="seo-product-mini-name">${p.name||'Sin nombre'}</div>
+        <div class="seo-product-mini-bar-track"><div class="seo-product-mini-bar-fill" style="width:${r.score}%;background:${sem.color};"></div></div>
+      </div>
+      <div class="seo-product-mini-pct" style="color:${sem.color};">${r.score}%</div>
+    </div>`;
+  }).join('') || `<div class="empty-state"><div class="empty-icon">🔍</div><h3>Sin productos</h3></div>`;
+}
+
+function openProductSeoModal(productId) {
+  const p = (products||[]).find(x => String(x.id)===String(productId));
+  if (!p) return;
+  const r = computeProductSeoChecks(p);
+  const sem = _seoSemaforo(r.score);
+  const labelIcons = { title:'fa-heading', slug:'fa-link', alt:'fa-image', webp:'fa-file-image', peso:'fa-weight-hanging', meta:'fa-tags', schema:'fa-diagram-project', canonical:'fa-anchor', og:'fa-share-nodes' };
+  let modal = document.getElementById('seo-detail-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'seo-detail-modal';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-head">
+        <div class="modal-title"><i class="fas fa-magnifying-glass-chart" style="color:var(--rose)"></i> SEO — ${p.name||''}</div>
+        <button class="modal-close" onclick="document.getElementById('seo-detail-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <div style="flex:1;">
+            <div class="seo-score-bar-track" style="background:var(--line2);"><div class="seo-score-bar-fill" style="width:${r.score}%;background:${sem.color};"></div></div>
+          </div>
+          <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:${sem.color};">${r.score}%</div>
+        </div>
+        ${r.checks.map(c => `<div class="seo-detail-check"><i class="fas ${labelIcons[c.key]||'fa-check'} ${c.ok?'ok':'warn'}"></i> ${c.label} <span class="sdc-note">${c.ok?'✔':'⚠'}</span></div>`).join('')}
+      </div>
+    </div>`;
+  modal.classList.add('open');
+}
+
+// ============================================
+// CALENDARIO COMERCIAL (Perú)
+// ============================================
+const PERU_COMMERCIAL_DATES = [
+  { emoji:'🎉', name:'Año Nuevo', month:1, day:1, categories:['bebé','niña','niño'] },
+  { emoji:'❤️', name:'San Valentín', month:2, day:14, categories:['conjuntos','vestidos'] },
+  { emoji:'👩', name:'Día de la Mujer', month:3, day:8, categories:['mamá','mujer'] },
+  { emoji:'📚', name:'Inicio Escolar', month:3, day:1, categories:['niño','niña','uniformes'] },
+  { emoji:'👩‍👧', name:'Día de la Madre', month:5, day:11, categories:['mamá','bebé'] },
+  { emoji:'👨', name:'Día del Padre', month:6, day:15, categories:['papá','niño'] },
+  { emoji:'🇵🇪', name:'Fiestas Patrias', month:7, day:28, categories:['verano','casual'] },
+  { emoji:'👦', name:'Día del Niño', month:8, day:31, categories:['niño','niña','bebé'] },
+  { emoji:'🌸', name:'Primavera', month:9, day:23, categories:['vestidos','conjuntos'] },
+  { emoji:'🎃', name:'Halloween', month:10, day:31, categories:['disfraces','niño','niña'] },
+  { emoji:'🛍', name:'Cyber Wow', month:11, day:6, categories:['ofertas'] },
+  { emoji:'⚫', name:'Black Friday', month:11, day:28, categories:['ofertas'] },
+  { emoji:'🎄', name:'Navidad', month:12, day:24, categories:['bebé','niño','niña'] },
+];
+
+function _nextOccurrence(month, day) {
+  const now = new Date(); now.setHours(0,0,0,0);
+  let year = now.getFullYear();
+  let d = new Date(year, month-1, day);
+  if (d < now) d = new Date(year+1, month-1, day);
+  const diffDays = Math.round((d-now)/86400000);
+  return { date:d, diffDays };
+}
+
+function computeCalendarEvents() {
+  const withDates = PERU_COMMERCIAL_DATES.map(e => ({ ...e, ...(_nextOccurrence(e.month, e.day)) }));
+  const now = new Date();
+  const finMes = new Date(now.getFullYear(), now.getMonth()+1, 0);
+  finMes.setHours(0,0,0,0);
+  const todayZero = new Date(); todayZero.setHours(0,0,0,0);
+  const diffFin = Math.round((finMes-todayZero)/86400000);
+  if (diffFin >= 0) withDates.push({ emoji:'📅', name:'Fin de mes', date:finMes, diffDays:diffFin, categories:[] });
+  withDates.sort((a,b) => a.diffDays-b.diffDays);
+  return withDates;
+}
+
+function renderCalendarSection() {
+  const container = document.getElementById('calendario-section-container');
+  if (!container) return;
+  const events = computeCalendarEvents();
+  const next = events[0];
+  const monthNames = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+  let html = `
+    <div class="cal-next-hero">
+      <div class="cal-next-hero-info">
+        <div class="cal-next-hero-tag">🔥 Próximo evento comercial</div>
+        <div class="cal-next-hero-title">${next.emoji} ${next.name}</div>
+        <div class="cal-next-hero-sub">${next.date.getDate()} de ${monthNames[next.date.getMonth()]}</div>
+      </div>
+      <div class="cal-next-hero-count">
+        <div class="n">${next.diffDays}</div>
+        <div class="l">${next.diffDays===1?'día':'días'}</div>
+      </div>
+      <button class="cal-next-hero-btn" onclick="openCampaignModal('${next.name.replace(/'/g,"\\'")}')"><i class="fas fa-bullhorn"></i> Preparar campaña</button>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title"><i class="fas fa-calendar-days" style="color:var(--mint)"></i> Fechas comerciales — Perú</div>
+      </div>
+      <div class="section-body">
+        <div class="cal-timeline">
+          ${events.map(e => `
+            <div class="cal-timeline-item">
+              <div class="cal-timeline-marker">
+                <div class="cal-timeline-day">${e.date.getDate()}</div>
+                <div class="cal-timeline-line"></div>
+              </div>
+              <div class="cal-timeline-card ${e.diffDays<=7?'soon':''}" onclick="openCampaignModal('${e.name.replace(/'/g,"\\'")}')">
+                <div><span class="cal-timeline-emoji">${e.emoji}</span><span class="cal-timeline-name">${e.name}</span></div>
+                <div class="cal-timeline-days ${e.diffDays<=7?'soon':''}">Faltan ${e.diffDays} día${e.diffDays===1?'':'s'}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  container.innerHTML = html;
+  window._calEvents = events;
+}
+
+function openCampaignModal(eventName) {
+  const ev = (window._calEvents||[]).find(e => e.name===eventName);
+  if (!ev) return;
+  const cats = categories||[];
+  const matched = (ev.categories||[]).map(kw => cats.find(c => (c.name||'').toLowerCase().includes(kw))).filter(Boolean);
+  const suggestedCats = matched.length ? matched.map(c=>c.name) : (cats.slice(0,3).map(c=>c.name));
+  let modal = document.getElementById('campaign-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'campaign-modal';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div class="modal" style="max-width:460px;">
+      <div class="modal-head">
+        <div class="modal-title">${ev.emoji} Preparar campaña — ${ev.name}</div>
+        <button class="modal-close" onclick="document.getElementById('campaign-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px;">Faltan ${ev.diffDays} día${ev.diffDays===1?'':'s'} · sugerencias basadas en tu catálogo</div>
+        ${suggestedCats.length ? `<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Categorías a destacar</div>${suggestedCats.map(c=>`<span class="cal-suggest-chip"><i class="fas fa-tag"></i> ${c}</span>`).join('')}</div>` : ''}
+        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Acciones sugeridas</div>
+        <div>
+          <span class="cal-action-chip" onclick="goToSection('promociones-section');document.getElementById('campaign-modal').classList.remove('open');"><i class="fas fa-percent"></i> Crear descuento</span>
+          <span class="cal-action-chip"><i class="fas fa-image"></i> Banner en la web</span>
+          <span class="cal-action-chip"><i class="fab fa-tiktok"></i> TikTok Live</span>
+          <span class="cal-action-chip"><i class="fab fa-instagram"></i> Historias Instagram</span>
+        </div>
+        <div style="margin-top:16px;font-size:11.5px;color:var(--muted);"><i class="fas fa-circle-info"></i> Estas sugerencias se generan automáticamente según la fecha y tu catálogo. Pronto: generación de textos e imágenes con IA.</div>
+      </div>
+    </div>`;
+  modal.classList.add('open');
+}
+
 function renderSuppliersSection() {
   loadSuppliers();
   const totalOrders = suppliers.reduce((a,s)=>(s.orders||[]).filter(o=>o.status!=='received'&&o.status!=='cancelled').length+a,0);
@@ -7368,8 +7789,8 @@ function goToSection(sectionId) {
   // Mostrar stats globales solo en Dashboard
   const globalStats = document.getElementById('global-stats');
   if (globalStats) globalStats.style.display = sectionId === 'dashboard-section' ? 'grid' : 'none';
-  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'finanzas-section':'fa-sack-dollar', 'inversiones-section':'fa-chart-line', 'reinvertir-section':'fa-arrows-rotate', 'imprevistos-section':'fa-triangle-exclamation' };
-  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'finanzas-section':'Finanzas', 'inversiones-section':'Inversiones', 'reinvertir-section':'Reinvertir', 'imprevistos-section':'Imprevistos' };
+  const iconMap = { 'dashboard-section':'fa-chart-pie', 'inventory-section':'fa-boxes-stacked', 'sold-products-section':'fa-bag-shopping', 'sales-section':'fa-receipt', 'add-product-section':'fa-plus-circle', 'clients-section':'fa-users', 'suppliers-section':'fa-truck', 'settings-section':'fa-sliders', 'blog-admin-section':'fa-pen-nib', 'digitales-admin-section':'fa-cloud-arrow-up', 'finanzas-section':'fa-sack-dollar', 'inversiones-section':'fa-chart-line', 'reinvertir-section':'fa-arrows-rotate', 'imprevistos-section':'fa-triangle-exclamation', 'seo-section':'fa-magnifying-glass-chart', 'calendario-section':'fa-calendar-days' };
+  const nameMap = { 'dashboard-section':'Dashboard', 'inventory-section':'Inventario', 'sold-products-section':'Productos Vendidos', 'sales-section':'Ventas', 'add-product-section':'Agregar Producto', 'clients-section':'Clientes', 'suppliers-section':'Proveedores', 'settings-section':'Configuración', 'finanzas-section':'Finanzas', 'inversiones-section':'Inversiones', 'reinvertir-section':'Reinvertir', 'imprevistos-section':'Imprevistos', 'seo-section':'Salud SEO', 'calendario-section':'Calendario Comercial' };
   document.getElementById('topbar-section-name').textContent = nameMap[sectionId]||'Panel';
   const iconEl = document.getElementById('topbar-icon-el');
   if (iconEl) iconEl.className = `fas ${iconMap[sectionId]||'fa-home'}`;
@@ -7380,6 +7801,8 @@ function goToSection(sectionId) {
   if (sectionId === 'clients-section') renderClientsSection();
   if (sectionId === 'suppliers-section') { renderOrigenAnalytics(); }
   if (sectionId === 'settings-section') { renderSourcingProveedoresConfig(); renderRibbonsPro(); }
+  if (sectionId === 'seo-section') { renderSeoSection(); }
+  if (sectionId === 'calendario-section') { renderCalendarSection(); }
   if (sectionId === 'add-product-section') {
     // Asegurar que el tab activo esté visible
     const prodForm = document.getElementById('tab-product-form');
