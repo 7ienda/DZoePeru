@@ -442,14 +442,14 @@ img{display:block;max-width:100%;}
 /* ── Imagen ── */
 .pi-card-img-wrap{
   position:relative;aspect-ratio:3/4;overflow:hidden;
-  background:var(--rose-soft);flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));flex-shrink:0;
 }
 .pi-card-img-wrap img{
-  width:100%;height:100%;object-fit:cover;
+  width:100%;height:100%;object-fit:contain;
   transition:transform 0.5s cubic-bezier(0.22,0.9,0.36,1);
   will-change:transform;
 }
-.pi-card:hover .pi-card-img-wrap img{transform:scale(1.07);}
+.pi-card:hover .pi-card-img-wrap img{transform:scale(1.05);}
 .pi-card-no-img{
   width:100%;height:100%;display:flex;align-items:center;justify-content:center;
   font-size:48px;color:var(--rose-light);
@@ -668,18 +668,11 @@ img{display:block;max-width:100%;}
 
 /* ── Arrived state ── */
 .pi-arrived-msg{
-  display:flex;align-items:center;gap:7px;padding:9px 12px;
+  display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 12px;
   background:linear-gradient(135deg,var(--mint-soft),rgba(125,196,168,0.15));
   border:1.5px solid rgba(125,196,168,0.4);border-radius:10px;
-  font-size:12.5px;font-weight:700;color:var(--text);
+  font-size:12.5px;font-weight:700;color:var(--text);text-align:center;
 }
-.pi-btn-promote{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  background:var(--mint);color:#fff;border:none;border-radius:10px;
-  padding:9px;font-size:12.5px;font-weight:800;cursor:pointer;
-  font-family:'Nunito',sans-serif;transition:all 0.22s;
-}
-.pi-btn-promote:hover{background:#5aac8c;transform:scale(1.03);}
 
 /* ══════════════════════════════════
    SKELETON LOADING
@@ -1282,7 +1275,14 @@ function renderGrid() {
           if (e.isIntersecting) {
             const i = e.target;
             i.src = i.dataset.src;
-            i.onload = () => i.classList.add('loaded');
+            i.onload = () => {
+              i.classList.add('loaded');
+              // Ajustar el marco a la proporción real de la foto para que no queden espacios vacíos
+              const wrap = i.closest('.pi-card-img-wrap');
+              if (wrap && i.naturalWidth && i.naturalHeight) {
+                wrap.style.aspectRatio = `${i.naturalWidth} / ${i.naturalHeight}`;
+              }
+            };
             i.onerror = () => { i.style.display='none'; i.closest('.pi-card-img-wrap').querySelector('.pi-card-no-img')?.style.setProperty('display','flex'); };
             obs.unobserve(i);
           }
@@ -1291,7 +1291,13 @@ function renderGrid() {
       io.observe(img);
     } else {
       img.src = img.dataset.src;
-      img.classList.add('loaded');
+      img.onload = () => {
+        img.classList.add('loaded');
+        const wrap = img.closest('.pi-card-img-wrap');
+        if (wrap && img.naturalWidth && img.naturalHeight) {
+          wrap.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+        }
+      };
     }
   });
 
@@ -1393,8 +1399,7 @@ function buildCard(p) {
 
   // Countdown / estado central
   const cdOrArrived = isArrived
-    ? `<div class="pi-arrived-msg">🎉 ¡Ya llegó! Pronto en el catálogo.</div>
-       <button class="pi-btn-promote" onclick="promoteProduct('${p.id}')"><i class="fas fa-arrow-up-from-bracket"></i> Pasar a tienda</button>`
+    ? `<div class="pi-arrived-msg">🎉 ¡Ya llegó! Pronto en el catálogo.</div>`
     : isCaminoTienda
       ? `<div class="pi-truck-msg">🛻 ¡Ya está en camino hacia la tienda! Llega muy pronto.</div>`
       : `<div class="pi-countdown" id="picd-${p.id}">
@@ -1565,27 +1570,6 @@ window.setCaminoTienda = async function(id) {
   if (p) p.status = 'camino_tienda';
   applyFiltersAndRender();
   showToast('🛻 Producto marcado como Camino a tienda');
-};
-
-/* ── Promover producto ── */
-window.promoteProduct = async function(id) {
-  if (!confirm('¿Pasar este producto a la tienda como disponible?')) return;
-  if (!sb) { alert('Sin conexión Supabase'); return; }
-  const p = allProducts.find(u => String(u.id)===String(id));
-  if (!p) return;
-  const { error: iErr } = await sb.from('products').insert([{
-    id: Date.now(), name: p.name, description: p.description||'',
-    images: p.images||[], image: (p.images||[])[0]||p.image||'',
-    featured: p.featured||false, status: 'active', categories: p.categories||[],
-    sizes: (p.sizes||[]).map(s=>({size:s.size,price:s.price,cost:s.cost||0,stock:s.stock||0})),
-    is_new: true, created_at: new Date().toISOString()
-  }]);
-  if (iErr) { alert('Error: '+iErr.message); return; }
-  const { error: dErr } = await sb.from('upcoming_products').delete().eq('id', id);
-  if (dErr) { alert('Error al eliminar: '+dErr.message); return; }
-  allProducts = allProducts.filter(u => String(u.id)!==String(id));
-  applyFiltersAndRender();
-  showToast('✅ Producto pasado a tienda correctamente');
 };
 
 /* ── Avisame form ── */
