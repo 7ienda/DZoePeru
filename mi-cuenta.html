@@ -1274,74 +1274,28 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <!-- ====== VENTAS ====== -->
     <div id="sales-section" class="page-section" style="display:none;">
       <!-- Summary cards mejoradas -->
-      <!-- Hero: los 3 números que más importan de un vistazo -->
-      <div class="ventas-hero-grid">
-        <div class="ventas-hero-card">
-          <div class="vh-icon"><i class="fas fa-sack-dollar"></i></div>
-          <div class="vh-label">Total cobrado</div>
-          <div class="vh-value" id="sales-total-amt">S/ 0.00</div>
-          <div class="vh-sub" id="sales-confirmed-sub">0 confirmados</div>
-        </div>
-        <div class="ventas-hero-card mint">
-          <div class="vh-icon"><i class="fas fa-coins"></i></div>
-          <div class="vh-label">Cobrado hoy</div>
-          <div class="vh-value" id="sales-today">S/ 0.00</div>
-          <div class="vh-sub">Ingresos confirmados del día</div>
-        </div>
-        <div class="ventas-hero-card plain">
-          <div class="vh-icon"><i class="fas fa-clock"></i></div>
-          <div class="vh-label">Pendientes</div>
-          <div class="vh-value" id="sales-pending-count">0</div>
-          <div class="vh-sub" id="sales-deuda-sub">S/ 0.00 en deuda</div>
-        </div>
-      </div>
-
       <!-- Chips: métricas de apoyo, escaneables rápido -->
-      <div class="ventas-chip-row" id="sales-summary-row">
+      <div class="ventas-chip-row" id="sales-summary-row" style="grid-template-columns:minmax(160px,220px);">
         <div class="ventas-chip">
           <div class="vc-icon" style="background:var(--lav-light);color:var(--lavender);"><i class="fas fa-receipt"></i></div>
           <div><div class="vc-label">Pedidos</div><div class="vc-value" id="sales-count">0</div></div>
         </div>
-        <div class="ventas-chip">
-          <div class="vc-icon" style="background:var(--mint-soft);color:var(--mint);"><i class="fas fa-chart-line"></i></div>
-          <div><div class="vc-label">Ticket promedio</div><div class="vc-value" id="sales-avg">S/ 0.00</div></div>
+      </div>
+
+      <!-- ====== CIUDADES QUE NOS COMPRARON ====== -->
+      <div class="section" style="margin-bottom:24px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-map-location-dot" style="color:var(--mint)"></i> Ciudades que nos compraron</div>
+          <div style="font-size:12px;color:var(--muted);">Basado en el campo Destino de cada pedido</div>
         </div>
-        <div class="ventas-chip">
-          <div class="vc-icon" style="background:var(--sky-light);color:var(--sky);"><i class="fas fa-mobile-screen"></i></div>
-          <div><div class="vc-label">Método + usado</div><div class="vc-value small" id="sales-top-method">—</div></div>
-        </div>
-        <div class="ventas-chip">
-          <div class="vc-icon" style="background:var(--red-light);color:var(--red);"><i class="fas fa-ban"></i></div>
-          <div><div class="vc-label">Cancelados</div><div class="vc-value" id="sales-cancelled-count">0</div></div>
-        </div>
-        <div class="ventas-chip">
-          <div class="vc-icon" style="background:var(--peach-light);color:var(--peach);"><i class="fas fa-star"></i></div>
-          <div><div class="vc-label">Producto top</div><div class="vc-value small" id="sales-top-product">—</div></div>
+        <div class="section-body">
+          <div id="cities-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
         </div>
       </div>
+
       <div class="section">
         <div class="section-header">
           <div class="section-title"><i class="fas fa-receipt" style="color:var(--rose)"></i> Registro de Ventas</div>
-          <div class="ventas-toolbar">
-            <div class="ventas-search-wrap">
-              <i class="fas fa-search"></i>
-              <input type="text" id="sales-search" placeholder="Buscar cliente..." oninput="filterSales()">
-            </div>
-            <select class="ventas-pill-select" id="sales-status-filter" onchange="filterSales()">
-              <option value="">Todos los estados</option>
-              <option value="pending">⏳ Pendientes</option>
-              <option value="confirmed">✅ Confirmados</option>
-              <option value="cancelled">❌ Cancelados</option>
-            </select>
-            <select class="ventas-pill-select" id="sales-method-filter" onchange="filterSales()">
-              <option value="">Todos los métodos</option>
-              <option value="yape">💜 Yape</option>
-              <option value="plin">💙 Plin</option>
-              <option value="sip">💚 Sip</option>
-              <option value="bank">🏦 Interbank</option>
-            </select>
-            <button class="btn btn-ghost btn-sm ventas-export-btn" onclick="exportSalesCSV()"><i class="fas fa-download"></i> Exportar CSV</button>
-          </div>
         </div>
         <div class="section-body" style="padding:0 0 28px;">
           <div class="table-wrap">
@@ -1372,16 +1326,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         </div>
       </div>
 
-      <!-- ====== CIUDADES QUE NOS COMPRARON ====== -->
-      <div class="section" style="margin-top:24px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-map-location-dot" style="color:var(--mint)"></i> Ciudades que nos compraron</div>
-          <div style="font-size:12px;color:var(--muted);">Basado en el campo Destino de cada pedido</div>
-        </div>
-        <div class="section-body">
-          <div id="cities-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
-        </div>
-      </div>
       <!-- ====== DEUDORES ====== -->
       <div class="section" style="margin-top:24px;" id="deudores-section-sales">
         <div class="section-header">
@@ -3630,11 +3574,11 @@ function updateDashboard() {
   const methodNames = {yape:'💜 Yape',plin:'💙 Plin',sip:'💚 Sip',bank:'🏦 Banco',cash:'💵 Efectivo'};
   const prodCount = {}; orders.forEach(o => (o.items||[]).forEach(it => { prodCount[it.name]=(prodCount[it.name]||0)+(it.qty||1); }));
   const topProd = Object.entries(prodCount).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
-  document.getElementById('sales-total-amt').textContent = 'S/ '+salesTotal.toFixed(2);
+  const totalAmtEl = document.getElementById('sales-total-amt'); if(totalAmtEl) totalAmtEl.textContent = 'S/ '+salesTotal.toFixed(2);
   document.getElementById('sales-count').textContent = orders.length;
   const confirmedSub = document.getElementById('sales-confirmed-sub'); if(confirmedSub) confirmedSub.textContent = salesConfirmed+' confirmados';
-  document.getElementById('sales-avg').textContent = orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00';
-  document.getElementById('sales-pending-count').textContent = salesPending;
+  const salesAvgEl = document.getElementById('sales-avg'); if(salesAvgEl) salesAvgEl.textContent = orders.length ? 'S/ '+(salesTotal/orders.length).toFixed(2) : 'S/ 0.00';
+  const pendingCountEl = document.getElementById('sales-pending-count'); if(pendingCountEl) pendingCountEl.textContent = salesPending;
   const deudaSub = document.getElementById('sales-deuda-sub'); if(deudaSub) deudaSub.textContent = 'S/ '+totalDeuda.toFixed(2)+' en deuda';
   const todayEl = document.getElementById('sales-today'); if(todayEl) todayEl.textContent = 'S/ '+todayTotal.toFixed(2);
   const topMethodEl = document.getElementById('sales-top-method'); if(topMethodEl) topMethodEl.textContent = topMethodKey ? methodNames[topMethodKey]||topMethodKey : '—';
