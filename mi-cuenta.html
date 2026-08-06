@@ -1514,6 +1514,17 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         </div>
       </div>
 
+      <!-- FONDOS -->
+      <div class="section" style="margin-bottom:20px;">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-vault" style="color:var(--green)"></i> Tus fondos</div>
+          <span style="font-size:11px;color:var(--muted);">Saldo acumulado de todo el historial</span>
+        </div>
+        <div class="section-body" style="padding:0 24px 22px;">
+          <div id="fondos-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;"></div>
+        </div>
+      </div>
+
       <!-- ESTADO DEL NEGOCIO -->
       <div class="section" style="margin-bottom:20px;background:linear-gradient(135deg,var(--rose-soft),var(--lav-light));border:none;">
         <div class="section-header" style="border-bottom:1.5px solid rgba(140,100,190,.18);">
@@ -1521,30 +1532,15 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           <span style="font-size:11px;color:var(--text2);font-weight:700;">Histórico — todo el tiempo</span>
         </div>
         <div class="section-body" style="padding:20px 24px 24px;">
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
             <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
-              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Capital (Reinversión)</div>
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Capital</div>
               <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--blue);" id="neg-capital">S/ 0</div>
             </div>
             <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
-              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Mercadería valorizada</div>
-              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--purple);" id="neg-mercaderia">S/ 0</div>
-            </div>
-            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
-              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Dinero en caja</div>
-              <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--sky);" id="neg-caja">S/ 0</div>
-            </div>
-            <div style="background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);">
-              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Ganancia acumulada</div>
+              <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Ganancia</div>
               <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="neg-ganancia-acum">S/ 0</div>
             </div>
-          </div>
-          <div style="background:var(--card);border-radius:18px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:var(--shadow-md);border:2px solid var(--rose);">
-            <div>
-              <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">Patrimonio del negocio</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Capital + Mercadería valorizada + Dinero en caja</div>
-            </div>
-            <div style="font-family:'Baloo 2',cursive;font-size:34px;font-weight:800;color:var(--rose-dark);" id="neg-patrimonio">S/ 0</div>
           </div>
         </div>
       </div>
@@ -1609,17 +1605,6 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
             <div style="background:var(--rose-soft);border-radius:14px;padding:12px 14px;text-align:center;border:2px solid var(--rose);"><div style="font-size:10px;font-weight:800;color:var(--rose-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Ganancia</div><div id="tot-ganancia" style="font-weight:800;color:var(--green);">S/ 0.00</div></div>
           </div>
 
-        </div>
-      </div>
-
-      <!-- FONDOS -->
-      <div class="section" style="margin-bottom:20px;">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-vault" style="color:var(--green)"></i> Tus fondos</div>
-          <span style="font-size:11px;color:var(--muted);">Saldo acumulado de todo el historial</span>
-        </div>
-        <div class="section-body" style="padding:0 24px 22px;">
-          <div id="fondos-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;"></div>
         </div>
       </div>
 
@@ -10807,23 +10792,14 @@ function renderFondosGrid() {
 }
 
 function renderEstadoNegocio(totales) {
-  const capital = totales.reinvertir || 0;
+  // Capital = suma de Inversión de todos los productos del Cuadro de ventas
+  const capital = finanzas.reduce((a,f)=>a+(parseFloat(f.inversion)||0),0);
 
-  let mercaderia = 0;
-  (window._allProducts || products || []).forEach(p => { (p.sizes||[]).forEach(s => { mercaderia += (s.cost||0)*(s.stock||0); }); });
-
-  const totalVentasHist = (orders||[]).filter(o=>o.status==='confirmed').reduce((a,o)=>a+(parseFloat(o.total)||0),0);
-  const totalGastosHist = (typeof gastos !== 'undefined' ? gastos : []).reduce((a,g)=>a+(g.monto||0),0);
-  const caja = totalVentasHist - totalGastosHist;
-
+  // Ganancia = suma de Ganancia de todos los productos del Cuadro de ventas
   const gananciaAcum = finanzas.reduce((a,f)=>a+finGanancia(f),0);
-  const patrimonio = capital + mercaderia + caja;
 
   document.getElementById('neg-capital').textContent = 'S/ ' + capital.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('neg-mercaderia').textContent = 'S/ ' + mercaderia.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('neg-caja').textContent = 'S/ ' + caja.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
   document.getElementById('neg-ganancia-acum').textContent = 'S/ ' + gananciaAcum.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('neg-patrimonio').textContent = 'S/ ' + patrimonio.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function renderFinanzas(opts) {
