@@ -4423,25 +4423,86 @@ body.dark-mode #main-header .header-inner { background: transparent; }
 .logo { margin: 0 auto !important; }
 .header-actions { position: absolute !important; right: 0; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
 
-/* ── LOGO — mucha más presencia, tipografía serif elegante ─────────── */
+/* ── LOGO — mucha más presencia, tipografía serif elegante, con vida ── */
 .logo-icon {
-  width: 46px !important; height: 58px !important; opacity: .9;
+  width: 46px !important; height: 58px !important; opacity: .95;
   background: transparent !important; box-shadow: none !important; border-radius: 0 !important;
+  filter: drop-shadow(0 3px 9px rgba(179,157,200,0.45));
+  animation: dzLogoFloat 4.5s ease-in-out infinite;
+  transition: filter .3s ease;
 }
-.logo-icon svg { width: 46px !important; height: 58px !important; }
+.logo-icon svg { width: 46px !important; height: 58px !important; overflow: visible; }
+.logo:hover .logo-icon { filter: drop-shadow(0 5px 14px rgba(169,128,63,0.5)); }
+
+/* Corazoncitos con latido suave y desfasado — el detalle que le da "vida" al ícono */
+.logo-heart {
+  transform-box: fill-box; transform-origin: center;
+  animation: dzHeartBeat 2.4s ease-in-out infinite;
+}
+.logo-heart-2 { animation-delay: .3s; }
+.logo-heart-3 { animation-delay: .6s; }
+@keyframes dzHeartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+@keyframes dzLogoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
 .logo-text--lulu { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-left: 10px; }
+
+/* Marca con degradado tipo "boutique" que brilla suavemente */
 .logo-brand-text--lulu {
   font-family: var(--lulu-font) !important; font-style: normal !important;
   font-size: 42px !important; font-weight: 800 !important; line-height: 1;
-  color: var(--lulu-brown) !important; letter-spacing: .01em;
+  letter-spacing: .01em;
+  color: var(--lulu-brown);
+  background: linear-gradient(100deg, var(--lulu-brown) 0%, var(--hdr-coral) 35%, var(--rose-dark) 55%, var(--lulu-brown) 80%);
+  background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: dzBrandShine 7s ease-in-out infinite;
+  transition: animation-duration .3s ease;
 }
+.logo:hover .logo-brand-text--lulu { animation-duration: 2.2s; }
+@keyframes dzBrandShine {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
 .logo-tagline--lulu {
+  display: inline-flex; align-items: center; gap: 6px;
   font-family: 'Nunito', sans-serif !important; font-style: normal;
   font-size: 12px !important; font-weight: 700 !important;
   letter-spacing: .18em !important; text-transform: uppercase;
   color: var(--hdr-mint) !important; margin-top: 2px;
 }
-body.dark-mode .logo-brand-text--lulu { color: #FFFFFF !important; }
+.logo-spark {
+  display: inline-block; font-size: 10px; line-height: 1;
+  animation: dzTwinkle 2.6s ease-in-out infinite;
+}
+.logo-spark-2 { animation-delay: 1.3s; }
+@keyframes dzTwinkle {
+  0%, 100% { opacity: .35; transform: scale(.8) rotate(0deg); }
+  50%      { opacity: 1;   transform: scale(1.2) rotate(18deg); }
+}
+
+/* Línea decorativa que crece al pasar el mouse — detalle boutique */
+.logo-underline {
+  display: block; width: 26px; height: 2px; margin: 4px auto 0;
+  background: linear-gradient(90deg, var(--rose), var(--hdr-coral), var(--rose));
+  border-radius: 2px; opacity: .65;
+  transition: width .35s ease, opacity .35s ease;
+}
+.logo:hover .logo-underline { width: 74px; opacity: 1; }
+
+body.dark-mode .logo-brand-text--lulu {
+  background: linear-gradient(100deg, #FFFFFF 0%, var(--hdr-coral-light) 40%, #FFFFFF 80%);
+  background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
 @media (max-width: 768px) {
   #main-header .header-inner { height: 82px !important; justify-content: flex-start !important; }
@@ -4452,8 +4513,16 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
   .logo-brand-text--lulu { font-size: 30px !important; }
   .logo-tagline--lulu { font-size: 10px !important; letter-spacing: .16em !important; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .logo-icon, .logo-heart, .logo-brand-text--lulu, .logo-spark { animation: none !important; }
+}
 
-/* ── NAV — fila propia debajo del header, estilo premium boutique ── */
+/* ══════════════════════════════════════════════════════════════
+   NUEVO MENÚ PRINCIPAL (nm-*) — construido desde cero, autocontenido.
+   Nota: se usa "margin" en vez de "gap" en TODOS los flex de este
+   bloque, para máxima compatibilidad con WebViews viejos (Instagram/
+   WhatsApp in-app, Safari viejo) que no soportan bien "gap" en flexbox.
+   ══════════════════════════════════════════════════════════════ */
 #mainMenu.dzn-nav--lulu {
   background: var(--lulu-paper) !important;
   border-bottom: 1px solid var(--lulu-line) !important;
@@ -4468,60 +4537,128 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
   background: linear-gradient(90deg, transparent, var(--hdr-coral-light), var(--hdr-coral), var(--hdr-coral-light), transparent);
   opacity: 0.55;
 }
-.dzn-nav--lulu .dzn-list { display: flex !important; justify-content: center; gap: 4px; }
-.dzn-link--lulu {
-  position: relative;
-  font-family: 'Nunito', sans-serif !important;
-  font-size: 13.5px !important; font-weight: 700 !important;
-  letter-spacing: .06em !important; text-transform: uppercase;
-  color: var(--lulu-brown) !important; padding: 17px 17px !important;
-  height: auto !important; background: transparent !important; border-radius: 30px !important;
-  margin: 10px 1px; transition: background .22s ease, color .22s ease, transform .22s ease;
-  text-decoration: none !important;
-}
-.dzn-link--lulu:hover, .dzn-link--lulu:focus-visible, .dzn-link--lulu:active, .dzn-link--lulu:visited {
-  text-decoration: none !important;
-}
-.dzn-link--lulu::after {
-  content: none;
-}
-.dzn-link--lulu:hover, .dzn-link--lulu:focus-visible,
-.dzn-link--lulu.active {
-  background: var(--lulu-line-soft) !important; color: var(--hdr-coral) !important;
-  transform: translateY(-1px);
-}
-.dzn-link--lulu-accent { color: var(--hdr-coral) !important; font-weight: 800 !important; }
-.dzn-link--lulu-accent::after { background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light)); }
-.dzn-nav--lulu .dzn-link--action { display: inline-flex !important; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif !important; width: auto !important; height: auto !important; }
-@media (max-width: 768px) {
-  .dzn-nav--lulu .dzn-link--action { width: 100% !important; justify-content: flex-start !important; }
-}
-.dzn-link--action i { color: var(--hdr-coral); }
-.dzn-link--action .dzn-action-badge {
-  display: none; background: var(--hdr-coral); color: #fff; font-size: 10px; font-weight: 800;
-  border-radius: 20px; padding: 1px 6px; line-height: 1.4; min-width: 16px; text-align: center;
-  align-items: center; justify-content: center;
-}
 body.dark-mode #mainMenu.dzn-nav--lulu { background: #141414 !important; border-color: rgba(201,168,118,0.18) !important; }
-body.dark-mode .dzn-link--lulu { color: #FFFFFF !important; }
-body.dark-mode .dzn-link--lulu:hover, body.dark-mode .dzn-link--lulu.active { background: rgba(201,168,118,0.1) !important; }
-body.dark-mode .dzn-link--lulu::after { background: linear-gradient(90deg, var(--hdr-coral), var(--hdr-coral-light)); }
-body.dark-mode .dzn-link--action i { color: var(--hdr-coral-light); }
+
+/* Barra contenedora: fila en escritorio, columna en el drawer mobile */
+.nm-bar {
+  display: flex; flex-direction: row; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+  width: 100%;
+  padding: 6px 10px;
+}
+
+/* Inicio / Tienda — mismo diseño de pastilla con borde que las categorías */
+.nm-link {
+  display: inline-flex; align-items: center;
+  background: var(--lulu-cream, #fff);
+  border: 1.4px solid var(--lulu-line, rgba(45,37,69,0.14));
+  border-radius: 999px;
+  padding: 6px 11px;
+  margin: 3px 5px 3px 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12.5px; font-weight: 700;
+  letter-spacing: .02em; text-transform: lowercase;
+  color: var(--lulu-brown, #2D2545);
+  text-decoration: none; white-space: nowrap;
+  transition: all .2s ease;
+}
+.nm-link:hover, .nm-link:focus-visible {
+  border-color: var(--hdr-coral); color: var(--hdr-coral);
+  background: var(--lulu-line-soft, rgba(45,37,69,0.06));
+  text-decoration: none;
+}
+.nm-link--active {
+  border-color: var(--hdr-coral); color: var(--hdr-coral) !important;
+  background: var(--lulu-line-soft, rgba(45,37,69,0.06)); font-weight: 800;
+}
+body.dark-mode .nm-link { background: #1c1c1c; border-color: #3A3A3A; color: #F5F5F5; }
+body.dark-mode .nm-link:hover, body.dark-mode .nm-link--active {
+  border-color: var(--hdr-coral-light); color: var(--hdr-coral-light); background: #242424;
+}
+
+/* Categorías — chips redondeados con ícono + contador */
+.nm-pills { display: flex; flex-wrap: wrap; align-items: center; margin: 3px 6px; }
+.nm-pill {
+  display: inline-flex; align-items: center;
+  background: var(--lulu-cream, #fff);
+  border: 1.4px solid var(--lulu-line, rgba(45,37,69,0.14));
+  border-radius: 999px;
+  padding: 6px 11px;
+  margin: 3px 5px 3px 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--lulu-brown, #2D2545);
+  text-decoration: none; white-space: nowrap;
+  transition: all .2s ease;
+}
+.nm-pill:hover, .nm-pill:focus-visible, .nm-pill.active {
+  border-color: var(--hdr-coral); color: var(--hdr-coral);
+  background: var(--lulu-line-soft, rgba(45,37,69,0.06));
+  text-decoration: none;
+}
+.nm-pill-icon { font-size: 14.5px; line-height: 1; margin-right: 5px; }
+.nm-pill-name { margin-right: 5px; }
+.nm-pill-count {
+  background: rgba(0,0,0,0.07); color: inherit;
+  font-size: 11px; font-weight: 800; line-height: 1.4;
+  padding: 1px 6px; border-radius: 999px; min-width: 16px; text-align: center;
+}
+body.dark-mode .nm-pill { background: #1c1c1c; border-color: #3A3A3A; color: #F5F5F5; }
+body.dark-mode .nm-pill:hover, body.dark-mode .nm-pill.active {
+  border-color: var(--hdr-coral-light); color: var(--hdr-coral-light); background: #242424;
+}
+body.dark-mode .nm-pill-count { background: rgba(255,255,255,0.14); }
+
+/* Acciones — Modo Oscuro / Lista de Deseos / Favoritos — mismo diseño de pastilla con borde */
+.nm-actions { display: flex; flex-wrap: wrap; align-items: center; margin: 3px 2px; }
+.nm-action {
+  display: inline-flex; align-items: center;
+  border: 1.4px solid var(--lulu-line, rgba(45,37,69,0.14));
+  background: var(--lulu-cream, #fff); cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12.5px; font-weight: 700;
+  letter-spacing: .02em; text-transform: lowercase;
+  color: var(--lulu-brown, #2D2545);
+  padding: 6px 11px;
+  margin: 3px 5px 3px 0;
+  border-radius: 999px;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.nm-action:hover, .nm-action:focus-visible {
+  border-color: var(--hdr-coral); color: var(--hdr-coral);
+  background: var(--lulu-line-soft, rgba(45,37,69,0.06));
+}
+.nm-action i { color: var(--hdr-coral); font-size: 14.5px; margin-right: 5px; }
+body.dark-mode .nm-action { background: #1c1c1c; border-color: #3A3A3A; color: #F5F5F5; }
+body.dark-mode .nm-action:hover { border-color: var(--hdr-coral-light); color: var(--hdr-coral-light); background: #242424; }
+body.dark-mode .nm-action i { color: var(--hdr-coral-light); }
+.nm-badge {
+  display: none; background: var(--hdr-coral); color: #fff; font-size: 11.5px; font-weight: 800;
+  border-radius: 20px; padding: 1px 6px; line-height: 1.4; min-width: 16px; text-align: center;
+  align-items: center; justify-content: center; margin-left: 6px;
+}
 
 @media (max-width: 1080px) {
-  .dzn-link--lulu { padding: 14px 12px !important; font-size: 12.5px !important; }
+  .nm-link, .nm-action { padding: 9px 10px; font-size: 13px; }
 }
+
 @media (max-width: 768px) {
   #mainMenu.dzn-nav--lulu { border-bottom: none !important; }
   #mainMenu.dzn-nav--lulu::after { display: none; }
-  .dzn-link--lulu {
-    width: 100%; justify-content: flex-start !important; border-radius: 0 !important; margin: 0;
-    padding: 15px 14px !important; text-transform: none; letter-spacing: .02em !important;
-    border-bottom: 1px solid var(--lulu-line-soft) !important;
+
+  /* En el drawer todo se apila en columna, pero manteniendo la pastilla con borde */
+  .nm-bar { flex-direction: column; align-items: stretch; padding: 4px 0; }
+  .nm-link, .nm-action {
+    width: calc(100% - 32px);
+    margin: 4px 16px;
+    justify-content: flex-start;
+    padding: 12px 16px;
   }
-  .dzn-link--lulu::after { display: none; }
-  .dzn-link--lulu:hover, .dzn-link--lulu.active { background: var(--lulu-cream) !important; transform: none; }
+  .nm-pills { width: 100%; margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--lulu-line-soft, rgba(45,37,69,0.08)); }
+  .nm-actions { width: 100%; flex-direction: column; align-items: stretch; margin: 0; }
 }
+
 
 /* ── ACCIONES: Buscador + Iniciar Sesión + Bolsa de Compras (estilo etiqueta + ícono, unificado) ── */
 .hdr-icon-btn, .hdr-search-btn, .hdr-favs-btn {
@@ -4556,7 +4693,7 @@ body.dark-mode .dzn-link--action i { color: var(--hdr-coral-light); }
   color: var(--lulu-brown) !important; white-space: nowrap;
 }
 .login-btn--lulu.is-logged-in .login-icon, .login-btn--lulu.is-logged-in .login-btn-text--lulu {
-  color: var(--mint, #6fae8e) !important;
+  color: #3f7d61 !important;
 }
 
 .hdr-cart-btn--lulu {
@@ -4742,7 +4879,7 @@ body.dark-mode .dzn-subnav-link { color: var(--lulu-cream) !important; }
 }
 
 .prem-search-wrap {
-  max-width: 780px;
+  max-width: 1100px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -7342,14 +7479,19 @@ body.dark-mode .anl-name { color: #F5F5F5; }
           <polygon class="st-rosa-frontal" points="95,125 290,135 285,475 45,445" />
           <circle cx="135" cy="125" r="5" fill="var(--rose)" />
           <circle cx="225" cy="129" r="5" fill="var(--rose)" />
-          <g transform="translate(125, 275) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
-          <g transform="translate(210, 280) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
-          <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(125, 275) scale(0.9)"><path class="st-corazon-fondo logo-heart logo-heart-1" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(210, 280) scale(0.9)"><path class="st-corazon-fondo logo-heart logo-heart-2" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
+          <g transform="translate(168, 355) scale(0.9)"><path class="st-corazon-fondo logo-heart logo-heart-3" d="M12, -30 C-3,-30 -15,-13 -15,7 C-15,32 12,55 12,55 C12,55 39,32 39,7 C39,-13 27,-30 12,-30 Z" /></g>
         </svg>
       </div>
       <div class="logo-text logo-text--lulu">
         <span class="logo-brand-text logo-brand-text--lulu" itemprop="name">D'Zoe Perú</span>
-        <span class="logo-tagline logo-tagline--lulu">· Ropa Infantil Premium ·</span>
+        <span class="logo-tagline logo-tagline--lulu">
+          <span class="logo-spark logo-spark-1" aria-hidden="true">✨</span>
+          Ropa Infantil Premium
+          <span class="logo-spark logo-spark-2" aria-hidden="true">✨</span>
+        </span>
+        <span class="logo-underline" aria-hidden="true"></span>
       </div>
     </a>
 
@@ -7422,66 +7564,78 @@ body.dark-mode .anl-name { color: #F5F5F5; }
              oninput="document.getElementById('searchInput').value=this.value;searchProducts();">
     </div>
 
-    <div class="dzn-list">
+    <div class="nm-bar">
 
-      <!-- === MENÚ PRINCIPAL — ESTILO LULUKI (texto plano, sin desplegables) === -->
-      <a href="index.html" class="dzn-link dzn-link--lulu active" itemprop="url"
+      <!-- === Inicio / Tienda === -->
+      <a href="index.html" class="nm-link nm-link--active" itemprop="url"
          onclick="closeMobileMenu();window.scrollTo({top:0,behavior:'smooth'});return false;">
         <span itemprop="name">Inicio</span>
       </a>
 
-      <a href="#productos" class="dzn-link dzn-link--lulu" itemprop="url"
+      <a href="#productos" class="nm-link" itemprop="url"
          onclick="closeMobileMenu();document.getElementById('productos')?.scrollIntoView({behavior:'smooth'});return false;">
         <span itemprop="name">Tienda</span>
       </a>
 
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('bebito');closeMobileMenu();return false;">
-        <span itemprop="name">Bebito</span>
-      </a>
+      <!-- === Categorías (chips con contador) === -->
+      <div class="nm-pills">
+        <a href="#" class="nm-pill" itemprop="url"
+           onclick="goGenderAll('bebito');closeMobileMenu();return false;">
+          <span class="nm-pill-icon" aria-hidden="true">🍼</span>
+          <span itemprop="name" class="nm-pill-name">Bebito</span>
+          <span class="nm-pill-count" id="menuCountBebito">0</span>
+        </a>
 
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('bebita');closeMobileMenu();return false;">
-        <span itemprop="name">Bebita</span>
-      </a>
+        <a href="#" class="nm-pill" itemprop="url"
+           onclick="goGenderAll('bebita');closeMobileMenu();return false;">
+          <span class="nm-pill-icon" aria-hidden="true">👶</span>
+          <span itemprop="name" class="nm-pill-name">Bebita</span>
+          <span class="nm-pill-count" id="menuCountBebita">0</span>
+        </a>
 
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('niña');closeMobileMenu();return false;">
-        <span itemprop="name">Niña</span>
-      </a>
+        <a href="#" class="nm-pill" itemprop="url"
+           onclick="goGenderAll('niña');closeMobileMenu();return false;">
+          <span class="nm-pill-icon" aria-hidden="true">👧</span>
+          <span itemprop="name" class="nm-pill-name">Niña</span>
+          <span class="nm-pill-count" id="menuCountNina">0</span>
+        </a>
 
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('niño');closeMobileMenu();return false;">
-        <span itemprop="name">Niño</span>
-      </a>
+        <a href="#" class="nm-pill" itemprop="url"
+           onclick="goGenderAll('niño');closeMobileMenu();return false;">
+          <span class="nm-pill-icon" aria-hidden="true">👦</span>
+          <span itemprop="name" class="nm-pill-name">Niño</span>
+          <span class="nm-pill-count" id="menuCountNino">0</span>
+        </a>
 
-      <a href="#" class="dzn-link dzn-link--lulu" itemprop="url"
-         onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
-        <span itemprop="name">Accesorios</span>
-      </a>
+        <a href="#" class="nm-pill" itemprop="url"
+           onclick="goGenderAll('accesorio');closeMobileMenu();return false;">
+          <span class="nm-pill-icon" aria-hidden="true">🎀</span>
+          <span itemprop="name" class="nm-pill-name">Accesorios</span>
+          <span class="nm-pill-count" id="menuCountAccesorios">0</span>
+        </a>
+      </div>
 
-      <!-- Modo oscuro -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action dark-mode-btn" id="darkModeBtn"
-              aria-label="Activar modo oscuro" title="Modo oscuro">
-        <i class="fas fa-moon" aria-hidden="true"></i>
-        <span>Modo Oscuro</span>
-      </button>
+      <!-- === Acciones === -->
+      <div class="nm-actions">
+        <button class="nm-action" id="darkModeBtn" aria-label="Activar modo oscuro" title="Modo oscuro">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+          <span>Modo Oscuro</span>
+        </button>
 
-      <!-- Lista de Deseos Baby Shower -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action hdr-wish-btn" id="hdrWishBtn"
-              aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
-        <i class="fas fa-gift" aria-hidden="true"></i>
-        <span>Lista de Deseos</span>
-        <span class="dzn-action-badge" id="hdrWishBadge" aria-live="polite">0</span>
-      </button>
+        <button class="nm-action" id="hdrWishBtn"
+                aria-label="Ver mi lista de deseos Baby Shower" title="Lista de Deseos" onclick="openWishlist()">
+          <i class="fas fa-gift" aria-hidden="true"></i>
+          <span>Lista de Deseos</span>
+          <span class="nm-badge" id="hdrWishBadge" aria-live="polite">0</span>
+        </button>
 
-      <!-- Favoritos próximos ingresos -->
-      <button class="dzn-link dzn-link--lulu dzn-link--action" id="hdrFavsBtn"
-              aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
-        <i class="fas fa-star" aria-hidden="true"></i>
-        <span>Favoritos</span>
-        <span class="dzn-action-badge" id="hdrFavsBadge" aria-live="polite">0</span>
-      </button>
+        <button class="nm-action" id="hdrFavsBtn"
+                aria-label="Ver mis favoritos de próximos ingresos" title="Favoritos">
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <span>Favoritos</span>
+          <span class="nm-badge" id="hdrFavsBadge" aria-live="polite">0</span>
+        </button>
+      </div>
 
     </div>
 
@@ -8011,6 +8165,7 @@ function toggleVoiceSearch() {
 }
 
 function premCatSelectChange() {
+  similarModeActive = false;
   const cat = document.getElementById('premCatSelect')?.value || '';
   if (typeof filterByCategory === 'function') {
     filterByCategory(cat || 'all', true); // true = combinar con Tipo/Edad activos, no reemplazarlos
@@ -8026,7 +8181,26 @@ const TIPO_CATEGORY_MAP = {
   'nino':   ['Niño'],
   'nina':   ['Niña'],
   'accesorios': ['Accesorios'],
+  'packs': ['Packs'],
 };
+
+// Cuenta cuántos productos hay por cada categoría de género/tipo y actualiza
+// los contadores (chips) del menú principal (Bebito/Bebita/Niña/Niño/Accesorios).
+function updateMenuCategoryCounts() {
+  try {
+    const list = (typeof products !== 'undefined' ? products : []) || [];
+    const idByKey = {
+      bebito: 'menuCountBebito', bebita: 'menuCountBebita',
+      nino: 'menuCountNino', nina: 'menuCountNina', accesorios: 'menuCountAccesorios'
+    };
+    Object.keys(idByKey).forEach(key => {
+      const targetCats = TIPO_CATEGORY_MAP[key] || [];
+      const count = list.filter(p => productMatchesGenderCats(p.categories, targetCats)).length;
+      const el = document.getElementById(idByKey[key]);
+      if (el) el.textContent = count;
+    });
+  } catch (e) { /* si algo falla, los contadores simplemente quedan en 0 */ }
+}
 
 // Bloquea (deshabilita) los selects de Edad y Categoría cuando Tipo = Accesorios,
 // ya que los accesorios no se filtran por edad ni por categoría de prenda.
@@ -8053,6 +8227,7 @@ function updateFilterLockState() {
 }
 
 function premTipoSelectChange() {
+  similarModeActive = false;
   const val = document.getElementById('premTipoSelect')?.value || '';
   currentGenderCats = TIPO_CATEGORY_MAP[val] || null;
   currentPage = 1;
@@ -8087,7 +8262,7 @@ function syncTipoSelectUI(cats) {
 // y por lo tanto no deben duplicarse en el select de Categorías.
 // La comparación es tolerante a singular/plural y tildes/mayúsculas (ver catNamesMatch),
 // así sigue funcionando aunque en Supabase estén guardadas como "Niños"/"Niñas", etc.
-const CATEGORIAS_EXCLUIDAS_DE_CATSELECT = ['Bebita', 'Bebito', 'Niño', 'Niña', 'Accesorios'];
+const CATEGORIAS_EXCLUIDAS_DE_CATSELECT = ['Bebita', 'Bebito', 'Niño', 'Niña', 'Accesorios', 'Packs'];
 function isExcludedFromCatSelect(catName) {
   return CATEGORIAS_EXCLUIDAS_DE_CATSELECT.some(excl => catNamesMatch(catName, excl));
 }
@@ -8117,6 +8292,7 @@ function populateCategorySelects() {
 }
 
 function quickChipSearch(el, term) {
+  similarModeActive = false;
   document.querySelectorAll('.prem-chip').forEach(c => c.classList.remove('chip-active'));
   el.classList.add('chip-active');
   document.getElementById('searchInput').value = term;
@@ -8134,6 +8310,7 @@ function toggleAdvancedFilters() {
 }
 
 function applyAdvancedFilter() {
+  similarModeActive = false;
   const edad  = document.getElementById('afpEdad')?.value  || '';
 
   currentAgeGroup = null;
@@ -8221,6 +8398,7 @@ function populatePriceSelect() {
 }
 
 function applyPriceFilter() {
+  similarModeActive = false;
   const val = document.getElementById('afpPrecio')?.value || '';
   currentPriceFilter = val ? Number(val) : null;
   currentPage = 1;
@@ -8339,6 +8517,7 @@ document.addEventListener('click', function(e) {
             <option value="nino">👦 Niño</option>
             <option value="nina">👧 Niña</option>
             <option value="accesorios">🎀 Accesorios</option>
+            <option value="packs">📦 Packs</option>
           </select>
         </div>
 
@@ -8414,6 +8593,7 @@ document.addEventListener('click', function(e) {
           <option value="nino">👦 Niño</option>
           <option value="nina">👧 Niña</option>
           <option value="accesorios">🎀 Accesorios</option>
+          <option value="packs">📦 Packs</option>
         </select>
         <select id="afpEdadMobile" onchange="document.getElementById('afpEdad').value=this.value;applyAdvancedFilter();" aria-label="Filtrar por edad">
           <option value="">🍼 Edades</option>
@@ -9010,6 +9190,7 @@ let currentUser = null; // usuario logueado (Supabase Auth) — null si es visit
 let currentAccessToken = null; // token de sesión, cacheado para peticiones keepalive (sobreviven a un F5)
 let currentFilter = 'all';
 let currentSearch = '';
+let similarModeActive = false; // true cuando el usuario pulsó "Mostrar productos similares" tras un 0-resultados
 let currentAgeFilter = null;
 let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
@@ -9336,6 +9517,7 @@ async function loadAllData() {
   renderAgeChips();
   renderCategoriesFromData();
   populateCategorySelects();
+  updateMenuCategoryCounts();  // contadores reales (Bebito/Bebita/Niña/Niño/Accesorios) en el menú
   renderProducts();   // ahora los listones ya están en caché
   renderCart();
   updateUI();
@@ -10864,6 +11046,7 @@ function clearAgeFilter() {
 // resincroniza los <select> visibles, para que nunca queden "desfasados"
 // mostrando una edad/tipo que ya no está realmente aplicada.
 function resetAllFilters() {
+  similarModeActive = false;
   currentFilter = 'all';
   currentSearch = '';
   currentAgeFilter = null;
@@ -10939,6 +11122,7 @@ const GENDER_CATEGORY_MAP = {
 };
 
 function goAgeGender(genderWord, edad) {
+  similarModeActive = false;
   currentAgeGroup = null;
   currentAgeFilter = edad;
   currentAgeFilterSet = (typeof EDAD_EXPANSION_MAP !== 'undefined' && EDAD_EXPANSION_MAP[edad]) || [edad];
@@ -10960,6 +11144,7 @@ function goAgeGender(genderWord, edad) {
 }
 
 function goGenderAll(genderWord) {
+  similarModeActive = false;
   currentAgeFilter = null;
   currentAgeFilterSet = null;
   currentAgeGroup = null;
@@ -11022,6 +11207,68 @@ const SEARCH_SYNONYMS = {
   'salir':'casual','pasear':'casual',
   'bautismo':'bautizo',
 };
+
+// ═══════════════════════════════════════════════════════
+//  DICCIONARIOS DE INTENCIÓN ESTRUCTURADA
+//  Además de "terms" (bolsa de palabras), extraemos ejes con significado
+//  propio — color / material / ocasión / estilo — para poder puntuar por
+//  INTENCIÓN ("vestido elegante niña 5 años" → categoría+ocasión+género+edad
+//  coincidiendo a la vez) en vez de solo por coincidencia de texto suelto.
+// ═══════════════════════════════════════════════════════
+const COLOR_WORDS = {
+  'rosado':'rosa','rosada':'rosa','fucsia':'rosa','rosa':'rosa','rosita':'rosa','rosaditos':'rosa',
+  'celeste':'azul','marino':'azul','azul':'azul','turquesa':'azul','azulito':'azul',
+  'lila':'lila','morado':'lila','morada':'lila','violeta':'lila','purpura':'lila','púrpura':'lila',
+  'beige':'beige','crema':'beige','marfil':'beige','hueso':'beige',
+  'blanco':'blanco','blanca':'blanco','negro':'negro','negra':'negro',
+  'rojo':'rojo','roja':'rojo','amarillo':'amarillo','amarilla':'amarillo',
+  'verde':'verde','gris':'gris','dorado':'dorado','dorada':'dorado',
+  'plateado':'plateado','plateada':'plateado','naranja':'naranja',
+  'coral':'coral','vino':'vino','mostaza':'mostaza','durazno':'durazno',
+};
+const MATERIAL_WORDS = {
+  'algodon':'algodón','algodón':'algodón','bambu':'bambú','bambú':'bambú',
+  'lana':'lana','polar':'polar','fleece':'polar','seda':'seda','lino':'lino',
+  'jean':'jean','jeans':'jean','denim':'jean','tul':'tul','encaje':'encaje',
+  'franela':'franela','pana':'pana','terciopelo':'terciopelo','tela':null,
+};
+const OCCASION_WORDS = {
+  'bautizo':'bautizo','bautismo':'bautizo',
+  'cumpleanos':'fiesta','cumpleaños':'fiesta','fiesta':'fiesta','fiestas':'fiesta',
+  'casual':'casual','diario':'casual',
+  'deportivo':'deportivo','deportiva':'deportivo','sport':'deportivo',
+  'escolar':'escolar','colegio':'escolar','escuela':'escolar',
+  'shower':'baby shower','matrimonio':'matrimonio','boda':'matrimonio',
+  'graduacion':'graduación','graduación':'graduación',
+  'playa':'playa','verano':'playa','navidad':'navidad','ano nuevo':'navidad',
+};
+const STYLE_WORDS = {
+  'elegante':'elegante','elegantes':'elegante','fino':'elegante','fina':'elegante',
+  'formal':'elegante','sofisticado':'elegante','sofisticada':'elegante',
+  'clasico':'clásico','clásico':'clásico','moderno':'moderno','moderna':'moderno',
+};
+// Ocasiones que naturalmente implican estilo elegante (para bonus cruzado)
+const OCCASIONS_THAT_IMPLY_ELEGANT = new Set(['fiesta', 'bautizo', 'matrimonio', 'graduación']);
+
+// Busca la PRIMERA palabra (o bigrama) de un diccionario presente en el texto normalizado.
+// Devuelve el valor canónico (ej. "rosado" → "rosa") o null si no encontró nada.
+function detectFromDict(normalizedQ, dict) {
+  // Bigramas primero (ej. "baby shower") para no perderlos por tokenización simple
+  for (const key of Object.keys(dict)) {
+    if (key.includes(' ') && normalizedQ.includes(normTxt(key))) {
+      const v = dict[key];
+      if (v) return v;
+    }
+  }
+  const words = normalizedQ.split(/[^a-z0-9ñ]+/i).filter(Boolean);
+  for (const w of words) {
+    if (Object.prototype.hasOwnProperty.call(dict, w)) {
+      const v = dict[w];
+      if (v) return v;
+    }
+  }
+  return null;
+}
 
 // Palabras vacías (stopwords): no aportan intención de producto y se descartan
 // de los términos de búsqueda para que frases completas como "quiero algo
@@ -11159,10 +11406,26 @@ function parseSmartQuery(raw) {
   q = wordsToDigitsForAge(q);
   const result = {
     ageSizes: null,   // array de tallas si detectó edad
+    ageYears: null,   // edad en años detectada (número), si aplica — para mostrar "de X años" en sugerencias
     terms: [],        // palabras clave normalizadas
     original: q,
     gender: null,     // 'nino' | 'nina' | 'bebito' | 'bebita' | null
+    color: null,      // color canónico detectado, o null
+    material: null,   // material canónico detectado, o null
+    occasion: null,   // ocasión canónica detectada, o null
+    style: null,      // estilo canónico detectado, o null
   };
+
+  // Detección estructurada de color / material / ocasión / estilo — se hace
+  // sobre la query completa (no tokens) para no perder bigramas como "baby shower".
+  result.color = detectFromDict(q, COLOR_WORDS);
+  result.material = detectFromDict(q, MATERIAL_WORDS);
+  result.occasion = detectFromDict(q, OCCASION_WORDS);
+  result.style = detectFromDict(q, STYLE_WORDS);
+  // Una ocasión formal implica estilo elegante aunque el usuario no lo diga explícitamente
+  if (!result.style && result.occasion && OCCASIONS_THAT_IMPLY_ELEGANT.has(result.occasion)) {
+    result.style = 'elegante';
+  }
 
   // 0. Detectar género ANTES de tokenizar para excluirlo de los términos
   // Palabras que implican bebito (bebé varón) — se evalúan ANTES que niño/niña
@@ -11294,6 +11557,7 @@ function parseSmartQuery(raw) {
       const age = parseInt(singleAge[1]);
       if (EDAD_EXACT_SEARCH[age]) {
         result.ageSizes = EDAD_EXACT_SEARCH[age];
+        result.ageYears = age;
         ageMatched = true;
       }
     }
@@ -11397,18 +11661,23 @@ function fuzzyIncludes(text, term) {
   return words.some(w => Math.abs(w.length - term.length) <= maxDist && levenshtein(w, term) <= maxDist);
 }
 
-// Calcula score de relevancia de un producto dado la query parseada
-function scoreProduct(product, parsed) {
+// Calcula score de relevancia de un producto dado la query parseada.
+// opts.soft = true → en vez de solo SUMAR bonos, también RESTA penalizaciones
+// cuando algo no coincide (género/edad/stock). Se usa para el modo "productos
+// similares" del 0-resultados, donde no queremos excluir duro sino ordenar por
+// cercanía. En el flujo normal (filterProducts) los mismatches duros de género/
+// edad ya se EXCLUYEN aparte, así que las penalizaciones ahí no hacen nada.
+function scoreProduct(product, parsed, opts) {
+  opts = opts || {};
   let score = 0;
   const name = normTxt(product.name);
   const desc = normTxt(product.description);
   const cats = (product.categories || []).map(c => normTxt(c));
   const sizesArr = (product.sizes || []).map(s => normTxt(s.size));
+  const allText = [name, desc, ...cats].join(' ');
+  let intentHits = 0; // cuántos ejes de intención coincidieron a la vez (para el bonus combinado)
 
-  // A. Si hay filtro de edad: el producto DEBE tener esa talla (filtro duro)
-  // (se aplica fuera del score, en filterProducts)
-
-  // B. Términos de búsqueda
+  // A. Términos de búsqueda (nombre / categoría / descripción / talla + fuzzy)
   for (const term of parsed.terms) {
     const t = normTxt(term);
     let hit = false;
@@ -11419,7 +11688,7 @@ function scoreProduct(product, parsed) {
     else if (name.includes(t)) { score += 40; hit = true; }
 
     // Categorías
-    if (cats.some(c => c === t)) { score += 50; hit = true; }
+    if (cats.some(c => c === t)) { score += 60; hit = true; }
     else if (cats.some(c => c.includes(t))) { score += 30; hit = true; }
 
     // Descripción
@@ -11430,38 +11699,152 @@ function scoreProduct(product, parsed) {
 
     // Fuzzy fallback: tolera errores de tipeo si no hubo match exacto/parcial
     if (!hit) {
-      if (fuzzyIncludes(name, t)) score += 25;
-      if (fuzzyIncludes(desc, t)) score += 6;
-      if (cats.some(c => fuzzyIncludes(c, t))) score += 20;
+      if (fuzzyIncludes(name, t)) { score += 25; hit = true; }
+      if (fuzzyIncludes(desc, t)) { score += 6; hit = true; }
+      if (cats.some(c => fuzzyIncludes(c, t))) { score += 20; hit = true; }
     }
+    if (hit) intentHits++;
   }
 
-  // C. Bonus si tiene stock
-  const totalStock = (product.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0);
-  if (totalStock > 0) score += 5;
+  // B. Color / material / ocasión / estilo — ejes de INTENCIÓN detectados en la frase
+  if (parsed.color) {
+    const hasColor = new RegExp('\\b' + normTxt(parsed.color) + '\\b').test(allText);
+    if (hasColor) { score += 30; intentHits++; }
+  }
+  if (parsed.material) {
+    const hasMaterial = allText.includes(normTxt(parsed.material));
+    if (hasMaterial) { score += 20; intentHits++; }
+  }
+  if (parsed.occasion) {
+    const hasOccasion = allText.includes(normTxt(parsed.occasion)) ||
+      (OCCASIONS_THAT_IMPLY_ELEGANT.has(parsed.occasion) && allText.includes('elegante'));
+    if (hasOccasion) { score += 20; intentHits++; }
+  }
+  if (parsed.style) {
+    const hasStyle = allText.includes(normTxt(parsed.style));
+    if (hasStyle) { score += 20; intentHits++; }
+  }
+
+  // C. Edad / talla solicitada — si el producto tiene esa talla, y AÚN MÁS si
+  //    esa talla puntual tiene stock (esto es lo que de verdad se puede vender ya)
+  if (parsed.ageSizes && parsed.ageSizes.length) {
+    const matchSize = (product.sizes || []).find(s => parsed.ageSizes.includes(s.size));
+    if (matchSize) {
+      score += 40; intentHits++;
+      if ((matchSize.stock || 0) > 0) score += 35;
+    } else if (opts.soft) {
+      score -= 40; // edad incompatible (solo penaliza en modo suave; en modo duro ya se excluye aparte)
+    }
+  }
 
   // D. Bonus si el género del producto coincide con el género de la query
   //    (misma lógica tolerante a plural/categoría que el filtro duro de arriba,
   //    para que el orden de resultados sea consistente con la inclusión/exclusión)
+  const GENDER_TARGET_CAT = { nino: 'Niño', nina: 'Niña', bebito: 'Bebito', bebita: 'Bebita' };
+  const GENDER_KEYWORDS = {
+    nino:   ['nino', 'ninos', 'varon', 'varones', 'boy', 'boys', 'chico', 'chicos'],
+    nina:   ['nina', 'ninas', 'girl', 'girls', 'chica', 'chicas', 'nena', 'nenas'],
+    bebito: ['bebito', 'bebitos'],
+    bebita: ['bebita', 'bebitas'],
+  };
   if (parsed.gender) {
-    const GENDER_TARGET_CAT = { nino: 'Niño', nina: 'Niña', bebito: 'Bebito', bebita: 'Bebita' };
-    const GENDER_KEYWORDS = {
-      nino:   ['nino', 'ninos', 'varon', 'varones', 'boy', 'boys', 'chico', 'chicos'],
-      nina:   ['nina', 'ninas', 'girl', 'girls', 'chica', 'chicas', 'nena', 'nenas'],
-      bebito: ['bebito', 'bebitos'],
-      bebita: ['bebita', 'bebitas'],
-    };
     const targetCat = GENDER_TARGET_CAT[parsed.gender];
     const hasTargetCat = (product.categories||[]).some(c => typeof catNamesMatch === 'function' && catNamesMatch(c, targetCat));
-    const allText = [normTxt(product.name), normTxt(product.description||''), ...(product.categories||[]).map(c=>normTxt(c))].join(' ');
     const gKws = GENDER_KEYWORDS[parsed.gender] || [];
-    if (hasTargetCat || gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText))) score += 20;
+    const matchesGender = hasTargetCat || gKws.some(kw => new RegExp('\\b'+kw+'\\b').test(allText));
+    if (matchesGender) { score += 40; intentHits++; }
+    else if (opts.soft) score -= 50; // género incompatible (solo en modo suave)
   }
+
+  // E. Stock: influye mucho más que antes — un producto sin stock casi no
+  //    debería ganarle a uno equivalente que sí se puede comprar hoy.
+  const totalStock = (product.sizes||[]).reduce((s,sz)=>s+(sz.stock||0),0);
+  if (totalStock > 0) score += 10;
+  else if (opts.soft) score -= 25; // producto agotado (solo penaliza en modo suave/sugerencias)
+
+  // F. Bonus de INTENCIÓN COMBINADA: cuando 3 o más ejes distintos coinciden
+  //    a la vez (ej. categoría + ocasión + género + edad), el producto es
+  //    prácticamente el "ideal" para la búsqueda — se premia fuerte para que
+  //    suba por encima de coincidencias parciales o sueltas.
+  if (intentHits >= 3) score += 50;
 
   return score;
 }
 
+// ═══════════════════════════════════════════════════════
+//  SUGERENCIAS PARA "0 RESULTADOS"
+//  Cuando una búsqueda no trae nada, en vez de mostrar solo un mensaje,
+//  buscamos en modo SUAVE (sin excluir duro por género/edad/stock, solo
+//  penalizando) para encontrar lo más cercano posible y así poder ofrecer:
+//   1) categorías reales donde SÍ hay productos parecidos
+//   2) frases de búsqueda alternativas construidas con lo que el usuario
+//      ya escribió (género/ocasión/edad detectados) + esas categorías
+//   3) un botón para ver esos productos parecidos directamente
+// ═══════════════════════════════════════════════════════
+function buildSearchSuggestions(parsed) {
+  const baseProducts = currentFilter === 'all'
+    ? products
+    : products.filter(p => p.categories && p.categories.some(c => c.toLowerCase() === currentFilter.toLowerCase()));
+
+  const scored = baseProducts
+    .map(p => ({ p, score: scoreProduct(p, parsed, { soft: true }) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  const top = scored.slice(0, 24).map(x => x.p);
+
+  // Categorías reales (con su forma original, no normalizada) presentes entre los similares
+  const catCounts = {};
+  top.forEach(p => (p.categories || []).forEach(c => {
+    catCounts[c] = (catCounts[c] || 0) + 1;
+  }));
+  const suggestedCats = Object.keys(catCounts)
+    .sort((a, b) => catCounts[b] - catCounts[a])
+    .slice(0, 4);
+
+  // Frases de búsqueda alternativas, combinando lo que ya se detectó en la query
+  const GENDER_LABEL = { nino: 'niño', nina: 'niña', bebito: 'bebito', bebita: 'bebita' };
+  const genderWord = GENDER_LABEL[parsed.gender] || '';
+  const baseTerm = parsed.terms[0] || (suggestedCats[0] || '').toLowerCase();
+  const ageWord = parsed.ageYears != null ? `${parsed.ageYears} años` : '';
+
+  const phrases = [];
+  const addPhrase = (p) => { const clean = p.replace(/\s+/g, ' ').trim(); if (clean && !phrases.includes(clean)) phrases.push(clean); };
+
+  if (baseTerm && genderWord) addPhrase(`${baseTerm} ${genderWord}`);
+  if (baseTerm) addPhrase(`${baseTerm} elegante`);
+  if (genderWord) addPhrase(`ropa ${genderWord === 'niño' || genderWord === 'niña' ? genderWord : 'bebé'}`);
+  if (baseTerm && ageWord) addPhrase(`${baseTerm} ${ageWord}`);
+  suggestedCats.slice(0, 2).forEach(c => addPhrase(c.toLowerCase()));
+
+  return { top, suggestedCats, phrases: phrases.slice(0, 4) };
+}
+
+// Aplica una sugerencia de búsqueda (clic en categoría o frase sugerida)
+function applySuggestedSearch(text) {
+  similarModeActive = false;
+  const input = document.getElementById('searchInput');
+  if (input) input.value = text;
+  currentSearch = (text || '').toLowerCase().trim();
+  currentPage = 1;
+  const clearBtn = document.getElementById('premClearBtn');
+  if (clearBtn) clearBtn.classList.toggle('visible', !!currentSearch);
+  renderProducts();
+  if (typeof renderBreadcrumb === 'function') renderBreadcrumb();
+  if (typeof renderUpcomingSection === 'function') renderUpcomingSection();
+  document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Botón "Mostrar productos similares": activa el modo suave y re-renderiza
+function showSimilarProducts() {
+  similarModeActive = true;
+  currentPage = 1;
+  renderProducts();
+  document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function searchProducts() {
+  similarModeActive = false;
   currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
   // El filtro de Tipo (Bebita/Bebito/Niño/Niña/Accesorios) ya NO se borra al escribir:
   // ahora texto libre + Tipo se combinan (ej: "vestido" + Niña) para un buscador más inteligente.
@@ -11609,6 +11992,14 @@ function filterProducts(skipPriceFilter) {
   //    sobre el resultado ya filtrado por género/edad/categoría/búsqueda ──
   if (!skipPriceFilter && currentPriceFilter) {
     filtered = filtered.filter(p => getProductMinPrice(p) === currentPriceFilter);
+  }
+
+  // ── Modo "productos similares" ── si el filtrado estricto no dio nada y el
+  // usuario pulsó "Mostrar productos similares" en la pantalla de 0-resultados,
+  // devolvemos el mejor ranking en modo suave (sin exclusiones duras) en su lugar.
+  if (!filtered.length && similarModeActive && currentSearch) {
+    const parsed = parseSmartQuery(currentSearch);
+    filtered = buildSearchSuggestions(parsed).top;
   }
 
   return filtered;
@@ -11987,14 +12378,57 @@ function renderProducts() {
   const filtered = filterProducts();
 
   if (!filtered.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);">
-      <div style="font-size:52px;margin-bottom:16px;">🔍</div>
-      <p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>
-      <button onclick="resetAllFilters()"
-        style="margin-top:16px;background:var(--rose);color:white;border:none;padding:10px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:14px;">
+    const parsed = currentSearch ? parseSmartQuery(currentSearch) : null;
+    const sugg = parsed ? buildSearchSuggestions(parsed) : null;
+    const hasSuggestions = !!(sugg && (sugg.suggestedCats.length || sugg.phrases.length || sugg.top.length));
+
+    let html = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px 56px;color:var(--text-soft);">
+      <div style="font-size:48px;margin-bottom:14px;">🔍</div>`;
+
+    if (hasSuggestions) {
+      html += `<p style="font-size:17px;font-weight:800;color:var(--text);margin-bottom:2px;">No encontramos exactamente eso</p>
+        <p style="font-size:13.5px;margin:6px 0 16px;">Pero tenemos productos que podrían interesarte:</p>`;
+
+      if (sugg.suggestedCats.length) {
+        html += `<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">` +
+          sugg.suggestedCats.map(c => `
+            <button onclick="applySuggestedSearch('${esc(c).replace(/'/g, "\\'")}')"
+              style="background:var(--rose-soft);color:var(--rose-dark);border:none;padding:8px 16px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12.5px;cursor:pointer;">
+              ${esc(c)}
+            </button>`).join('') +
+          `</div>`;
+      }
+
+      if (sugg.phrases.length) {
+        html += `<p style="font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-soft);opacity:.8;margin-bottom:8px;">También puedes probar</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;">` +
+          sugg.phrases.map(ph => `
+            <button onclick="applySuggestedSearch('${esc(ph).replace(/'/g, "\\'")}')"
+              style="background:#fff;border:1.5px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">
+              ${esc(ph)}
+            </button>`).join('') +
+          `</div>`;
+      }
+
+      if (sugg.top.length && !similarModeActive) {
+        html += `<div style="margin-bottom:14px;">
+          <button onclick="showSimilarProducts()"
+            style="background:linear-gradient(135deg,var(--rose),var(--lavender));color:white;border:none;padding:12px 28px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:13.5px;">
+            <i class="fas fa-wand-magic-sparkles"></i> Mostrar productos similares
+          </button>
+        </div>`;
+      }
+    } else {
+      html += `<p style="font-size:16px;font-weight:600;">No encontramos productos con ese filtro.</p>`;
+    }
+
+    html += `<button onclick="resetAllFilters()"
+        style="margin-top:4px;background:transparent;color:var(--rose-dark);border:1.5px solid var(--rose);padding:10px 26px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:13px;">
         Ver todos los productos
       </button>
     </div>`;
+
+    grid.innerHTML = html;
     renderPagination(0);
     return;
   }
@@ -12195,7 +12629,7 @@ function renderProductCard(product, cardIndex = 0) {
       ${imgHtml}
       ${!isAgotado ? viewersBadgeHtml(product.id) : ''}
       ${!isAgotado && hasOffer ? offerCountdownHtml(product, 'card') : ''}
-      ${isAgotado ? `<div class="agotado-overlay"><i class="fas fa-clock ago-icon"></i><span class="ago-text">Agotado</span><span class="ago-sub">Avísame cuando llegue</span></div>` : ''}
+      ${isAgotado ? `<div class="agotado-overlay"><i class="fas fa-clock ago-icon"></i><span class="ago-text">Agotado</span><span class="ago-sub">A pedido reingreso</span></div>` : ''}
       ${!isAgotado ? `<button class="wishlist-btn" data-wid="${product.id}" title="Lista de deseos">
         <i class="${wishlist.find(i=>String(i.id)===String(product.id)) ? 'fas' : 'far'} fa-heart"></i>
       </button>` : ''}
