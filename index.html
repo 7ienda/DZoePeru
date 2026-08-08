@@ -4453,7 +4453,7 @@ body.dark-mode #main-header .header-inner { background: transparent; }
 .logo-text--lulu { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-left: 10px; }
 
 /* Marca con degradado tipo "boutique" que brilla suavemente */
-.logo-brand-text--lulu {
+a.logo .logo-brand-text--lulu {
   font-family: var(--lulu-font) !important; font-style: normal !important;
   font-size: 42px !important; font-weight: 800 !important; line-height: 1;
   letter-spacing: .01em;
@@ -4465,7 +4465,7 @@ body.dark-mode #main-header .header-inner { background: transparent; }
   animation: dzBrandShine 7s ease-in-out infinite;
   transition: animation-duration .3s ease;
 }
-.logo:hover .logo-brand-text--lulu { animation-duration: 2.2s; }
+a.logo:hover .logo-brand-text--lulu { animation-duration: 2.2s; }
 @keyframes dzBrandShine {
   0%, 100% { background-position: 0% center; }
   50% { background-position: 100% center; }
@@ -4497,7 +4497,7 @@ body.dark-mode #main-header .header-inner { background: transparent; }
 }
 .logo:hover .logo-underline { width: 74px; opacity: 1; }
 
-body.dark-mode .logo-brand-text--lulu {
+body.dark-mode a.logo .logo-brand-text--lulu {
   background: linear-gradient(100deg, #FFFFFF 0%, var(--hdr-coral-light) 40%, #FFFFFF 80%);
   background-size: 250% auto;
   -webkit-background-clip: text; background-clip: text;
@@ -4510,8 +4510,30 @@ body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
   .logo { margin: 0 !important; }
   .logo-icon { width: 34px !important; height: 42px !important; }
   .logo-icon svg { width: 34px !important; height: 42px !important; }
-  .logo-brand-text--lulu { font-size: 30px !important; }
-  .logo-tagline--lulu { font-size: 10px !important; letter-spacing: .16em !important; }
+  a.logo .logo-brand-text--lulu { font-size: 30px !important; }
+  /* En mobile el header es angosto: se oculta el tagline (como en el diseño original)
+     para que el ancho del logo no invada el área de los íconos de acción */
+  .logo-tagline--lulu { display: none !important; }
+  .logo-underline { width: 22px; margin-top: 3px; }
+  .logo:hover .logo-underline { width: 22px; } /* sin hover real en mobile */
+}
+@media (max-width: 380px) {
+  /* Pantallas muy angostas: el nombre se achica un poco más para no pisar
+     el ícono de búsqueda (esto ya ocurría desde antes en estos anchos, y
+     acá lo dejamos sin superposición) */
+  .logo { gap: 6px !important; }
+  .logo-text--lulu { margin-left: 6px !important; }
+  a.logo .logo-brand-text--lulu { font-size: 19px !important; letter-spacing: 0 !important; }
+  .logo-icon { width: 24px !important; height: 30px !important; }
+  .logo-icon svg { width: 24px !important; height: 30px !important; }
+}
+@media (max-width: 340px) {
+  /* Celulares muy compactos (ej. iPhone SE) */
+  .logo { gap: 4px !important; }
+  .logo-text--lulu { margin-left: 4px !important; }
+  a.logo .logo-brand-text--lulu { font-size: 16px !important; }
+  .logo-icon { width: 20px !important; height: 25px !important; }
+  .logo-icon svg { width: 20px !important; height: 25px !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .logo-icon, .logo-heart, .logo-brand-text--lulu, .logo-spark { animation: none !important; }
@@ -4641,6 +4663,14 @@ body.dark-mode .nm-action i { color: var(--hdr-coral-light); }
 
 @media (max-width: 1080px) {
   .nm-link, .nm-action { padding: 9px 10px; font-size: 13px; }
+}
+
+@media (max-width: 1080px) and (min-width: 769px) {
+  /* Franja tablet/laptop angosto: el logo se achica un poco para no
+     pisar el bloque "Buscador / Iniciar Sesión / Bolsa" de la derecha */
+  a.logo .logo-brand-text--lulu { font-size: 32px !important; }
+  .logo-icon { width: 36px !important; height: 45px !important; }
+  .logo-icon svg { width: 36px !important; height: 45px !important; }
 }
 
 @media (max-width: 768px) {
