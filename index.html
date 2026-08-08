@@ -13448,7 +13448,7 @@ function openProductPage(productId) {
         <div class="pp-cat-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
           ${allCats.map(c => `<a href="#" class="pp-cat-badge" style="cursor:pointer;text-decoration:none;" onclick="closePP();filterByCategory('${esc(c)}');return false;">${esc(c)}</a>`).join('')}
         </div>
-        <h1 class="pp-name">${esc(seoTitle.replace(" | D'Zoe Perú", ''))}</h1>
+        <h1 class="pp-name">${esc(product.name)}</h1>
         <p class="pp-desc">${esc(desc)}</p>
 
         <div class="pp-price-block" id="pp-pricebox-${productId}">
