@@ -1024,6 +1024,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
   <div class="menu">
     <span class="menu-label">Principal</span>
     <button class="menu-btn active" data-section="dashboard-section"><i class="fas fa-chart-pie"></i><span>Dashboard</span></button>
+    <button class="menu-btn" data-section="add-product-section" onclick="goToSection('add-product-section');switchAddTab('product');renderSizesList();"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
     <span class="menu-label">Tienda</span>
     <button class="menu-btn" data-section="inventory-section"><i class="fas fa-boxes-stacked"></i><span>Inventario</span><span class="badge" id="badge-products">0</span></button>
     <button class="menu-btn" data-section="almacen-section" onclick="goToSection('almacen-section');loadAlmacenList();"><i class="fas fa-warehouse" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Almacén</span><span class="badge" id="badge-almacen" style="background:rgba(124,58,237,.3);">0</span></button>
@@ -1033,29 +1034,22 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
     <button class="menu-btn" data-section="reingreso-section" onclick="goToSection('reingreso-section');loadReingresoAlerts();"><i class="fas fa-bell" style="color:var(--rose);"></i><span>Alertas Reingreso</span></button>
     <button class="menu-btn" data-section="clients-section"><i class="fas fa-users"></i><span>Clientes</span><span class="badge" id="badge-clients">0</span></button>
     <button class="menu-btn" data-section="suppliers-section"><i class="fas fa-truck"></i><span>Proveedores</span><span class="badge" id="badge-suppliers">0</span></button>
-    <span class="menu-label">Compras</span>
-    <span class="menu-label">Finanzas</span>
+    <span class="menu-label">Compras Finanzas</span>
     <button class="menu-btn" data-section="finanzas-section" onclick="goToSection('finanzas-section');loadFinanzas();"><i class="fas fa-sack-dollar" style="color:var(--green);"></i><span style="color:var(--green);">Finanzas</span><span class="badge" id="badge-finanzas" style="background:rgba(31,158,110,.22);">0</span></button>
-    <button class="menu-btn" data-section="inversiones-section" onclick="goToSection('inversiones-section');loadInversiones();"><i class="fas fa-chart-line" style="color:#6b2fd4;"></i><span style="color:#6b2fd4;">Inversiones</span><span class="badge" id="badge-inversiones" style="background:rgba(107,47,212,.22);">S/ 0</span></button>
     <button class="menu-btn" data-section="reinvertir-section" onclick="goToSection('reinvertir-section');loadReinvertir();"><i class="fas fa-arrows-rotate" style="color:#1d5fd4;"></i><span style="color:#1d5fd4;">Reinvertir</span><span class="badge" id="badge-reinvertir" style="background:rgba(29,95,212,.22);">S/ 0</span></button>
     <button class="menu-btn" data-section="imprevistos-section" onclick="goToSection('imprevistos-section');loadImprevistos();"><i class="fas fa-triangle-exclamation" style="color:#c97010;"></i><span style="color:#c97010;">Imprevistos</span><span class="badge" id="badge-imprevistos" style="background:rgba(201,112,16,.22);">S/ 0</span></button>
     <button class="menu-btn" data-section="ahorro-section" onclick="goToSection('ahorro-section');loadAhorro();"><i class="fas fa-piggy-bank" style="color:#7DC4A8;"></i><span style="color:#7DC4A8;">Ahorro</span><span class="badge" id="badge-ahorro" style="background:rgba(125,196,168,.22);">S/ 0</span></button>
+    <button class="menu-btn" data-section="inversiones-section" onclick="goToSection('inversiones-section');loadInversiones();"><i class="fas fa-chart-line" style="color:#6b2fd4;"></i><span style="color:#6b2fd4;">Inversiones</span><span class="badge" id="badge-inversiones" style="background:rgba(107,47,212,.22);">S/ 0</span></button>
     <button class="menu-btn" data-section="personal-section" onclick="goToSection('personal-section');loadPersonal();"><i class="fas fa-wallet" style="color:#a73759;"></i><span style="color:#a73759;">G. Personal</span><span class="badge" id="badge-personal" style="background:rgba(167,55,89,.22);">S/ 0</span></button>
     <span class="menu-label">Contenido</span>
     <button class="menu-btn" data-section="blog-admin-section"><i class="fas fa-pen-nib"></i><span>Blog</span><span class="badge" id="badge-blog">0</span></button>
     <button class="menu-btn" data-section="digitales-admin-section"><i class="fas fa-cloud-arrow-up"></i><span>Productos Digitales</span><span class="badge" id="badge-digitales">0</span></button>
-    <span class="menu-label">Vitrina</span>
-    <button class="menu-btn" data-section="drops-section"><i class="fas fa-bolt"></i><span>⚡ Drops</span></button>
-    <button class="menu-btn" data-section="lookbooks-section"><i class="fas fa-book-open"></i><span>📖 Lookbooks</span></button>
     <span class="menu-label">Marketing</span>
     <button class="menu-btn" data-section="promociones-section"><i class="fas fa-percent"></i><span>💸 Promociones</span></button>
     <button class="menu-btn" data-section="carritos-section"><i class="fas fa-cart-arrow-down"></i><span>🛒 Carritos Abandonados</span></button>
     <button class="menu-btn" data-section="calendario-section"><i class="fas fa-calendar-days" style="color:#1d9e6e;"></i><span style="color:#1d9e6e;">📅 Calendario Comercial</span></button>
-    <span class="menu-label">SEO</span>
     <button class="menu-btn" data-section="seo-section"><i class="fas fa-magnifying-glass-chart" style="color:#1d5fd4;"></i><span style="color:#1d5fd4;">Salud SEO</span><span class="badge" id="badge-seo" style="background:rgba(29,95,212,.22);">0%</span></button>
     <span class="menu-label">Sistema</span>
-    <button class="menu-btn" data-section="add-product-section" onclick="goToSection('add-product-section');switchAddTab('product');renderSizesList();"><i class="fas fa-plus-circle"></i><span>Agregar Producto</span></button>
-    <button class="menu-btn" onclick="goToSection('add-product-section');setTimeout(()=>switchAddTab('upcoming'),80);" style="display:none;"><i class="fas fa-clock" style="color:#7c3aed;"></i><span style="color:#7c3aed;">Próximos Ingresos</span></button>
     <button class="menu-btn" data-section="settings-section"><i class="fas fa-sliders"></i><span>Configuración</span></button>
   </div>
   <div class="sidebar-footer">
