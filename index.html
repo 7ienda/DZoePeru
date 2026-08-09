@@ -418,8 +418,9 @@ img{display:block;max-width:100%;}
   color: #fff;
   font-size: 12px;
   font-weight: 600;
-  position: relative;
-  z-index: 1001;
+  position: sticky;
+  top: 0;
+  z-index: 1002;
   overflow: hidden;
 }
 .topbar-inner {
@@ -512,7 +513,7 @@ img{display:block;max-width:100%;}
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   position: sticky;
-  top: 0;
+  top: var(--topbar-h, 30px);
   z-index: 1000;
   border-bottom: 1.5px solid var(--border);
   transition: box-shadow 0.3s, background 0.3s;
@@ -3449,7 +3450,7 @@ a, button { cursor: pointer; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   position: sticky !important;
-  top: 0;
+  top: var(--topbar-h, 30px);
   z-index: 1000;
   border-bottom: 1px solid var(--border);
   transition: box-shadow 0.3s, background 0.3s;
@@ -7473,8 +7474,19 @@ body.dark-mode .anl-name { color: #F5F5F5; }
     <!-- Información de envíos (izquierda) -->
     <div class="topbar-left-info">
       <span class="tb-item">
-        <i class="fas fa-truck" aria-hidden="true"></i>
-        <strong>Envíos a todo el Perú</strong>
+        <strong>⭐ Envíos a todo en Perú</strong>
+      </span>
+      <span class="tb-sep">·</span>
+      <span class="tb-item">
+        <strong>🏬 Recojo en tienda</strong>
+      </span>
+      <span class="tb-sep">o</span>
+      <span class="tb-item">
+        <strong>🛵 Delivery por Shalom</strong>
+      </span>
+      <span class="tb-sep">·</span>
+      <span class="tb-item">
+        <strong>📱 Paga con Yape o Plin</strong>
       </span>
     </div>
     <!-- Acciones rápidas (derecha) -->
@@ -14250,6 +14262,19 @@ document.getElementById('wishlistModal')?.addEventListener('click', e => { if (e
 window.addEventListener('scroll', () => {
   document.getElementById('main-header')?.classList.toggle('scrolled', window.scrollY > 10);
 });
+
+// ═══════════════════════════════════════════════════════
+//  TOPBAR STICKY — el header se pega justo debajo del topbar
+// ═══════════════════════════════════════════════════════
+function updateTopbarHeight() {
+  const tb = document.querySelector('.topbar');
+  if (tb) {
+    document.documentElement.style.setProperty('--topbar-h', tb.offsetHeight + 'px');
+  }
+}
+updateTopbarHeight();
+window.addEventListener('resize', updateTopbarHeight);
+window.addEventListener('load', updateTopbarHeight);
 
 // ═══════════════════════════════════════════════════════
 //  BUSCADOR — ENTER / ESC
