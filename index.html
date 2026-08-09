@@ -1904,7 +1904,7 @@ body.dark-mode .sk-img,body.dark-mode .sk-line,body.dark-mode .sk-sz{background:
 ═══════════════════════════════════════════════ */
 .pi-favs-overlay{position:fixed;inset:0;background:rgba(45,37,69,0.35);backdrop-filter:blur(3px);z-index:1000;visibility:hidden;opacity:0;transition:0.3s;}
 .pi-favs-overlay.active{visibility:visible;opacity:1;}
-.pi-favs-sidebar{position:fixed;top:0;right:-420px;width:400px;height:100%;background:var(--cream);z-index:1001;display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-10px 0 40px rgba(163,133,210,0.25);}
+.pi-favs-sidebar{position:fixed;top:calc(var(--topbar-h, 30px) + var(--header-h, 92px)) !important;right:-420px;width:400px;height:calc(100% - var(--topbar-h, 30px) - var(--header-h, 92px)) !important;background:var(--cream);z-index:1001;display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-10px 0 40px rgba(163,133,210,0.25);}
 .pi-favs-sidebar.open{right:0;}
 .pi-favs-header{display:flex;justify-content:space-between;align-items:center;padding:22px 22px 18px;background:linear-gradient(135deg,var(--lav-light),var(--rose-soft));border-bottom:2px solid var(--border);}
 .pi-favs-header h3{font-family:'Baloo 2',cursive;font-size:20px;color:var(--text);display:flex;align-items:center;gap:8px;}
@@ -2038,7 +2038,7 @@ body.dark-mode .pi-fav-name{color:#F5F5F5;}
 .wishlist-fab-badge{position:absolute;top:-4px;right:-4px;background:var(--rose-dark);color:white;font-size:10px;font-weight:800;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid white;}
 .wishlist-modal{position:fixed;inset:0;background:rgba(45,37,69,0.35);backdrop-filter:blur(3px);z-index:2000;visibility:hidden;opacity:0;transition:0.3s;}
 .wishlist-modal.active{visibility:visible;opacity:1;}
-.wishlist-modal-content{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100%;max-height:100vh;background:white;border-radius:0;overflow:hidden;box-shadow:-10px 0 40px rgba(163,133,210,0.25);display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);}
+.wishlist-modal-content{position:fixed;top:calc(var(--topbar-h, 30px) + var(--header-h, 92px)) !important;right:-420px;width:400px;max-width:92vw;height:calc(100% - var(--topbar-h, 30px) - var(--header-h, 92px)) !important;max-height:100vh;background:white;border-radius:0;overflow:hidden;box-shadow:-10px 0 40px rgba(163,133,210,0.25);display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);}
 .wishlist-modal.active .wishlist-modal-content{right:0;}
 .wishlist-modal-header{padding:22px 24px 18px;background:var(--lav-light);border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 .wishlist-modal-header h3{font-family:'Baloo 2',cursive;font-size:22px;color:var(--text);display:flex;align-items:center;gap:8px;}
@@ -3213,6 +3213,122 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
   box-shadow: 0 0 0 3px rgba(179,157,200,0.15) !important;
   outline: none !important;
 }
+
+/* ── PANEL REGISTRARSE — estilo tarjeta con checkboxes + Google ── */
+.dz-reg-head{ display:flex; align-items:flex-start; gap:14px; margin-bottom:22px; }
+.dz-reg-badge{
+  width:52px; height:52px; flex-shrink:0; border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  display:flex; align-items:center; justify-content:center;
+}
+.dz-reg-badge svg{ width:26px; height:26px; color:#fff; }
+.dz-reg-head h4{
+  font-family:'Baloo 2',cursive; font-size:19px; color:var(--text); margin:0 0 4px;
+}
+.dz-reg-head p{ font-size:12.5px; color:var(--text-soft); line-height:1.45; margin:0; }
+
+.dz-reg-group{ margin-bottom:16px; }
+.dz-reg-group label{
+  display:block; font-size:12.5px; font-weight:800; color:var(--text); margin-bottom:6px;
+}
+.dz-reg-group input{
+  width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px;
+  font-size:13.5px; font-family:'Nunito',sans-serif; color:var(--text); background:#fff;
+  transition:0.2s;
+}
+.dz-reg-group input:focus{
+  outline:none; border-color:var(--rose); box-shadow:0 0 0 3px rgba(179,157,200,0.15);
+}
+.dz-reg-group input::placeholder{ color:#a9a9b2; }
+
+.dz-reg-check{
+  display:flex; align-items:flex-start; gap:9px; margin-bottom:11px; cursor:pointer;
+}
+.dz-reg-check input{ margin-top:3px; width:16px; height:16px; accent-color:var(--rose); flex-shrink:0; }
+.dz-reg-check span{ font-size:12.5px; color:var(--text); line-height:1.4; }
+.dz-reg-check span strong{ font-weight:800; }
+
+.dz-reg-submit{
+  width:100%; background:#1a1a1a; color:#fff; border:none; padding:13px;
+  border-radius:12px; font-weight:800; font-size:14.5px; letter-spacing:0.3px;
+  cursor:pointer; transition:0.2s; font-family:'Nunito',sans-serif; margin-top:4px;
+}
+.dz-reg-submit:hover{ background:#000; }
+.dz-reg-submit:disabled{ opacity:0.6; cursor:default; }
+
+.dz-reg-divider{
+  display:flex; align-items:center; gap:12px; margin:16px 0;
+  color:var(--text-soft); font-size:12px;
+}
+.dz-reg-divider::before, .dz-reg-divider::after{
+  content:''; flex:1; height:1px; background:var(--border);
+}
+
+.dz-reg-google{
+  width:100%; background:#e6493a; color:#fff; border:none; padding:13px;
+  border-radius:12px; font-weight:800; font-size:14.5px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  transition:0.2s; font-family:'Nunito',sans-serif;
+}
+.dz-reg-google:hover{ background:#cf3d2f; }
+.dz-reg-google i{ font-size:16px; }
+
+body.dark-mode .dz-reg-group input{ background:#242424; color:#F5F5F5; border-color:#3A3A3A; }
+body.dark-mode .dz-reg-head p{ color:#B0B0B0; }
+body.dark-mode .dz-reg-check span{ color:#F0F0F0; }
+
+/* ── Modo registro / login: header sin barra de color, solo botón cerrar flotante ── */
+.login-modal-content.dz-register-mode .login-modal-header,
+.login-modal-content.dz-login-mode .login-modal-header{
+  background:transparent !important;
+  padding:14px 16px 0 !important;
+  position:absolute; right:0; top:0; z-index:2; width:100%;
+  border-radius:0 !important;
+  pointer-events:none;
+  justify-content:flex-end !important;
+}
+.login-modal-content.dz-register-mode .login-modal-header h3,
+.login-modal-content.dz-login-mode .login-modal-header h3{ display:none; }
+.login-modal-content.dz-register-mode .close-login,
+.login-modal-content.dz-login-mode .close-login{ pointer-events:auto; }
+.login-modal-content.dz-register-mode .login-modal-body,
+.login-modal-content.dz-login-mode .login-modal-body{ padding-top:38px; }
+.login-modal-content.dz-register-mode{ width:460px !important; }
+
+/* ── PANEL LOGIN — header con ícono + título + subtítulo (estilo tarjeta premium) ── */
+.dz-login-head{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+.dz-login-badge{
+  width:56px; height:56px; flex-shrink:0; border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--lavender));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 16px rgba(179,157,200,0.4);
+}
+.dz-login-badge i{ font-size:22px; color:#fff; }
+.dz-login-head-text h4{
+  font-family:'Baloo 2',cursive; font-size:21px; color:var(--text); margin:0 0 4px; line-height:1.2;
+}
+.dz-login-head-text p{ font-size:12.5px; color:var(--text-soft); line-height:1.4; margin:0; }
+
+/* ── Input contraseña con ícono de mostrar/ocultar ── */
+.dz-pass-wrap{ position:relative; }
+.dz-pass-wrap input{ padding-right:42px !important; }
+.dz-pass-eye{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:var(--text-soft); cursor:pointer;
+  font-size:15px; padding:6px; display:flex; align-items:center; justify-content:center;
+  transition:color 0.2s;
+}
+.dz-pass-eye:hover{ color:var(--rose); }
+
+/* ── Enlaces debajo del botón de Google (estilo "¿No tienes cuenta? Regístrate" + "Restablecer contraseña") ── */
+.dz-login-links{ text-align:center; margin-top:18px; font-size:13px; color:var(--text-soft); font-weight:600; }
+.dz-login-links a{ color:var(--text); font-weight:800; text-decoration:underline; text-underline-offset:2px; }
+.dz-login-links a:hover{ color:var(--rose); }
+.dz-login-links-forgot{ margin-top:10px; }
+.dz-login-links-forgot a{ font-size:12.5px; color:var(--text-soft); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
+.dz-login-links-forgot a:hover{ color:var(--rose); }
+
+body.dark-mode .dz-login-head-text p{ color:#B0B0B0; }
 
 /* ── NOTIF TOAST PREMIUM ── */
 .notif {
@@ -8473,13 +8589,6 @@ function quickChipSearch(el, term) {
   document.getElementById('productos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function toggleAdvancedFilters() {
-  const panel = document.getElementById('advancedFiltersPanel');
-  const toggle = document.getElementById('premFilterToggle');
-  panel.classList.toggle('open');
-  toggle?.classList.toggle('active', panel.classList.contains('open'));
-}
-
 function applyAdvancedFilter() {
   similarModeActive = false;
   const edad  = document.getElementById('afpEdad')?.value  || '';
@@ -9467,21 +9576,41 @@ function dz2SubmitNewsletter(e){
     <div class="login-modal-body">
       <!-- PANEL: Login -->
       <div id="loginPanel">
-        <form id="loginForm">
-          <div class="input-group">
-            <label>Correo electrónico</label>
-            <input type="email" id="loginEmail" placeholder="tucorreo@ejemplo.com" required>
+        <div class="dz-login-head">
+          <div class="dz-login-badge">
+            <i class="fas fa-bag-shopping" aria-hidden="true"></i>
           </div>
-          <div class="input-group">
-            <label>Contraseña</label>
-            <input type="password" id="loginPassword" placeholder="••••••••" required>
+          <div class="dz-login-head-text">
+            <h4>Inicia sesión</h4>
+            <p>Compra más rápido y revisa los detalles de tus compras</p>
+          </div>
+        </div>
+        <form id="loginForm">
+          <div class="dz-reg-group">
+            <label for="loginEmail">Correo Electrónico</label>
+            <input type="email" id="loginEmail" placeholder="Ingresa tu correo electrónico" required>
+          </div>
+          <div class="dz-reg-group">
+            <label for="loginPassword">Contraseña</label>
+            <div class="dz-pass-wrap">
+              <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña" required>
+              <button type="button" class="dz-pass-eye" id="loginPassEye" aria-label="Mostrar contraseña">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
           </div>
           <div id="loginError" style="color:var(--rose);font-size:12px;font-weight:600;margin-bottom:8px;display:none;"></div>
-          <button type="submit" class="login-submit" id="loginSubmitBtn">Ingresar a mi cuenta</button>
+          <button type="submit" class="dz-reg-submit" id="loginSubmitBtn">Iniciar Sesión</button>
         </form>
-        <div class="login-links">
-          <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
-          <a href="#" id="showRegisterLink">Registrarse</a>
+        <div class="dz-reg-divider"><span>o</span></div>
+        <button type="button" class="dz-reg-google" onclick="loginWithGoogle()">
+          <i class="fab fa-google" aria-hidden="true"></i> Google
+        </button>
+        <div class="dz-login-links">
+          ¿No tienes cuenta? <a href="#" id="showRegisterLink">Regístrate</a>
+        </div>
+        <div class="dz-login-links dz-login-links-forgot">
+          <a href="#" id="forgotPasswordLink">Restablecer contraseña</a>
         </div>
       </div>
       <!-- PANEL: Recuperar contraseña -->
@@ -9499,22 +9628,60 @@ function dz2SubmitNewsletter(e){
       </div>
       <!-- PANEL: Registrarse -->
       <div id="registerPanel" style="display:none;">
-        <div class="input-group">
-          <label>Nombre completo</label>
-          <input type="text" id="registerName" placeholder="Tu nombre">
+        <div class="dz-reg-head">
+          <div class="dz-reg-badge">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2 14.4 8.6 21.5 9.3 16 13.8 17.8 20.8 12 16.9 6.2 20.8 8 13.8 2.5 9.3 9.6 8.6Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <h4>¡Regístrate y disfruta!</h4>
+            <p>Experiencias y productos personalizados y muchas sorpresas más.</p>
+          </div>
         </div>
-        <div class="input-group">
-          <label>Correo electrónico</label>
-          <input type="email" id="registerEmail" placeholder="tucorreo@ejemplo.com">
+
+        <div class="dz-reg-group">
+          <label for="registerEmail">Correo Electrónico</label>
+          <input type="email" id="registerEmail" placeholder="Ingresa tu correo electrónico">
         </div>
-        <div class="input-group">
-          <label>Contraseña</label>
+        <div class="dz-reg-group">
+          <label for="registerName">Nombres</label>
+          <input type="text" id="registerName" placeholder="Ingresa tus nombres">
+        </div>
+        <div class="dz-reg-group">
+          <label for="registerLastName">Apellidos</label>
+          <input type="text" id="registerLastName" placeholder="Ingresa tus apellidos">
+        </div>
+        <div class="dz-reg-group">
+          <label for="registerPassword">Contraseña</label>
           <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres">
         </div>
-        <div id="registerMsg" style="font-size:12px;font-weight:600;margin-bottom:8px;display:none;"></div>
-        <button class="login-submit" id="registerSubmitBtn">Crear mi cuenta</button>
-        <div class="login-links" style="margin-top:14px;">
-          <a href="#" id="backToLoginFromRegLink">← Ya tengo cuenta</a>
+
+        <label class="dz-reg-check">
+          <input type="checkbox" id="regTermsCheck">
+          <span>Acepto los <strong>Términos y Condiciones</strong></span>
+        </label>
+        <label class="dz-reg-check">
+          <input type="checkbox" id="regDataCheck">
+          <span>Acepto las Políticas de <strong>Protección de Datos</strong></span>
+        </label>
+        <label class="dz-reg-check">
+          <input type="checkbox" id="regAdsCheck">
+          <span>Acepto uso de mi información para <strong>Fines publicitarios</strong></span>
+        </label>
+
+        <div id="registerMsg" style="font-size:12px;font-weight:600;margin:10px 0 4px;display:none;"></div>
+
+        <button type="button" class="dz-reg-submit" id="registerSubmitBtn">Registrarme</button>
+
+        <div class="dz-reg-divider"><span>o</span></div>
+
+        <button type="button" class="dz-reg-google" onclick="loginWithGoogle()">
+          <i class="fab fa-google" aria-hidden="true"></i> Google
+        </button>
+
+        <div class="login-links" style="justify-content:center;margin-top:16px;">
+          <a href="#" id="backToLoginFromRegLink">← Regresar a iniciar sesión</a>
         </div>
       </div>
     </div>
@@ -9974,9 +10141,6 @@ async function loadAllData() {
 
   // Renderizar highlights ahora que los datos reales están listos
   renderHighlights();
-
-  // Estadísticas en segundo plano sin bloquear la UI
-  setTimeout(loadTrustStats, 1500);
 
   // Sincronizar wishlist desde Supabase (en background)
   setTimeout(loadWishlistFromSupabase, 800);
@@ -10581,85 +10745,6 @@ window.ucToggleNotify = function(id, btn, name) {
   }
   localStorage.setItem('dzoe_pi_notified', JSON.stringify(ucNotified));
 };
-
-// ═══════════════════════════════════════════════════════
-//  TRUST STATS — DATOS REALES DESDE SUPABASE
-// ═══════════════════════════════════════════════════════
-async function loadTrustStats() {
-  if (!supabaseClient) return;
-
-  try {
-    // 1. Total de pedidos → "Familias satisfechas"
-    //    (usa la vista segura, NO la tabla orders directamente)
-    const { count: totalPedidos, error: e1 } = await supabaseClient
-      .from('orders_public_stats')
-      .select('*', { count: 'exact', head: true });
-
-    // 2. Ciudades únicas con envío → contar destinos distintos
-    const { data: destData, error: e2 } = await supabaseClient
-      .from('orders_public_stats')
-      .select('destination')
-      .not('destination', 'is', null)
-      .neq('destination', '');
-
-    if (!e1 && totalPedidos !== null) {
-      const familias = totalPedidos;
-      const label = familias >= 1000
-        ? (familias / 1000).toFixed(1).replace('.0', '') + 'k+'
-        : familias + '+';
-
-      // Animar contador
-      animateCount('statFamilias', familias, label);
-
-      // Actualizar textos del subtítulo
-      const trustSub = document.getElementById('trustSubFamilias');
-      const testSub  = document.getElementById('testimoniosSubFamilias');
-      if (trustSub) trustSub.textContent = label;
-      if (testSub)  testSub.textContent  = label;
-    }
-
-    if (!e2 && destData) {
-      const ciudadesUnicas = new Set(
-        destData.map(r => (r.destination || '').trim().toLowerCase()).filter(Boolean)
-      );
-      const totalCiudades = ciudadesUnicas.size;
-      const labelCiudades = totalCiudades + '+';
-      animateCount('statCiudades', totalCiudades, labelCiudades);
-    }
-
-  } catch (err) {
-    console.warn('Trust stats error:', err);
-    // Fallback a valores por defecto si falla
-    const elF = document.getElementById('statFamilias');
-    const elC = document.getElementById('statCiudades');
-    if (elF) elF.textContent = '500+';
-    if (elC) elC.textContent = '25+';
-  }
-}
-
-function animateCount(elId, target, finalLabel) {
-  const el = document.getElementById(elId);
-  if (!el) return;
-  const duration = 1400;
-  const start = performance.now();
-  const isLarge = target >= 1000;
-
-  function step(now) {
-    const elapsed = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - elapsed, 3); // ease-out cubic
-    const current = Math.floor(ease * target);
-
-    if (elapsed < 1) {
-      el.textContent = isLarge
-        ? (current / 1000).toFixed(1).replace('.0', '') + 'k+'
-        : current + '+';
-      requestAnimationFrame(step);
-    } else {
-      el.textContent = finalLabel;
-    }
-  }
-  requestAnimationFrame(step);
-}
 
 // ═══════════════════════════════════════════════════════
 //  SVG ILLUSTRATIONS POR CATEGORÍA
@@ -14242,7 +14327,6 @@ document.addEventListener('keydown', e => {
       d.classList.remove('open');
       d.querySelector('.nav-mega-btn')?.setAttribute('aria-expanded','false');
     });
-    closeHdrSearch();
   }
 });
 
@@ -14293,29 +14377,6 @@ hamburgerBtn?.addEventListener('click', () => {
 
 document.getElementById('menuCloseBtn')?.addEventListener('click', closeMobileMenu);
 menuOverlay?.addEventListener('click', closeMobileMenu);
-
-// ═══ BÚSQUEDA EXPANDIBLE DEL HEADER ═══
-const hdrSearchBtn = document.getElementById('hdrSearchBtn');
-const hdrSearchBar = document.getElementById('hdrSearchBar');
-const hdrSearchInput = document.getElementById('hdrSearchInput');
-
-function openHdrSearch() {
-  hdrSearchBar?.classList.add('open');
-  hdrSearchBar?.setAttribute('aria-hidden', 'false');
-  hdrSearchBtn?.classList.add('open');
-  hdrSearchBtn?.setAttribute('aria-expanded', 'true');
-  setTimeout(() => hdrSearchInput?.focus(), 50);
-}
-function closeHdrSearch() {
-  hdrSearchBar?.classList.remove('open');
-  hdrSearchBar?.setAttribute('aria-hidden', 'true');
-  hdrSearchBtn?.classList.remove('open');
-  hdrSearchBtn?.setAttribute('aria-expanded', 'false');
-}
-hdrSearchBtn?.addEventListener('click', e => {
-  e.stopPropagation();
-  hdrSearchBar?.classList.contains('open') ? closeHdrSearch() : openHdrSearch();
-});
 
 // ═══════════════════════════════════════════════════════
 //  CARRITO — EVENT LISTENERS
@@ -14515,25 +14576,40 @@ function showLoginPanel() {
   document.getElementById('forgotPanel').style.display='none';
   document.getElementById('registerPanel').style.display='none';
   document.getElementById('loginModalTitle').textContent='Iniciar sesión';
+  document.querySelector('.login-modal-content')?.classList.remove('dz-register-mode');
+  document.querySelector('.login-modal-content')?.classList.add('dz-login-mode');
 }
 function showForgotPanel() {
   document.getElementById('loginPanel').style.display='none';
   document.getElementById('forgotPanel').style.display='';
   document.getElementById('registerPanel').style.display='none';
   document.getElementById('loginModalTitle').textContent='Recuperar contraseña';
+  document.querySelector('.login-modal-content')?.classList.remove('dz-register-mode');
+  document.querySelector('.login-modal-content')?.classList.remove('dz-login-mode');
 }
 function showRegisterPanel() {
   document.getElementById('loginPanel').style.display='none';
   document.getElementById('forgotPanel').style.display='none';
   document.getElementById('registerPanel').style.display='';
   document.getElementById('loginModalTitle').textContent='Crear cuenta';
+  document.querySelector('.login-modal-content')?.classList.add('dz-register-mode');
+  document.querySelector('.login-modal-content')?.classList.remove('dz-login-mode');
 }
 
-loginBtn?.addEventListener('click', () => {
-  if (currentUser) { window.location.href = 'mi-cuenta-cliente.html'; return; }
-  showLoginPanel(); loginModal.classList.add('active');
+// Mostrar/ocultar contraseña en el login
+document.getElementById('loginPassEye')?.addEventListener('click', () => {
+  const inp = document.getElementById('loginPassword');
+  const icon = document.querySelector('#loginPassEye i');
+  const eyeBtn = document.getElementById('loginPassEye');
+  if (!inp || !icon) return;
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  icon.classList.toggle('fa-eye', showing);
+  icon.classList.toggle('fa-eye-slash', !showing);
+  eyeBtn.setAttribute('aria-label', showing ? 'Mostrar contraseña' : 'Ocultar contraseña');
 });
-document.getElementById('loginMenuBtn') && document.getElementById('loginMenuBtn').addEventListener('click', () => {
+
+loginBtn?.addEventListener('click', () => {
   if (currentUser) { window.location.href = 'mi-cuenta-cliente.html'; return; }
   showLoginPanel(); loginModal.classList.add('active');
 });
@@ -14564,7 +14640,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async e => {
   } catch(err) {
     errEl.textContent = err.message.includes('Invalid') ? '❌ Correo o contraseña incorrectos' : '❌ ' + err.message;
     errEl.style.display='block';
-  } finally { btn.textContent='Ingresar a mi cuenta'; btn.disabled=false; }
+  } finally { btn.textContent='Iniciar Sesión'; btn.disabled=false; }
 });
 
 // RECUPERAR CONTRASEÑA con Supabase
@@ -14589,17 +14665,21 @@ document.getElementById('forgotSubmitBtn')?.addEventListener('click', async () =
 // REGISTRO con Supabase
 document.getElementById('registerSubmitBtn')?.addEventListener('click', async () => {
   const name = document.getElementById('registerName').value.trim();
+  const lastName = document.getElementById('registerLastName').value.trim();
   const email = document.getElementById('registerEmail').value.trim();
   const password = document.getElementById('registerPassword').value;
+  const termsOk = document.getElementById('regTermsCheck')?.checked;
+  const dataOk = document.getElementById('regDataCheck')?.checked;
   const msgEl = document.getElementById('registerMsg');
-  if (!email || !password) { msgEl.style.color='#D48858'; msgEl.textContent='Completa todos los campos'; msgEl.style.display='block'; return; }
+  if (!email || !name || !lastName || !password) { msgEl.style.color='#D48858'; msgEl.textContent='Completa todos los campos'; msgEl.style.display='block'; return; }
   if (password.length < 6) { msgEl.style.color='#D48858'; msgEl.textContent='La contraseña debe tener al menos 6 caracteres'; msgEl.style.display='block'; return; }
+  if (!termsOk || !dataOk) { msgEl.style.color='#D48858'; msgEl.textContent='Debes aceptar los Términos y la Protección de Datos'; msgEl.style.display='block'; return; }
   const btn = document.getElementById('registerSubmitBtn');
   btn.textContent='Creando cuenta...'; btn.disabled=true;
   try {
     if (!supabaseClient) throw new Error('No hay conexión con Supabase');
     const { data, error } = await supabaseClient.auth.signUp({
-      email, password, options: { data: { full_name: name } }
+      email, password, options: { data: { full_name: `${name} ${lastName}`.trim(), first_name: name, last_name: lastName } }
     });
     if (error) throw error;
     msgEl.style.color='var(--green-khaki)';
@@ -14611,8 +14691,22 @@ document.getElementById('registerSubmitBtn')?.addEventListener('click', async ()
   } catch(err) {
     const msg = err.message.includes('already registered') ? '❌ Este correo ya está registrado' : '❌ ' + err.message;
     msgEl.style.color='#D48858'; msgEl.textContent=msg; msgEl.style.display='block';
-  } finally { btn.textContent='Crear mi cuenta'; btn.disabled=false; }
+  } finally { btn.textContent='Registrarme'; btn.disabled=false; }
 });
+
+// LOGIN / REGISTRO con Google (Supabase OAuth)
+async function loginWithGoogle() {
+  if (!supabaseClient) { showNotif('❌ No hay conexión con Supabase'); return; }
+  try {
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + window.location.pathname }
+    });
+    if (error) throw error;
+  } catch (err) {
+    showNotif('❌ ' + err.message);
+  }
+}
 
 // Actualizar UI según sesión
 function updateLoginUI(user) {
@@ -14781,22 +14875,15 @@ init();
       conjuntos infantiles, abrigos premium y prendas para ocasiones especiales.
       </p>
 
+      </div>
     </section>
 
-    </div>
   </div>
 </div>
+</div><!-- cierra .cat-page-modal (id="catPageModal") -->
 
 <!-- ═══ PREMIUM ENHANCEMENTS SCRIPT ═══ -->
 <script>
-/* Ticker: duplicar para loop infinito */
-(function() {
-  var ticker = document.getElementById('topbarTicker');
-  if (!ticker) return;
-  var clone = ticker.innerHTML;
-  ticker.innerHTML = clone + clone; /* Duplicar para seamless loop */
-})();
-
 /* Scroll reveal animation para productos */
 (function() {
   if (!window.IntersectionObserver) return;
