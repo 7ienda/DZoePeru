@@ -422,6 +422,7 @@ img{display:block;max-width:100%;}
   top: 0;
   z-index: 1002;
   overflow: hidden;
+  overflow-anchor: none;
 }
 .topbar-inner {
   max-width: 1240px;
@@ -517,6 +518,7 @@ img{display:block;max-width:100%;}
   z-index: 1000;
   border-bottom: 1.5px solid var(--border);
   transition: box-shadow 0.3s, background 0.3s;
+  overflow-anchor: none;
 }
 .header.scrolled {
   box-shadow: 0 4px 30px rgba(163,133,210,0.22);
@@ -531,6 +533,7 @@ img{display:block;max-width:100%;}
   align-items: center;
   gap: 16px;
   position: relative;
+  transition: height 0.25s ease;
 }
 
 /* ── LOGO ── */
@@ -3114,6 +3117,8 @@ body.dark-mode .menu{background:rgba(26,22,37,0.98);}
 .cart-sidebar {
   border-radius: 24px 0 0 24px;
   box-shadow: -8px 0 40px rgba(45,37,69,0.18);
+  top: calc(var(--topbar-h, 30px) + var(--header-h, 92px)) !important;
+  height: calc(100% - var(--topbar-h, 30px) - var(--header-h, 92px)) !important;
 }
 .cart-header {
   background: var(--rose-soft);
@@ -4415,8 +4420,7 @@ body.dark-mode .menu-mobile-cta { border-color: #3A3A3A; }
   box-shadow: none !important;
 }
 #main-header.scrolled { background: var(--lulu-cream) !important; box-shadow: 0 8px 22px rgba(91,58,34,0.10) !important; }
-#main-header .header-inner { height: 108px !important; justify-content: center !important; position: relative; }
-#main-header.scrolled .header-inner { height: 88px !important; }
+#main-header .header-inner { height: 92px !important; justify-content: center !important; position: relative; }
 body.dark-mode #main-header { background: #161616 !important; border-bottom-color: rgba(201,168,118,0.2) !important; }
 body.dark-mode #main-header .header-inner { background: transparent; }
 
@@ -4506,8 +4510,7 @@ body.dark-mode a.logo .logo-brand-text--lulu {
 }
 body.dark-mode .logo-tagline--lulu { color: var(--hdr-mint) !important; }
 @media (max-width: 768px) {
-  #main-header .header-inner { height: 82px !important; justify-content: flex-start !important; }
-  #main-header.scrolled .header-inner { height: 68px !important; }
+  #main-header .header-inner { height: 75px !important; justify-content: flex-start !important; }
   .logo { margin: 0 !important; }
   .logo-icon { width: 34px !important; height: 42px !important; }
   .logo-icon svg { width: 34px !important; height: 42px !important; }
@@ -4764,6 +4767,39 @@ body.dark-mode .hdr-cart-btn--lulu { border-left-color: rgba(201,168,118,0.25) !
   .hdr-cart-btn--lulu .cart-label { display: none !important; }
   .hdr-cart-btn--lulu .cart-total { display: none !important; }
   .hdr-cart-btn--lulu { padding: 6px 10px !important; }
+}
+
+/* ── ÍCONOS SIMPLES: login y bolsa sin texto, estilo minimal (línea) ── */
+.login-btn-text--lulu,
+.hdr-cart-btn--lulu .cart-label,
+.hdr-cart-btn--lulu .cart-total {
+  display: none !important;
+}
+.login-btn--lulu,
+.hdr-cart-btn--lulu {
+  border-left: none !important;
+  padding: 4px 10px !important;
+  gap: 0 !important;
+}
+.login-btn--lulu .login-icon {
+  width: 26px !important; height: 26px !important;
+  stroke-width: 1.4;
+}
+.hdr-cart-btn--lulu .cart-bag-icon {
+  width: 26px !important; height: 26px !important;
+  stroke-width: 1.4;
+}
+.hdr-cart-btn--lulu .cart-row { gap: 0 !important; }
+.cart-count-badge {
+  position: absolute !important;
+  top: -2px !important; right: 2px !important;
+  background: #2E9BE6 !important;
+  color: #fff !important;
+  width: 16px !important; height: 16px !important;
+  min-width: 16px !important;
+  font-size: 9px !important; font-weight: 800 !important;
+  border: none !important;
+  display: flex !important;
 }
 
 /* ── SUBNAV — mismo tono cálido, coherente con el resto ────────────── */
@@ -7540,16 +7576,6 @@ body.dark-mode .anl-name { color: #F5F5F5; }
     <!-- ══ ACCIONES HEADER (derecha) ══ -->
     <div class="header-actions" role="group" aria-label="Acciones del usuario">
 
-      <!-- Búsqueda rápida — junto a Iniciar Sesión -->
-      <button class="hdr-search-btn hdr-search-btn--lulu" id="hdrSearchBtn" aria-label="Buscar productos"
-              aria-expanded="false" aria-controls="hdrSearchBar">
-        <span class="search-label">Buscador</span>
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="https://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="10.3" cy="10.3" r="6.3" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M19.5 19.5L15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-
       <!-- Mi cuenta / Iniciar sesión — estilo etiqueta + ícono, junto a la bolsa de compras -->
       <button class="hdr-icon-btn login-btn login-btn--lulu" id="loginBtn"
               aria-label="Iniciar sesión o ver mi cuenta">
@@ -7570,7 +7596,7 @@ body.dark-mode .anl-name { color: #F5F5F5; }
           </svg>
           <span class="cart-total" id="cartTotalHeader">S/ 0.00</span>
         </span>
-        <span class="cart-count-badge" id="cartCountBadge" style="display:none;" aria-live="polite">0</span>
+        <span class="cart-count-badge" id="cartCountBadge" style="display:flex;" aria-live="polite">0</span>
       </button>
 
       <!-- Hamburger (solo mobile) -->
@@ -7701,21 +7727,6 @@ body.dark-mode .anl-name { color: #F5F5F5; }
       </div>
     </nav>
 
-  <!-- Barra de búsqueda expandible (desktop) -->
-  <div class="hdr-search-bar" id="hdrSearchBar" aria-hidden="true" role="search">
-    <div class="hdr-search-inner">
-      <label for="hdrSearchInput" class="sr-only">Buscar ropa infantil importada</label>
-      <i class="fas fa-search" aria-hidden="true"></i>
-      <input type="search" id="hdrSearchInput" name="q" autocomplete="off"
-             placeholder="Buscador"
-             aria-label="Buscar productos en D'Zoe Perú"
-             oninput="document.getElementById('searchInput').value=this.value;searchProducts();"
-             onkeydown="if(event.key==='Escape'){closeHdrSearch();}">
-      <button type="button" onclick="closeHdrSearch()" aria-label="Cerrar buscador">
-        <i class="fas fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
 </header>
 
 <!-- Overlay menú mobile (posición fixed sobre toda la página) -->
@@ -7791,6 +7802,124 @@ body.dark-mode .anl-name { color: #F5F5F5; }
   restartTimer();
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     BARRA DE CONFIANZA — debajo del hero banner
+═══════════════════════════════════════════════════════ -->
+<section class="dz-trust-strip" aria-label="Beneficios de compra">
+  <div class="dz-trust-inner">
+
+    <div class="dz-trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.59 13.41 12 4.83A2 2 0 0 0 10.6 4.24L4 4a1 1 0 0 0-1 1l.24 6.6a2 2 0 0 0 .59 1.4l8.58 8.58a2 2 0 0 0 2.83 0l5.35-5.35a2 2 0 0 0 0-2.82Z"/>
+        <circle cx="8.5" cy="8.5" r="1.4"/>
+      </svg>
+      <h3>Envío gratis</h3>
+      <p>En pedidos superiores a S/ 150.<br>El resto S/ 12.</p>
+    </div>
+
+    <div class="dz-trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 3h13v13H1z"/>
+        <path d="M14 8h4l4 4v4h-8V8Z"/>
+        <circle cx="5.5" cy="18.5" r="1.8"/>
+        <circle cx="17.5" cy="18.5" r="1.8"/>
+      </svg>
+      <h3>Envío rápido</h3>
+      <p>En 24-72 horas a tu casa.</p>
+    </div>
+
+    <div class="dz-trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="5" cy="19" r="2"/>
+        <path d="M8 19h8"/>
+        <path d="M3 14h5l3-9h6"/>
+        <path d="M13 9h5l2 5h-3"/>
+        <circle cx="18" cy="19" r="2"/>
+      </svg>
+      <h3>A todo el Perú</h3>
+      <p>Entregamos por Shalom.</p>
+    </div>
+
+    <div class="dz-trust-item">
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener" class="dz-trust-link" aria-label="Escribinos por WhatsApp al 956 063 145">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/>
+        </svg>
+        <h3>956 063 145</h3>
+        <p>Consultas por WhatsApp.</p>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.dz-trust-strip{
+  background:#ffffff;
+  padding:38px 0 30px;
+}
+.dz-trust-inner{
+  max-width:1240px;
+  width:95%;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+}
+.dz-trust-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:0 12px;
+}
+.dz-trust-item svg{
+  width:38px;
+  height:38px;
+  color:var(--text,#2b2b2b);
+  margin-bottom:14px;
+}
+.dz-trust-item h3{
+  font-family:'Nunito', sans-serif;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+  color:var(--text,#2b2b2b);
+  margin:0 0 6px;
+}
+.dz-trust-item p{
+  font-size:13px;
+  color:#8a8a97;
+  line-height:1.45;
+  margin:0;
+}
+.dz-trust-link{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  text-decoration:none;
+  color:inherit;
+}
+.dz-trust-link:hover svg{ color:#25D366; }
+.dz-trust-link:hover h3{ color:#25D366; }
+body.dark-mode .dz-trust-strip{ background:#161616; }
+body.dark-mode .dz-trust-item h3{ color:var(--lulu-cream,#f2ede3); }
+body.dark-mode .dz-trust-item svg{ color:var(--lulu-cream,#f2ede3); }
+body.dark-mode .dz-trust-item p{ color:#9c9c9c; }
+
+@media(max-width:900px){
+  .dz-trust-inner{ grid-template-columns:repeat(2,1fr); row-gap:32px; }
+}
+@media(max-width:480px){
+  .dz-trust-strip{ padding:28px 0 24px; }
+  .dz-trust-item svg{ width:32px; height:32px; margin-bottom:10px; }
+  .dz-trust-item h3{ font-size:13px; }
+  .dz-trust-item p{ font-size:12px; }
+}
+</style>
 
 <!-- ═══════════════════════════════════════════════════════
      BUSCADOR INTELIGENTE BAJO EL HEADER
@@ -8943,55 +9072,333 @@ document.addEventListener('click', function(e) {
 <div class="section-divider"></div>
 
 <!-- FOOTER -->
-<footer class="footer" aria-label="Pie de página D'Zoe Perú">
-  <div class="container">
-    <div class="footer-main" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;padding-top:60px;padding-bottom:40px;">
-      <div class="footer-info">
-        <h2 class="footer-brand">D'Zoe Perú 🌸</h2>
-        <p class="footer-description">
-          Somos una tienda peruana especializada en <strong style="color:rgba(255,255,255,0.8);">ropa infantil importada premium</strong> para bebés y niños de 0 a 14 años. Seleccionamos diseños exclusivos que destacan por su calidad, comodidad y estilo para los más pequeños del hogar. Envíos a todo el Perú.
-        </p>
-        <a href="libro-de-reclamaciones.html" class="footer-link" target="_blank" rel="noopener noreferrer">
-          <div class="footer-claims">
-            <i class="fas fa-book-open"></i>
-            <span>LIBRO DE RECLAMACIONES</span>
+<footer class="dz2-footer" aria-label="Pie de página D'Zoe Perú">
+
+  <!-- ══ SUSCRÍBETE ══ -->
+  <div class="dz2-news">
+    <div class="dz2-news-overlay"></div>
+    <div class="dz2-news-inner">
+      <div class="dz2-news-text">
+        <h2>SUSCRÍBETE</h2>
+        <p>¡Accede a <strong>cupones, ofertas y noticias</strong> exclusivas!</p>
+        <p>¡Podrás tener un <strong>descuento especial</strong> por tu <strong>cumpleaños</strong>!</p>
+      </div>
+
+      <form class="dz2-news-form" id="dz2NewsForm" onsubmit="return dz2SubmitNewsletter(event)">
+        <div class="dz2-field dz2-field-full">
+          <i class="fas fa-user" aria-hidden="true"></i>
+          <input type="text" placeholder="Nombres y Apellidos" required autocomplete="name">
+        </div>
+        <div class="dz2-field-row">
+          <div class="dz2-field">
+            <i class="fas fa-phone" aria-hidden="true"></i>
+            <input type="tel" placeholder="Celular" required autocomplete="tel" inputmode="numeric">
           </div>
+          <div class="dz2-field">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            <input type="text" placeholder="Fecha de Nacimiento"
+                   onfocus="this.type='date'"
+                   onblur="if(!this.value)this.type='text'">
+          </div>
+        </div>
+        <div class="dz2-field-row dz2-field-row-submit">
+          <div class="dz2-field dz2-field-grow">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <input type="email" placeholder="Correo electrónico" required autocomplete="email">
+          </div>
+          <button type="submit" class="dz2-submit-btn">SUSCRIBIRME</button>
+        </div>
+        <label class="dz2-check">
+          <input type="checkbox" required>
+          <span>Acepto las políticas de <a href="politica-de-privacidad.html" target="_blank" rel="noopener noreferrer">protección de datos</a>.</span>
+        </label>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ COLUMNAS ══ -->
+  <div class="dz2-cols-wrap">
+    <div class="dz2-cols">
+
+      <div class="dz2-col">
+        <h4>Mi cuenta</h4>
+        <a href="#" onclick="showLoginPanel();return false;">Regístrate</a>
+        <a href="#" onclick="showLoginPanel();return false;">Inicia Sesión</a>
+        <a href="libro-de-reclamaciones.html" target="_blank" rel="noopener noreferrer" class="dz2-claims-link">
+          <i class="fas fa-book-open" aria-hidden="true"></i>
+          <span>Libro de<br>Reclamaciones</span>
         </a>
-        <div class="footer-social" style="display:flex;gap:10px;margin-top:20px;">
-          <a class="social-btn" href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener" aria-label="TikTok D'Zoe Perú"><i class="fab fa-tiktok"></i></a>
-          <a class="social-btn" href="https://wa.me/51956063145" target="_blank" rel="noopener" aria-label="WhatsApp D'Zoe Perú"><i class="fab fa-whatsapp"></i></a>
+      </div>
+
+      <div class="dz2-col">
+        <h4>Nuestras políticas</h4>
+        <a href="terminos-legales.html" target="_blank" rel="noopener noreferrer">Términos Legales</a>
+        <a href="terminos-y-condiciones.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+        <a href="politica-de-privacidad.html" target="_blank" rel="noopener noreferrer">Protección de datos</a>
+        <a href="politica-de-privacidad.html" target="_blank" rel="noopener noreferrer">Tratamiento adicional de datos</a>
+        <a href="condiciones-recojo-tienda.html" target="_blank" rel="noopener noreferrer">Condiciones Recojo En Tienda</a>
+        <a href="campanas-publicitarias.html" target="_blank" rel="noopener noreferrer">Campañas publicitarias</a>
+      </div>
+
+      <div class="dz2-col">
+        <h4>Servicio al cliente</h4>
+        <a href="seguimiento-de-pedidos.html" target="_blank" rel="noopener noreferrer">Seguimiento de Pedidos</a>
+        <a href="politica-de-cookies.html" target="_blank" rel="noopener noreferrer">Política De Cookies</a>
+        <a href="politica-de-envios.html" target="_blank" rel="noopener noreferrer">Tiempos y Costo de Envío</a>
+        <a href="cambios-y-devoluciones.html" target="_blank" rel="noopener noreferrer">Cambios y Devoluciones</a>
+        <a href="plazos-de-reembolso.html" target="_blank" rel="noopener noreferrer">Plazos de reembolso</a>
+        <a href="nuestras-tiendas.html" target="_blank" rel="noopener noreferrer">Nuestras Tiendas</a>
+        <a href="trabaja-con-nosotros.html" target="_blank" rel="noopener noreferrer">Trabaja con Nosotros</a>
+      </div>
+
+      <div class="dz2-col dz2-col-pay">
+        <h4>Medios de pago</h4>
+        <div class="dz2-pay-icons">
+          <span class="dz2-pay-badge" title="Yape">Yape</span>
+          <span class="dz2-pay-badge" title="Plin">Plin</span>
+          <i class="fab fa-cc-visa" aria-hidden="true" title="Visa"></i>
+          <i class="fab fa-cc-mastercard" aria-hidden="true" title="Mastercard"></i>
+        </div>
+
+        <h4 class="dz2-social-title">Redes sociales</h4>
+        <div class="dz2-social-icons">
+          <a href="https://www.tiktok.com/@dzoeperu" target="_blank" rel="noopener noreferrer" aria-label="TikTok D'Zoe Perú"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+          <a href="https://wa.me/51956063145" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp D'Zoe Perú"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
         </div>
       </div>
-      <div class="footer-menu">
-        <h4>Menú</h4>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
-          <li><a href="politica-de-envios.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-truck" style="color:var(--rose);font-size:12px;width:16px;"></i> Política de Envíos</a></li>
-          <li><a href="guia-de-tallas.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-ruler" style="color:var(--rose);font-size:12px;width:16px;"></i> Guía de Tallas</a></li>
-          <li><a href="preguntas-frecuentes.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-question-circle" style="color:var(--rose);font-size:12px;width:16px;"></i> Preguntas Frecuentes</a></li>
-          <li><a href="politica-de-privacidad.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-shield-alt" style="color:var(--rose);font-size:12px;width:16px;"></i> Privacidad</a></li>
-          <li><a href="blog.html" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:flex;align-items:center;gap:8px;"><i class="fas fa-blog" style="color:var(--rose);font-size:12px;width:16px;"></i> Blog</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h4>Contáctenos</h4>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
-          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fab fa-whatsapp" style="color:#25D366;font-size:16px;"></i> +51 956 063 145</li>
-          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fas fa-envelope" style="color:var(--rose);font-size:14px;"></i> ventas@dzoeperu.com</li>
-          <li style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;"><i class="fas fa-map-marker-alt" style="color:var(--lavender);font-size:14px;"></i> Gamarra, Lima — Perú</li>
-          <li style="margin-top:6px;">
-            <div style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px 14px;">
-              <div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">Horario de atención</div>
-              <div style="font-size:12.5px;color:rgba(255,255,255,0.75);font-weight:600;">Lun – Sáb: 9:00am – 7:00pm</div>
-            </div>
-          </li>
-        </ul>
-      </div>
+
     </div>
-    <div class="footer-copyright">
-      <p>© 2026 D'Zoe Perú — Todos los derechos reservados &nbsp;|&nbsp; Ropa Infantil Importada Premium · Lima, Perú</p>
+
+    <div class="dz2-bottom">
+      <a href="https://wa.me/51956063145" target="_blank" rel="noopener noreferrer" class="dz2-wa-badge">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span>Compras por WhatsApp<br>956 063 145</span>
+      </a>
+      <p class="dz2-copyright">© 2026 D'Zoe Perú — Todos los derechos reservados · Ropa Infantil Importada Premium · Lima, Perú</p>
     </div>
   </div>
 </footer>
+
+<style>
+/* ══════════════ FOOTER D'ZOE PERÚ — REDISEÑO ══════════════ */
+.dz2-footer{ margin-top:80px; font-family:'Nunito',sans-serif; }
+
+/* ── Suscríbete ── */
+.dz2-news{
+  position:relative;
+  background:#3a3a3a url('https://bit.ly/4vmwWEt') center/cover no-repeat;
+  padding:64px 24px;
+  overflow:hidden;
+}
+.dz2-news-overlay{
+  position:absolute; inset:0;
+  background:rgba(20,20,20,0.72);
+  backdrop-filter:grayscale(0.4);
+}
+.dz2-news-inner{
+  position:relative;
+  max-width:1300px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1.15fr;
+  gap:40px;
+  align-items:center;
+}
+.dz2-news-text h2{
+  font-family:'Baloo 2',cursive;
+  font-size:34px;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:0.5px;
+  margin:0 0 14px;
+}
+.dz2-news-text p{
+  color:rgba(255,255,255,0.92);
+  font-size:15px;
+  line-height:1.6;
+  margin:0 0 4px;
+}
+.dz2-news-text p strong{ color:#fff; }
+
+.dz2-news-form{ display:flex; flex-direction:column; gap:12px; }
+.dz2-field-row{ display:flex; gap:12px; }
+.dz2-field-row-submit{ align-items:stretch; }
+.dz2-field{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:30px;
+  padding:12px 20px;
+}
+.dz2-field.dz2-field-grow{ flex:1; }
+.dz2-field i{ color:rgba(255,255,255,0.75); font-size:14px; flex-shrink:0; }
+.dz2-field input{
+  flex:1;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:#fff;
+  font-size:13.5px;
+  font-family:'Nunito',sans-serif;
+  min-width:0;
+}
+.dz2-field input::placeholder{ color:rgba(255,255,255,0.65); }
+.dz2-field input[type="date"]{ color-scheme:dark; }
+
+.dz2-submit-btn{
+  background:#fff;
+  color:#2b2b2b;
+  border:none;
+  border-radius:30px;
+  padding:0 26px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.8px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:0.2s;
+}
+.dz2-submit-btn:hover{ background:var(--rose,#d88fa3); color:#fff; }
+
+.dz2-check{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  color:rgba(255,255,255,0.85);
+  font-size:12.5px;
+  line-height:1.5;
+  cursor:pointer;
+  margin-top:2px;
+}
+.dz2-check input{ margin-top:3px; accent-color:#fff; flex-shrink:0; }
+.dz2-check a{ color:#fff; text-decoration:underline; }
+
+/* ── Columnas ── */
+.dz2-cols-wrap{ background:#54545c; padding:48px 24px 26px; }
+.dz2-cols{
+  max-width:1300px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1.3fr 1.3fr 1fr;
+  gap:32px;
+  padding-bottom:34px;
+  border-bottom:1px solid rgba(255,255,255,0.14);
+}
+.dz2-col h4{
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  margin:0 0 18px;
+}
+.dz2-col a{
+  display:block;
+  color:rgba(255,255,255,0.78);
+  text-decoration:none;
+  font-size:13px;
+  margin-bottom:11px;
+  transition:0.2s;
+  width:fit-content;
+}
+.dz2-col a:hover{ color:#fff; padding-left:3px; }
+
+.dz2-claims-link{
+  display:flex !important;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+  color:rgba(255,255,255,0.85) !important;
+}
+.dz2-claims-link i{ font-size:22px; }
+.dz2-claims-link span{ font-size:11px; font-weight:700; line-height:1.3; }
+
+.dz2-pay-icons{ display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px; }
+.dz2-pay-badge{
+  background:#fff;
+  color:#54545c;
+  font-weight:800;
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:6px;
+}
+.dz2-pay-icons i{ color:#fff; font-size:30px; }
+.dz2-social-title{ margin-top:22px !important; }
+.dz2-social-icons{ display:flex; gap:12px; }
+.dz2-social-icons a{
+  width:34px; height:34px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.12);
+  border-radius:50%;
+  color:#fff;
+  font-size:15px;
+  transition:0.2s;
+}
+.dz2-social-icons a:hover{ background:#fff; color:#54545c; }
+
+.dz2-bottom{
+  max-width:1300px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding-top:20px;
+  flex-wrap:wrap;
+}
+.dz2-wa-badge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#25D366;
+  color:#fff;
+  text-decoration:none;
+  padding:8px 16px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.35;
+}
+.dz2-wa-badge i{ font-size:20px; }
+.dz2-copyright{
+  color:rgba(255,255,255,0.6);
+  font-size:11.5px;
+  margin:0;
+  text-align:center;
+  flex:1;
+}
+
+body.dark-mode .dz2-cols-wrap{ background:#1c1c1e; }
+body.dark-mode .dz2-news{ background-color:#101010; }
+
+@media(max-width:1000px){
+  .dz2-news-inner{ grid-template-columns:1fr; }
+  .dz2-cols{ grid-template-columns:1fr 1fr; gap:28px 20px; }
+}
+@media(max-width:640px){
+  .dz2-news{ padding:44px 18px; }
+  .dz2-news-text h2{ font-size:26px; }
+  .dz2-field-row{ flex-direction:column; }
+  .dz2-field-row-submit{ flex-direction:column; }
+  .dz2-submit-btn{ padding:13px; }
+  .dz2-cols{ grid-template-columns:1fr; }
+  .dz2-bottom{ flex-direction:column; text-align:center; }
+}
+</style>
+
+<script>
+function dz2SubmitNewsletter(e){
+  e.preventDefault();
+  if (typeof showNotif === 'function') {
+    showNotif('🌸 ¡Gracias por suscribirte! Revisa tu correo.');
+  }
+  e.target.reset();
+  return false;
+}
+</script>
 
 <!-- CARRITO LATERAL -->
 <div class="cart-overlay" id="cartOverlay"></div>
@@ -12831,7 +13238,7 @@ function updateUI() {
   if (sub) sub.innerText = `S/ ${total.toFixed(2)}`;
   if (tot) tot.innerText = `S/ ${total.toFixed(2)}`;
   const badge = document.getElementById('cartCountBadge');
-  if (badge) { badge.style.display = count > 0 ? 'flex' : 'none'; badge.innerText = count; }
+  if (badge) { badge.style.display = 'flex'; badge.innerText = count; }
 }
 
 function addToCart(product, sizeIndex) {
@@ -14259,9 +14666,21 @@ document.getElementById('wishlistModal')?.addEventListener('click', e => { if (e
 // ═══════════════════════════════════════════════════════
 //  SCROLL — HEADER SHADOW
 // ═══════════════════════════════════════════════════════
+let scrolledState = false;
+let scrollTicking = false;
+function applyScrolledState() {
+  const y = window.scrollY;
+  if (!scrolledState && y > 50) scrolledState = true;
+  else if (scrolledState && y < 20) scrolledState = false;
+  document.getElementById('main-header')?.classList.toggle('scrolled', scrolledState);
+  scrollTicking = false;
+}
 window.addEventListener('scroll', () => {
-  document.getElementById('main-header')?.classList.toggle('scrolled', window.scrollY > 10);
-});
+  if (!scrollTicking) {
+    requestAnimationFrame(applyScrolledState);
+    scrollTicking = true;
+  }
+}, { passive: true });
 
 // ═══════════════════════════════════════════════════════
 //  TOPBAR STICKY — el header se pega justo debajo del topbar
@@ -14270,6 +14689,10 @@ function updateTopbarHeight() {
   const tb = document.querySelector('.topbar');
   if (tb) {
     document.documentElement.style.setProperty('--topbar-h', tb.offsetHeight + 'px');
+  }
+  const hd = document.getElementById('main-header');
+  if (hd) {
+    document.documentElement.style.setProperty('--header-h', hd.offsetHeight + 'px');
   }
 }
 updateTopbarHeight();
