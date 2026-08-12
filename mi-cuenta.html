@@ -1261,7 +1261,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
           <div class="section-body">
             <div class="form-group"><label>Nombre del producto *</label><input type="text" id="product-name" placeholder="Ej: Conjunto Teddy Bear" oninput="checkDuplicateNameLive('product-name','product-name-dup-msg',()=>editingProductId,'product')"><div id="product-name-dup-msg" style="display:none;color:#e74c3c;font-size:11.5px;font-weight:700;margin-top:4px;"></div></div>
-            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..."></textarea></div>
+            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="product-description" rows="2" placeholder="Descripción breve del producto..." oninput="updateDescCharCount('product-description','product-desc-charcount')"></textarea><div id="product-desc-charcount" style="font-size:11px;font-weight:700;margin-top:4px;color:var(--muted);">0/40 — se usa también como Meta Description (SEO)</div></div>
             <div class="form-grid" style="margin-top:16px;">
               <div class="form-group">
                 <label>URLs de imágenes</label>
@@ -1302,7 +1302,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
           </div>
           <div class="section-body">
             <div class="form-group"><label>Nombre del producto *</label><input type="text" id="upcoming-name" placeholder="Ej: Conjunto Primavera 2025" oninput="checkDuplicateNameLive('upcoming-name','upcoming-name-dup-msg',()=>editingUpcomingId,'upcoming')"><div id="upcoming-name-dup-msg" style="display:none;color:#e74c3c;font-size:11.5px;font-weight:700;margin-top:4px;"></div></div>
-            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="upcoming-description" rows="2" placeholder="Descripción breve..."></textarea></div>
+            <div class="form-group" style="margin-top:14px;"><label>Descripción</label><textarea id="upcoming-description" rows="2" placeholder="Descripción breve..." oninput="updateDescCharCount('upcoming-description','upcoming-desc-charcount')"></textarea><div id="upcoming-desc-charcount" style="font-size:11px;font-weight:700;margin-top:4px;color:var(--muted);">0/40 — se usa también como Meta Description (SEO)</div></div>
 
             <div class="form-grid" style="margin-top:16px;">
               <div class="form-group">
@@ -3386,6 +3386,7 @@ function clearForm() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  updateDescCharCount('product-description','product-desc-charcount');
   
   const featuredToggle = document.getElementById('featured-toggle');
   if (featuredToggle) featuredToggle.className = 'toggle-group';
@@ -4634,6 +4635,7 @@ function editProduct(id) {
   document.getElementById('product-name').value        = p.name        || '';
   document.getElementById('product-description').value = p.description || '';
   document.getElementById('product-color').value        = p.color       || '';
+  updateDescCharCount('product-description','product-desc-charcount');
 
   // ── Imágenes ─────────────────────────────────────────────────
   const imgContainer = document.getElementById('image-urls-container');
@@ -4877,6 +4879,7 @@ function clearUpcomingForm() {
   ['upcoming-name','upcoming-description','upcoming-color'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
+  updateDescCharCount('upcoming-description','upcoming-desc-charcount');
   const dayEl = document.getElementById('upcoming-date-day');
   const monthEl = document.getElementById('upcoming-date-month');
   const now = new Date();
@@ -5053,6 +5056,7 @@ async function editUpcoming(id) {
   document.getElementById('upcoming-name').value = data.name || '';
   document.getElementById('upcoming-description').value = data.description || '';
   document.getElementById('upcoming-color').value = data.color || '';
+  updateDescCharCount('upcoming-description','upcoming-desc-charcount');
   if (data.estimated_date) {
     // Format for datetime-local input
     const d = new Date(data.estimated_date);
@@ -7499,6 +7503,25 @@ function renderOrigenAnalytics() {
   }
 
   container.innerHTML = html;
+}
+
+// ============================================
+// CONTADOR DE CARACTERES — Descripción / Meta Description
+// ============================================
+function updateDescCharCount(textareaId, counterId) {
+  const el = document.getElementById(textareaId);
+  const counter = document.getElementById(counterId);
+  if (!el || !counter) return;
+  const len = el.value.trim().length;
+  const min = 40;
+  counter.textContent = `${len}/${min} — se usa también como Meta Description (SEO)`;
+  if (len >= min) {
+    counter.style.color = 'var(--green)';
+  } else if (len >= min * 0.6) {
+    counter.style.color = 'var(--orange)';
+  } else {
+    counter.style.color = 'var(--red)';
+  }
 }
 
 // ============================================
@@ -10553,6 +10576,9 @@ function addFinanzaRow() {
   }, 50);
 }
 
+function safeSelectionStart(el) {
+  try { return el.selectionStart; } catch (e) { return null; }
+}
 function updateFinanzaField(id, field, value) {
   if (finPctLocked) { renderFinanzas({ keepFocus: true }); return; }
   const f = finanzas.find(x => String(x.id) === String(id));
@@ -10926,7 +10952,7 @@ function renderFinanzas(opts) {
   // Filas
   const tbody = document.getElementById('finanzas-tbody');
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#finanzas-tbody')
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c=>c.startsWith('fin-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c=>c.startsWith('fin-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   if (tbody) {
@@ -11146,7 +11172,7 @@ function renderInversionesPanel(plat, opts) {
   if (!panel) return;
 
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#inv-tbody-' + plat)
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('inv-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('inv-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   panel.innerHTML = `
@@ -11271,7 +11297,7 @@ function renderReinvertirPanel(opts) {
   if (!tbody) return;
 
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#reinv-tbody')
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('reinv-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('reinv-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   tbody.innerHTML = reinvertirRows.length ? reinvertirRows.map(r => `
@@ -11360,7 +11386,7 @@ function renderImprevistosPanel(opts) {
   if (!tbody) return;
 
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#imprev-tbody')
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('imprev-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('imprev-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   tbody.innerHTML = imprevistosRows.length ? imprevistosRows.map(r => `
@@ -11445,7 +11471,7 @@ function renderAhorroPanel(opts) {
   if (!tbody) return;
 
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#ahorro-tbody')
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('ahorro-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('ahorro-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   tbody.innerHTML = ahorroRows.length ? ahorroRows.map(r => `
@@ -11530,7 +11556,7 @@ function renderPersonalPanel(opts) {
   if (!tbody) return;
 
   const focusInfo = opts.keepFocus && document.activeElement && document.activeElement.closest('#personal-tbody')
-    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('personal-cell-')), start: document.activeElement.selectionStart }
+    ? { id: document.activeElement.closest('tr')?.dataset.rowId, cls: [...document.activeElement.classList].find(c => c.startsWith('personal-cell-')), start: safeSelectionStart(document.activeElement) }
     : null;
 
   tbody.innerHTML = personalRows.length ? personalRows.map(r => `
