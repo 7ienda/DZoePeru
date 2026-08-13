@@ -378,19 +378,6 @@
     "url": "/productos/conjunto-adorno-floral-3d-3-piezas.html"
   },
   {
-    "id": 1780347105085,
-    "slug": "chaqueta-corazones-de-algodon",
-    "name": "Chaqueta Corazones de Algodon",
-    "price": 38,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgdb4XH6kJlqT22OIGODVZwhYAl8yKFRtL3zVIG7UoYgx769CdQyKW1SX_jfDYK7NMBLC8IYmJj_vQJzQbo9Ijwc4_asZCneuyvp_1MPtRD91W-xScHUwr-sVrfvj0NSOrepYIkKrfpv07h9OrjFqojA2yQrMWHqISXe6WmaHKwc4VylYXuTystIystdz5/s1600/chaqueta-corazones-de-algodon-modelo.webp",
-    "categories": [
-      "Cardigans",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/chaqueta-corazones-de-algodon.html"
-  },
-  {
     "id": 1780346883637,
     "slug": "cardigan-bordado-primaveral",
     "name": "Cardigan bordado primaveral",
@@ -2131,19 +2118,6 @@
     "url": "/productos/conjunto-elefante-blue-2-piezas.html"
   },
   {
-    "id": 1780347512765,
-    "slug": "cardigan-mora-manga-corazones",
-    "name": "Cardigan mora manga corazones",
-    "price": 35,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXmQrY7daVWJkbJBUTzoC4WlbubDCNXTTY0eLD1jQNO8u4-AQ4vPHMLdQlri5tgFJ5Yxhv-vTgzA3UmaL6K8V5mx9OUQKKTcKcF9BwUyWveYa1HT0AsphDoj2dhoXxNTBrryDfqefMCbChloEzMWOv5q8NwAdqLSO88ptX8KljzpNqudPQHvvkss3JDGHt/s1600/cardigan-mora-manga-corazones-modelo.webp",
-    "categories": [
-      "Cardigans",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/cardigan-mora-manga-corazones.html"
-  },
-  {
     "id": 1780413568525,
     "slug": "conjunto-uvitas-crochet-2-piezas",
     "name": "Conjunto Uvitas Crochet 2 piezas",
@@ -3200,19 +3174,6 @@
     "url": "/productos/conjunto-brillo-de-chanel-2-piezas.html"
   },
   {
-    "id": 1780350591407,
-    "slug": "cacasa-gatito-en-ruedas",
-    "name": "Cacasa Gatito en ruedas",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0OQXqkaxvdAJB-smXMeOcY84RckhU8_J44S9H8AYZRFsCDmUw1KfwTISCIafEXC4u3_NqxT0IIUta-jTYPx9wkNGuMpL9ry7j_-pjJUpUIlwcgamo48SXZJ06RGWWTCyMlf1B19A5EdZT47rrmFhwyj9XvdxDp3rVg9RVwvxWT_0Dchh0TuqIO-wK0dZa/s1600/cacasa-gatito-en-ruedas-modelo.webp",
-    "categories": [
-      "Niña",
-      "Casacas"
-    ],
-    "inStock": true,
-    "url": "/productos/cacasa-gatito-en-ruedas.html"
-  },
-  {
     "id": 1780411167528,
     "slug": "conjunto-osito-polar-2-piezas",
     "name": "Conjunto Osito polar 2 piezas",
@@ -3240,6 +3201,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-camisa-dinos-2-piezas.html"
+  },
+  {
+    "id": 1780350591407,
+    "slug": "casaca-gatito-en-ruedas",
+    "name": "Casaca Gatito en ruedas",
+    "price": 48,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0OQXqkaxvdAJB-smXMeOcY84RckhU8_J44S9H8AYZRFsCDmUw1KfwTISCIafEXC4u3_NqxT0IIUta-jTYPx9wkNGuMpL9ry7j_-pjJUpUIlwcgamo48SXZJ06RGWWTCyMlf1B19A5EdZT47rrmFhwyj9XvdxDp3rVg9RVwvxWT_0Dchh0TuqIO-wK0dZa/s1600/cacasa-gatito-en-ruedas-modelo.webp",
+    "categories": [
+      "Niña",
+      "Casacas"
+    ],
+    "inStock": true,
+    "url": "/productos/casaca-gatito-en-ruedas.html"
   },
   {
     "id": 1780371484080,
@@ -5891,5 +5865,31 @@
     ],
     "inStock": true,
     "url": "/productos/vestido-destello-de-rubi.html"
+  },
+  {
+    "id": 1780347512765,
+    "slug": "sueter-mora-manga-corazones",
+    "name": "Sueter mora manga corazones",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXmQrY7daVWJkbJBUTzoC4WlbubDCNXTTY0eLD1jQNO8u4-AQ4vPHMLdQlri5tgFJ5Yxhv-vTgzA3UmaL6K8V5mx9OUQKKTcKcF9BwUyWveYa1HT0AsphDoj2dhoXxNTBrryDfqefMCbChloEzMWOv5q8NwAdqLSO88ptX8KljzpNqudPQHvvkss3JDGHt/s1600/cardigan-mora-manga-corazones-modelo.webp",
+    "categories": [
+      "Niña",
+      "Sueters"
+    ],
+    "inStock": true,
+    "url": "/productos/sueter-mora-manga-corazones.html"
+  },
+  {
+    "id": 1780347105085,
+    "slug": "cardigan-corazones-de-algodon",
+    "name": "Cardigan Corazones de Algodon",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgdb4XH6kJlqT22OIGODVZwhYAl8yKFRtL3zVIG7UoYgx769CdQyKW1SX_jfDYK7NMBLC8IYmJj_vQJzQbo9Ijwc4_asZCneuyvp_1MPtRD91W-xScHUwr-sVrfvj0NSOrepYIkKrfpv07h9OrjFqojA2yQrMWHqISXe6WmaHKwc4VylYXuTystIystdz5/s1600/chaqueta-corazones-de-algodon-modelo.webp",
+    "categories": [
+      "Cardigans",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/cardigan-corazones-de-algodon.html"
   }
 ]

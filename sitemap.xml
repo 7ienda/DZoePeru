@@ -415,12 +415,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/chaqueta-corazones-de-algodon.html</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/cardigan-bordado-primaveral.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -1177,12 +1171,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/cardigan-mora-manga-corazones.html</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-uvitas-crochet-2-piezas.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -1633,12 +1621,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/cacasa-gatito-en-ruedas.html</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-osito-polar-2-piezas.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -1646,6 +1628,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-camisa-dinos-2-piezas.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/casaca-gatito-en-ruedas.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2768,6 +2756,18 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/vestido-destello-de-rubi.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/sueter-mora-manga-corazones.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/cardigan-corazones-de-algodon.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
