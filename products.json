@@ -2992,20 +2992,6 @@
     "url": "/productos/rompercito-abejita-rosada-2-piezas.html"
   },
   {
-    "id": 1784672603438,
-    "slug": "conjunto-conejito-cielo-3-piezas",
-    "name": "Conjunto Conejito Cielo 3 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzxN7qtv5ZPeEFwIJw7Fcr3rTAdktclvjqFQE0ao3X5tFYvdeBVRx1MMh5NxIcJkLXE0ibTRIoOschdH5ipwOSs87joKk2U-c1_Hp1_7XoNKYxoWSV4LBcRcI1g6xCJob0h98geq5H3G664z_Gx-3oJRmkWpAEDhIKgqFk-hUQIzGPJYZyonIpOjSC4nwU/s1600/conjunto-conejito-cielo-3-piezas-modelo.webp",
-    "categories": [
-      "Bodies",
-      "Conjunto 3 piezas",
-      "Bebito"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-conejito-cielo-3-piezas.html"
-  },
-  {
     "id": 1783629843911,
     "slug": "overol-jean-bordado-primavera-rosalia",
     "name": "overol jean bordado primavera rosalia",
@@ -5891,5 +5877,19 @@
     ],
     "inStock": true,
     "url": "/productos/cardigan-corazones-de-algodon.html"
+  },
+  {
+    "id": 1784672603438,
+    "slug": "conjunto-conejito-cielo-3-piezas",
+    "name": "Conjunto Conejito Cielo 3 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzxN7qtv5ZPeEFwIJw7Fcr3rTAdktclvjqFQE0ao3X5tFYvdeBVRx1MMh5NxIcJkLXE0ibTRIoOschdH5ipwOSs87joKk2U-c1_Hp1_7XoNKYxoWSV4LBcRcI1g6xCJob0h98geq5H3G664z_Gx-3oJRmkWpAEDhIKgqFk-hUQIzGPJYZyonIpOjSC4nwU/s1600/conjunto-conejito-cielo-3-piezas-modelo.webp",
+    "categories": [
+      "Bodies",
+      "Conjunto 3 piezas",
+      "Bebito"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-conejito-cielo-3-piezas.html"
   }
 ]
