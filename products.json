@@ -3610,20 +3610,6 @@
     "url": "/productos/conjunto-conejitos-peludito-rosado-3-piezas.html"
   },
   {
-    "id": 1786031571952,
-    "slug": "conjunto-kitty-rosa-2-piezas",
-    "name": "Conjunto Kitty rosa 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiqFXy4s_CCMimYIsSupP5ozhqJc-Swvy2yz2SB4tf4kSzR1deHK2TNjW_L269C5yfYxbDNp22QikeD1WVcI60JYK-pkzHyISeMrNu3Xb4yAE-EqXSTvYjvNfcsVCkDe7AVHptKUXGJswFUHwsyMn5QZSGbYYtMw2I2n7PsFlwQLfEkpQHt_5xhMtvQyU7R/s1600/conjunto-kitty-rosa-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-kitty-rosa-2-piezas.html"
-  },
-  {
     "id": 1786421619368,
     "slug": "boinas-rojo-conejita-monito-para-nina",
     "name": "Boinas rojo conejita moñito para niña",
@@ -3637,6 +3623,20 @@
     ],
     "inStock": true,
     "url": "/productos/boinas-rojo-conejita-monito-para-nina.html"
+  },
+  {
+    "id": 1786031571952,
+    "slug": "conjunto-kitty-rosa-2-piezas",
+    "name": "Conjunto Kitty rosa 2 piezas",
+    "price": 62,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiqFXy4s_CCMimYIsSupP5ozhqJc-Swvy2yz2SB4tf4kSzR1deHK2TNjW_L269C5yfYxbDNp22QikeD1WVcI60JYK-pkzHyISeMrNu3Xb4yAE-EqXSTvYjvNfcsVCkDe7AVHptKUXGJswFUHwsyMn5QZSGbYYtMw2I2n7PsFlwQLfEkpQHt_5xhMtvQyU7R/s1600/conjunto-kitty-rosa-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-kitty-rosa-2-piezas.html"
   },
   {
     "id": 1783785275241,
