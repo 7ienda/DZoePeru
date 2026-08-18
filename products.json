@@ -5858,20 +5858,6 @@
     "url": "/productos/conjunto-sudadera-lazos-negros-2-piezas.html"
   },
   {
-    "id": 1786421910949,
-    "slug": "conjunto-body-de-punto-monito-rojo-2-piezas",
-    "name": "Conjunto body de punto moñito rojo 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT-KLconB5HaILEuYYTXKfWT7q2xAKFR4KvqK027p9bYUgUjW6fvGmGp2pDZhSSmQSu1J9qSp86ZKcvBFBTCdEvcQIQ9cN2VPR027keM1c9tSZ336CAFU1NkDBS58JeOuedx9rDiea17pc0MIchSGcW2gbzOpJ65Kpc_2e-zyBYYd1mFcKrmsKt6pJfF0D/s1600/conjunto-body-de-punto-monito-rojo-2-piezas-modelo.webp",
-    "categories": [
-      "Bodies",
-      "Bebito",
-      "Conjunto Hilo"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-body-de-punto-monito-rojo-2-piezas.html"
-  },
-  {
     "id": 1786422091036,
     "slug": "conjunto-kitty-rose-2-piezas",
     "name": "Conjunto kitty rose 2 piezas",
@@ -6224,5 +6210,18 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-corbata-de-kitty-2-piezas.html"
+  },
+  {
+    "id": 1786421910949,
+    "slug": "conjunto-body-de-punto-monito-rojo",
+    "name": "Conjunto body de punto moñito rojo",
+    "price": 0,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT-KLconB5HaILEuYYTXKfWT7q2xAKFR4KvqK027p9bYUgUjW6fvGmGp2pDZhSSmQSu1J9qSp86ZKcvBFBTCdEvcQIQ9cN2VPR027keM1c9tSZ336CAFU1NkDBS58JeOuedx9rDiea17pc0MIchSGcW2gbzOpJ65Kpc_2e-zyBYYd1mFcKrmsKt6pJfF0D/s1600/conjunto-body-de-punto-monito-rojo-2-piezas-modelo.webp",
+    "categories": [
+      "Bodies",
+      "Conjunto Hilo"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-body-de-punto-monito-rojo.html"
   }
 ]

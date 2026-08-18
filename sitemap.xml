@@ -2755,12 +2755,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-body-de-punto-monito-rojo-2-piezas.html</loc>
-    <lastmod>2026-08-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-kitty-rose-2-piezas.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
@@ -2906,6 +2900,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-corbata-de-kitty-2-piezas.html</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/conjunto-body-de-punto-monito-rojo.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
