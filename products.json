@@ -6084,20 +6084,6 @@
     "url": "/productos/pack-10-pares-de-medias-pantorrilla-de-animalitos.html"
   },
   {
-    "id": 1787004973436,
-    "slug": "pack-6-body-triangular-de-manga-corta-de-algodon",
-    "name": "pack 6 body triangular de manga corta de algodon",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMWU_8XKsAtGzfi-lrTc-PTXikVUw9MrQcHNiihCfe00e4sp-ZSzdIPGILFtutjibF4Dxa9jaqF4KEHoU4JiBofJIEf3nV2i1t6kAh3H5nNuBApgn7iBNXU74vK51v8U66F6Xb33Bd9kckMqAulf17QDnupbAES9GG_z8Ajx6onV5OAzvYnwCtWCnk13a4/s1600/pack-6-body-triangular-de-manga-corta-de-algodon.webp",
-    "categories": [
-      "Accesorios",
-      "Packs",
-      "Bodies"
-    ],
-    "inStock": true,
-    "url": "/productos/pack-6-body-triangular-de-manga-corta-de-algodon.html"
-  },
-  {
     "id": 1787004978681,
     "slug": "pack-12-pares-medias-antideslizantes-tejido-suave",
     "name": "Pack 12 pares medias antideslizantes tejido suave",
@@ -6126,10 +6112,38 @@
     "url": "/productos/pack-12-pares-de-medias-pantorrilla-de-safari.html"
   },
   {
+    "id": 1787004973436,
+    "slug": "pack-6-body-triangular-de-manga-corta-de-algodon",
+    "name": "pack 6 body triangular de manga corta de algodon",
+    "price": 55,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMWU_8XKsAtGzfi-lrTc-PTXikVUw9MrQcHNiihCfe00e4sp-ZSzdIPGILFtutjibF4Dxa9jaqF4KEHoU4JiBofJIEf3nV2i1t6kAh3H5nNuBApgn7iBNXU74vK51v8U66F6Xb33Bd9kckMqAulf17QDnupbAES9GG_z8Ajx6onV5OAzvYnwCtWCnk13a4/s1600/pack-6-body-triangular-de-manga-corta-de-algodon.webp",
+    "categories": [
+      "Accesorios",
+      "Packs",
+      "Bodies"
+    ],
+    "inStock": true,
+    "url": "/productos/pack-6-body-triangular-de-manga-corta-de-algodon.html"
+  },
+  {
+    "id": 1787007134298,
+    "slug": "conjunto-mono-de-kitty-2-piezas",
+    "name": "Conjunto moño de kitty 2 piezas",
+    "price": 55,
+    "image": "http://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsR7wFOrHLOYvaMqcOURr2HAwXI1pqZL4dP6DPnPFx9Y5x1n0oSZt8qtGE43HAWWv6gjAR4H1w_-yHbm-FbKcvJMrG0y-diXAEmkVMEuMWCLH3zQH_4Q5XKvEPunNakDXIzpmClw0LS6nkYsTCRuiTxY17x6k1uOoimiYH1S4M-DqXSH186pATayH2MQCP/s1600/conjunto-mono-de-kitty-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-mono-de-kitty-2-piezas.html"
+  },
+  {
     "id": 1787004976161,
     "slug": "conjunto-de-punto-pequena-lulu-2-piezas",
     "name": "Conjunto de punto pequeña lulu 2 piezas",
-    "price": 0,
+    "price": 50,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7bl6xmVsXfoS3_8gOKO80ncp7qTYVmEmzwHcxmqSkExKzHYVlPusBJ1ayaGoZUSV2tgbOLGraW2MDAO6lcd4xilmsnrkNgyfscifTOjB_5JzSSnZFE-WXUEOL0a5Iout6IqTCl4_vr183TSP1RzZvy6cK3_-_bYLgKNk7LD3a3na6114v1YIwMX5wdtVc/s1600/conjunto-de-punto-pequena-lulu-2-piezas-modelo.webp",
     "categories": [
       "Conjunto 2 piezas",
@@ -6144,7 +6158,7 @@
     "id": 1787005758387,
     "slug": "conjunto-amarillo-de-lunares-2-piezas",
     "name": "Conjunto amarillo de lunares 2 piezas",
-    "price": 0,
+    "price": 50,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcwT5iufqOlQQ35TGV88_J1Rp3SQK-pbrliPIGeLR2BBo-oqBq13UKSe0q7jI68f41B2bHr72ic5NH78fAYi-i-YPN56U76axbPMMybKhYQ57P2EmQre1ykv5Dssc6B7MAIqR4oOYJ0Gmi9H2k4AIKLG1HHl4j6khnGRNSz79p46pxFlUKLyTr0SF_K8zo/s1600/conjunto-amarillo-de-lunares-2-piezas-modelo.webp",
     "categories": [
       "Conjunto 2 piezas",
@@ -6158,7 +6172,7 @@
     "id": 1787006582858,
     "slug": "conjunto-house-kitty-love-2-piezas",
     "name": "Conjunto house kitty love 2 piezas",
-    "price": 0,
+    "price": 53,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjMGRO7nkTS0pW2NqNL_1yaJBOz9D2n_V5vspcLs11Bce2GM4aifDU3zTYwaAQVjaUdSp21shQ3_oPmduchsKl0zEafaEK8GDjB2MySR8Z_Y0RQBzUSl9za8BaPr_PKU-w2zGy7ecss0-jozaUivmFXbArBW3S3r-T4RtsVCX8Nal3gzlTVKMh81LTi6h_U/s1600/conjunto-house-kitty-love-2-piezas-modelo.webp",
     "categories": [
       "Conjunto 2 piezas",
@@ -6167,20 +6181,6 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-house-kitty-love-2-piezas.html"
-  },
-  {
-    "id": 1787007134298,
-    "slug": "conjunto-mono-de-kitty-2-piezas",
-    "name": "Conjunto moño de kitty 2 piezas",
-    "price": 0,
-    "image": "http://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsR7wFOrHLOYvaMqcOURr2HAwXI1pqZL4dP6DPnPFx9Y5x1n0oSZt8qtGE43HAWWv6gjAR4H1w_-yHbm-FbKcvJMrG0y-diXAEmkVMEuMWCLH3zQH_4Q5XKvEPunNakDXIzpmClw0LS6nkYsTCRuiTxY17x6k1uOoimiYH1S4M-DqXSH186pATayH2MQCP/s1600/conjunto-mono-de-kitty-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-mono-de-kitty-2-piezas.html"
   },
   {
     "id": 1787007687241,
@@ -6197,20 +6197,6 @@
     "url": "/productos/conjunto-carita-alegre-3d-2-piezas.html"
   },
   {
-    "id": 1787007972768,
-    "slug": "conjunto-corbata-de-kitty-2-piezas",
-    "name": "Conjunto corbata de kitty 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAPKgYB7_wyYQULfUjlbfPWT9PXtzapPqhscYCwgNOqpobFqjPM6awlTPDk9xyg4gDF9sqMlVRycIgknzq6Zehp1jF0k5GA6PGy8f8b3lMB147KuPzTSUwhBYq2hzQwlwKxB3dNLY3vEeOLP8sJ-r2-5WSCIpPsrLL9wx4GDiQ4C7ZZPgWkNTFm_fgzv6p/s1600/conjunto-corbata-de-kitty-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-corbata-de-kitty-2-piezas.html"
-  },
-  {
     "id": 1787008956647,
     "slug": "conjunto-sudadera-leggings-floral-2-piezas",
     "name": "Conjunto sudadera leggings floral 2 piezas",
@@ -6224,5 +6210,19 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-sudadera-leggings-floral-2-piezas.html"
+  },
+  {
+    "id": 1787007972768,
+    "slug": "conjunto-corbata-de-kitty-2-piezas",
+    "name": "Conjunto corbata de kitty 2 piezas",
+    "price": 50,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAPKgYB7_wyYQULfUjlbfPWT9PXtzapPqhscYCwgNOqpobFqjPM6awlTPDk9xyg4gDF9sqMlVRycIgknzq6Zehp1jF0k5GA6PGy8f8b3lMB147KuPzTSUwhBYq2hzQwlwKxB3dNLY3vEeOLP8sJ-r2-5WSCIpPsrLL9wx4GDiQ4C7ZZPgWkNTFm_fgzv6p/s1600/conjunto-corbata-de-kitty-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-corbata-de-kitty-2-piezas.html"
   }
 ]
