@@ -6238,5 +6238,61 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-rosa-hindu-3-piezas.html"
+  },
+  {
+    "id": 1787192720186,
+    "slug": "vestido-tejido-de-algodon-azul-koreano",
+    "name": "Vestido Tejido de algodon azul Koreano",
+    "price": 70,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKf3xMNfGiZHwF9VXqWbw6PSSKo625IL9tPNWbHeKpYyGGeCT7kQyB6L2p_TTP08vxrdJgFN15_kCxcpIB91cnz0YxjRXOxggXS-bmOa_1F6-OxTIYCUDCjjsrNN-fCFriN5NDyWTr_fTmREams4WelZ6QfsRjQgiblgoWmaZ8WkcW9RLOUIc-MT_bnW0Y/s1600/vestido-tejido-de-algodon-azul-koreano-modelo.webp",
+    "categories": [
+      "Vestidos",
+      "Vestilo Hilo",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-tejido-de-algodon-azul-koreano.html"
+  },
+  {
+    "id": 1787192724601,
+    "slug": "vestido-tejido-de-algodon-beige-koreano",
+    "name": "Vestido Tejido de algodon beige Koreano",
+    "price": 70,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg46IRMuijPhnvPwPDfPvhm8MLfmrs_hY7Yy10-tRb73DLIMx4MRGNjKvnZWfebBTwUhefqdT-2JYnPYuU1t82gSRFclJEE6M4bkuhqyuXzHjh6W6PewJEzhTjejmP6ygPw_deF8Y1hz5YGTgC5TdXmPNqz4Ji198xOxJ1-twTBF6kN0ZdNnvnzZn10rQxM/s1600/vestido-tejido-de-algodon-beige-koreano-modelo.webp",
+    "categories": [
+      "Vestidos",
+      "Vestilo Hilo",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-tejido-de-algodon-beige-koreano.html"
+  },
+  {
+    "id": 1787192842728,
+    "slug": "vestido-tejido-de-algodon-rosado-koreano",
+    "name": "Vestido Tejido de algodon rosado Koreano",
+    "price": 70,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0gSgjKUqoQ0MboAPNaWWxbi_b3JNHw5zDR0FBbEXtGmHVz9s18KVJlV3xC6VkEvIHadkPcIRhTE6kOq-GeyG0yG8lT10D3BTqnE3jzG3LGTHwuZVkowrXy52KrjkWTS-lHgcguTYzIbhl5a903KpLRUw8drdxYN3UchGa-MNDNYhVnbd5cyq3q7cvA7Qf/s1600/vestido-tejido-de-algodon-rosado-koreano-modelo.webp",
+    "categories": [
+      "Vestidos",
+      "Vestilo Hilo",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/vestido-tejido-de-algodon-rosado-koreano.html"
+  },
+  {
+    "id": 1787193563663,
+    "slug": "conjunto-hilo-cashimir-arequipeno-3-piezas",
+    "name": "Conjunto Hilo cashimir arequipeño 3 piezas",
+    "price": 80,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidA1BEQKDmG6kDptwHxFU0uCvt4UWrOQGgzCsPxhGEBonB-p7fcGDXt0mCsGr4FVpn5Fgagi8Z8I4H7zn18XgYYW1dlHsNHcapBz5e3CrrIMsp3xT6RzC9FU8pAQgGZIAF4xzOjJ-XAq_WPD1PEzW5BBROXwu_ENhujhx0EoO4O6rNp2PRNrtHHynJlT3w/s1600/conjunto-hilo-cashimir-arequipeno-3-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 3 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-hilo-cashimir-arequipeno-3-piezas.html"
   }
 ]
