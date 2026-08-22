@@ -1546,6 +1546,7 @@ body.dark-mode .seo-preview-title { color: #8ab4f8; }
         <div class="section-header">
           <div class="section-title"><i class="fas fa-table-cells" style="color:var(--green)"></i> Cuadro de ventas</div>
           <div style="display:flex;align-items:center;gap:14px;">
+            <button class="btn btn-sm" id="fin-btn-actualizar" style="background:var(--blue-light,#e3edff);color:var(--blue,#1d5fd4);font-weight:700;" onclick="actualizarCuadroVentas()" title="Recalcula el cuadro y actualiza todo Compras Finanzas"><i class="fas fa-rotate"></i> Actualizar</button>
             <button class="dark-toggle" id="fin-pct-lock-btn" onclick="toggleFinPctLock()" title="Bloquear/Desbloquear todo el cuadro" style="width:32px;height:32px;font-size:13px;"><i class="fas fa-lock"></i></button>
             <span style="font-size:11px;color:var(--muted);" id="fin-list-count">0 registros</span>
           </div>
@@ -10899,6 +10900,11 @@ function renderFondosGrid() {
   FIN_DIST_KEYS.forEach(k => totales[k] = fondosManual[k] || 0);
   finanzas.forEach(f => { const d = finDistribucion(f); FIN_DIST_KEYS.forEach(k => totales[k] += d[k]); });
 
+  // El fondo "Reinvertir" además suma el Capital = suma de Inversión de todos
+  // los productos del Cuadro de ventas (así como en la sección Reinvertir).
+  const capitalParaReinvertir = finanzas.reduce((a, f) => a + (parseFloat(f.inversion) || 0), 0);
+  totales.reinvertir += capitalParaReinvertir;
+
   grid.innerHTML = FIN_DIST_KEYS.map(k => `
     <div style="background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:16px;text-align:center;">
       <div style="width:34px;height:34px;border-radius:10px;background:${finDistMeta[k].color}22;color:${finDistMeta[k].color};display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:14px;">
@@ -10993,6 +10999,28 @@ function renderFinanzas(opts) {
   // Fondos (histórico completo) + Estado del negocio
   const totalesHistoricos = renderFondosGrid();
   renderEstadoNegocio(totalesHistoricos);
+
+  // Mantener los badges del menú (Compras Finanzas) siempre al día con el
+  // Cuadro de ventas, sin necesidad de entrar a cada sección.
+  if (typeof updateBadgeReinvertir === 'function') updateBadgeReinvertir();
+  if (typeof updateBadgeImprevistos === 'function') updateBadgeImprevistos();
+  if (typeof updateBadgeAhorro === 'function') updateBadgeAhorro();
+  if (typeof updateBadgePersonal === 'function') updateBadgePersonal();
+}
+
+// ---------- Botón "Actualizar" del Cuadro de ventas ----------
+// Recalcula TODO usando únicamente los datos que hay en el Cuadro de ventas
+// (array `finanzas`) y refresca cada sección de "Compras Finanzas":
+// Finanzas (cuadro + fondos + estado del negocio), Inversiones, Reinvertir,
+// Imprevistos, Ahorro y G. Personal — incluyendo sus paneles, montos y badges.
+function actualizarCuadroVentas() {
+  loadFinanzas();
+  if (typeof loadInversiones === 'function') loadInversiones();
+  if (typeof loadReinvertir === 'function') loadReinvertir();
+  if (typeof loadImprevistos === 'function') loadImprevistos();
+  if (typeof loadAhorro === 'function') loadAhorro();
+  if (typeof loadPersonal === 'function') loadPersonal();
+  showAlert('✅ Cuadro de ventas actualizado — todo Compras Finanzas se recalculó');
 }
 
 // ============================================
