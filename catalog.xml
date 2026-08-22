@@ -4,7 +4,7 @@
     <title>D'Zoe Perú — Catálogo de Productos</title>
     <link>https://dzoeperu.com</link>
     <description>Ropa infantil importada premium para bebés y niños de 0 a 14 años. Envíos a todo el Perú.</description>
-    <lastBuildDate>Sat, 22 Aug 2026 00:53:58 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 22 Aug 2026 06:29:19 GMT</lastBuildDate>
 
   <item>
     <g:id>1787193563663</g:id>
@@ -638,8 +638,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Bodies &gt; Conjunto Hilo</g:product_type>
-    <g:custom_label_0>Bodies, Conjunto Hilo</g:custom_label_0>
+    <g:product_type>Bodies &gt; Conjunto Hilo &gt; Bebita</g:product_type>
+    <g:custom_label_0>Bodies, Conjunto Hilo, Bebita</g:custom_label_0>
     <g:custom_label_1>6-9 meses</g:custom_label_1>
     <g:custom_label_2>Nuevo</g:custom_label_2>
   </item>
@@ -1058,8 +1058,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Accesorios &gt; Gorros</g:product_type>
-    <g:custom_label_0>Accesorios, Gorros</g:custom_label_0>
+    <g:product_type>Accesorios &gt; Gorros &gt; Bebito</g:product_type>
+    <g:custom_label_0>Accesorios, Gorros, Bebito</g:custom_label_0>
     <g:custom_label_1>Talla unica</g:custom_label_1>
     <g:custom_label_2>Nuevo</g:custom_label_2>
   </item>
@@ -7026,8 +7026,8 @@
     <g:brand>D'Zoe Perú</g:brand>
     <g:condition>new</g:condition>
     <g:google_product_category>5323</g:google_product_category>
-    <g:product_type>Conjunto Hilo &gt; Niña &gt; Conjunto Tutu &gt; Conjunto 2 piezas &gt; Tutus</g:product_type>
-    <g:custom_label_0>Conjunto Hilo, Niña, Conjunto Tutu, Conjunto 2 piezas, Tutus</g:custom_label_0>
+    <g:product_type>Conjunto Hilo &gt; Niña &gt; Conjunto Tutu &gt; Conjunto 2 piezas</g:product_type>
+    <g:custom_label_0>Conjunto Hilo, Niña, Conjunto Tutu, Conjunto 2 piezas</g:custom_label_0>
     <g:custom_label_1>3-4 años</g:custom_label_1>
   </item>
 
