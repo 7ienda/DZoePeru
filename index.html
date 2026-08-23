@@ -1854,18 +1854,30 @@ body.dark-mode .product-price{color:#C9A9E8;}
 .pg-btn.pg-arrow{font-size:14px;min-width:44px;}
 .pg-btn.pg-arrow:disabled,.pg-btn.pg-arrow[disabled]{opacity:0.35;cursor:not-allowed;pointer-events:none;}
 .pg-dots{color:var(--text-soft);font-weight:700;padding:0 2px;line-height:44px;font-size:16px;}
+.pg-manual{display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:2px solid var(--border);flex-shrink:0;}
+.pg-manual-label{font-size:12.5px;font-weight:700;color:var(--text-soft);font-family:'Nunito',sans-serif;white-space:nowrap;}
+.pg-manual-input{width:52px;height:44px;border-radius:14px;border:2px solid var(--border);text-align:center;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--text);background:#fff;-moz-appearance:textfield;}
+.pg-manual-input::-webkit-outer-spin-button,.pg-manual-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.pg-manual-input:focus{outline:none;border-color:var(--rose);}
+.pg-btn.pg-manual-go{min-width:40px;}
 body.dark-mode .pg-btn{background:#242424;border-color:#3A3A3A;color:#9A9A9A;}
 body.dark-mode .pg-btn:hover{background:#242424;border-color:var(--rose);color:var(--rose);}
 body.dark-mode .pg-btn.active-page{background:var(--rose);border-color:var(--rose);color:#fff;}
+body.dark-mode .pg-manual{border-color:#3A3A3A;}
+body.dark-mode .pg-manual-input{background:#242424;border-color:#3A3A3A;color:#fff;}
 @media(max-width:600px){
   .pagination{gap:6px;padding:0 4px;}
   .pg-btn{min-width:42px;height:42px;font-size:13px;border-radius:12px;}
   .pg-btn.pg-arrow{min-width:42px;}
   .pg-dots{line-height:42px;}
+  .pg-manual-input{width:44px;height:42px;font-size:13px;}
+  .pg-manual-label{display:none;}
 }
 @media(max-width:360px){
   .pg-btn{min-width:38px;height:38px;font-size:12px;border-radius:10px;padding:0 6px;}
   .pagination{gap:4px;}
+  .pg-manual{margin-left:4px;padding-left:4px;}
+  .pg-manual-input{width:40px;height:38px;}
 }
 
 /* Botón Pedir Reingreso */
@@ -9847,7 +9859,29 @@ let currentAgeGroup = null;     // 'bebe' | 'ninos' | 'mayores' | null
 let currentAgeFilterSet = null; // array expandido de tallas para el select de edad
 let currentGenderCats = null;   // categorías de género a exigir (ej. ['Niño']) — filtro estricto, no heurístico
 let currentPriceFilter = null;  // precio EXACTO elegido en el box "Precio" (ej. 25), null = sin filtro
-let currentPage = 1;
+// Lee la página inicial desde la URL (?pagina=N) para que un F5 no pierda
+// la posición de la paginación. También soporta el patrón de redirección
+// de GitHub Pages (?_path=/categoria/x?pagina=N).
+function getPageParamFromLocation() {
+  try {
+    const raw = new URLSearchParams(window.location.search);
+    let pageParam = raw.get('pagina');
+    if (!pageParam) {
+      const redirected = raw.get('_path');
+      if (redirected) {
+        const qIdx = redirected.indexOf('?');
+        if (qIdx !== -1) pageParam = new URLSearchParams(redirected.slice(qIdx + 1)).get('pagina');
+      }
+    }
+    const n = parseInt(pageParam, 10);
+    return (n && n > 0) ? n : 1;
+  } catch (e) { return 1; }
+}
+let currentPage = getPageParamFromLocation();
+// Se guarda para poder restaurarla luego de que un deep-link de categoría
+// (que resetea currentPage a 1) termine de resolverse de forma asíncrona.
+const __initialDeepLinkPage = currentPage;
+let lastTotalPages = 1;
 const PRODUCTS_PER_PAGE = 8;
 let selectedSizes = {};
 
@@ -12707,13 +12741,35 @@ function getProductRibbonStyle(label) {
 // ═══════════════════════════════════════════════════════
 //  RENDERIZADO DE PRODUCTOS
 // ═══════════════════════════════════════════════════════
+// Mantiene el parámetro ?pagina=N en la URL en sincronía con currentPage,
+// sin ensuciar el historial (usa replaceState) para que F5 conserve la página.
+function syncPageInUrl(page) {
+  try {
+    const url = new URL(window.location.href);
+    if (page > 1) url.searchParams.set('pagina', page);
+    else url.searchParams.delete('pagina');
+    history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+  } catch (e) {}
+}
+
 function renderPagination(total) {
   const container = document.getElementById('pagination');
   if (!container) return;
   const totalPages = Math.ceil(total / PRODUCTS_PER_PAGE);
-  if (totalPages <= 1) { container.innerHTML = ''; return; }
+  lastTotalPages = totalPages || 1;
+
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    syncPageInUrl(1);
+    return;
+  }
+
+  // Si el filtrado actual redujo los resultados, evita quedar en una página inexistente
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
   const pg = currentPage;
+  syncPageInUrl(pg);
   let html = '';
 
   // Flecha anterior
@@ -12739,13 +12795,33 @@ function renderPagination(total) {
   // Flecha siguiente
   html += `<button class="pg-btn pg-arrow" onclick="goToPage(${pg+1})" ${pg>=totalPages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
 
+  // Ir a página manual
+  html += `<div class="pg-manual">
+      <span class="pg-manual-label">Ir a</span>
+      <input type="number" inputmode="numeric" class="pg-manual-input" id="pgManualInput"
+        min="1" max="${totalPages}" value="${pg}" aria-label="Ir a la página"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();goToPageManual();}">
+      <button type="button" class="pg-btn pg-manual-go" onclick="goToPageManual()" aria-label="Ir"><i class="fas fa-arrow-right"></i></button>
+    </div>`;
+
   container.innerHTML = html;
 }
 
 function goToPage(page) {
+  page = Math.max(1, Math.min(parseInt(page, 10) || 1, lastTotalPages));
+  if (page === currentPage) return;
   currentPage = page;
   renderProducts();
   document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Permite ingresar manualmente el número de página en el input de paginación
+function goToPageManual() {
+  const input = document.getElementById('pgManualInput');
+  if (!input) return;
+  const val = parseInt(input.value, 10);
+  if (!val || val < 1) { input.value = currentPage; return; }
+  goToPage(val);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -14283,10 +14359,21 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(tryOpen);
         const urlSlug = slugNorm(decodeURIComponent(catSlug));
         const match = products.flatMap(p => p.categories||[]).find(c => slugNorm(c) === urlSlug);
-        if (match) filterByCategory(match);
+        if (match) {
+          filterByCategory(match);
+          // filterByCategory resetea currentPage a 1; si la URL traía ?pagina=N
+          // (ej. al recargar con F5 estando en /categoria/x?pagina=2), la restauramos.
+          if (__initialDeepLinkPage > 1) {
+            currentPage = __initialDeepLinkPage;
+            renderProducts();
+          }
+        }
       }
     }, 300);
   }
+  // Nota: si la URL no trae categoría, currentPage ya se inicializó desde
+  // ?pagina=N al declarar la variable, así que el primer renderProducts()
+  // (disparado por init()/loadAllData()) ya respeta la página correcta.
 });
 // ═══════════════════════════════════════════════════════
 (function() {
