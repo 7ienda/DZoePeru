@@ -2917,12 +2917,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-overolcito-oscuro-2-piezas.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-dini-kids-2-piezas.html</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -2936,6 +2930,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/conjunto-jean-verano-kids-2-piezas.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/conjunto-overolcito-oscuro-2-piezas.html</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
