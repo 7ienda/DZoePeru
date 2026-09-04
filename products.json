@@ -5520,19 +5520,6 @@
     "url": "/productos/conjunto-pinguino-3d-de-punto-2-piezas.html"
   },
   {
-    "id": 1786031643698,
-    "slug": "mameluco-dino-bebito",
-    "name": "Mameluco Dino Bebito",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGnV4R5HTiTAjj9lenlHw12dP07hpY64pehAKxBoJBgjhkwxCX1CZv0dhugHYSefhd26apJ5zSTu_lZzNnbaM_Eth04aIPoC8p17Fb2cFjocBYAYXwtH66sXQ4-OMEq4FFq_LshkfNO5xgxaaaqo5vdWkpZJAKSvnVSNkQ2xW2aEZYPFC5VxkJlVqZThn9/s1600/mameluco-dino-bebito-modelo.webp",
-    "categories": [
-      "Mamelucos",
-      "Bebito"
-    ],
-    "inStock": true,
-    "url": "/productos/mameluco-dino-bebito.html"
-  },
-  {
     "id": 1786031596108,
     "slug": "conjunto-doble-mono-de-hilo-2-piezas",
     "name": "Conjunto doble moño de Hilo 2 piezas",
@@ -5560,6 +5547,19 @@
     ],
     "inStock": true,
     "url": "/productos/enterizo-osito-azul-con-boina-2-piezas.html"
+  },
+  {
+    "id": 1786031643698,
+    "slug": "enterizo-dino-bebito",
+    "name": "Enterizo Dino Bebito",
+    "price": 35,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGnV4R5HTiTAjj9lenlHw12dP07hpY64pehAKxBoJBgjhkwxCX1CZv0dhugHYSefhd26apJ5zSTu_lZzNnbaM_Eth04aIPoC8p17Fb2cFjocBYAYXwtH66sXQ4-OMEq4FFq_LshkfNO5xgxaaaqo5vdWkpZJAKSvnVSNkQ2xW2aEZYPFC5VxkJlVqZThn9/s1600/mameluco-dino-bebito-modelo.webp",
+    "categories": [
+      "Bebito",
+      "Enterizos"
+    ],
+    "inStock": true,
+    "url": "/productos/enterizo-dino-bebito.html"
   },
   {
     "id": 1786421802392,
@@ -6085,21 +6085,6 @@
     "url": "/productos/conjunto-conejita-bunny-3-piezas.html"
   },
   {
-    "id": 1787008956647,
-    "slug": "conjunto-sudadera-leggings-floral-2-piezas",
-    "name": "Conjunto sudadera leggings floral 2 piezas",
-    "price": 0,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdWtbAPvpDSqczaQo9WwhghI9NjfBFJvQh6cSYPOB-gONs_lMonHdoH_ZBWd0zV_vVj743jH-uoon8SMHObxYWGcKn5qSgqrqXOu3cRiyrBh3snmwf37Xz9k5hNkiiczoDfWi2t42WliihDTcpBdGcTf7Uxm19HEZkcmPsDJElr8Fub7Ds5GVF_WWetMcj/s1600/conjunto-sudadera-leggings-floral-2-piezas-modelo.webp",
-    "categories": [
-      "Conjunto 2 piezas",
-      "Conjunto Pantalon",
-      "Niña",
-      "Bebita"
-    ],
-    "inStock": true,
-    "url": "/productos/conjunto-sudadera-leggings-floral-2-piezas.html"
-  },
-  {
     "id": 1787007972768,
     "slug": "conjunto-corbata-de-kitty-2-piezas",
     "name": "Conjunto corbata de kitty 2 piezas",
@@ -6112,6 +6097,21 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-corbata-de-kitty-2-piezas.html"
+  },
+  {
+    "id": 1787008956647,
+    "slug": "conjunto-sudadera-leggings-floral-2-piezas",
+    "name": "Conjunto sudadera leggings floral 2 piezas",
+    "price": 38,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdWtbAPvpDSqczaQo9WwhghI9NjfBFJvQh6cSYPOB-gONs_lMonHdoH_ZBWd0zV_vVj743jH-uoon8SMHObxYWGcKn5qSgqrqXOu3cRiyrBh3snmwf37Xz9k5hNkiiczoDfWi2t42WliihDTcpBdGcTf7Uxm19HEZkcmPsDJElr8Fub7Ds5GVF_WWetMcj/s1600/conjunto-sudadera-leggings-floral-2-piezas-modelo.webp",
+    "categories": [
+      "Conjunto 2 piezas",
+      "Conjunto Pantalon",
+      "Niña",
+      "Bebita"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-sudadera-leggings-floral-2-piezas.html"
   },
   {
     "id": 1787192720186,
@@ -6200,7 +6200,7 @@
     "id": 1788100357133,
     "slug": "pack-4-poleritas-manga-larga-de-punto-acanalado",
     "name": "Pack 4 poleritas manga larga de punto acanalado",
-    "price": 0,
+    "price": 45,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGgDLeN8GWSMBKfNJ3N38_V9F3CVJgg1NWc8QG7FEgvOqzWJ8wHQ6pqoByPDprM53YMhasw-FrUS4ff512dDONFeRd-iB8aXA6cEY7sbPwS8W4LmMkPl9y-qFKl5npCM-5mG0aIfvZhc03_psQvWpymOvlKkJJ09QMfp7BCMGIlf711NZWkFM-M6jXOy5B/s1600/pack-4-poleritas-manga-larga-de-punto-acanalado.webp",
     "categories": [
       "Packs",

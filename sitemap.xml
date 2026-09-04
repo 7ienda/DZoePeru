@@ -2611,12 +2611,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/mameluco-dino-bebito.html</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://dzoeperu.com/productos/conjunto-doble-mono-de-hilo-2-piezas.html</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -2624,6 +2618,12 @@
   </url>
   <url>
     <loc>https://dzoeperu.com/productos/enterizo-osito-azul-con-boina-2-piezas.html</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dzoeperu.com/productos/enterizo-dino-bebito.html</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2851,13 +2851,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-sudadera-leggings-floral-2-piezas.html</loc>
+    <loc>https://dzoeperu.com/productos/conjunto-corbata-de-kitty-2-piezas.html</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dzoeperu.com/productos/conjunto-corbata-de-kitty-2-piezas.html</loc>
+    <loc>https://dzoeperu.com/productos/conjunto-sudadera-leggings-floral-2-piezas.html</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
