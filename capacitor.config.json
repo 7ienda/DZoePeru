@@ -1,0 +1,9 @@
+{
+  "appId": "com.aronpr.dzestapro",
+  "appName": "DZesta",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,86 @@
+name: Build Android APK & AAB
+
+on:
+  workflow_dispatch:      # te deja correrlo manualmente desde la pestaña Actions
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Agregar plataforma Android (si no existe)
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          npx cap sync android
+
+      - name: Generar ícono y splash screen
+        run: npx capacitor-assets generate --android
+
+      - name: Actualizar a API 35 (requisito de Google Play)
+        run: python3 scripts/patch_targetsdk.py
+
+      - name: Subir versionCode automáticamente
+        run: python3 scripts/patch_version.py
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Dar permisos de ejecución a gradlew
+        run: chmod +x android/gradlew
+
+      - name: Restaurar el keystore desde el Secret
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
+
+      - name: Aplicar configuración de firma
+        run: python3 scripts/patch_signing.py
+
+      - name: Aplicar configuración de deep link (login con Google)
+        run: python3 scripts/patch_deeplink.py
+
+      - name: Aplicar App ID de AdMob
+        run: python3 scripts/patch_admob.py
+
+      - name: Compilar APK y AAB firmados
+        working-directory: android
+        env:
+          KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease bundleRelease
+
+      - name: Subir APK como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: dzesta-pro-apk
+          path: android/app/build/outputs/apk/release/*.apk
+
+      - name: Subir AAB como artefacto (esto es lo que subes a Play Store)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dzesta-pro-aab
+          path: android/app/build/outputs/bundle/release/*.aab
