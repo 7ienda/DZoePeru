@@ -6322,5 +6322,33 @@
     ],
     "inStock": false,
     "url": "/productos/conjunto-overolcito-oscuro-2-piezas.html"
+  },
+  {
+    "id": 1793541705268,
+    "slug": "conjunto-hilo-cashimir-arequipeno-3-piezas-uva",
+    "name": "Conjunto Hilo cashimir arequipeño 3 piezas uva",
+    "price": 80,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZWsYjBZPc6WC4CEqJhMq-c-hoihOQKawlYI40zwjs_ybJ7b3FgTqNaAIo4FCnTlU3_e67ZRahjxz-r-zrC4qiPBblhlH75BOLjQj1j6WmxhUaEkCJenTlfQKGTVnJUTSjuB_UErJJKzgxGOVnQpRwaaW4K7EuJeEWlMnScNp-1IJxmJBk8fstVY7q8qrS/s1600/conjunto-hilo-cashimir-arequipeno-3-piezas-uva-modelo.webp",
+    "categories": [
+      "Conjunto 3 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": false,
+    "url": "/productos/conjunto-hilo-cashimir-arequipeno-3-piezas-uva.html"
+  },
+  {
+    "id": 1793541826340,
+    "slug": "conjunto-hilo-cashimir-arequipeno-3-rosado",
+    "name": "Conjunto Hilo cashimir arequipeño 3 rosado",
+    "price": 80,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWMyBNWSqOanddzglXsTyoyK5mAUvAXfwqW1YrTHqmTmIBljSqrAIE4TyNsufXkERPuR05hR-eCbF2U0cf1WbsxRgTP0xBEMWtYVheMfqLzKu8GBmLhibxrKOHmUJHTeJ-Dyz52Nwj12NYcDLJQnXiGKqhkwWrTt-J6JOtptvM1vV4KndIrpGJclfpu2rs/s1600/conjunto-hilo-cashimir-arequipeno-3-piezas-rose-modelo.webp",
+    "categories": [
+      "Conjunto 3 piezas",
+      "Conjunto Pantalon",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/conjunto-hilo-cashimir-arequipeno-3-rosado.html"
   }
 ]
