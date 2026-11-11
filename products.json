@@ -1938,21 +1938,6 @@
     "url": "/productos/vestido-rojo-coreano.html"
   },
   {
-    "id": 1784661231259,
-    "slug": "pantalon-jean-costados-floreados",
-    "name": "Pantalon Jean costados floreados",
-    "price": 48,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEguVrZC8ioU-bZbMm6f6ysiruXEThm00lMaP4DP7WdjZSO9gwGLsDaBxhYTZmuYqtGYkFKYEtUzbebiFCOvKDGhoqQi_c0hFuoVlBCrucR8tHdbkZpoyo6VTwcVDObAbkRZXL8HF71KV2OgRy1yLYhZQM7oiCiDnGf67jleqKqLzeFm9XcrtKWq4os1uMz4/s1600/pantalon-jean-costados-floreados.webp",
-    "categories": [
-      "Jeans",
-      "Pantalones",
-      "Pantalones Jeans",
-      "Niña"
-    ],
-    "inStock": true,
-    "url": "/productos/pantalon-jean-costados-floreados.html"
-  },
-  {
     "id": 1784670275258,
     "slug": "pantalon-jean-flores-caqui",
     "name": "Pantalon Jean flores caqui",
@@ -3787,20 +3772,6 @@
     "url": "/productos/conjunto-dalia-carmin-2-piezas.html"
   },
   {
-    "id": 1783785217875,
-    "slug": "chaqueta-jeans-forro-conejita-polar",
-    "name": "Chaqueta Jeans Forro Conejita Polar",
-    "price": 65,
-    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcglMuSGmFtQnCCnddm19B3_objQ-p-jlpypmyDA_cGM1ojuR74IlI3cATxAk8zG0U9sNzUqoYGc8X42YJ3ozG3ePENCeTqcqQxoR_sgfy7LcdjkaiaJN4B10Y7hvi7z5wFHyGowA8PZ1LfhLh3gqcM7biJiadltTzCMM6qb2DjTQCn9TvgOcv9pkZTRNz/s1600/chaqueta-jeans-forro-conejita-polar-modelo.webp",
-    "categories": [
-      "Casacas",
-      "Niña",
-      "Jeans"
-    ],
-    "inStock": true,
-    "url": "/productos/chaqueta-jeans-forro-conejita-polar.html"
-  },
-  {
     "id": 1783785146853,
     "slug": "body-jirafita-chillon",
     "name": "Body Jirafita Chillon",
@@ -4018,7 +3989,7 @@
     "id": 1784670025619,
     "slug": "pantalon-jean-flores-de-inicio-primaveral",
     "name": "Pantalon Jean flores de inicio primaveral",
-    "price": 48,
+    "price": 39,
     "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEja2ChjilGfeN4OLAPcV6H4Ftzgw_ufcFlAafki8RUh5J7r4_lUsOtrLUIZoUhkIctmxDYsJccKZRYOa0n8K-udYEyzjOshTwT5Zx53OyX6jaGmfFquEfFzxJVv1UBVaMD1Ou5KXKzV5-5N78G-qyzKlt3KVy41K6KV7_tSf49_e_L1EPPP9TbwAJ7XZTxA/s1600/pantalon-jean-flores-de-inicio-primaveral.webp",
     "categories": [
       "Jeans",
@@ -6350,5 +6321,34 @@
     ],
     "inStock": true,
     "url": "/productos/conjunto-hilo-cashimir-arequipeno-3-rosado.html"
+  },
+  {
+    "id": 1784661231259,
+    "slug": "pantalon-jean-costados-floreados",
+    "name": "Pantalon Jean costados floreados",
+    "price": 39,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEguVrZC8ioU-bZbMm6f6ysiruXEThm00lMaP4DP7WdjZSO9gwGLsDaBxhYTZmuYqtGYkFKYEtUzbebiFCOvKDGhoqQi_c0hFuoVlBCrucR8tHdbkZpoyo6VTwcVDObAbkRZXL8HF71KV2OgRy1yLYhZQM7oiCiDnGf67jleqKqLzeFm9XcrtKWq4os1uMz4/s1600/pantalon-jean-costados-floreados.webp",
+    "categories": [
+      "Jeans",
+      "Pantalones",
+      "Pantalones Jeans",
+      "Niña"
+    ],
+    "inStock": true,
+    "url": "/productos/pantalon-jean-costados-floreados.html"
+  },
+  {
+    "id": 1783785217875,
+    "slug": "chaqueta-jeans-forro-conejita-polar",
+    "name": "Chaqueta Jeans Forro Conejita Polar",
+    "price": 65,
+    "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcglMuSGmFtQnCCnddm19B3_objQ-p-jlpypmyDA_cGM1ojuR74IlI3cATxAk8zG0U9sNzUqoYGc8X42YJ3ozG3ePENCeTqcqQxoR_sgfy7LcdjkaiaJN4B10Y7hvi7z5wFHyGowA8PZ1LfhLh3gqcM7biJiadltTzCMM6qb2DjTQCn9TvgOcv9pkZTRNz/s1600/chaqueta-jeans-forro-conejita-polar-modelo.webp",
+    "categories": [
+      "Casacas",
+      "Niña",
+      "Jeans"
+    ],
+    "inStock": false,
+    "url": "/productos/chaqueta-jeans-forro-conejita-polar.html"
   }
 ]
